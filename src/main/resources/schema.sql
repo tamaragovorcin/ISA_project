@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS hospitals;
+CREATE TABLE hospitals(api_key VARCHAR(255) PRIMARY KEY, "name" VARCHAR(255));
