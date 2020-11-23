@@ -1,7 +1,10 @@
 <template>
   <div id="home-main">
-    <h1>{{test}}</h1>
-    <div>{{testdata}}</div>
+    <h1>Register in our pharmacy</h1>
+     
+          <button  v-on:click = "getApiKey">Get api key</button>
+          <label>{{apiKey}}</label>
+      
   </div>
 </template>
 
@@ -10,23 +13,25 @@
 export default {
     data() {
         return {
-            test: "Hello",
-            testdata: "",
+            apiKey : ""
         }
     },
     methods: {
       getHospitals: function() {
-        this.axios.get("pswapi/apisa1234")
+        this.axios.get("pswapi/apila1234")
           .then(res => {
             this.testdata = res.data;
           })
           .catch(res => {
             console.log(res);
           })
+      },
+      getApiKey: function () {
+        this.apiKey = "apila1234";
       }
     },
-    mounted(){
-        this.getHospitals();
-    }
+   //mounted(){
+      //  this.getHospitals();
+//}
 }
 </script>
