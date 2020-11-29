@@ -3,8 +3,8 @@ spring:
     active: development
   # Database
   datasource:
-    driver-class-name: org.postgresql.Driver #
-    url: jdbc:postgresql://localhost:5432/postgres #${JDBC_DATABASE_URL}  
+    driver-class-name: org.postgresql.Driver 
+    url:  jdbc:postgresql://localhost:5432/postgres #${JDBC_DATABASE_URL}  
     username: postgres #${JDBC_DATABASE_USERNAME} 
     password: root #${JDBC_DATABASE_PASSWORD} 
     initialization-mode: always
