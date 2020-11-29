@@ -1,22 +1,12 @@
 <template>
   <div id="home">
-    
     <main-navigation />
     <div id="header">
       <div id="header-text">
         <div id="header-title">
-          <p id="header-desc">Pharmaceutical information system</p>
-          <router-link to="/pswregistration" v-slot="{href, navigate}">
-            <v-btn :href="href" @click="navigate" id="mainbtn" elevation="1">Get your API key</v-btn>
-          </router-link>
-           <router-link to="/pharmacy" v-slot="{href, navigate}">
-            <v-btn :href="href" @click="navigate" id="mainbtn" elevation="1">Pharmacy</v-btn>
-          </router-link>
+            <p id="header-desc">Choose your pharmacy</p>
         </div>
       </div>
-     
-        
-
     </div>
   </div>
 </template>
@@ -29,7 +19,6 @@ export default {
   }
 }
 </script>
-
 <style scoped>
   #mainbtn {
     color: #fff;
