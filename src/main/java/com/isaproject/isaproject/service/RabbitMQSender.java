@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.isaproject.isaproject.psw.Message;
+import com.isaproject.isaproject.psw.model.Message;
 
 @Service
 public class RabbitMQSender {

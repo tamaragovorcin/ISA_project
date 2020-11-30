@@ -1,9 +1,12 @@
-package com.isaproject.isaproject.psw;
+package com.isaproject.isaproject.psw.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.isaproject.isaproject.psw.model.Hospital;
+import com.isaproject.isaproject.psw.repository.HospitalRepository;
 
 @Service
 public class HospitalService implements IHospitalService{

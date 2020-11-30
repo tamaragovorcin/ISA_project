@@ -1,9 +1,10 @@
-package com.isaproject.isaproject.psw;
+package com.isaproject.isaproject.psw.model;
 
 import java.util.Date;
 
 public class Message {
-	 private String text;
+		 private String text;
+		 private String dateAction;
 	    private Date timestamp;
 
 	    public Message() {
@@ -14,7 +15,24 @@ public class Message {
 	        this.timestamp = timestamp;
 	    }
 
-	    public String getText() {
+	
+	    
+
+		public Message(String text, String dateAction) {
+			super();
+			this.text = text;
+			this.dateAction = dateAction;
+		}
+
+		public String getDateAction() {
+			return dateAction;
+		}
+
+		public void setDateAction(String dateAction) {
+			this.dateAction = dateAction;
+		}
+
+		public String getText() {
 	        return text;
 	    }
 

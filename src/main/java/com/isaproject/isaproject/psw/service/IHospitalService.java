@@ -1,6 +1,8 @@
-package com.isaproject.isaproject.psw;
+package com.isaproject.isaproject.psw.service;
 
 import java.util.List;
+
+import com.isaproject.isaproject.psw.model.Hospital;
 
 public interface IHospitalService {
 	boolean add(Hospital hospital);

@@ -3,33 +3,12 @@
     <div id="header">
       <div id="header-text">
         <div id="header-title">
-          <p>Apoteka </p>
-           
-          <div v-for="ph in listaPharmacys"   v-bind:key="ph"> 
-            
-            <p v-on:click="showPharmacy($event, ph)"> {{ph.name}} </p>
-
-
-          </div>
-
-
-
-
-           <div>
-             <label>Naziv: {{pharmacy.name}} </label>
-           </div>
-            
-           <div>
-             <label>Grad:{{pharmacy.town}} </label>
-           </div>
-             
-           <div>
-             <label>Api key:{{pharmacy.apiKey}} </label>
-           </div>
-
-
-
-           
+          <p>Choose your pharmacy </p>
+            <div v-for="ph in listaPharmacys" v-bind:key="ph"> 
+              <router-link :to="{ path: '/concretePharmacy/'+ph.apiKey}" v-slot="{href, navigate}">
+                <v-btn  class="btn btn-success" :href="href" @click="navigate"  elevation="1"> {{ph.name}} </v-btn>
+              </router-link>
+            </div>
         </div>
       </div>
     </div>
@@ -41,13 +20,6 @@ export default {
   data() {
     return {
        listaPharmacys: [],
-       pharmacy: {
-         name : "",
-         town : "",
-         apiKey: ""
-
-       }
-
     }
   },
 
@@ -55,20 +27,14 @@ beforeMount() {
       this.axios.get('/pharmacy')
       .then(response => {
             this.listaPharmacys= response.data;
-
       })
-
 },
      
 methods:{
   showPharmacy : function(event, p){
     this.pharmacy = p;
   }
-
 }
-
-
-
 
 }
 </script>
