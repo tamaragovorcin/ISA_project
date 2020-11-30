@@ -2,7 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import PswRegistration from '../views/PswRegistration.vue'
-import Pharmacy from '../views/Pharmacy.vue'
+import PharmacyVue from '../views/PharmacyVue.vue'
+import ConcretePharmacy from '../views/ConcretePharmacy.vue'
 
 Vue.use(VueRouter)
 
@@ -18,9 +19,14 @@ const routes = [
     component: PswRegistration
   },
   {
-	path: '/pharmacy',
-	name: 'Pharmacy',
-	component: Pharmacy
+	path: '/pharmacyVue',
+	name: 'PharmacyVue',
+	component: PharmacyVue
+  },
+  {
+	path: '/concretePharmacy/:id',
+	name: 'ConcretePharmacy',
+	component: ConcretePharmacy
   },
 ]
 

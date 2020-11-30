@@ -1,4 +1,4 @@
-package com.isaproject.isaproject.psw;
+package com.isaproject.isaproject.psw.controller;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -6,6 +6,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+
 
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.sftp.SFTPClient;
@@ -32,6 +38,24 @@ public class FileDownloadControler {
 	  @ResponseBody
 	  public void getFile() throws IOException {
 		  whenDownloadFileUsingSshj_thenSuccess();
+	  }
+	  
+	  @GetMapping("/file/report")
+	  @ResponseBody
+	  public String getFileReport() throws IOException {
+		  String filePath = "src/main/resources/TextFile.txt";
+		  StringBuilder contentBuilder = new StringBuilder();
+		  
+	        try (Stream<String> stream = Files.lines( Paths.get(filePath), StandardCharsets.UTF_8)) 
+	        {
+	            stream.forEach(s -> contentBuilder.append(s).append("\n"));
+	        }
+	        catch (IOException e) 
+	        {
+	            e.printStackTrace();
+	        }
+	 
+	        return contentBuilder.toString();
 	  }
 	  private SSHClient setupSshj() throws IOException {
 		    SSHClient client = new SSHClient();

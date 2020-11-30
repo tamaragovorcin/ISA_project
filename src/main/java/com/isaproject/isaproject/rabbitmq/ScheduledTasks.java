@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.isaproject.isaproject.psw.Message;
+import com.isaproject.isaproject.psw.model.Message;
 import com.isaproject.isaproject.service.RabbitMQSender;
 
 @Component
