@@ -3,7 +3,7 @@
     <div id="header">
       <div id="header-text">
         <div id="header-title">
-          <p>Apoteka </p>
+          <p>Choose pharmacy </p>
            
           <div v-for="ph in listaPharmacys"   v-bind:key="ph"> 
             
@@ -12,15 +12,17 @@
 
           </div>
 
-
+          <div>
+              <p id="paragraph"></p>
+          </div>
 
 
            <div>
-             <label>Naziv: {{pharmacy.name}} </label>
+             <label>Name: {{pharmacy.name}} </label>
            </div>
             
            <div>
-             <label>Grad:{{pharmacy.town}} </label>
+             <label>Town:{{pharmacy.town}} </label>
            </div>
              
            <div>
@@ -85,18 +87,13 @@ methods:{
     color: #fff;
   }
  
-  #header {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    height: 100vh;
-    background: none;
-    background-color: #87CEEB;
-    
-  }  
+ 
   #header-desc {
     font-size: 1.5rem;
     color: #fff;
+  }
+  #paragraph{
+    height: 10vh;
   }
   
 </style>

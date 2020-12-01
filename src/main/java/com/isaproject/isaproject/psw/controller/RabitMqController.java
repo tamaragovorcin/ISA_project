@@ -1,8 +1,9 @@
 package com.isaproject.isaproject.psw.controller;
 
-import java.sql.Date;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public class RabitMqController {
 
 	@Autowired
 	private RabbitMQSender service;
+	Message m = new Message();
 	
 	 @PostMapping("/messageRabbit")
 	 Message newMessage(@RequestBody Message message) throws ParseException
@@ -34,6 +36,10 @@ public class RabitMqController {
 		 System.out.println(message.getText());
 		 System.out.println(message.getDateAction());
 		 SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+		 
+		 m = new Message(message.getText(), new Date(), message.getDateAction());
+	        service.send(m);
+	        System.out.println("Sent :" + m.toString());
 	
 		 //Date date = (Date) formatter.parse(message.getDateAction());
 		 //Date date1=(Date) new SimpleDateFormat("dd/MM/yyyy").parse(message.getDateAction());  

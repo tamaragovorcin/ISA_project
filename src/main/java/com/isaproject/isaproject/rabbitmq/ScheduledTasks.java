@@ -22,9 +22,9 @@ public class ScheduledTasks {
 
 		@Scheduled(fixedRate = 3000)
 	    public void sendMessage() {
-			Message message = new Message("Neka poruka: " + UUID.randomUUID().toString(),
+			/*Message message = new Message("Neka poruka: " + UUID.randomUUID().toString(),
 		             new Date());;
 	        rabbitMQSender.send(message);
-	        System.out.println("Sent :" + message.toString());
+	        System.out.println("Sent :" + message.toString());*/
 	    }
 }
