@@ -70,7 +70,7 @@ methods:{
     this.pharmacy = p;
   },
   getReport: function () {
-    this.axios.get("/download/file/report")
+    this.axios.get('/download/file/report/'+this.id)
           .then(res => {
             this.report = res.data;
           })
@@ -105,5 +105,5 @@ methods:{
 </script>
 <style scoped>
 
-  
+
 </style>

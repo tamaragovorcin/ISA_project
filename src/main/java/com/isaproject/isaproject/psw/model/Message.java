@@ -18,10 +18,11 @@ public class Message {
 	
 	    
 
-		public Message(String text, String dateAction) {
+		public Message(String text, Date timestamp, String dateAction) {
 			super();
 			this.text = text;
 			this.dateAction = dateAction;
+			this.timestamp = timestamp;
 		}
 
 		public String getDateAction() {
