@@ -1,17 +1,19 @@
 <template>
-  <div  id="home">
-    <div id="header">
-      <div id="header-text">
-        <div id="header-title">
-          <p>Choose your pharmacy </p>
-            <div v-for="ph in listaPharmacys" v-bind:key="ph"> 
-              <router-link :to="{ path: '/concretePharmacy/'+ph.apiKey}" v-slot="{href, navigate}">
-                <v-btn  class="btn btn-success" :href="href" @click="navigate"  elevation="1"> {{ph.name}} </v-btn>
-              </router-link>
-            </div>
-        </div>
-      </div>
+<div style="background-image: url(https://previews.123rf.com/images/mongstock/mongstock1712/mongstock171200069/91420426-colorful-medicine-pharmacy-on-pink-background-.jpg);background-repeat: no-repeat;
+  background-size: 125% 80%;  height: 800px">
+ <div class="container">
+  <div class="row">
+    <div class="col text-dark">
+        <h4 class="p-3 mb-2 text-danger" >Choose your pharmacy</h4>
     </div>
+    <div class="col text-dark"  v-for="ph in listaPharmacys" v-bind:key="ph"> 
+              <router-link :to="{ path: '/concretePharmacy/'+ph.apiKey}" v-slot="{href, navigate}">
+                <button class = "btn btn-danger" :href="href" @click="navigate"  elevation="1">{{ph.name}}</button>
+               
+              </router-link>
+      </div>
+     </div>
+  </div>
   </div>
 </template>
 

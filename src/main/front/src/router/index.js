@@ -1,9 +1,16 @@
 import Vue from 'vue'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import PswRegistration from '../views/PswRegistration.vue'
 import PharmacyVue from '../views/PharmacyVue.vue'
 import ConcretePharmacy from '../views/ConcretePharmacy.vue'
+
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(VueRouter)
 

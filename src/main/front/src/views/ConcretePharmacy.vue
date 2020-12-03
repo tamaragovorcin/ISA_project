@@ -1,40 +1,45 @@
 <template>
-  <div  id="home">
-    <div id="header">
-      <div id="header-text">
-        <div id="header-title">
-          <p>Your pharmacy </p>
-           
-          <p>{{p.name}} </p>
+ <div style="background-image: url(https://previews.123rf.com/images/mongstock/mongstock1712/mongstock171200069/91420426-colorful-medicine-pharmacy-on-pink-background-.jpg);background-repeat: no-repeat;
+  background-size: 125% 80%;  height: 800px">
+        <div>
+            <h3 style="font-size: 35px;font-weight:bold">Your pharmacy   {{p.name}} </h3>
+        </div>
+        <div class="container">
 
-          <button  v-on:click = "getReport">Get file report</button>
-          <label>{{report}}</label>
-          <p> </p>
-          <p>Add new action and benefit</p>
-          <div>
-              <label for="benefitText">Text:</label>
-          </div>
-          <div>
-            <input type="text" id="benefitText" name="benefitText" v-model="benefitText" placeholder="New action and benefit..">
-          </div>
-          <div>
-            <label for="benefitText">Text:</label>
-          </div>
-          <div>
-            <input type="text" id="benefitDate" name="benefitDate" v-model="benefitDate" placeholder="day/month/year">
-          </div>
-          <div>
-                <button class="button" v-on:click="send">Send</button>
-          </div>
-          <div class="row">
-                    <label v-if="unique" style="color:lightgreen;font-size:25px;">Successfully added!</label>
+            <div class="row">
+                <div class="col-50">
+                   <button class = "btn btn-danger" v-on:click="getReport">Get file report</button>
+                </div>
+                <div class="col-50">
+                     <label>{{report}}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-30">
+                    <p>Add new action and benefit</p>
+                </div>
+                <div class="col-30">
+                     <input type="text" id="benefitText" name="benefitText" v-model="benefitText" placeholder="New action and benefit..">
+                </div>
+                <div class="col-30">
+                     <input type="text" id="benefitDate" name="benefitDate" v-model="benefitDate" placeholder="day/month/year">
+                </div>
+            </div>
+            <div class="row">
+                <div class>
+                   <button class = "btn btn-danger" v-on:click="send">Send</button>
+                </div>
+
+            </div>
+            <div class="row">
+               <label v-if="unique" style="color:lightgreen;font-size:25px;">Successfully added!</label>
                     <label v-if="notUnique" style="color:red;font-size:25px;">Problem with sending.!</label>
-          </div>
+            </div>
 
         </div>
-      </div>
+
+
     </div>
-  </div>
 </template>
 
 <script>
