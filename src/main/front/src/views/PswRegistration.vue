@@ -1,41 +1,35 @@
 <template>
-  <div  id="home">
-    <div id="header">
-      <div id="header-text">
-        <div id="header-title">
-          <p>Choose pharmacy </p>
-           
-          <div v-for="ph in listaPharmacys"   v-bind:key="ph"> 
-            
-            <p v-on:click="showPharmacy($event, ph)"> {{ph.name}} </p>
-
-
-          </div>
-
-          <div>
-              <p id="paragraph"></p>
-          </div>
-
-
-           <div>
-             <label>Name: {{pharmacy.name}} </label>
-           </div>
-            
-           <div>
-             <label>Town:{{pharmacy.town}} </label>
-           </div>
-             
-           <div>
-             <label>Api key:{{pharmacy.apiKey}} </label>
-           </div>
-
-
-
-           
+<div style="background-image: url(https://previews.123rf.com/images/mongstock/mongstock1712/mongstock171200069/91420426-colorful-medicine-pharmacy-on-pink-background-.jpg);background-repeat: no-repeat;
+  background-size: 125% 80%;  height: 800px">
+    <div class = "container w-25 p-3 text-danger">
+        <div>
+            <h3 style="font-size: 35px;font-weight:bold">Choose pharmacy</h3>
         </div>
-      </div>
+        <div class="container w-100 mb-3">
+
+            <div class="row d-flex flex-row">
+                
+                <div class="col-md-6">
+                    <div v-for="ph in listaPharmacys"   v-bind:key="ph"> 
+            
+                    <p v-on:click="showPharmacy($event, ph)"> {{ph.name}} </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-4">
+                   <label style = "font-family: Arial">Name:    {{pharmacy.name}} </label>
+                </div>
+                <div class="col-6 col-md-4">
+                    <label>Town:   {{pharmacy.town}} </label>
+                </div>
+                <div class="col-md-4">
+                     <label>Api key:  {{pharmacy.apiKey}} </label>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
+</div>
 </template>
 
 <script>
