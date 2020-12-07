@@ -1,27 +1,27 @@
 package com.isaproject.isaproject.psw.controller;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
+import java.util.Random;
 
 
-
+import org.hibernate.boot.MetadataBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-import org.springframework.http.HttpStatus;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.*;
 
-import org.springframework.http.ResponseEntity;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.client.MultipartBodyBuilder;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.isaproject.isaproject.psw.model.Medicine;
@@ -29,9 +29,7 @@ import com.isaproject.isaproject.psw.model.Medicine;
 import com.isaproject.isaproject.psw.service.IFilesStorageService;
 import com.isaproject.isaproject.psw.service.IMedicineService;
 
-
-
-
+import javax.servlet.ServletException;
 
 
 @RestController
@@ -39,7 +37,7 @@ public class MedicineController {
 	@Autowired
 	private IMedicineService service;
 	private IFilesStorageService storageService;
-
+	private WebClient.Builder webClientBuilder;
 	
 	@CrossOrigin(origins = "*", allowedHeaders = "*")
 
@@ -72,93 +70,42 @@ public class MedicineController {
 	        }
 	        return result;
 	    }
-	 /*
-	 @GetMapping("/medicine/description2/{medicine}")
-		ResponseEntity getMedicineDescription2(@PathVariable String medicine)
-	    {  ResponseEntity result;
-	    	String foundDescription ="";
-		 	List<Medicine> medicines= service.getAll();
-		 	for (Medicine medicine2 : medicines) {
-				if(medicine2.getName().equals(medicine)) {
-					foundDescription= medicine2.getDescription();
-				}
-			}
-		 	 try {
-		          result = foundDescription == null ?
-		                  ResponseEntity.badRequest().body("Bad request!") : new ResponseEntity(foundDescription, HttpStatus.OK);
-		      } catch (Exception e) {
-		          e.printStackTrace();
-		          result = ResponseEntity.badRequest().body("Bad request!");
-		      }
-		 	 System.out.println(result.toString());
-		      return result;
-	    }
 
-	 
-	 
-	  
-	  
-	  
+	public MultiValueMap<String, HttpEntity<?>> fromFile(File file) {
+		MultipartBodyBuilder builder = new MultipartBodyBuilder();
+		builder.part("file", new FileSystemResource(file));
+		return builder.build();
+	}
+	@RequestMapping(value = "/upload/medicine/{medicine}", method = RequestMethod.GET)
+	public ResponseEntity<?> reportHttpMedicine(@PathVariable String medicine) throws IOException, ServletException {
+		System.out.println("a*******************************************************");
 
-	  
-	  @RequestMapping(value = "/medicine/description2/{medicine}", method = RequestMethod.GET)
-	    public ResponseEntity getMedicineDescription2(@PathVariable String medicine) {
-		  ResponseEntity result;
-	    	String foundDescription ="";
-		 	List<Medicine> medicines= service.getAll();
-		 	for (Medicine medicine2 : medicines) {
-				if(medicine2.getName().equals(medicine)) {
-					foundDescription= medicine2.getDescription();
-				}
-			}
-		 	 try {
-		          result = foundDescription == null ?
-		                  ResponseEntity.badRequest().body("Bad request!") : new ResponseEntity(foundDescription, HttpStatus.OK);
-		      } catch (Exception e) {
-		          e.printStackTrace();
-		          result = ResponseEntity.badRequest().body("Bad request!");
-		      }
-		 	 System.out.println(result.toString());
-		      return result;
-	    }
-	  
-	 
-	 // @ResponseMapping(value = "/medicine/files/{medicine}", method = RequestMethod.GET)
-	  
-	  @GetMapping("/medicine/files/{medicine}")
-	  @ResponseBody
-	  public ResponseEntity<Resource> getFile(@PathVariable String medicine) throws MalformedURLException {
-		  HttpHeaders headers = new HttpHeaders();
-		    headers.add("Content-Type", "multipart/form-data");
-		 
-		// Path fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()) .toAbsolutePath().normalize();;
-		//Resource file = (Resource) storageService.load("Panadol.txt");
-		  //Resource file = @"src/main/resources/"+ "Panadol.txt";
-		 // File file = resources.get("src/main/resources/Panadol.txt");
-		 // Path filePath = fileStorageLocation.resolve("src/main/resources/Panadol.txt").normalize();
-		 // System.out.println(filePath + "--------------------------------------------------------------------------");
-		// Resource resource = new UrlResource(("D:\\FAKULTET\\4. GODINA\\ISA\\isaproject\\src\\main\\resources"));
-		  Resource resource = resourceLoader.getResource("src/main/resources/Panadol.txt");
-		 if(resource.exists()) {
-			 System.out.println("POSTOJI *************************************************************************");
-		 }
-		
-	     return ResponseEntity.ok()
-	       .contentType(MediaType.MULTIPART_FORM_DATA).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "Panadol.txt" + "\"").body(resource);
-	  }
-	 
-	  @PostMapping("/")
-		public String handleFileUpload(@RequestParam("file") MultipartFile file,
-				RedirectAttributes redirectAttributes) {
+		final WebClient webClient = webClientBuilder.build();
+		webClient.post()
+				.uri("http://localhost:57942/api/report/http/recieve")
+				.contentType(MediaType.MULTIPART_FORM_DATA)
+				.body(BodyInserters.fromMultipartData(fromFile(new File("src/main/resources/psw.txt"))))
+				.retrieve()
+				.bodyToMono(String.class)
+				.block();
+		return ResponseEntity.ok().build();
 
-			storageService.store(file);
-			redirectAttributes.addFlashAttribute("message",
-					"You successfully uploaded " + file.getOriginalFilename() + "!");
+	}
 
-			return "redirect:/";
-		}
-	   
-	  */
+	private String getRandomString() {
+		return new Random().nextInt(999999) + "_" + System.currentTimeMillis();
+	}
+	String UPLOAD_DIR = "src/main/resources/psw.txt";
+	private File getTargetFile(String fileExtn, String fileName) {
+		File targetFile = new File(UPLOAD_DIR + fileName + fileExtn);
+		return targetFile;
+	}
+
+	private String getFileExtension(MultipartFile inFile) {
+		String fileExtention = inFile.getOriginalFilename().substring(inFile.getOriginalFilename().lastIndexOf('.'));
+		return fileExtention;
+	}
+
 	  
 	  
 }

@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
 import javax.servlet.ServletException;
@@ -15,9 +16,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import com.sun.xml.bind.v2.runtime.output.XMLStreamWriterOutput;
 import org.apache.sshd.client.SshClient;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.*;
+import org.springframework.http.client.MultipartBodyBuilder;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import com.isaproject.isaproject.psw.model.Pharmacy;
@@ -26,14 +32,15 @@ import com.isaproject.isaproject.psw.service.IPharmacyService;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.sftp.SFTPClient;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
-
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 
 @RestController
 @RequestMapping("/download")
 public class FileDownloadControler {
 	private IPharmacyService service;
-
+	private WebClient.Builder webClientBuilder;
 	@GetMapping("/file")
 	@ResponseBody
 	public void getFile() throws IOException {
@@ -45,7 +52,7 @@ public class FileDownloadControler {
 	public String getFileReport(@PathVariable String api) throws IOException {
 		whenDownloadFileUsingSshj_thenSuccess();
 
-
+		System.out.println("22222221435768743247");
 		BufferedReader brTest = new BufferedReader(new FileReader("src/main/resources/TextFile.txt"));
 		String text = brTest.readLine();
 		String text_parts[] = text.split("!");
@@ -85,29 +92,43 @@ public class FileDownloadControler {
 		SFTPClient sftpClient = sshClient.newSFTPClient();
 		String localFolder = "src/main/resources/";
 		String remoteFile = "/pub/TextFile.txt";
-		System.out.println("***********************************************************************************************************");
 		sftpClient.get(remoteFile, localFolder + "TextFile.txt");
-		System.out.println("*************!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!**********************");
 
 		sftpClient.close();
 		sshClient.disconnect();
 	}
 
-	//@RequestMapping(value = "/file/http", method = RequestMethod.POST)
+
 	@PostMapping(value = "/file/http")
 	public ResponseEntity<String> reportHttp(HttpServletRequest request) throws IOException, ServletException {
-		System.out.println("TU SAMMMMMMMMMMMMMMM");
+		FileWriter writer;
+		System.out.println("22222221435768743247");
 		Part filepart = request.getPart("file");
 		String fileName = filepart.getSubmittedFileName();
 		InputStream fileContent = filepart.getInputStream();
-		FileWriter writer = new FileWriter("src/main/resources/htpp.txt");
+		File f = new File("src/main/resources/FileReports/" + fileName);
+		if(f.exists() && !f.isDirectory()) {
+			Random rand = new Random();
+			int n = rand.nextInt(1000);
+			String []fileParts = fileName.split("\\.");
+			String newName = fileParts[0] + "_" +n +".txt";
+			writer= new FileWriter("src/main/resources/FileReports/" + newName);
+		}
+		else {
+			writer = new FileWriter("src/main/resources/FileReports/" + fileName);
+
+		}
 		BufferedReader reader = new BufferedReader(new InputStreamReader(fileContent));
 		String line = null;
+
 		while ((line = reader.readLine()) != null) {
+			System.out.println(line);
 			writer.write(line + "\n");
 		}
 		writer.flush();
 		writer.close();
 		return ResponseEntity.ok().build();
 	}
+
+
 }
