@@ -82,7 +82,7 @@ public class FileDownloadControler {
 	private SSHClient setupSshj() throws IOException {
 		SSHClient client = new SSHClient();
 		client.addHostKeyVerifier(new PromiscuousVerifier());
-		client.connect("192.168.56.1", 22);
+		client.connect("192.168.1.244", 22);
 		client.authPassword("tester", "password");
 		return client;
 	}
@@ -130,5 +130,36 @@ public class FileDownloadControler {
 		return ResponseEntity.ok().build();
 	}
 
+
+	@PostMapping(value = "/prescription/http")
+	public ResponseEntity<String> prescriptionHttp(HttpServletRequest request) throws IOException, ServletException {
+		FileWriter writer;
+		System.out.println("22222221435768743247");
+		Part filepart = request.getPart("file");
+		String fileName = filepart.getSubmittedFileName();
+		InputStream fileContent = filepart.getInputStream();
+		File f = new File("src/main/resources/FilePrescriptions/" + fileName);
+		if(f.exists() && !f.isDirectory()) {
+			Random rand = new Random();
+			int n = rand.nextInt(1000);
+			String []fileParts = fileName.split("\\.");
+			String newName = fileParts[0] + "_" +n +".txt";
+			writer= new FileWriter("src/main/resources/FilePrescriptions/" + newName);
+		}
+		else {
+			writer = new FileWriter("src/main/resources/FilePrescriptions/" + fileName);
+
+		}
+		BufferedReader reader = new BufferedReader(new InputStreamReader(fileContent));
+		String line = null;
+
+		while ((line = reader.readLine()) != null) {
+			System.out.println(line);
+			writer.write(line + "\n");
+		}
+		writer.flush();
+		writer.close();
+		return ResponseEntity.ok().build();
+	}
 
 }

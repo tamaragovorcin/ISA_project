@@ -1,0 +1,7 @@
+          Precription for medicine
+
+Patients name: Maja
+Patients surname: Majic
+Patients medical ID number: kkaa11
+Medication:      Quantity: 4
+Usage: aak

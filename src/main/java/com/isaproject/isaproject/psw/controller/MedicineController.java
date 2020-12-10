@@ -4,6 +4,7 @@ package com.isaproject.isaproject.psw.controller;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -58,17 +59,22 @@ public class MedicineController {
 		 	return "";
 	    }
 	 @RequestMapping(value = "/medicineRequested", method = RequestMethod.GET)
-	    public ResponseEntity<?> getMedicines() {
-	        ResponseEntity<?> result;
+	    public List<String> getMedicines() {
+
+     	System.out.println("POGODIO");
+		 List<String> medName = new ArrayList<String>();
 	        try {
 	            List<Medicine> dtoList = service.getAll();
-	            result = dtoList == null ?
-	                    ResponseEntity.badRequest().body("Bad request!") : new ResponseEntity<>(dtoList, HttpStatus.OK);
+	           
+	            for (Medicine medicine : dtoList) {
+					medName.add(medicine.getName());
+					System.out.println(medicine.getName());
+				}
 	        } catch (Exception e) {
 	            e.printStackTrace();
-	            result = ResponseEntity.badRequest().body("Bad request!");
+	            
 	        }
-	        return result;
+	        return medName;
 	    }
 
 	public MultiValueMap<String, HttpEntity<?>> fromFile(File file) {
