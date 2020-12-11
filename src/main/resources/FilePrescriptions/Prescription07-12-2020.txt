@@ -1,0 +1,7 @@
+          Precription for medicine
+
+Patients name: Mladenka
+Patients surname: Kokanovic
+Patients medical ID number: 
+Medication: Brufen     Quantity: 2
+Usage: Every 6 hours
