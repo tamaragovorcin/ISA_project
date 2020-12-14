@@ -12,3 +12,5 @@ INSERT INTO medicines(id,"name", description, unwantedReactions) VALUES(1,'Pance
 INSERT INTO medicines(id,"name", description, unwantedReactions) VALUES(2,'Defrinol','Defrinol is used to treat certain types of bacterial infections.', 'Peeling or blistering skin, rash, hives, itching..');
 INSERT INTO medicines(id,"name", description, unwantedReactions) VALUES(3,'Brufen','Brufen is used to reduce fever and relieve mild to moderate pain.', 'No unwanted reactions');
 INSERT INTO medicines(id,"name", description, unwantedReactions) VALUES(4,'Paracetamol','Paracetamol is a nonsteroidal anti-inflammatory drug (NSAID) used to treat mild-to-moderate pain, and helps to relieve symptoms of arthritis.', 'No unwanted reactions');
+
+

@@ -51,8 +51,6 @@ public class FileDownloadControler {
 	@ResponseBody
 	public String getFileReport(@PathVariable String api) throws IOException {
 		whenDownloadFileUsingSshj_thenSuccess();
-
-		System.out.println("22222221435768743247");
 		BufferedReader brTest = new BufferedReader(new FileReader("src/main/resources/TextFile.txt"));
 		String text = brTest.readLine();
 		String text_parts[] = text.split("!");
