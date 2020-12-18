@@ -49,36 +49,7 @@ public class MedicineController {
     {
     	return service.getAll();
     }
-	 @GetMapping("/medicine/description/{medicine}")
-		String getMedicineDescription(@PathVariable String medicine)
-	    {
-		 	List<Medicine> medicines= service.getAll();
-		 	for (Medicine medicine2 : medicines) {
-				if(medicine2.getName().equals(medicine)) {
-					return medicine2.getDescription();
-				}
-			}
-		 	return "";
-	    }/*
-	 @RequestMapping(value = "/medicineRequested", method = RequestMethod.GET)
-	    public List<String> getMedicines() {
 
-     	System.out.println("POGODIO");
-		 List<String> medName = new ArrayList<String>();
-	        try {
-	            List<Medicine> dtoList = service.getAll();
-	           
-	            for (Medicine medicine : dtoList) {
-					medName.add(medicine.getName());
-					System.out.println(medicine.getName());
-				}
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            
-	        }
-	        return medName;
-	    }
-*/
 	@RequestMapping(value = "/medicineRequested", method = RequestMethod.GET)
 	public List<MedicineName> getMedicines() {
 
@@ -104,7 +75,7 @@ public class MedicineController {
 		}
 		return "";
 	}
-	@RequestMapping(value = "/upload/medicine/{medicine}", method = RequestMethod.GET)
+	@RequestMapping(value = "/description/medicine/{medicine}", method = RequestMethod.GET)
 	public ResponseEntity<?> reportHttpMedicine(@PathVariable String medicine) throws IOException, ServletException {
 		String fileName = medicine + ".txt";
 		FileWriter writer;
