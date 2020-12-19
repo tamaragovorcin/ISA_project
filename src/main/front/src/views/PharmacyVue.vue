@@ -1,20 +1,40 @@
 <template>
-<div style="background-image: url(https://previews.123rf.com/images/mongstock/mongstock1712/mongstock171200069/91420426-colorful-medicine-pharmacy-on-pink-background-.jpg);background-repeat: no-repeat;
-  background-size: 125% 80%;  height: 800px">
- <div class="container">
-  <div class="row">
-    <div class="col text-dark">
-        <h4 class="p-3 mb-2 text-danger" >Choose your pharmacy</h4>
+  <div style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+    background-size: 125% 80%;  height: 800px">
+
+        
+      <h3 style="color: #0D184F; font-size: 35px;font-weight:bold">Choose pharmacy</h3>
+
+          <div style="background: #0D184F; height: 3cm;">
+            
+
+            <nav class="navbar navbarB" style="margin-top:250px">
+                <div class="container-fluid">
+                  <div v-for="ph in listaPharmacys"   v-bind:key="ph">
+                      <ul class="nav navbar-nav">
+                        <li>  <router-link :to="{ path: '/concretePharmacy/'+ph.apiKey}" v-slot="{href, navigate}">
+                                    <button class = "button1" :href="href" @click="navigate"  elevation="1">{{ph.name}}</button>
+                              </router-link>
+                        </li>
+                        <li class="divider-vertical"></li>
+
+
+
+                      </ul>
+                  </div>
+                  
+
+
+                </div>
+            </nav>
+
+                  
+          </div>
+    
+
     </div>
-    <div class="col text-dark"  v-for="ph in listaPharmacys" v-bind:key="ph"> 
-              <router-link :to="{ path: '/concretePharmacy/'+ph.apiKey}" v-slot="{href, navigate}">
-                <button class = "btn btn-danger" :href="href" @click="navigate"  elevation="1">{{ph.name}}</button>
-               
-              </router-link>
-      </div>
-     </div>
-  </div>
-  </div>
+
+
 </template>
 
 <script>
@@ -22,6 +42,13 @@ export default {
   data() {
     return {
        listaPharmacys: [],
+       pharmacy: {
+         name : "",
+         town : "",
+         apiKey: ""
+
+       }
+
     }
   },
 
@@ -29,14 +56,20 @@ beforeMount() {
       this.axios.get('/pharmacy')
       .then(response => {
             this.listaPharmacys= response.data;
+
       })
+
 },
      
 methods:{
   showPharmacy : function(event, p){
     this.pharmacy = p;
   }
+
 }
+
+
+
 
 }
 </script>
@@ -53,18 +86,50 @@ methods:{
     color: #fff;
   }
  
-  #header {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    height: 100vh;
-    background: none;
-    background-color: #87CEEB;
-    
-  }  
+ .klasa{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+ }
   #header-desc {
     font-size: 1.5rem;
     color: #fff;
   }
+  #paragraph{
+    height: 10vh;
+  }
   
+  .button {
+        background-color: #0D184F;
+        border: double;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 25px;
+        margin: 4px 2px;
+        cursor: pointer;
+        color : white;
+    }
+  .button1 {
+        background: #939393;
+        color: #ffffff;
+        border: 8px;
+        border-radius: 10%;
+        font-size: 18px;
+        height: 1.5cm;
+        width: 150px;
+        font: bold;}
+  
+    
+</style>
+
+<style>
+  .tab {
+          margin-left: 2cm
+          }
 </style>
