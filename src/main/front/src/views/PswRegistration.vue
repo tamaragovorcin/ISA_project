@@ -2,35 +2,65 @@
 <div style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
   background-size: 125% 80%;  height: 800px">
 
-    <div style="background: #D8D8DC; height: 3cm;">
+    <div style="background: #D8D8DC; height: 3cm;"></div>
 	    
      <h3 style="color: #0D184F; font-size: 35px;font-weight:bold">Choose pharmacy</h3>
 
     <div style="background: #0D184F; height: 3cm;">
 	    
-		     <nav class="navbar navbarB" >
-		      <div class="container-fluid">
 
-			        <ul class="nav navbar-nav">
-                <div v-for="ph in listaPharmacys"   v-bind:key="ph">
-				        <li> <p v-on:click="showPharmacy($event, ph)"> {{ph.name}} </p></li>
-				        <li class="divider-vertical"></li>
+      <nav class="navbar navbarB" >
+        <div class="container-fluid">
+          <div v-for="ph in listaPharmacys"   v-bind:key="ph">
+          <ul class="nav navbar-nav">
+            <li> <p style="color: #DED7D7;  margin-top: 0.7cm; font-size: 30px;" v-on:click="showPharmacy($event, ph)"> {{ph.name}} </p> </li>
+            <li class="divider-vertical"></li>
 
-		        	</ul>
 
-		      </div>
-	        </nav>
-		
+
+          </ul>
+          </div>
+          
+
+
+        </div>
+	    </nav>
+
+            
     </div>
+    <div style=" height: 2cm;"></div>
 
-    <div>
-      <form>
+    <div v-if = "showTable">
 
-        	<div class="form-group">
-   						<label><span>Pharmacy's name: </span></label>
-               <label><span>{{pharmacy.name}} </span></label>
+      <table style=" border-radius: 5%; border:1;  align: center; width: 15cm; background: #FFFFFF; margin: 0;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
+          <th style="width: 7cm">
+              	<div class="form-group">
+   						<label style="font-size: 35px; font-weight:bold"><span>Pharmacy's name</span></label>
  					</div>
-      </form>
+           </th>
+           <th style="width: 7cm">
+              	<div class="form-group">
+   						<label style="font-size: 35px; font-weight:bold"><span>City</span></label>
+ 					</div>
+           </th >
+           <th style="width: 7cm">
+              	<div class="form-group">
+   						<label style="font-size: 35px; font-weight:bold"><span>Api key</span></label>
+ 					</div>
+           </th>
+
+
+
+        	<tr><td><div class="form-group">
+               <label style="font-size: 30px"><span>{{pharmacy.name}} </span></label>
+ 					</div></td>
+           <td><div class="form-group">
+               <label style="font-size: 30px"><span>{{pharmacy.town}} </span></label>
+ 					</div></td>
+           <td><div class="form-group">
+               <label style="font-size: 30px"><span>{{pharmacy.apiKey}} </span></label>
+ 					</div></td></tr>
+      </table>
 
 
 
@@ -45,10 +75,12 @@ export default {
   data() {
     return {
        listaPharmacys: [],
+       showTable: false,
        pharmacy: {
          name : "",
          town : "",
          apiKey: ""
+
 
        }
 
@@ -66,6 +98,7 @@ beforeMount() {
      
 methods:{
   showPharmacy : function(event, p){
+    this.showTable = true;
     this.pharmacy = p;
   }
 
@@ -98,4 +131,11 @@ methods:{
     height: 10vh;
   }
   
+    
+</style>
+
+<style>
+  .tab {
+          margin-left: 2cm
+          }
 </style>
