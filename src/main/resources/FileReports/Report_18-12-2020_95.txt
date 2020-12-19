@@ -1,4 +1,4 @@
-api1;api10;!    Report about consumption of medicine
+api1;!    Report about consumption of medicine
 
 
 

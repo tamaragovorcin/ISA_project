@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.servlet.ServletException;
@@ -41,16 +42,23 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class FileDownloadControler {
 	private IPharmacyService service;
 	private WebClient.Builder webClientBuilder;
-	@GetMapping("/file")
+
+	@GetMapping("/file/report")
 	@ResponseBody
 	public void getFile() throws IOException {
-		whenDownloadFileUsingSshj_thenSuccess();
+		whenDownloadFileUsingSshj_thenSuccessReport();
+	}
+
+	@GetMapping("/file/prescription")
+	@ResponseBody
+	public void getFilePrescription() throws IOException {
+		whenDownloadFileUsingSshj_thenSuccessPrescription();
 	}
 
 	@GetMapping("/file/report/{api}")
 	@ResponseBody
 	public String getFileReport(@PathVariable String api) throws IOException {
-		whenDownloadFileUsingSshj_thenSuccess();
+		whenDownloadFileUsingSshj_thenSuccessReport();
 		BufferedReader brTest = new BufferedReader(new FileReader("src/main/resources/TextFile.txt"));
 		String text = brTest.readLine();
 		String text_parts[] = text.split("!");
@@ -80,22 +88,59 @@ public class FileDownloadControler {
 	private SSHClient setupSshj() throws IOException {
 		SSHClient client = new SSHClient();
 		client.addHostKeyVerifier(new PromiscuousVerifier());
-		client.connect("192.168.1.244", 22);
+		client.connect("192.168.56.1", 22);
 		client.authPassword("tester", "password");
 		return client;
 	}
 
-	public void whenDownloadFileUsingSshj_thenSuccess() throws IOException {
+	public void whenDownloadFileUsingSshj_thenSuccessReport() throws IOException {
 		SSHClient sshClient = setupSshj();
 		SFTPClient sftpClient = sshClient.newSFTPClient();
-		String localFolder = "src/main/resources/";
-		String remoteFile = "/pub/TextFile.txt";
-		sftpClient.get(remoteFile, localFolder + "TextFile.txt");
-
+		String localFolder = "src/main/resources/FileReport/";
+		//String remoteDir = "/pub/";
+		final  File remoteDir = new File("C:/Users/Tamara/Desktop/REBEX/data/pub/");
+		FileWriter writer;
+		String []contents = remoteDir.list();
+		for(String fn : contents) {
+			File localFile = new File("src/main/resources/FileReports/" + fn);
+			if(fn.startsWith("Report")) {
+				if (!localFile.exists()) {
+					String remoteFileString = "/pub/" + fn;
+					writer = new FileWriter("src/main/resources/FileReports/" + fn);
+					writer.write("");
+					writer.flush();
+					writer.close();
+					sftpClient.get(remoteFileString, "src/main/resources/FileReports/" + fn);
+				}
+			}
+		}
 		sftpClient.close();
 		sshClient.disconnect();
 	}
-
+	public void whenDownloadFileUsingSshj_thenSuccessPrescription() throws IOException {
+		SSHClient sshClient = setupSshj();
+		SFTPClient sftpClient = sshClient.newSFTPClient();
+		String localFolder = "src/main/resources/FilePrescriptions/";
+		//String remoteDir = "/pub/";
+		final  File remoteDir = new File("C:/Users/Tamara/Desktop/REBEX/data/pub/");
+		FileWriter writer;
+		String []contents = remoteDir.list();
+		for(String fn : contents) {
+			File localFile = new File("src/main/resources/FilePrescriptions/" + fn);
+			if(fn.startsWith("Pre")) {
+				if (!localFile.exists()) {
+					String remoteFileString = "/pub/" + fn;
+					writer = new FileWriter("src/main/resources/FilePrescriptions/" + fn);
+					writer.write("");
+					writer.flush();
+					writer.close();
+					sftpClient.get(remoteFileString, "src/main/resources/FilePrescriptions/" + fn);
+				}
+			}
+		}
+		sftpClient.close();
+		sshClient.disconnect();
+	}
 
 	@PostMapping(value = "/file/http")
 	public ResponseEntity<String> reportHttp(HttpServletRequest request) throws IOException, ServletException {
