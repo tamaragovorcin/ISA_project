@@ -3,15 +3,15 @@ spring:
     active: development
   # Database
   datasource:
-    driver-class-name: org.postgresql.Driver #
-    url: jdbc:postgresql://localhost:5432/postgres #${JDBC_DATABASE_URL}  
+    driver-class-name: org.postgresql.Driver 
+    url:  jdbc:postgresql://localhost:5432/postgres #${JDBC_DATABASE_URL}  
     username: postgres #${JDBC_DATABASE_USERNAME} 
     password: root #${JDBC_DATABASE_PASSWORD} 
     initialization-mode: always
   # JPA properties
   jpa:
     hibernate:
-      ddl-auto: none #create-drop # When you launch the apzsqlplication for the first time - switch "none" at "create"
+      ddl-auto: none #create-drop When you launch the apzsqlplication for the first time - switch "none" at "create"
     show-sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect

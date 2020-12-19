@@ -1,4 +1,4 @@
-package com.isaproject.isaproject.psw;
+package com.isaproject.isaproject.psw.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
