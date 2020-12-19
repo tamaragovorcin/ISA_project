@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Home1 from '../views/Home1.vue'
 import PswRegistration from '../views/PswRegistration.vue'
 import PharmacyVue from '../views/PharmacyVue.vue'
 import ConcretePharmacy from '../views/ConcretePharmacy.vue'
@@ -17,8 +17,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Home1',
+    component: Home1
   },
   {
     path: '/pswregistration',

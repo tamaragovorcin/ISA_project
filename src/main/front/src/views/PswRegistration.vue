@@ -1,34 +1,42 @@
 <template>
-<div style="background-image: url(https://previews.123rf.com/images/mongstock/mongstock1712/mongstock171200069/91420426-colorful-medicine-pharmacy-on-pink-background-.jpg);background-repeat: no-repeat;
+<div style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
   background-size: 125% 80%;  height: 800px">
-    <div class = "container w-25 p-3 text-danger">
-        <div>
-            <h3 style="font-size: 35px;font-weight:bold">Choose pharmacy</h3>
-        </div>
-        <div class="container w-100 mb-3">
 
-            <div class="row d-flex flex-row">
-                
-                <div class="col-md-6">
-                    <div v-for="ph in listaPharmacys"   v-bind:key="ph"> 
-            
-                    <p v-on:click="showPharmacy($event, ph)"> {{ph.name}} </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6 col-md-4">
-                   <label style = "font-family: Arial">Name:    {{pharmacy.name}} </label>
-                </div>
-                <div class="col-6 col-md-4">
-                    <label>Town:   {{pharmacy.town}} </label>
-                </div>
-                <div class="col-md-4">
-                     <label>Api key:  {{pharmacy.apiKey}} </label>
-                </div>
-            </div>
-        </div>
+    <div style="background: #D8D8DC; height: 3cm;">
+	    
+     <h3 style="color: #0D184F; font-size: 35px;font-weight:bold">Choose pharmacy</h3>
+
+    <div style="background: #0D184F; height: 3cm;">
+	    
+		     <nav class="navbar navbarB" >
+		      <div class="container-fluid">
+
+			        <ul class="nav navbar-nav">
+                <div v-for="ph in listaPharmacys"   v-bind:key="ph">
+				        <li> <p v-on:click="showPharmacy($event, ph)"> {{ph.name}} </p></li>
+				        <li class="divider-vertical"></li>
+
+		        	</ul>
+
+		      </div>
+	        </nav>
+		
     </div>
-</div>
+
+    <div>
+      <form>
+
+        	<div class="form-group">
+   						<label><span>Pharmacy's name: </span></label>
+               <label><span>{{pharmacy.name}} </span></label>
+ 					</div>
+      </form>
+
+
+
+    </div>
+
+
 </div>
 </template>
 
