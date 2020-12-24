@@ -34,7 +34,16 @@ public class MedicinesPharamcyService implements IMedicinesPharmacyService{
 
     @Override
     public boolean update(MedicineInPharmacy medicine) {
-        return false;
+        try{
+
+            //
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+
+
     }
 
     @Override

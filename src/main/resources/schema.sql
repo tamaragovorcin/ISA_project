@@ -10,3 +10,7 @@ CREATE TABLE medicines(id SERIAL PRIMARY KEY, "name" VARCHAR(255), description V
 
 DROP TABLE IF EXISTS medicinesPharmacy;
 CREATE TABLE medicinesPharmacy(id SERIAL PRIMARY KEY, pharmacyApi VARCHAR(255), medicineName VARCHAR(255), quantity INT);
+
+
+DROP TABLE IF EXISTS urgentOrders;
+CREATE TABLE urgentOrders(id SERIAL PRIMARY KEY, "name" VARCHAR(255), quantity INT, pharmacyApi VARCHAR(255),dateOrder VARCHAR(255) );
