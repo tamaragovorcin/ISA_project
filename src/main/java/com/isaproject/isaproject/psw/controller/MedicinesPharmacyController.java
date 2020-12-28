@@ -33,12 +33,7 @@ public class MedicinesPharmacyController {
     @ResponseBody
     public List<MedicineInPharmacy> getAllPharmacies()
     {
-        return service.getAll();
-    }
-
-    public List<PharmacyName> getAllPharmaciesForMedicine(String medicine, int quantity)
-    {
-       /* seem.out.println(medicine);rvice.add(new MedicineInPharmacy(1,"api1","Pancef",2));
+   /*     service.add(new MedicineInPharmacy(1,"api1","Pancef",2));
         service.add(new MedicineInPharmacy(2,"api2","Pancef",20));
         service.add(new MedicineInPharmacy(3,"api3","Pancef",5));
         service.add(new MedicineInPharmacy(4,"api4","Pancef",100));
@@ -47,7 +42,14 @@ public class MedicinesPharmacyController {
         service.add(new MedicineInPharmacy(7,"api3","Defrinol",100));
         service.add(new MedicineInPharmacy(8,"api4","Defrinol",20));
         service.add(new MedicineInPharmacy(9,"api1","Brufen",5));
-        */
+*/
+
+        return service.getAll();
+    }
+
+    public List<PharmacyName> getAllPharmaciesForMedicine(String medicine, int quantity)
+    {
+
 
         System.out.println(service.getAll().size());
         for (MedicineInPharmacy medicine1 : service.getAll()) {  System.out.println("************");}

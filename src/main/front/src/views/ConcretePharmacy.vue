@@ -3,38 +3,54 @@
     background-size: 125% 80%;  height: 800px">
 
       <ul>
-        <li><a style="color:white; font-weignt:bold;text-decoration: underline;font-size:22px" v-on:click="showReportForm">Get report about medicine consumtion</a></li>
-        <li><a style="color:white; font-weignt:bold;text-decoration: underline;font-size:22px" v-on:click="showFormForActionsAndBenefits">Share actions and benefits with hospital</a></li>
+         <li><a style="color:white; font-weight:bold;text-decoration: underline;font-size:22px" v-on:click="showReportForm">Get report about medicine consumtion</a></li>
+         <li><a style="color:white; font-weight:bold;text-decoration: underline;font-size:22px" v-on:click="showFormForActionsAndBenefits">Share actions and benefits with hospital</a></li>
+          <li><a style="color:white; font-weight:bold;text-decoration: underline;font-size:22px" v-on:click="showUrgentOrders">Urgent orders</a></li>
       </ul>
 
        <div>
-         <h1 style="color: #0D184F; font-size: 35px;font-weight:bold;horizol;margin:auto;width:50%;padding:10px">{{p.name}}</h1>
+          <h1 style="color: #0D184F; font-size: 35px;font-weight:bold;margin:auto;width:50%;padding:10px">{{p.name}}</h1>
       </div>
 
       <div v-if="showForm">
-
-          <form>
             <h3>Describe your offer and send it to hospital </h3>
             <label for="fname">Describe action or benefit for hospital:</label>
             <input type="text" id="fname"  name="benefitText" v-model="benefitText" placeholder="New action or benefit..">
-
             <label for="lname">Expiring date:</label>
-           <input type="text" id="benefitDate" name="benefitDate" v-model="benefitDate" placeholder="day/month/year">
-          
-          <button class = "button" v-on:click="send">Send</button>
-          </form>
-  
+            <input type="text" id="benefitDate" name="benefitDate" v-model="benefitDate" placeholder="day/month/year">
+            <button class = "button" v-on:click="send">Send</button>
       </div>
+ <div v-if="showOrders">
+
+
+  <table style=" border-radius: 5%; border:1;  align: center; width: 25cm; background: #FFFFFF; margin: 0;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
+          <th style="width: 40px">
+                <div class="form-group"><label style="font-size: 30px; font-weight:bold"><span>Medicine name</span></label></div>
+          </th>
+          <th style="width: 40px">
+                <div class="form-group"><label style="font-size: 30px; font-weight:bold"><span>Quantity</span></label></div>
+          </th >
+          <th style="width: 40px">
+                <div class="form-group"><label style="font-size: 30px; font-weight:bold"><span>Date of order</span></label></div>
+          </th>
+
+             <tr v-for="order in orders" :key="order.id">
+                    <td><div class="form-group w-75"> <label style="font-size: 20px"><span>{{order.name}}</span></label></div> </td>
+                    <td><div class="form-group w-75"> <label style="font-size: 20px"><span>{{order.quantity}}</span></label></div> </td>
+                    <td><div class="form-group w-75"> <label style="font-size: 20px"><span>{{order.dateOrder}}</span></label></div> </td>
+             </tr>
+
+ </table>
+  </div>
   <div  v-if="showReport">
       <div>
            <h3>Report about medicine consumption in hospital </h3>
            <button class = "button2" v-on:click="getReport">Get report</button>
-      <div style="background:white;display: flex;justify-content: center;align-items: center;height: 200px;color: #0D184F;
-  border: 3px solid black;">     
-          {{report}}
-      </div>
-      </div>
-      </div>
+          <div style="background:white;display: flex;justify-content: center;align-items: center;height: 200px;color: #0D184F;border: 3px solid black;">
+              {{report}}
+          </div>
+     </div>
+  </div>
 
      
 
@@ -53,25 +69,33 @@ export default {
          name : "",
          town : "",
          apiKey: ""
-
-       },
+         },
         report : "",
         benefitText: "",
         benefitDate : "",
         unique: false,
         notUnique: false,
         showForm : false,
-        showReport : false
+        showReport : false,
+        showOrders : false,
+        orders: [],
     }
   },
 
-beforeMount() {
+mounted() {
       this.axios.get('/pharmacy/'+this.id)
-      .then(response => {
-            this.p= response.data;
-
-      })
-
+          .then(response => {
+                this.p= response.data;
+          });
+      this.axios.get('/order/'+this.id)
+                .then(response => {
+                      this.orders= response.data;
+                      console.log(response.data)
+                }).
+                catch(res => {
+                       alert("NOT OK");
+                        console.log(res);
+                 });
 },
      
 methods:{
@@ -106,11 +130,18 @@ methods:{
             },
   showFormForActionsAndBenefits: function(){
       this.showForm = true;
-       this.showReport = false;
+      this.showReport = false;
+      this.showOrders = false;
   },
   showReportForm :function(){
-    this.showReport = true;
-    this.showForm = false;
+        this.showReport = true;
+        this.showForm = false;
+        this.showOrders = false;
+  },
+  showUrgentOrders :  function(){
+      this.showOrders = true;
+      this.showForm = false;
+      this.showReport = false;
   }
 
 }
