@@ -5,7 +5,9 @@
       <ul>
          <li><a style="color:white; font-weight:bold;text-decoration: underline;font-size:22px" v-on:click="showReportForm">Get report about medicine consumtion</a></li>
          <li><a style="color:white; font-weight:bold;text-decoration: underline;font-size:22px" v-on:click="showFormForActionsAndBenefits">Share actions and benefits with hospital</a></li>
-          <li><a style="color:white; font-weight:bold;text-decoration: underline;font-size:22px" v-on:click="showUrgentOrders">Urgent orders</a></li>
+         <li><a style="color:white; font-weight:bold;text-decoration: underline;font-size:22px" v-on:click="showUrgentOrders">Urgent orders</a></li>
+         <li><a style="color:white; font-weight:bold;text-decoration: underline;font-size:22px" v-on:click="showActiveTenders">Tenders</a></li>
+
       </ul>
 
        <div>
@@ -20,28 +22,29 @@
             <input type="text" id="benefitDate" name="benefitDate" v-model="benefitDate" placeholder="day/month/year">
             <button class = "button" v-on:click="send">Send</button>
       </div>
- <div v-if="showOrders">
 
+     <div v-if="showOrders">
 
-  <table style=" border-radius: 5%; border:1;  align: center; width: 25cm; background: #FFFFFF; margin: 0;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
-          <th style="width: 40px">
-                <div class="form-group"><label style="font-size: 30px; font-weight:bold"><span>Medicine name</span></label></div>
-          </th>
-          <th style="width: 40px">
-                <div class="form-group"><label style="font-size: 30px; font-weight:bold"><span>Quantity</span></label></div>
-          </th >
-          <th style="width: 40px">
-                <div class="form-group"><label style="font-size: 30px; font-weight:bold"><span>Date of order</span></label></div>
-          </th>
+          <table style=" border-radius: 5%; border:1;  align: center; width: 25cm; background: #FFFFFF; margin: 0;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
+                  <th style="width: 40px">
+                        <div class="form-group"><label style="font-size: 30px; font-weight:bold"><span>Medicine name</span></label></div>
+                  </th>
+                  <th style="width: 40px">
+                        <div class="form-group"><label style="font-size: 30px; font-weight:bold"><span>Quantity</span></label></div>
+                  </th >
+                  <th style="width: 40px">
+                        <div class="form-group"><label style="font-size: 30px; font-weight:bold"><span>Date of order</span></label></div>
+                  </th>
 
-             <tr v-for="order in orders" :key="order.id">
-                    <td><div class="form-group w-75"> <label style="font-size: 20px"><span>{{order.name}}</span></label></div> </td>
-                    <td><div class="form-group w-75"> <label style="font-size: 20px"><span>{{order.quantity}}</span></label></div> </td>
-                    <td><div class="form-group w-75"> <label style="font-size: 20px"><span>{{order.dateOrder}}</span></label></div> </td>
-             </tr>
+                     <tr v-for="order in orders" :key="order.id">
+                            <td><div class="form-group w-75"> <label style="font-size: 20px"><span>{{order.name}}</span></label></div> </td>
+                            <td><div class="form-group w-75"> <label style="font-size: 20px"><span>{{order.quantity}}</span></label></div> </td>
+                            <td><div class="form-group w-75"> <label style="font-size: 20px"><span>{{order.dateOrder}}</span></label></div> </td>
+                     </tr>
 
- </table>
-  </div>
+         </table>
+      </div>
+
   <div  v-if="showReport">
       <div>
            <h3>Report about medicine consumption in hospital </h3>
@@ -52,10 +55,45 @@
      </div>
   </div>
 
-     
+  <div v-if="showTenders">
+        <table style=" border-radius: 5%; border:1;  align: center; width: 25cm; background: #FFFFFF; margin: 0;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
+
+              <tr v-for="tender in activeTenders" :key="tender.id">
+                    <td><div class="form-group w-75"><button v-on:click="showTender($event, tender.id)">Tender {{tender.id}}</button></div></td>
+              </tr>
+              <tr></tr>
+              <tr></tr>
+              <tr>Tender {{this.choosenTender.id}}</tr>
+
+              <tr>
+                   <td><div class="form-group w-75"> <label style="font-size: 20px"><span>Tender is open until:</span></label></div> </td>
+                   <td><div class="form-group w-75"> <label style="font-size: 20px"><span>{{this.choosenTender.date}}</span></label></div> </td>
+                   <td><div class="form-group w-75"> <label style="font-size: 20px"><span></span></label></div> </td>
+              </tr>
+               <tr>Requested medicines</tr>
+               <tr v-for="medicine in choosenTender.medicineQuantityList" :key="medicine.name">
+                     <td><div class="form-group w-75"> <label style="font-size: 20px"><span>{{medicine.name}}</span></label></div> </td>
+                     <td><div class="form-group w-75"> <label style="font-size: 20px"><span>{{medicine.quantity}}</span></label></div> </td>
+                     <td><div class="form-group w-75"><input type="text" v-model="medicine.availableQunatity" ></div> </td>
+               </tr>
+               <tr>
+                  <td><div class="form-group w-75"> <label style="font-size: 20px"><span>Price offer</span></label></div> </td>
+                  <td><div class="form-group w-75"><input type="text" id="priceOffer" name="priceOffer"  v-model="choosenTender.priceOffer" placeholder="Price.."></div> </td>
+                  <td><div class="form-group w-75"> <label style="font-size: 20px"><span></span></label></div> </td>
+               </tr>
+               <tr>
+                  <td><div class="form-group w-75"> <label style="font-size: 20px"><span><button v-on:click="sendOfferTender()">Send offer</button></span></label></div> </td>
+               </tr>
+               <tr>
+                   <label v-if="sentOffer" style="color:blue;font-size:25px;">Successfully sent offer!</label>
+                   <label v-if="notSentOffer" style="color:red;font-size:25px;">Error occurred!</label>
+               </tr>
+         </table>
+  </div>
 
 
-    </div>
+
+</div>
 
 
 </template>
@@ -79,6 +117,18 @@ export default {
         showReport : false,
         showOrders : false,
         orders: [],
+        showTenders: false,
+        activeTenders:[],
+        showConcreteTender:false,
+        sentOffer:false,
+        notSentOffer:false,
+        choosenTender:{
+                 id : "",
+                 date : "",
+                 medicineQuantityList: [],
+                 priceOffer : "",
+                 pharmacyApi : ""
+                 }
     }
   },
 
@@ -96,6 +146,10 @@ mounted() {
                        alert("NOT OK");
                         console.log(res);
                  });
+      this.axios.get('/tender/active')
+                .then(response => {
+                      this.activeTenders= response.data;
+                });
 },
      
 methods:{
@@ -127,22 +181,63 @@ methods:{
                         this.unique = false;
                         console.log(res);
                     })
-            },
+  },
+  showTender: function (event,tenderId) {
+       this.showConcreteTender=true;
+       this.axios.get('/tender/'+tenderId)
+                 .then(res => {
+                   this.choosenTender = res.data;
+                   this.choosenTender.pharmacyApi=this.id;
+                 })
+                 .catch(res => {
+                   console.log(res);
+                 })
+  },
+  sendOfferTender: function () {
+     this.showConcreteTender=true;
+            this.axios.post('/tender/sendOffer',this.choosenTender)
+                      .then(res => {
+                        this.sentOffer=true;
+                        this.notSentOffer=false;
+                        console.log(res);
+                      })
+                      .catch(res => {
+                        this.notSentOffer=true;
+                        this.sentOffer=false;
+                        console.log(res);
+                      })
+  },
   showFormForActionsAndBenefits: function(){
       this.showForm = true;
       this.showReport = false;
       this.showOrders = false;
+      this.showTenders =false;
+      this.showConcreteTender=false;
   },
   showReportForm :function(){
         this.showReport = true;
         this.showForm = false;
         this.showOrders = false;
+        this.showTenders =false;
+        this.showConcreteTender=false;
+
   },
   showUrgentOrders :  function(){
       this.showOrders = true;
       this.showForm = false;
       this.showReport = false;
-  }
+      this.showTenders =false;
+      this.showConcreteTender=false;
+
+  },
+  showActiveTenders :  function(){
+        this.showOrders = false;
+        this.showForm = false;
+        this.showReport = false;
+        this.showTenders =true;
+        this.showConcreteTender=false;
+
+    }
 
 }
 
