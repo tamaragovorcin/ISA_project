@@ -3,7 +3,7 @@
 
 <template>
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
-     background-size: 175% 100%;  height: 1000px">
+     background-size: 175% 100%;  height: 1500px">
 
         <div style=" height: 6.5cm;"/>
 
@@ -23,7 +23,9 @@
                     <button class = "button1" :href="href" @click="navigate"  elevation="1">Pharmacy</button>
 
                     </router-link>
+                    <button style="margin-left:15px" class="button1" v-on:click="prikazi">Prikazi</button>
             </span>
+                                    
 
         </div>
 
@@ -37,8 +39,23 @@ export default {
   data() {
     return {
     }
-  }
+  },
 
+  methods:{
+  prikazi : function(){
+     this.axios.get('/probni')
+                .then(response => {
+                   alert("PROBNI");
+                   console.log(response);
+                })
+                .catch(response => {
+                       alert("Nije prosao probni");
+                        console.log(response);
+                 });
+  }
+  
+
+}
 }
 </script>
 

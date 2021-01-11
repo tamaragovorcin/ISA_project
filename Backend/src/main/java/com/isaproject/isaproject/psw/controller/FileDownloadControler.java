@@ -64,7 +64,7 @@ public class FileDownloadControler {
 
 	@GetMapping("/download/file/report/{api}")
 	@ResponseBody
-	ResponseEntity<String> getFileReport(@PathVariable String api) throws IOException {
+	public String getFileReport(@PathVariable String api) throws IOException {
 		System.out.println("Pogodio metodu za report");
 		whenDownloadFileUsingSshj_thenSuccessReport();
 		BufferedReader brTest = new BufferedReader(new FileReader("src/main/resources/TextFile.txt"));
@@ -78,7 +78,7 @@ public class FileDownloadControler {
 			}
 		}
 		if (a == 0) {
-			ResponseEntity.ok("There is no file report.");
+			return "There is no file report.";
 		}
 
 		String filePath = "src/main/resources/TextFile.txt";
@@ -90,7 +90,7 @@ public class FileDownloadControler {
 			e.printStackTrace();
 		}
 
-		return ResponseEntity.ok(contentBuilder.toString());
+		return  contentBuilder.toString();
 	}
 
 	private SSHClient setupSshj() throws IOException {

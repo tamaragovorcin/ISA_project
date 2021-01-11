@@ -1,6 +1,6 @@
 <template>
   <div style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
-    background-size: 125% 80%;  height: 800px">
+    background-size: 125% 80%;  height: 1500px">
 
       <ul>
          <li><a style="color:white; font-weight:bold;text-decoration: underline;font-size:22px" v-on:click="showReportForm">Get report about medicine consumtion</a></li>
@@ -44,6 +44,8 @@
   </div>
   <div  v-if="showReport">
       <div>
+                                  <button style="margin-left:15px" class="button1" v-on:click="prikazi">Prikazi</button>
+
            <h3>Report about medicine consumption in hospital </h3>
            <button class = "button2" v-on:click="getReport">Get report</button>
           <div style="background:white;display: flex;justify-content: center;align-items: center;height: 200px;color: #0D184F;border: 3px solid black;">
@@ -87,15 +89,7 @@ mounted() {
           .then(response => {
                 this.p= response.data;
           });
-      this.axios.get('/order/'+this.id)
-                .then(response => {
-                      this.orders= response.data;
-                      console.log(response.data)
-                }).
-                catch(res => {
-                       alert("NOT OK");
-                        console.log(res);
-                 });
+     
 },
      
 methods:{
@@ -105,9 +99,11 @@ methods:{
   getReport: function () {
     this.axios.get('/download/file/report/'+this.id)
           .then(res => {
+            alert("Moze");
             this.report = res.data;
           })
           .catch(res => {
+            alert("Ne moze");
             console.log(res);
           })
   },
@@ -139,9 +135,31 @@ methods:{
         this.showOrders = false;
   },
   showUrgentOrders :  function(){
+       this.axios.get('api/order/'+this.id)
+                .then(response => {
+                    alert(response);
+                    this.orders= response.data;
+                    console.log(response.data)
+                })
+                .catch(response => {
+                  alert(response);
+                  console.log(response)
+            })
       this.showOrders = true;
       this.showForm = false;
       this.showReport = false;
+
+  },
+   prikazi : function(){
+     this.axios.get('/probni')
+                .then(response => {
+                   alert("PROBNI");
+                   console.log(response);
+                })
+                .catch(response => {
+                       alert("Nije prosao probni");
+                        console.log(response);
+                 });
   }
 
 }

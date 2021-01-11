@@ -3,6 +3,8 @@ package com.isaproject.isaproject.psw.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.isaproject.isaproject.psw.model.UrgentOrder;
+import com.isaproject.isaproject.psw.service.IUrgentOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,8 @@ import com.isaproject.isaproject.psw.service.PharmacyService;
 public class PharmacyController {
 	@Autowired
 	private IPharmacyService service;
+	@Autowired
+	private IUrgentOrderService serviceUrgentOrders;
 	
 	@CrossOrigin(origins = "*", allowedHeaders = "*")
 
@@ -34,7 +38,7 @@ public class PharmacyController {
             new ResponseEntity<>(HttpStatus.NOT_FOUND) :
             ResponseEntity.ok(pharmacy);
     }
-	
+
     @GetMapping("/pharmacy")
 	List<Pharmacy> getAllPharmacies()
     {

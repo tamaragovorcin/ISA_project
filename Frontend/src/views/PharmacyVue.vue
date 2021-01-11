@@ -1,6 +1,6 @@
 <template>
   <div style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
-    background-size: 125% 80%;  height: 800px">
+    background-size: 125% 80%;  height: 1500px">
 
         
       <h3 style="color: #0D184F; font-size: 35px;font-weight:bold">Choose pharmacy</h3>
@@ -8,7 +8,7 @@
           <div style="background: #0D184F; height: 3cm;">
             
 
-            <nav class="navbar navbarB" style="margin-top:250px">
+            <nav class="navbar navbarB">
                 <div class="container-fluid">
                   <div v-for="ph in listaPharmacys"   v-bind:key="ph">
                       <ul class="nav navbar-nav">
@@ -23,7 +23,7 @@
                       </ul>
                   </div>
                   
-
+          
 
                 </div>
             </nav>
@@ -64,6 +64,17 @@ beforeMount() {
 methods:{
   showPharmacy : function(event, p){
     this.pharmacy = p;
+  },
+  prikazi : function(){
+     this.axios.get('/probni')
+                .then(response => {
+                   alert("PROBNI");
+                   console.log(response);
+                })
+                .catch(response => {
+                       alert("Nije prosao probni");
+                        console.log(response);
+                 });
   }
 
 }
