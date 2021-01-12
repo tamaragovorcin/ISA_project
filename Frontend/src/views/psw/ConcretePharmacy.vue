@@ -135,7 +135,7 @@ methods:{
         this.showOrders = false;
   },
   showUrgentOrders :  function(){
-       this.axios.get('api/order/'+this.id)
+       this.axios.get('/order/'+this.id)
                 .then(response => {
                     alert(response);
                     this.orders= response.data;
