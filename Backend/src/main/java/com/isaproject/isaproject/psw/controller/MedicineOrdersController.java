@@ -5,30 +5,19 @@ import com.isaproject.isaproject.psw.service.IUrgentOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MedicineOrdersController {
     @Autowired
     private IUrgentOrderService serviceUrgentOrders;
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-
     @GetMapping("/order/urgent")
-    public List<UrgentOrder> getAllUrgentOrders()
+    List<UrgentOrder> getAllUrgentOrders()
     {
-        System.out.println("POGODIO GETALL");
         return serviceUrgentOrders.getAll();
     }
 
@@ -39,17 +28,16 @@ public class MedicineOrdersController {
 
         return null;
     }
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+
     @GetMapping("/order/{api}")
-    public List<UrgentOrder>  getOrderByAPIKey(@PathVariable String api)
+    List<UrgentOrder>  getOrderByAPIKey(@PathVariable String api)
     {
-        System.out.println("Metoda za dobavljanje nabavki");
+        System.out.println("POGODIO METODU ZA NABAVKE         ");
 
         return serviceUrgentOrders.getAllByPharmacyApi(api);
     }
 
-
-    @RequestMapping(value = "order/tender", method = RequestMethod.POST)
+    @RequestMapping(value = "/tender", method = RequestMethod.POST)
     public ResponseEntity<String> tenderOrderHttp(@RequestBody String tender){
         System.out.println("POGODIO METODU ZA TENDER          ");
 

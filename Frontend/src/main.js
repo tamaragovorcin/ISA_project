@@ -7,6 +7,10 @@ import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
+const baseURL = 'http://localhost:8082/api';
+if (typeof baseURL !== 'undefined') {
+  Vue.axios.defaults.baseURL = baseURL;
+}
 
 new Vue({
   router,

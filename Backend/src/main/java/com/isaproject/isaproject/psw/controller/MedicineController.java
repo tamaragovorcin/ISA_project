@@ -1,54 +1,51 @@
 package com.isaproject.isaproject.psw.controller;
 
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
-
-
-import com.isaproject.isaproject.psw.model.MedicineName;
-import org.hibernate.boot.MetadataBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-
-
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.*;
-
-import org.springframework.http.client.MultipartBodyBuilder;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.isaproject.isaproject.psw.model.Medicine;
-
-import com.isaproject.isaproject.psw.service.IFilesStorageService;
-import com.isaproject.isaproject.psw.service.IMedicineService;
 
 import javax.servlet.ServletException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import com.isaproject.isaproject.psw.model.Medicine;
+import com.isaproject.isaproject.psw.model.MedicineName;
+import com.isaproject.isaproject.psw.service.IFilesStorageService;
+import com.isaproject.isaproject.psw.service.IMedicineService;
+
 @RestController
+@RequestMapping("/api")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MedicineController {
 	@Autowired
 	private IMedicineService service;
 	private IFilesStorageService storageService;
 	private WebClient.Builder webClientBuilder;
-	
-	@CrossOrigin(origins = "*", allowedHeaders = "*")
 
-    @GetMapping("/medicine")
+
+	@GetMapping("/medicine")
 	List<Medicine> getAllMedicines()
-    {
-    	return service.getAll();
-    }
+	{
+		return service.getAll();
+	}
 
 	@RequestMapping(value = "/medicineRequested", method = RequestMethod.GET)
 	public List<MedicineName> getMedicines() {
@@ -112,5 +109,5 @@ public class MedicineController {
 
 
 
-	  
+
 }

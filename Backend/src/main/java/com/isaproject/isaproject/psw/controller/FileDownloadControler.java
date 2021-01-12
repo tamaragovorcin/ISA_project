@@ -1,6 +1,12 @@
 package com.isaproject.isaproject.psw.controller;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,45 +17,33 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
-
-import org.springframework.web.bind.annotation.*;
-
-import com.isaproject.isaproject.psw.model.Pharmacy;
-import com.isaproject.isaproject.psw.service.IPharmacyService;
-
-import net.schmizz.sshj.SSHClient;
-import net.schmizz.sshj.sftp.SFTPClient;
-import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import com.isaproject.isaproject.psw.model.Hospital;
-import com.isaproject.isaproject.psw.model.Pharmacy;
 import com.isaproject.isaproject.psw.service.IPharmacyService;
-import com.isaproject.isaproject.psw.service.PharmacyService;
+
+import net.schmizz.sshj.SSHClient;
+import net.schmizz.sshj.sftp.SFTPClient;
+import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
 
 
 @RestController
+@RequestMapping("/api")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class FileDownloadControler {
 
 	@Autowired
 	private IPharmacyService service;
 	@Autowired
 	private WebClient.Builder webClientBuilder;
-
-	@CrossOrigin(origins = "*", allowedHeaders = "*")
 
 	@GetMapping("/download/file/report")
 	public void getFile() throws IOException {
@@ -64,7 +58,7 @@ public class FileDownloadControler {
 
 	@GetMapping("/download/file/report/{api}")
 	@ResponseBody
-	public String getFileReport(@PathVariable String api) throws IOException {
+	ResponseEntity<String> getFileReport(@PathVariable String api) throws IOException {
 		System.out.println("Pogodio metodu za report");
 		whenDownloadFileUsingSshj_thenSuccessReport();
 		BufferedReader brTest = new BufferedReader(new FileReader("src/main/resources/TextFile.txt"));
@@ -78,7 +72,7 @@ public class FileDownloadControler {
 			}
 		}
 		if (a == 0) {
-			return "There is no file report.";
+			ResponseEntity.ok("There is no file report.");
 		}
 
 		String filePath = "src/main/resources/TextFile.txt";
@@ -90,7 +84,7 @@ public class FileDownloadControler {
 			e.printStackTrace();
 		}
 
-		return  contentBuilder.toString();
+		return ResponseEntity.ok(contentBuilder.toString());
 	}
 
 	private SSHClient setupSshj() throws IOException {

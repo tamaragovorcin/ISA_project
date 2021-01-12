@@ -1,33 +1,42 @@
 package com.isaproject.isaproject.psw.controller;
 
-import com.isaproject.isaproject.psw.model.MedicineInPharmacy;
-import com.isaproject.isaproject.psw.model.Pharmacy;
-import com.isaproject.isaproject.psw.model.PharmacyName;
-import com.isaproject.isaproject.psw.service.IMedicinesPharmacyService;
-import com.isaproject.isaproject.psw.service.IPharmacyService;
-import org.bouncycastle.pqc.asn1.ParSet;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.ServletException;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.isaproject.isaproject.psw.model.MedicineInPharmacy;
+import com.isaproject.isaproject.psw.model.PharmacyName;
+import com.isaproject.isaproject.psw.service.IMedicinesPharmacyService;
+import com.isaproject.isaproject.psw.service.IPharmacyService;
+
 @RestController
-@RequestMapping("/medicinePharmacy")
+@RequestMapping("/api/medicinePharmacy")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MedicinesPharmacyController {
     @Autowired
     private IMedicinesPharmacyService service;
     private IPharmacyService pharmacyService;
-
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
 
     @GetMapping("/all")
     @ResponseBody

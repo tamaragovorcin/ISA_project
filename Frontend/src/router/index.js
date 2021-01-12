@@ -1,10 +1,18 @@
 import Vue from 'vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueRouter from 'vue-router'
-import Home1 from '../views/Home1.vue'
-import PswRegistration from '../views/PswRegistration.vue'
-import PharmacyVue from '../views/PharmacyVue.vue'
-import ConcretePharmacy from '../views/ConcretePharmacy.vue'
+import Home1 from '../views/psw/Home1.vue'
+import PswRegistration from '../views/psw/PswRegistration.vue'
+import PharmacyVue from '../views/psw/PharmacyVue.vue'
+import ConcretePharmacy from '../views/psw/ConcretePharmacy.vue'
+import IsaHomePage from '../views/home/IsaHomePage.vue'
+import Login from '../views/home/Login.vue'
+import Registration from '../views/home/Registration.vue'
+import PatientProfile from '../views/PatientProfile.vue'
+import PharmacyAdminProfile from '../views/PharmacyAdminProfile.vue'
+import Order from '../views/Order.vue'
+
+
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -35,6 +43,36 @@ const routes = [
 	name: 'ConcretePharmacy',
 	component: ConcretePharmacy
   },
+  {
+    path: '/isaHomePage',
+    name: 'IsaHomePage',
+    component: IsaHomePage
+    },
+  {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/registration',
+      name: 'Registration',
+      component: Registration
+    },
+    {
+      path: '/patientProfile',
+      name: 'PatientProfile',
+      component: PatientProfile
+    },
+    {
+      path: '/pharmacyAdminProfile',
+      name: 'PharmacyAdminProfile',
+      component: PharmacyAdminProfile
+    },
+    {
+      path: '/order',
+      name: 'Order',
+      component: Order
+    },
 ]
 
 const router = new VueRouter({
