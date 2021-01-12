@@ -4,24 +4,19 @@
         <div style="background: #0D184F; height: 90px;">
             
             <span style="float: left; margin: 15px;">
-                <button class = "btn btn-secondary btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home page</button>
+                <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home page</button>
                   
             </span>
               <span  style="float:right;margin:15px">
-                    <button class = "btn btn-secondary btn-lg" v-on:click = "showLoginForm">&nbsp;&nbsp;Login&nbsp;&nbsp;</button>
+                    <button class = "btn btn-warning btn-lg" v-on:click = "showLoginForm">&nbsp;&nbsp;Login&nbsp;&nbsp;</button>
 
                     <b class="tab"></b>                
                    
 
-                    <button class = "btn btn-secondary btn-lg" style="margin-right:20px;" v-on:click = "showRegistrationForm">Register</button>
+                    <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "showRegistrationForm">Register</button>
                 </span>
 
         </div>
-
-       
-
-       
-
     </div>
 </template>
 

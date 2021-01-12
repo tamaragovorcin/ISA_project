@@ -8,10 +8,10 @@ import ConcretePharmacy from '../views/psw/ConcretePharmacy.vue'
 import IsaHomePage from '../views/home/IsaHomePage.vue'
 import Login from '../views/home/Login.vue'
 import Registration from '../views/home/Registration.vue'
-import PatientProfile from '../views/PatientProfile.vue'
-import PharmacyAdminProfile from '../views/PharmacyAdminProfile.vue'
-import Order from '../views/Order.vue'
-
+import PatientProfile from '../views/patient/PatientProfile.vue'
+import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vue'
+import Order from '../views/pharmacyAdmin/Order.vue'
+import PharmacyProfile from '../views/PharmacyProfile.vue'
 
 
 Vue.use(BootstrapVue)
@@ -72,6 +72,11 @@ const routes = [
       path: '/order',
       name: 'Order',
       component: Order
+    },
+    {
+      path: '/pharmacyProfile',
+      name: 'PharmacyProfile',
+      component: PharmacyProfile
     },
 ]
 

@@ -4,18 +4,20 @@
         <div style="background: #0D184F; height: 90px;">
             
             <span style="float: left; margin: 15px;">
-                <button class = "btn btn-secondary btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
-                  
-            </span>
-              <span  style="float:right;margin:15px">
-                    <button class = "btn btn-secondary btn-lg" v-on:click = "showMyProfile">My profile</button>
+                <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
+                   <b class="tab"></b>    
+
+                  <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
 
                     <b class="tab"></b>    
-                    <button class = "btn btn-secondary btn-lg" style="margin-right:20px;" v-on:click = "showActionsAndBenefitsForm">Actions/benefits</button>
+                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "showActionsAndBenefitsForm">Actions/benefits</button>
                     
                      <b class="tab"></b>    
-                    <button class = "btn btn-secondary btn-lg" style="margin-right:20px;" v-on:click = "showOrderForm">Orders</button>
+                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "showOrderForm">Orders</button>
                      <b class="tab"></b>    
+            </span>
+              <span  style="float:right;margin:15px">
+                   
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
                 
                 </span>
@@ -114,7 +116,6 @@
 
 <script>
 export default {
-
   data() {
     return {
        show : false,
@@ -123,24 +124,17 @@ export default {
        showTable : false,
        medicationQuantityList : [],
        endDate : "",
-
-
-
     }
   },
-
   methods:{
        showHomePage : function(){
           window.location.href = "/isaHomePage";
       },
       showMyProfile: function(){
-
       },
        showActionsAndBenefitsForm : function(){
-
       },
        showOrderForm : function(){
-
       },
        logOut : function(){
            window.location.href = "/login";
@@ -175,21 +169,13 @@ export default {
 @media (min-width: 992px)
  .modal-lg {
     max-width: auto !important;
-
    }
 @media (min-width: 992px)
  .modal-dialog {
     margin: 100px !important;
-
    }
-
-
 @media (min-width: 800px)
   .modal-dialog {
     max-width: auto !important;
-
   }
 </style>
-
-
-  
