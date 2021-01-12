@@ -1,36 +1,67 @@
 package com.isaproject.isaproject.Model.Users;
 
-public class Patient extends User{
+
+import com.isaproject.isaproject.Model.Examinations.Consulting;
+import com.isaproject.isaproject.Model.Examinations.Examination;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@DiscriminatorValue("patient")
+public class Patient extends PersonUser implements Serializable {
+
+   /* @ManyToMany
+    @JoinTable(name = "consulting", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "consulting_id", referencedColumnName = "id"))
+    private Set<Consulting> consultings = new HashSet<Consulting>();*/
+
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Consulting> consulting = new HashSet<Consulting>();
+
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Examination> examinations = new HashSet<Examination>();
+
+
+    @Column(name = "penalties", nullable = true)
     private int penalties;
+
+    @Column(name = "points", nullable = true)
     private int points;
+
+    @Column(name = "loyaltyCategory", nullable = true)
     private String loyaltyCategory;
+
+    @Column(name = "discount", nullable = true)
     private double discount;
 
-    public Patient(int penalties, int points, String loyaltyCategory, double discount) {
-        this.penalties = penalties;
-        this.points = points;
-        this.loyaltyCategory = loyaltyCategory;
-        this.discount = discount;
+    public Set<Consulting> getConsulting() {
+        return consulting;
     }
 
-    public Patient(int id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country, int penalties, int points, String loyaltyCategory, double discount) {
-        super(id, name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
-        this.penalties = penalties;
-        this.points = points;
-        this.loyaltyCategory = loyaltyCategory;
-        this.discount = discount;
+    public void setConsulting(Set<Consulting> consulting) {
+        this.consulting = consulting;
     }
 
-    public Patient(String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country, int penalties, int points, String loyaltyCategory, double discount) {
-        super(name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
-        this.penalties = penalties;
-        this.points = points;
-        this.loyaltyCategory = loyaltyCategory;
-        this.discount = discount;
-    }
     public Patient() {
-        super();
+    }
 
+
+    public Patient(Set<Consulting> consulting, int penalties, int points, String loyaltyCategory, double discount) {
+        this.consulting = consulting;
+        this.penalties = penalties;
+        this.points = points;
+        this.loyaltyCategory = loyaltyCategory;
+        this.discount = discount;
+    }
+
+    public Set<Examination> getExaminations() {
+        return examinations;
+    }
+
+    public void setExaminations(Set<Examination> examinations) {
+        this.examinations = examinations;
     }
 
     public int getPenalties() {

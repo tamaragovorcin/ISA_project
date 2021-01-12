@@ -1,23 +1,47 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
-import com.isaproject.isaproject.Model.Entity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-public class PatientsMedicationAlergy extends Entity {
+@Entity
+public class PatientsMedicationAlergy {
+
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "patientsId", nullable = false)
     private  int patientsId;
+
+
+    @Column(name = "medicationCode", nullable = false)
     private int medicationCode;
+
+
+    @Column(name = "description", nullable = false)
     private String description;
 
-    public PatientsMedicationAlergy(int id, int patientsId, int medicationCode, String description) {
-        super(id);
+
+    public PatientsMedicationAlergy() {
+    }
+
+    public PatientsMedicationAlergy(Integer id, int patientsId, int medicationCode, String description) {
+        this.id = id;
         this.patientsId = patientsId;
         this.medicationCode = medicationCode;
         this.description = description;
     }
 
-    public PatientsMedicationAlergy(int patientsId, int medicationCode, String description) {
-        this.patientsId = patientsId;
-        this.medicationCode = medicationCode;
-        this.description = description;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getPatientsId() {
@@ -42,9 +66,5 @@ public class PatientsMedicationAlergy extends Entity {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public PatientsMedicationAlergy() {
-        super();
     }
 }

@@ -1,32 +1,52 @@
 package com.isaproject.isaproject.Model.Orders;
 
-import com.isaproject.isaproject.Model.Entity;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.Date;
+@Entity
+public class Offer {
 
-public class Offer extends Entity {
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "supplierId", nullable = false)
     private int supplierId;
+
+
+    @Column(name = "orderId", nullable = false)
     private int orderId;
+
+
+    @Column(name = "dateOfDelivery", nullable = false)
     private LocalDate dateOfDelivery;
+
+
+    @Column(name = "summaryPrice", nullable = false)
     private double summaryPrice;
 
     public Offer() {
-        super();
     }
-    public Offer(int id, int supplierId, int orderId, LocalDate dateOfDelivery, double summaryPrice) {
-        super(id);
+
+    public Offer(Integer id, int supplierId, int orderId, LocalDate dateOfDelivery, double summaryPrice) {
+        this.id = id;
         this.supplierId = supplierId;
         this.orderId = orderId;
         this.dateOfDelivery = dateOfDelivery;
         this.summaryPrice = summaryPrice;
     }
 
-    public Offer(int supplierId, int orderId, LocalDate dateOfDelivery, double summaryPrice) {
-        this.supplierId = supplierId;
-        this.orderId = orderId;
-        this.dateOfDelivery = dateOfDelivery;
-        this.summaryPrice = summaryPrice;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getSupplierId() {

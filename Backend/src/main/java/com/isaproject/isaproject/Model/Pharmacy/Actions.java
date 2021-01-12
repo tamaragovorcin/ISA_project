@@ -1,29 +1,45 @@
 package com.isaproject.isaproject.Model.Pharmacy;
 
-import com.isaproject.isaproject.Model.Entity;
-
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class Actions extends Entity {
+@Entity
+@Table(name="actions_table")
+public class Actions{
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "pharmacyId", nullable = true)
     private int pharmacyId;
+
+
+    @Column(name = "description", nullable = true)
     private String description;
+
+
+    @Column(name = "expiryDate", nullable = true)
     private LocalDate expiryDate;
 
     public Actions() {
-        super();
     }
-    public Actions(int id, int pharmacyId, String description, LocalDate expiryDate) {
-        super(id);
+
+    public Actions(Integer id, int pharmacyId, String description, LocalDate expiryDate) {
+        this.id = id;
         this.pharmacyId = pharmacyId;
         this.description = description;
         this.expiryDate = expiryDate;
     }
 
-    public Actions(int pharmacyId, String description, LocalDate expiryDate) {
-        this.pharmacyId = pharmacyId;
-        this.description = description;
-        this.expiryDate = expiryDate;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getPharmacyId() {

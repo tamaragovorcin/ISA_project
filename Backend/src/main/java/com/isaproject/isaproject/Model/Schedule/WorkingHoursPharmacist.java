@@ -1,33 +1,51 @@
 package com.isaproject.isaproject.Model.Schedule;
 
-import com.isaproject.isaproject.Model.Entity;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDate;
 import java.time.LocalTime;
+@Entity
+public class WorkingHoursPharmacist {
+    @Id
+    @GeneratedValue
+    @Column(name = "id", unique = true, nullable = false)
+    private Integer id;
 
-public class WorkingHoursPharmacist extends Entity {
+    @Column(name = "date", nullable = false)
     private LocalDate date;
+
+
+    @Column(name = "pharmacistId", nullable = false)
     private int pharmacistId;
+
+
+    @Column(name = "startTime", nullable = false)
     private LocalTime startTime;
+
+
+    @Column(name = "endTime", nullable = false)
     private LocalTime endTime;
 
     public WorkingHoursPharmacist() {
         super();
     }
-    public WorkingHoursPharmacist(int id, LocalDate date, int pharmacistId, LocalTime startTime, LocalTime endTime) {
-        super(id);
+
+    public WorkingHoursPharmacist(Integer id, LocalDate date, int pharmacistId, LocalTime startTime, LocalTime endTime) {
+        this.id = id;
         this.date = date;
         this.pharmacistId = pharmacistId;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
+    public Integer getId() {
+        return id;
+    }
 
-    public WorkingHoursPharmacist(LocalDate date, int pharmacistId, LocalTime startTime, LocalTime endTime) {
-        this.date = date;
-        this.pharmacistId = pharmacistId;
-        this.startTime = startTime;
-        this.endTime = endTime;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public LocalDate getDate() {
@@ -62,3 +80,4 @@ public class WorkingHoursPharmacist extends Entity {
         this.endTime = endTime;
     }
 }
+

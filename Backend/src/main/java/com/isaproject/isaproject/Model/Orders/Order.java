@@ -1,33 +1,51 @@
 package com.isaproject.isaproject.Model.Orders;
 
-import com.isaproject.isaproject.Model.Entity;
-
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class Order extends Entity {
+@Entity
+
+@Table(name="order_table")
+public class Order  {
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "pharmacyId", nullable = false)
     private int pharmacyId;
+
+
+    @Column(name = "adminId", nullable = false)
     private int adminId;
+
+
+    @Column(name = "date", nullable = false)
     private LocalDate date;
+
+
+    @Column(name = "status", nullable = false)
     private String status;
 
     public Order() {
-        super();
     }
 
-    public Order(int id, int pharmacyId, int adminId, LocalDate date, String status) {
-        super(id);
+    public Order(Integer id, int pharmacyId, int adminId, LocalDate date, String status) {
+        this.id = id;
         this.pharmacyId = pharmacyId;
         this.adminId = adminId;
         this.date = date;
         this.status = status;
     }
 
-    public Order(int pharmacyId, int adminId, LocalDate date, String status) {
-        this.pharmacyId = pharmacyId;
-        this.adminId = adminId;
-        this.date = date;
-        this.status = status;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getPharmacyId() {

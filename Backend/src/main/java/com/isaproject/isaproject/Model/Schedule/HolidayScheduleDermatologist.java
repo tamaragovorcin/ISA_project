@@ -1,22 +1,44 @@
 package com.isaproject.isaproject.Model.Schedule;
 
-import com.isaproject.isaproject.Model.Entity;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class HolidayScheduleDermatologist extends Entity {
+@Entity
+public class HolidayScheduleDermatologist {
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "dermatologistsId", nullable = false)
     private int dermatologistsId;
+
+
+    @Column(name = "startDate", nullable = false)
     private LocalDate startDate;
+
+
+    @Column(name = "endDate", nullable = false)
     private LocalDate endDate;
+
+
+    @Column(name = "approved", nullable = false)
     private Boolean approved;
+
+
+    @Column(name = "massage", nullable = false)
     private String massage;
 
     public HolidayScheduleDermatologist() {
         super();
     }
-    public HolidayScheduleDermatologist(int id, int dermatologistsId, LocalDate startDate, LocalDate endDate, Boolean approved, String massage) {
-        super(id);
+
+    public HolidayScheduleDermatologist(Integer id, int dermatologistsId, LocalDate startDate, LocalDate endDate, Boolean approved, String massage) {
+        this.id = id;
         this.dermatologistsId = dermatologistsId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -24,13 +46,12 @@ public class HolidayScheduleDermatologist extends Entity {
         this.massage = massage;
     }
 
-    public HolidayScheduleDermatologist(int dermatologistsId, LocalDate startDate, LocalDate endDate, Boolean approved, String massage) {
-        this.dermatologistsId = dermatologistsId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.approved = approved;
-        this.massage = massage;
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getDermatologistsId() {

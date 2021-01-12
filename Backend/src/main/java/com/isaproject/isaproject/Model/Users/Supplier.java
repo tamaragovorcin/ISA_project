@@ -1,14 +1,15 @@
 package com.isaproject.isaproject.Model.Users;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
-public class Supplier extends User{
+//ovom anotacijom se navodi vrednost diskriminatorske kolone koja vazi za
+//objekte ove klase
+
+@Entity
+@DiscriminatorValue("Supplier")
+public class Supplier extends PersonUser{
+
+
     public Supplier() {
-    }
-
-    public Supplier(int id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country) {
-        super(id, name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
-    }
-
-    public Supplier(String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country) {
-        super(name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
     }
 }

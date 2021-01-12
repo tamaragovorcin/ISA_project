@@ -1,31 +1,54 @@
 package com.isaproject.isaproject.Model.Examinations;
 
-import com.isaproject.isaproject.Model.Entity;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDate;
 
-public class EPrescription extends Entity {
+@Entity
+public class EPrescription {
+
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+
+    @Column(name = "patientId", nullable = false)
     private int patientId;
+
+
+    @Column(name = "code", nullable = false)
     private long code;
+
+
+    @Column(name = "date", nullable = false)
     private LocalDate date;
+
+
+    @Column(name = "status", nullable = false)
     private String status;
 
     public EPrescription() {
-        super();
+
     }
-    public EPrescription(int id, int patientId, long code, LocalDate date, String status) {
-        super(id);
+
+    public EPrescription(Integer id, int patientId, long code, LocalDate date, String status) {
+        this.id = id;
         this.patientId = patientId;
         this.code = code;
         this.date = date;
         this.status = status;
     }
 
-    public EPrescription(int patientId, long code, LocalDate date, String status) {
-        this.patientId = patientId;
-        this.code = code;
-        this.date = date;
-        this.status = status;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getPatientId() {

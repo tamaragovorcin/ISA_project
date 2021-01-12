@@ -1,90 +1,75 @@
 package com.isaproject.isaproject.Model.Pharmacy;
 
-import com.isaproject.isaproject.Model.Entity;
+import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
+import com.isaproject.isaproject.Model.Users.Address;
 
-public class Pharmacy extends Entity {
-    private String name;
-    private String town;
-    private String street;
-    private int number;
-    private int postalCode;
-    private String country;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name="pharmacy_table")
+public class Pharmacy {
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "pharmacyName", nullable = true)
+    private String pharmacyName;
+
+
+    @Column(name = "mark", nullable = true)
     private double mark;
+
+    @Column(name = "consultingPrice", nullable = true)
     private double consultingPrice;
 
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ExaminationSchedule> examinationSchedules = new HashSet<ExaminationSchedule>();
+
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = false, unique = false)
+    private Address address;
+
     public Pharmacy() {
-        super();
-    }
-    public Pharmacy(int id, String name, String town, String street, int number, int postalCode, String country, double mark, double consultingPrice) {
-        super(id);
-        this.name = name;
-        this.town = town;
-        this.street = street;
-        this.number = number;
-        this.postalCode = postalCode;
-        this.country = country;
-        this.mark = mark;
-        this.consultingPrice = consultingPrice;
     }
 
-    public Pharmacy(String name, String town, String street, int number, int postalCode, String country, double mark, double consultingPrice) {
-        this.name = name;
-        this.town = town;
-        this.street = street;
-        this.number = number;
-        this.postalCode = postalCode;
-        this.country = country;
-        this.mark = mark;
-        this.consultingPrice = consultingPrice;
+
+    public Set<ExaminationSchedule> getExaminationSchedules() {
+        return examinationSchedules;
     }
 
-    public String getName() {
-        return name;
+    public void setExaminationSchedules(Set<ExaminationSchedule> examinationSchedules) {
+        this.examinationSchedules = examinationSchedules;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Address getAddress() {
+        return address;
     }
 
-    public String getTown() {
-        return town;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
-    public void setTown(String town) {
-        this.town = town;
+    public Integer getId() {
+        return id;
     }
 
-    public String getStreet() {
-        return street;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public String getPharmacyName() {
+        return pharmacyName;
     }
 
-    public int getNumber() {
-        return number;
+    public void setPharmacyName(String pharmacyName) {
+        this.pharmacyName = pharmacyName;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public int getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(int postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
 
     public double getMark() {
         return mark;

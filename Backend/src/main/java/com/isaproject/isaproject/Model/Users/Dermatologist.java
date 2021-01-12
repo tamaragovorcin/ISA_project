@@ -1,32 +1,40 @@
 package com.isaproject.isaproject.Model.Users;
+import com.isaproject.isaproject.Model.Examinations.Consulting;
+import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 
-public class Dermatologist extends User{
-    private double mark;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
-    public Dermatologist(double mark) {
-        this.mark = mark;
-    }
+//ovom anotacijom se navodi vrednost diskriminatorske kolone koja vazi za
+//objekte ove klase
 
-    public Dermatologist(int id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country, double mark) {
-        super(id, name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
-        this.mark = mark;
-    }
+@Entity
+@DiscriminatorValue("Dermatologist")
+public class Dermatologist extends PersonUser{
 
-    public Dermatologist(String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country, double mark) {
-        super(name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
-        this.mark = mark;
-    }
+    @Column(name = "markDermatologist", nullable = true)
+    private double markDermatologist;
+
+    @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ExaminationSchedule> examinationSchedules = new HashSet<ExaminationSchedule>();
+
     public Dermatologist() {
-        super();
-
     }
 
-    public double getMark() {
-        return mark;
+    public Set<ExaminationSchedule> getExaminationSchedules() {
+        return examinationSchedules;
     }
 
-    public void setMark(double mark) {
-        this.mark = mark;
+    public void setExaminationSchedules(Set<ExaminationSchedule> examinationSchedules) {
+        this.examinationSchedules = examinationSchedules;
     }
 
+    public double getMarkDermatologist() {
+        return markDermatologist;
+    }
+
+    public void setMarkDermatologist(double mark) {
+        this.markDermatologist = mark;
+    }
 }

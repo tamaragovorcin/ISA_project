@@ -1,23 +1,47 @@
 package com.isaproject.isaproject.Model.Examinations;
 
-import com.isaproject.isaproject.Model.Entity;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDate;
+@Entity
+public class Prescription {
 
-public class Prescription extends Entity {
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "patientId", nullable = false)
     private int patientId;
+
+
+    @Column(name = "pharmacyId", nullable = false)
     private int pharmacyId;
+
+
+    @Column(name = "date", nullable = false)
     private LocalDate date;
+
+
+    @Column(name = "taken", nullable = false)
     private Boolean taken;
+
+
+    @Column(name = "information", nullable = false)
     private String information;
+
+
+    @Column(name = "durationOfTherapy", nullable = false)
     private double durationOfTherapy;
 
     public Prescription() {
-        super();
     }
 
-    public Prescription(int id, int patientId, int pharmacyId, LocalDate date, Boolean taken, String information, double durationOfTherapy) {
-        super(id);
+    public Prescription(Integer id, int patientId, int pharmacyId, LocalDate date, Boolean taken, String information, double durationOfTherapy) {
+        this.id = id;
         this.patientId = patientId;
         this.pharmacyId = pharmacyId;
         this.date = date;
@@ -26,13 +50,12 @@ public class Prescription extends Entity {
         this.durationOfTherapy = durationOfTherapy;
     }
 
-    public Prescription(int patientId, int pharmacyId, LocalDate date, Boolean taken, String information, double durationOfTherapy) {
-        this.patientId = patientId;
-        this.pharmacyId = pharmacyId;
-        this.date = date;
-        this.taken = taken;
-        this.information = information;
-        this.durationOfTherapy = durationOfTherapy;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getPatientId() {

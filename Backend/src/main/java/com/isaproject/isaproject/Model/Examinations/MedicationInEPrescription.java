@@ -1,26 +1,46 @@
 package com.isaproject.isaproject.Model.Examinations;
 
-import com.isaproject.isaproject.Model.Entity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-public class MedicationInEPrescription extends Entity {
+@Entity
+public class MedicationInEPrescription  {
+
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "medicationCode", nullable = false)
     private long medicationCode;
+
+
+    @Column(name = "quantity", nullable = false)
     private int quantity;
+
+
+    @Column(name = "ePrescriptionId", nullable = false)
     private int ePrescriptionId;
 
     public MedicationInEPrescription() {
-        super();
     }
-    public MedicationInEPrescription(int id, long medicationCode, int quantity, int ePrescriptionId) {
-        super(id);
+
+    public MedicationInEPrescription(Integer id, long medicationCode, int quantity, int ePrescriptionId) {
+        this.id = id;
         this.medicationCode = medicationCode;
         this.quantity = quantity;
         this.ePrescriptionId = ePrescriptionId;
     }
 
-    public MedicationInEPrescription(long medicationCode, int quantity, int ePrescriptionId) {
-        this.medicationCode = medicationCode;
-        this.quantity = quantity;
-        this.ePrescriptionId = ePrescriptionId;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public long getMedicationCode() {

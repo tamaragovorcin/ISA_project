@@ -1,29 +1,51 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
-import com.isaproject.isaproject.Model.Entity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-public class MedicationInPharmacy extends Entity {
+@Entity
+public class MedicationInPharmacy  {
+
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "pharmacyId", nullable = false)
     private int pharmacyId;
+
+
+    @Column(name = "medicationCode", nullable = false)
     private long medicationCode;
+
+
+    @Column(name = "price", nullable = false)
     private double price;
+
+
+    @Column(name = "quantity", nullable = false)
     private int quantity;
 
     public MedicationInPharmacy() {
-        super();
     }
-    public MedicationInPharmacy(int id, int pharmacyId, long medicationCode, double price, int quantity) {
-        super(id);
+
+    public MedicationInPharmacy(Integer id, int pharmacyId, long medicationCode, double price, int quantity) {
+        this.id = id;
         this.pharmacyId = pharmacyId;
         this.medicationCode = medicationCode;
         this.price = price;
         this.quantity = quantity;
     }
 
-    public MedicationInPharmacy(int pharmacyId, long medicationCode, double price, int quantity) {
-        this.pharmacyId = pharmacyId;
-        this.medicationCode = medicationCode;
-        this.price = price;
-        this.quantity = quantity;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getPharmacyId() {

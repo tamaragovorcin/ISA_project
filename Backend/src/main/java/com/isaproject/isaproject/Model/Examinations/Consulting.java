@@ -1,30 +1,74 @@
 package com.isaproject.isaproject.Model.Examinations;
 
-import com.isaproject.isaproject.Model.Entity;
+import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
-public class Consulting extends Entity {
-    private int pharmacistId;
-    private int patientId;
+@Entity
+
+public class Consulting implements Serializable {
+
+
+    @Id
+    @GeneratedValue
+    @Column(name="consulting_id", unique=true, nullable=false)
+    private Integer id;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacist_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Pharmacist pharmacist;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Patient patient;
+
+
+    /*@ManyToMany(mappedBy = "consultings")
+    private Set<Patient> patients = new HashSet<Patient>();*/
+
+
+    @Column(name = "date", nullable = true)
     private LocalDate date;
+
+
+    @Column(name = "startTime", nullable = true)
     private LocalTime startTime;
+
+
+    @Column(name = "duration", nullable = true)
     private double duration;
+
+
+    @Column(name = "price", nullable = true)
     private double price;
+
+
+    @Column(name = "cancelled", nullable = true)
     private Boolean cancelled;
+
+
+    @Column(name = "showedUp", nullable = true)
     private Boolean showedUp;
+
+
+    @Column(name = "information", nullable = true)
     private String information;
 
 
     public Consulting() {
-        super();
+
     }
 
-    public Consulting(int id, int pharmacistId, int patientId, LocalDate date, LocalTime startTime, double duration, double price, Boolean cancelled, Boolean showedUp, String information) {
-        super(id);
-        this.pharmacistId = pharmacistId;
-        this.patientId = patientId;
+    public Consulting(Integer id, Pharmacist pharmacist, Patient patient, LocalDate date, LocalTime startTime, double duration, double price, Boolean cancelled, Boolean showedUp, String information) {
+        this.id = id;
+        this.pharmacist = pharmacist;
+        this.patient = patient;
         this.date = date;
         this.startTime = startTime;
         this.duration = duration;
@@ -34,33 +78,14 @@ public class Consulting extends Entity {
         this.information = information;
     }
 
-    public Consulting(int pharmacistId, int patientId, LocalDate date, LocalTime startTime, double duration, double price, Boolean cancelled, Boolean showedUp, String information) {
-        this.pharmacistId = pharmacistId;
-        this.patientId = patientId;
-        this.date = date;
-        this.startTime = startTime;
-        this.duration = duration;
-        this.price = price;
-        this.cancelled = cancelled;
-        this.showedUp = showedUp;
-        this.information = information;
+    public Integer getId() {
+        return id;
     }
 
-    public int getPharmacistId() {
-        return pharmacistId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setPharmacistId(int pharmacistId) {
-        this.pharmacistId = pharmacistId;
-    }
-
-    public int getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
-    }
 
     public LocalDate getDate() {
         return date;
@@ -116,5 +141,21 @@ public class Consulting extends Entity {
 
     public void setInformation(String information) {
         this.information = information;
+    }
+
+    public Pharmacist getPharmacist() {
+        return pharmacist;
+    }
+
+    public void setPharmacist(Pharmacist pharmacist) {
+        this.pharmacist = pharmacist;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 }

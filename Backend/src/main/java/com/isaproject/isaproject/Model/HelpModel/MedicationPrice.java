@@ -1,32 +1,51 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
-import com.isaproject.isaproject.Model.Entity;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDate;
+@Entity
+public class MedicationPrice {
 
-public class MedicationPrice extends Entity {
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "medicineCode", nullable = false)
     private long medicineCode;
+
+
+    @Column(name = "price", nullable = false)
     private double price;
+
+
+    @Column(name = "date", nullable = false)
     private LocalDate date;
+
+
+    @Column(name = "pharmacyId", nullable = false)
     private int pharmacyId;
 
     public MedicationPrice() {
-        super();
     }
 
-    public MedicationPrice(int id, long medicineCode, double price, LocalDate date, int pharmacyId) {
-        super(id);
+    public MedicationPrice(Integer id, long medicineCode, double price, LocalDate date, int pharmacyId) {
+        this.id = id;
         this.medicineCode = medicineCode;
         this.price = price;
         this.date = date;
         this.pharmacyId = pharmacyId;
     }
 
-    public MedicationPrice(long medicineCode, double price, LocalDate date, int pharmacyId) {
-        this.medicineCode = medicineCode;
-        this.price = price;
-        this.date = date;
-        this.pharmacyId = pharmacyId;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public long getMedicineCode() {

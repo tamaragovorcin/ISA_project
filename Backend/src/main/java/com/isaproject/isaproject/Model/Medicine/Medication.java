@@ -1,19 +1,52 @@
 package com.isaproject.isaproject.Model.Medicine;
 
-import com.isaproject.isaproject.Model.Entity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-public class Medication extends Entity {
+@Entity
+public class Medication  {
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "name", nullable = false)
     private String name;
+
+
+    @Column(name = "code", nullable = false)
     private long code;
+
+
+    @Column(name = "form", nullable = false)
     private String form;
+
+
+    @Column(name = "type", nullable = false)
     private String type;
+
+
+    @Column(name = "issuanceRegime", nullable = false)
     private String issuanceRegime;//rezim upotrebe
+
+
+    @Column(name = "mark", nullable = false)
     private double mark;
+
+
+    @Column(name = "loyaltyPoints", nullable = false)
     private double loyaltyPoints;
 
 
-    public Medication(int id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints) {
-        super(id);
+
+
+    public Medication() {
+    }
+
+    public Medication(Integer id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints) {
+        this.id = id;
         this.name = name;
         this.code = code;
         this.form = form;
@@ -21,6 +54,14 @@ public class Medication extends Entity {
         this.issuanceRegime = issuanceRegime;
         this.mark = mark;
         this.loyaltyPoints = loyaltyPoints;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -76,21 +117,6 @@ public class Medication extends Entity {
     }
 
     public void setLoyaltyPoints(double loyaltyPoints) {
-        this.loyaltyPoints = loyaltyPoints;
-    }
-
-    public Medication() {
-        super();
-    }
-
-
-    public Medication(String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints) {
-        this.name = name;
-        this.code = code;
-        this.form = form;
-        this.type = type;
-        this.issuanceRegime = issuanceRegime;
-        this.mark = mark;
         this.loyaltyPoints = loyaltyPoints;
     }
 }

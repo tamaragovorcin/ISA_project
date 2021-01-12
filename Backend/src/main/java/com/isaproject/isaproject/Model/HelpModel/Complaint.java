@@ -1,20 +1,47 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
-import com.isaproject.isaproject.Model.Entity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-public class Complaint extends Entity {
+@Entity
+public class Complaint {
+
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "patientId", nullable = false)
     private int patientId;
+
+
+    @Column(name = "subject", nullable = false)
     private String subject;//na sta se zali
+
+
+    @Column(name = "subjectId", nullable = false)
     private int subjectId;
+
+
+    @Column(name = "answered", nullable = false)
     private boolean answered;
+
+
+    @Column(name = "massage", nullable = false)
     private String massage;
+
+
+    @Column(name = "answer", nullable = false)
     private String answer;
 
     public Complaint() {
-        super();
     }
-    public Complaint(int id, int patientId, String subject, int subjectId, boolean answered, String massage, String answer) {
-        super(id);
+
+    public Complaint(Integer id, int patientId, String subject, int subjectId, boolean answered, String massage, String answer) {
+        this.id = id;
         this.patientId = patientId;
         this.subject = subject;
         this.subjectId = subjectId;
@@ -23,13 +50,12 @@ public class Complaint extends Entity {
         this.answer = answer;
     }
 
-    public Complaint(int patientId, String subject, int subjectId, boolean answered, String massage, String answer) {
-        this.patientId = patientId;
-        this.subject = subject;
-        this.subjectId = subjectId;
-        this.answered = answered;
-        this.massage = massage;
-        this.answer = answer;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getPatientId() {

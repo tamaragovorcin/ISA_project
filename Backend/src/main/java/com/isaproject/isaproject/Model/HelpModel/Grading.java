@@ -1,29 +1,51 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
-import com.isaproject.isaproject.Model.Entity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-public class Grading extends Entity {
+@Entity
+public class Grading  {
+
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "patientId", nullable = false)
     private int patientId;
+
+
+    @Column(name = "type", nullable = false)
     private String type;
+
+
+    @Column(name = "gradedId", nullable = false)
     private int gradedId;
+
+
+    @Column(name = "grade", nullable = false)
     private int grade;
 
     public Grading() {
-        super();
     }
-    public Grading(int id, int patientId, String type, int gradedId, int grade) {
-        super(id);
+
+    public Grading(Integer id, int patientId, String type, int gradedId, int grade) {
+        this.id = id;
         this.patientId = patientId;
         this.type = type;
         this.gradedId = gradedId;
         this.grade = grade;
     }
 
-    public Grading(int patientId, String type, int gradedId, int grade) {
-        this.patientId = patientId;
-        this.type = type;
-        this.gradedId = gradedId;
-        this.grade = grade;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getPatientId() {
