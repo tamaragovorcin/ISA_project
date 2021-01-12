@@ -1,9 +1,10 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.isaproject.isaproject.Model.Users.Patient;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Complaint {
@@ -14,8 +15,9 @@ public class Complaint {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "patientId", nullable = false)
-    private int patientId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Patient patient;
 
 
     @Column(name = "subject", nullable = false)
@@ -40,14 +42,21 @@ public class Complaint {
     public Complaint() {
     }
 
-    public Complaint(Integer id, int patientId, String subject, int subjectId, boolean answered, String massage, String answer) {
+    public Complaint(Integer id, Set<Patient> patients, String subject, int subjectId, boolean answered, String massage, String answer) {
         this.id = id;
-        this.patientId = patientId;
         this.subject = subject;
         this.subjectId = subjectId;
         this.answered = answered;
         this.massage = massage;
         this.answer = answer;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
     public Integer getId() {
@@ -58,13 +67,7 @@ public class Complaint {
         this.id = id;
     }
 
-    public int getPatientId() {
-        return patientId;
-    }
 
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
-    }
 
     public String getSubject() {
         return subject;

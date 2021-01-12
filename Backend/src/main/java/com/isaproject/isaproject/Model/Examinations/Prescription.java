@@ -1,10 +1,15 @@
 package com.isaproject.isaproject.Model.Examinations;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
+
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 public class Prescription {
 
@@ -14,13 +19,16 @@ public class Prescription {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "patientId", nullable = false)
-    private int patientId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Patient patient;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Pharmacy pharmacy;
 
-    @Column(name = "pharmacyId", nullable = false)
-    private int pharmacyId;
-
+    @ManyToMany(mappedBy = "prescriptions")
+    private Set<Medication> medications = new HashSet<Medication>();
 
     @Column(name = "date", nullable = false)
     private LocalDate date;
@@ -40,14 +48,21 @@ public class Prescription {
     public Prescription() {
     }
 
-    public Prescription(Integer id, int patientId, int pharmacyId, LocalDate date, Boolean taken, String information, double durationOfTherapy) {
+    public Prescription(Integer id, Patient patient, Pharmacist pharmacist, LocalDate date, Boolean taken, String information, double durationOfTherapy) {
         this.id = id;
-        this.patientId = patientId;
-        this.pharmacyId = pharmacyId;
+        this.patient = patient;
         this.date = date;
         this.taken = taken;
         this.information = information;
         this.durationOfTherapy = durationOfTherapy;
+    }
+
+    public Set<Medication> getMedications() {
+        return medications;
+    }
+
+    public void setMedications(Set<Medication> medications) {
+        this.medications = medications;
     }
 
     public Integer getId() {
@@ -58,20 +73,21 @@ public class Prescription {
         this.id = id;
     }
 
-    public int getPatientId() {
-        return patientId;
+
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
-    public int getPharmacyId() {
-        return pharmacyId;
+    public Pharmacy getPharmacy() {
+        return pharmacy;
     }
 
-    public void setPharmacyId(int pharmacyId) {
-        this.pharmacyId = pharmacyId;
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
     }
 
     public LocalDate getDate() {

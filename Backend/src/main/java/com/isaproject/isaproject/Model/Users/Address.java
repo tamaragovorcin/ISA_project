@@ -48,8 +48,7 @@ public class Address {
         this.country = country;
     }
 
-    public Address() {
-    }
+    public Address() {}
 
     public Set<Pharmacy> getPharmacies() {
         return pharmacies;

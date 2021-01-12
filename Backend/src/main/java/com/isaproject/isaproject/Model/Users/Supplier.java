@@ -9,7 +9,5 @@ import javax.persistence.Entity;
 @DiscriminatorValue("Supplier")
 public class Supplier extends PersonUser{
 
-
-    public Supplier() {
-    }
+    public Supplier() {}
 }

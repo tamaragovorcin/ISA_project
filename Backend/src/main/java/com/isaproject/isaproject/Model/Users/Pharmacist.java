@@ -1,5 +1,6 @@
 package com.isaproject.isaproject.Model.Users;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,7 +11,7 @@ import java.util.Set;
 //objekte ove klase
 
 @Entity
-@DiscriminatorValue("pharmacist")
+@DiscriminatorValue("Pharmacist")
 public class Pharmacist extends  PersonUser implements Serializable {
 
     @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -19,6 +20,11 @@ public class Pharmacist extends  PersonUser implements Serializable {
 
     @Column(name = "markPharmacist", nullable = true)
     private double markPharmacist;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_Pharmacist", referencedColumnName = "id", nullable = true, unique = false)
+    private Pharmacy pharmacy;
+
 
     public Set<Consulting> getConsulting() {
         return consulting;
@@ -34,7 +40,14 @@ public class Pharmacist extends  PersonUser implements Serializable {
         this.markPharmacist = markPharmacist;
     }
 
-    public Pharmacist() {
+    public Pharmacist() { }
+
+    public Pharmacy getPharmacy() {
+        return pharmacy;
+    }
+
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
     }
 
     public double getMarkPharmacist() {

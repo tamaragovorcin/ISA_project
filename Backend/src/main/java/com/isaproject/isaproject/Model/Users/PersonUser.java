@@ -7,9 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="person_user")
-// ovom anotacijom se naglasava tip mapiranja "jedna tabela po hijerarhiji"
 @Inheritance(strategy=SINGLE_TABLE)
-// ovom anotacijom se navodi diskriminatorska kolona
 @DiscriminatorColumn(name="type", discriminatorType=STRING)
 
 public class PersonUser {

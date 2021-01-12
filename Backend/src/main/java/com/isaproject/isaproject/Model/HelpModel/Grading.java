@@ -1,21 +1,20 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.isaproject.isaproject.Model.Users.Patient;
+
+import javax.persistence.*;
 
 @Entity
 public class Grading  {
-
 
     @Id
     @GeneratedValue
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "patientId", nullable = false)
-    private int patientId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Patient patient;
 
 
     @Column(name = "type", nullable = false)
@@ -34,7 +33,6 @@ public class Grading  {
 
     public Grading(Integer id, int patientId, String type, int gradedId, int grade) {
         this.id = id;
-        this.patientId = patientId;
         this.type = type;
         this.gradedId = gradedId;
         this.grade = grade;
@@ -48,12 +46,12 @@ public class Grading  {
         this.id = id;
     }
 
-    public int getPatientId() {
-        return patientId;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
     public String getType() {

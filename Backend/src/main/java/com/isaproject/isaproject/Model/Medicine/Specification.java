@@ -11,9 +11,6 @@ public class Specification {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "medicationId", nullable = false)
-    private int medicationId;
-
 
     @Column(name = "contraIndications", nullable = false)
     private String contraIndications;
@@ -36,7 +33,6 @@ public class Specification {
 
     public Specification(Integer id, int medicationId, String contraIndications, String structure, String recommendedConsumption, String manufacturer) {
         this.id = id;
-        this.medicationId = medicationId;
         this.contraIndications = contraIndications;
         this.structure = structure;
         this.recommendedConsumption = recommendedConsumption;
@@ -51,13 +47,6 @@ public class Specification {
         this.id = id;
     }
 
-    public int getMedicationId() {
-        return medicationId;
-    }
-
-    public void setMedicationId(int medicationId) {
-        this.medicationId = medicationId;
-    }
 
     public String getContraIndications() {
         return contraIndications;

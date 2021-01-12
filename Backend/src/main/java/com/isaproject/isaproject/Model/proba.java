@@ -1,15 +1,17 @@
 package com.isaproject.isaproject.Model;
 
 
-import com.isaproject.isaproject.Model.Examinations.Consulting;
-import com.isaproject.isaproject.Model.Examinations.Examination;
-import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
+import com.isaproject.isaproject.Model.Examinations.*;
+import com.isaproject.isaproject.Model.HelpModel.Complaint;
+import com.isaproject.isaproject.Model.HelpModel.Grading;
+import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
+import com.isaproject.isaproject.Model.HelpModel.Subscription;
+import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Medicine.Specification;
 import com.isaproject.isaproject.Model.Pharmacy.Actions;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
-import com.isaproject.isaproject.Model.Users.Address;
-import com.isaproject.isaproject.Model.Users.Dermatologist;
-import com.isaproject.isaproject.Model.Users.Patient;
-import com.isaproject.isaproject.Model.Users.Pharmacist;
+import com.isaproject.isaproject.Model.Users.*;
+import org.apache.tomcat.jni.Local;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -31,12 +33,6 @@ public class proba {
 
         EntityManager manager = factory.createEntityManager();
 
-        Actions actions = new Actions();
-        actions.setDescription("opisssss");
-        actions.setExpiryDate(LocalDate.now());
-        actions.setDescription("opis drugi neki");
-
-
         Address address = new Address();
         address.setCountry("Serbia");
         address.setNumber(2);
@@ -44,7 +40,12 @@ public class proba {
         address.setTown("Novi Sad");
         address.setPostalCode(21000);
 
-
+        Address address2 = new Address();
+        address2.setCountry("Serbia");
+        address2.setNumber(2);
+        address2.setStreet("Pavla Simica");
+        address2.setTown("Beograd");
+        address2.setPostalCode(21000);
 
         Patient patient = new Patient();
         patient.setAddress(address);
@@ -59,6 +60,40 @@ public class proba {
         patient.setPhoneNumber("0652610775");
         patient.setSurname("Zivkovic");
 
+
+        Grading grading = new Grading();
+        grading.setPatient(patient);
+        grading.setGrade(5);
+        grading.setType("pharmacy");
+        grading.setGradedId(4);
+
+
+        Pharmacy pharmacy = new Pharmacy();
+        pharmacy.setPharmacyName("Apoteka");
+        pharmacy.setAddress(address);
+        pharmacy.setConsultingPrice(50);
+        pharmacy.setMark(5);
+
+
+        Pharmacy pharmacy2 = new Pharmacy();
+        pharmacy2.setPharmacyName("Apoteka   2");
+        pharmacy2.setAddress(address2);
+        pharmacy2.setConsultingPrice(50);
+        pharmacy2.setMark(5);
+
+        Actions action1 = new Actions();
+        action1.setDescription("Akcija");
+        action1.setExpiryDate(LocalDate.now());
+        action1.setDescription("Akcija za panadol");
+        action1.setPharmacy(pharmacy);
+
+
+        Actions action2 = new Actions();
+        action2.setDescription("Akcija 22");
+        action2.setExpiryDate(LocalDate.now());
+        action2.setDescription("Akcija za brufen");
+        action2.setPharmacy(pharmacy2);
+
         Pharmacist pharmacist = new Pharmacist();
         pharmacist.setAddress(address);
         pharmacist.setFirstLogged(true);
@@ -68,6 +103,7 @@ public class proba {
         pharmacist.setPhoneNumber("0652610775");
         pharmacist.setSurname("Zivkovic");
         pharmacist.setMarkPharmacist(5);
+        pharmacist.setPharmacy(pharmacy);
 
 
         Consulting consulting = new Consulting();
@@ -91,12 +127,11 @@ public class proba {
         dermatologist.setSurname("Zivkovic");
         dermatologist.setMarkDermatologist(5);
 
+        Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
+        pharmacies.add(pharmacy);
+        pharmacies.add(pharmacy2);
+        dermatologist.setPharmacies(pharmacies);
 
-        Pharmacy pharmacy = new Pharmacy();
-        pharmacy.setPharmacyName("Apoteka");
-        pharmacy.setAddress(address);
-        pharmacy.setConsultingPrice(50);
-        pharmacy.setMark(5);
 
         ExaminationSchedule examinationSchedule = new ExaminationSchedule();
         examinationSchedule.setDermatologist(dermatologist);
@@ -113,6 +148,136 @@ public class proba {
         examination.setInformation("bjsyfsje");
         examination.setExaminationSchedule(examinationSchedule);
 
+        Complaint complaint = new Complaint();
+        complaint.setAnswer("Answer");
+        complaint.setPatient(patient);
+        complaint.setMassage("Message");
+        complaint.setSubject("pharmacist");
+        complaint.setSubjectId(1);
+        complaint.setAnswered(true);
+
+        Specification specification = new Specification();
+        specification.setContraIndications("Bol");
+        specification.setManufacturer("Proizvodjac");
+        specification.setStructure("Tableta");
+        specification.setRecommendedConsumption("2 puta dnevno");
+
+        Medication medication = new Medication();
+        medication.setName("Brufen");
+        medication.setCode(854625689);
+        medication.setForm("Tableta");
+        medication.setMark(5);
+        medication.setType("type1");
+        medication.setIssuanceRegime("Rezim");
+        medication.setLoyaltyPoints(54);
+        medication.setSpecification(specification);
+
+        Specification specification2 = new Specification();
+        specification2.setContraIndications("Svrab");
+        specification2.setManufacturer("Proizvodjac");
+        specification2.setStructure("Pilula");
+        specification2.setRecommendedConsumption("2 puta nedeljno");
+
+        Medication medication2 = new Medication();
+        medication2.setName("Andol");
+        medication2.setCode(89465);
+        medication2.setForm("Tableta");
+        medication2.setMark(5);
+        medication2.setType("type2");
+        medication2.setIssuanceRegime("Rezim2");
+        medication2.setLoyaltyPoints(100);
+        medication2.setSpecification(specification2);
+
+
+        Specification specification3 = new Specification();
+        specification3.setContraIndications("Glavobolja");
+        specification3.setManufacturer("Proizvodjac");
+        specification3.setStructure("Sprej");
+        specification3.setRecommendedConsumption("2 puta mesecno");
+
+        Medication medication3 = new Medication();
+        medication3.setName("Aspirin");
+        medication3.setCode(4234324);
+        medication3.setForm("Pilula");
+        medication3.setMark(4);
+        medication3.setType("type2");
+        medication3.setIssuanceRegime("Rezim3");
+        medication3.setLoyaltyPoints(100);
+        medication3.setSpecification(specification3);
+
+        Set<Medication> medicationsAlternatives = new HashSet<Medication>();
+        medicationsAlternatives.add(medication);
+        medicationsAlternatives.add(medication2);
+
+        medication3.setMedications(medicationsAlternatives);
+
+        Set<Medication> medications = new HashSet<Medication>();
+        medications.add(medication);
+        medications.add(medication2);
+
+
+        Set<Medication> medications2 = new HashSet<Medication>();
+        medications2.add(medication);
+        medications2.add(medication3);
+
+
+        //APOTEKA
+        pharmacy.setMedications(medications);
+        pharmacy2.setMedications(medications2);
+
+        EPrescription eprescription = new EPrescription();
+        eprescription.setPatient(patient);
+        eprescription.setDate(LocalDate.now());
+        eprescription.setCode(78465231);
+        eprescription.setStatus("zavrsen");
+        eprescription.setMedications(medications);
+
+        Prescription prescription = new Prescription();
+        prescription.setMedications(medications);
+        prescription.setPatient(patient);
+        prescription.setTaken(true);
+        prescription.setDurationOfTherapy(5);
+        prescription.setDate(LocalDate.now());
+        prescription.setInformation("Information");
+        prescription.setPharmacy(pharmacy);
+
+        Subscription subscription = new Subscription();
+        subscription.setPatient(patient);
+        subscription.setPharmacy(pharmacy);
+        subscription.setSubscribed(true);
+
+        Subscription subscription2 = new Subscription();
+        subscription2.setPatient(patient);
+        subscription2.setPharmacy(pharmacy2);
+        subscription2.setSubscribed(false);
+
+
+        PatientsMedicationAlergy patientsMedicationAlergy = new PatientsMedicationAlergy();
+        patientsMedicationAlergy.setPatient(patient);
+        patientsMedicationAlergy.setMedication(medication);
+        patientsMedicationAlergy.setDescription("Pain");
+
+
+        PharmacyAdmin pharmacyAdmin = new PharmacyAdmin();
+        pharmacyAdmin.setAddress(address);
+        pharmacyAdmin.setFirstLogged(true);
+        pharmacyAdmin.setName("Pera");
+        pharmacyAdmin.setPassword("pera");
+        pharmacyAdmin.setEmail("pera@gmail.com");
+        pharmacyAdmin.setPhoneNumber("43435");
+        pharmacyAdmin.setSurname("Peric");
+        pharmacyAdmin.setPharmacy(pharmacy);
+
+
+        PharmacyAdmin pharmacyAdmin2 = new PharmacyAdmin();
+        pharmacyAdmin2.setAddress(address);
+        pharmacyAdmin2.setFirstLogged(true);
+        pharmacyAdmin2.setName("Zika");
+        pharmacyAdmin2.setPassword("zika");
+        pharmacyAdmin2.setEmail("zika@gmail.com");
+        pharmacyAdmin2.setPhoneNumber("43435");
+        pharmacyAdmin2.setSurname("Zikic");
+        pharmacyAdmin2.setPharmacy(pharmacy);
 
 
 
@@ -120,14 +285,37 @@ public class proba {
 
         manager.getTransaction().begin();
         manager.persist(address);
+        manager.persist(address2);
+
+        manager.persist(pharmacy);
+        manager.persist(pharmacy2);
+
+        manager.persist(action1);
+        manager.persist(action2);
         manager.persist(patient);
+        manager.persist(grading);
+
         manager.persist(pharmacist);
         manager.persist(dermatologist);
         manager.persist(consulting);
-        manager.persist(pharmacy);
+
         manager.persist(examinationSchedule);
         manager.persist(examination);
-        manager.persist(actions);
+        manager.persist(complaint);
+        manager.persist(specification);
+        manager.persist(specification2);
+        manager.persist(specification3);
+        manager.persist(medication);
+        manager.persist(medication2);
+        manager.persist(medication3);
+        manager.persist(eprescription);
+        manager.persist(prescription);
+        manager.persist(subscription);
+        manager.persist(subscription2);
+
+        manager.persist(patientsMedicationAlergy);
+        manager.persist(pharmacyAdmin);
+        manager.persist(pharmacyAdmin2);
         manager.getTransaction().commit();
 
         manager.close();

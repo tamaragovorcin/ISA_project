@@ -13,9 +13,9 @@ public class Actions{
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "pharmacyId", nullable = true)
-    private int pharmacyId;
-
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Pharmacy pharmacy;
 
     @Column(name = "description", nullable = true)
     private String description;
@@ -24,12 +24,10 @@ public class Actions{
     @Column(name = "expiryDate", nullable = true)
     private LocalDate expiryDate;
 
-    public Actions() {
-    }
+    public Actions() {}
 
     public Actions(Integer id, int pharmacyId, String description, LocalDate expiryDate) {
         this.id = id;
-        this.pharmacyId = pharmacyId;
         this.description = description;
         this.expiryDate = expiryDate;
     }
@@ -42,12 +40,12 @@ public class Actions{
         this.id = id;
     }
 
-    public int getPharmacyId() {
-        return pharmacyId;
+    public Pharmacy getPharmacy() {
+        return pharmacy;
     }
 
-    public void setPharmacyId(int pharmacyId) {
-        this.pharmacyId = pharmacyId;
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
     }
 
     public String getDescription() {

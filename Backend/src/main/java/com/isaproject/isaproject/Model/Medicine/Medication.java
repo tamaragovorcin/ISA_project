@@ -1,9 +1,13 @@
 package com.isaproject.isaproject.Model.Medicine;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.isaproject.isaproject.Model.Examinations.EPrescription;
+import com.isaproject.isaproject.Model.Examinations.Prescription;
+import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Medication  {
@@ -12,38 +16,59 @@ public class Medication  {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = true)
     private String name;
 
 
-    @Column(name = "code", nullable = false)
+    @Column(name = "code", unique=true, nullable = true)
     private long code;
 
 
-    @Column(name = "form", nullable = false)
+    @Column(name = "form", nullable = true)
     private String form;
 
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = true)
     private String type;
 
 
-    @Column(name = "issuanceRegime", nullable = false)
+    @Column(name = "issuanceRegime", nullable = true)
     private String issuanceRegime;//rezim upotrebe
 
 
-    @Column(name = "mark", nullable = false)
+    @Column(name = "mark", nullable = true)
     private double mark;
 
 
-    @Column(name = "loyaltyPoints", nullable = false)
+    @Column(name = "loyaltyPoints", nullable = true)
     private double loyaltyPoints;
 
 
+    @ManyToMany
+    @JoinTable(name = "eprescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "eprescription_id", referencedColumnName = "id"))
+    private Set<EPrescription> ePrescriptions = new HashSet<EPrescription>();
 
 
-    public Medication() {
-    }
+    @ManyToMany
+    @JoinTable(name = "prescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
+    private Set<Prescription> prescriptions = new HashSet<Prescription>();
+
+
+    @ManyToMany
+    @JoinTable(name = "medications_alternatives", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "medication_alternative_id", referencedColumnName = "id"))
+    private Set<Medication> medications = new HashSet<Medication>();
+
+    @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
+
+    @OneToOne
+    @JoinColumn(name = "specification_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Specification specification;
+
+    @ManyToMany(mappedBy = "medications")
+    private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
+
+    public Medication() {}
 
     public Medication(Integer id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints) {
         this.id = id;
@@ -56,8 +81,56 @@ public class Medication  {
         this.loyaltyPoints = loyaltyPoints;
     }
 
+    public Specification getSpecification() {
+        return specification;
+    }
+
+    public void setSpecification(Specification specification) {
+        this.specification = specification;
+    }
+
+    public Set<Pharmacy> getPharmacies() {
+        return pharmacies;
+    }
+
+    public void setPharmacies(Set<Pharmacy> pharmacies) {
+        this.pharmacies = pharmacies;
+    }
+
+    public Set<PatientsMedicationAlergy> getPatientsMedicationAlergy() {
+        return patientsMedicationAlergy;
+    }
+
+    public void setPatientsMedicationAlergy(Set<PatientsMedicationAlergy> patientsMedicationAlergy) {
+        this.patientsMedicationAlergy = patientsMedicationAlergy;
+    }
+
+    public Set<Medication> getMedications() {
+        return medications;
+    }
+
+    public void setMedications(Set<Medication> medications) {
+        this.medications = medications;
+    }
+
+    public Set<Prescription> getPrescriptions() {
+        return prescriptions;
+    }
+
+    public void setPrescriptions(Set<Prescription> prescriptions) {
+        this.prescriptions = prescriptions;
+    }
+
     public Integer getId() {
         return id;
+    }
+
+    public Set<EPrescription> getePrescriptions() {
+        return ePrescriptions;
+    }
+
+    public void setePrescriptions(Set<EPrescription> ePrescriptions) {
+        this.ePrescriptions = ePrescriptions;
     }
 
     public void setId(Integer id) {
