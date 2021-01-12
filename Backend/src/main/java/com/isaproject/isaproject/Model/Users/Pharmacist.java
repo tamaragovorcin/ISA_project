@@ -1,6 +1,8 @@
 package com.isaproject.isaproject.Model.Users;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
+import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,6 +19,9 @@ public class Pharmacist extends  PersonUser implements Serializable {
     @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Consulting> consulting = new HashSet<Consulting>();
 
+
+    @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<HolidaySchedulePharmacist> holidaySchedulePharmacists = new HashSet<HolidaySchedulePharmacist>();
 
     @Column(name = "markPharmacist", nullable = true)
     private double markPharmacist;

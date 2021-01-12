@@ -14,19 +14,19 @@ public class MedicationInOffer  {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "medicationCode", nullable = false)
+    @Column(name = "medicationCode", nullable = true)
     private long medicationCode;
 
 
-    @Column(name = "price", nullable = false)
+    @Column(name = "price", nullable = true)
     private double price;
 
 
-    @Column(name = "quantity", nullable = false)
+    @Column(name = "quantity", nullable = true)
     private int quantity;
 
 
-    @Column(name = "offerId", nullable = false)
+    @Column(name = "offerId", nullable = true)
     private int offerId;
 
     public MedicationInOffer() {

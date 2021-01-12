@@ -5,10 +5,7 @@ import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Examinations.Examination;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
-import com.isaproject.isaproject.Model.HelpModel.Complaint;
-import com.isaproject.isaproject.Model.HelpModel.Grading;
-import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
-import com.isaproject.isaproject.Model.HelpModel.Subscription;
+import com.isaproject.isaproject.Model.HelpModel.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -47,6 +44,9 @@ public class Patient extends PersonUser implements Serializable {
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
 
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MedicationReservation> medicationReservations = new HashSet<MedicationReservation>();
+
     @Column(name = "penalties", nullable = true)
     private int penalties;
 
@@ -78,6 +78,14 @@ public class Patient extends PersonUser implements Serializable {
         this.points = points;
         this.loyaltyCategory = loyaltyCategory;
         this.discount = discount;
+    }
+
+    public Set<MedicationReservation> getMedicationReservations() {
+        return medicationReservations;
+    }
+
+    public void setMedicationReservations(Set<MedicationReservation> medicationReservations) {
+        this.medicationReservations = medicationReservations;
     }
 
     public Set<PatientsMedicationAlergy> getPatientsMedicationAlergy() {

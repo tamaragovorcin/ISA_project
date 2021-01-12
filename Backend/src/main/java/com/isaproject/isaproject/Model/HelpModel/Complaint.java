@@ -20,23 +20,23 @@ public class Complaint {
     private Patient patient;
 
 
-    @Column(name = "subject", nullable = false)
+    @Column(name = "subject", nullable = true)
     private String subject;//na sta se zali
 
 
-    @Column(name = "subjectId", nullable = false)
+    @Column(name = "subjectId", nullable = true)
     private int subjectId;
 
 
-    @Column(name = "answered", nullable = false)
+    @Column(name = "answered", nullable = true)
     private boolean answered;
 
 
-    @Column(name = "massage", nullable = false)
+    @Column(name = "massage", nullable = true)
     private String massage;
 
 
-    @Column(name = "answer", nullable = false)
+    @Column(name = "answer", nullable = true)
     private String answer;
 
     public Complaint() {

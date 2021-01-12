@@ -1,8 +1,14 @@
 package com.isaproject.isaproject.Model.Orders;
 
+import com.isaproject.isaproject.Model.Examinations.EPrescription;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 
@@ -14,12 +20,14 @@ public class Order  {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "pharmacyId", nullable = false)
-    private int pharmacyId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Pharmacy pharmacy;
 
 
-    @Column(name = "adminId", nullable = false)
-    private int adminId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "admin_id", referencedColumnName = "id", nullable = false, unique = false)
+    private PharmacyAdmin pharmacyAdmin;
 
 
     @Column(name = "date", nullable = false)
@@ -29,15 +37,34 @@ public class Order  {
     @Column(name = "status", nullable = false)
     private String status;
 
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Offer> offer = new HashSet<Offer>();
+
     public Order() {
     }
 
-    public Order(Integer id, int pharmacyId, int adminId, LocalDate date, String status) {
-        this.id = id;
-        this.pharmacyId = pharmacyId;
-        this.adminId = adminId;
-        this.date = date;
-        this.status = status;
+    public PharmacyAdmin getPharmacyAdmin() {
+        return pharmacyAdmin;
+    }
+
+    public void setPharmacyAdmin(PharmacyAdmin pharmacyAdmin) {
+        this.pharmacyAdmin = pharmacyAdmin;
+    }
+
+    public Pharmacy getPharmacy() {
+        return pharmacy;
+    }
+
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
+    }
+
+    public Set<Offer> getOffer() {
+        return offer;
+    }
+
+    public void setOffer(Set<Offer> offer) {
+        this.offer = offer;
     }
 
     public Integer getId() {
@@ -46,22 +73,6 @@ public class Order  {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getPharmacyId() {
-        return pharmacyId;
-    }
-
-    public void setPharmacyId(int pharmacyId) {
-        this.pharmacyId = pharmacyId;
-    }
-
-    public int getAdminId() {
-        return adminId;
-    }
-
-    public void setAdminId(int adminId) {
-        this.adminId = adminId;
     }
 
     public LocalDate getDate() {

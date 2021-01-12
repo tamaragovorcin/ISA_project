@@ -1,9 +1,9 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 @Entity
 public class MedicationPrice {
@@ -14,30 +14,31 @@ public class MedicationPrice {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "medicineCode", nullable = false)
+    @Column(name = "medicineCode", nullable = true)
     private long medicineCode;
 
 
-    @Column(name = "price", nullable = false)
+    @Column(name = "price", nullable = true)
     private double price;
 
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date", nullable = true)
     private LocalDate date;
 
 
-    @Column(name = "pharmacyId", nullable = false)
-    private int pharmacyId;
+    @OneToOne
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = true, unique = false)
+    private Pharmacy pharmacy;
 
     public MedicationPrice() {
     }
 
-    public MedicationPrice(Integer id, long medicineCode, double price, LocalDate date, int pharmacyId) {
-        this.id = id;
-        this.medicineCode = medicineCode;
-        this.price = price;
-        this.date = date;
-        this.pharmacyId = pharmacyId;
+    public Pharmacy getPharmacy() {
+        return pharmacy;
+    }
+
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
     }
 
     public Integer getId() {
@@ -72,11 +73,4 @@ public class MedicationPrice {
         this.date = date;
     }
 
-    public int getPharmacyId() {
-        return pharmacyId;
-    }
-
-    public void setPharmacyId(int pharmacyId) {
-        this.pharmacyId = pharmacyId;
-    }
 }

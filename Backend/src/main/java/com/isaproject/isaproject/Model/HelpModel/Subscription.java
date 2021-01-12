@@ -22,7 +22,7 @@ public class Subscription {
     private Pharmacy pharmacy;
 
 
-    @Column(name = "subscribed", nullable = false)
+    @Column(name = "subscribed", nullable = true)
     private Boolean subscribed;
 
     public Subscription() {

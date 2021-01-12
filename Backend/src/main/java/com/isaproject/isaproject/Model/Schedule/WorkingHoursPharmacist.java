@@ -13,19 +13,19 @@ public class WorkingHoursPharmacist {
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date", nullable = true)
     private LocalDate date;
 
 
-    @Column(name = "pharmacistId", nullable = false)
+    @Column(name = "pharmacistId", nullable = true)
     private int pharmacistId;
 
 
-    @Column(name = "startTime", nullable = false)
+    @Column(name = "startTime", nullable = true)
     private LocalTime startTime;
 
 
-    @Column(name = "endTime", nullable = false)
+    @Column(name = "endTime", nullable = true)
     private LocalTime endTime;
 
     public WorkingHoursPharmacist() {

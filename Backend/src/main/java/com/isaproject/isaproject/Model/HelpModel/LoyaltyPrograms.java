@@ -14,35 +14,35 @@ public class LoyaltyPrograms {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "consultingPoints", nullable = false)
+    @Column(name = "consultingPoints", nullable = true)
     private double consultingPoints;
 
 
-    @Column(name = "examinationPoints", nullable = false)
+    @Column(name = "examinationPoints", nullable = true)
     private double examinationPoints;
 
 
-    @Column(name = "regularLimit", nullable = false)
+    @Column(name = "regularLimit", nullable = true)
     private double regularLimit;
 
 
-    @Column(name = "silverLimit", nullable = false)
+    @Column(name = "silverLimit", nullable = true)
     private double silverLimit;
 
 
-    @Column(name = "goldLimit", nullable = false)
+    @Column(name = "goldLimit", nullable = true)
     private double goldLimit;
 
 
-    @Column(name = "regularDiscount", nullable = false)
+    @Column(name = "regularDiscount", nullable = true)
     private double regularDiscount;
 
 
-    @Column(name = "silverDiscount", nullable = false)
+    @Column(name = "silverDiscount", nullable = true)
     private double silverDiscount;
 
 
-    @Column(name = "goldenDiscount", nullable = false)
+    @Column(name = "goldenDiscount", nullable = true)
     private double goldenDiscount;
 
     public LoyaltyPrograms() {

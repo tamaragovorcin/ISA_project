@@ -15,19 +15,19 @@ public class SellingStatistics  {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "medicationCode", nullable = false)
+    @Column(name = "medicationCode", nullable = true)
     private long medicationCode;
 
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date", nullable = true)
     private LocalDate date;
 
 
-    @Column(name = "quantity", nullable = false)
+    @Column(name = "quantity", nullable = true)
     private int quantity;
 
 
-    @Column(name = "price", nullable = false)
+    @Column(name = "price", nullable = true)
     private double price;
 
     public SellingStatistics() {

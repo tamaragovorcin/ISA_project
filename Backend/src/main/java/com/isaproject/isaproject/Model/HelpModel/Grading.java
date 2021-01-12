@@ -17,15 +17,15 @@ public class Grading  {
     private Patient patient;
 
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = true)
     private String type;
 
 
-    @Column(name = "gradedId", nullable = false)
+    @Column(name = "gradedId", nullable = true)
     private int gradedId;
 
 
-    @Column(name = "grade", nullable = false)
+    @Column(name = "grade", nullable = true)
     private int grade;
 
     public Grading() {

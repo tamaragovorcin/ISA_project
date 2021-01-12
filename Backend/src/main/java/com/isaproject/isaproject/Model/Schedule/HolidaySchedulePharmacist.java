@@ -1,9 +1,9 @@
 package com.isaproject.isaproject.Model.Schedule;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.isaproject.isaproject.Model.Users.Dermatologist;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -14,36 +14,37 @@ public class HolidaySchedulePharmacist {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "pharmacistId", nullable = false)
-    private int pharmacistId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacist_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Pharmacist pharmacist;
 
 
-    @Column(name = "startDate", nullable = false)
+
+    @Column(name = "startDate", nullable = true)
     private LocalDate startDate;
 
 
-    @Column(name = "endDate", nullable = false)
+    @Column(name = "endDate", nullable = true)
     private LocalDate endDate;
 
 
-    @Column(name = "approved", nullable = false)
+    @Column(name = "approved", nullable = true)
     private Boolean approved;
 
 
-    @Column(name = "massage", nullable = false)
+    @Column(name = "massage", nullable = true)
     private String massage;
 
     public HolidaySchedulePharmacist() {
         super();
     }
 
-    public HolidaySchedulePharmacist(Integer id, int pharmacistId, LocalDate startDate, LocalDate endDate, Boolean approved, String massage) {
-        this.id = id;
-        this.pharmacistId = pharmacistId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.approved = approved;
-        this.massage = massage;
+    public Pharmacist getPharmacist() {
+        return pharmacist;
+    }
+
+    public void setPharmacist(Pharmacist pharmacist) {
+        this.pharmacist = pharmacist;
     }
 
     public Integer getId() {
@@ -54,13 +55,6 @@ public class HolidaySchedulePharmacist {
         this.id = id;
     }
 
-    public int getPharmacistId() {
-        return pharmacistId;
-    }
-
-    public void setPharmacistId(int pharmacistId) {
-        this.pharmacistId = pharmacistId;
-    }
 
     public LocalDate getStartDate() {
         return startDate;

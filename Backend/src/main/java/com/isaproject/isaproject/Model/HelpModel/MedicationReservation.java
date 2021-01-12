@@ -1,9 +1,10 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -15,50 +16,55 @@ public class MedicationReservation {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "patientsId", nullable = false)
-    private int patientsId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Patient patient;
 
-
-    @Column(name = "medicineCode", nullable = false)
+    @Column(name = "medicineCode", nullable = true)
     private long medicineCode;
 
 
-    @Column(name = "pharmacyId", nullable = false)
-    private int pharmacyId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Pharmacy pharmacy;
 
 
-    @Column(name = "dateOfReservation", nullable = false)
+    @Column(name = "dateOfReservation", nullable = true)
     private LocalDateTime dateOfReservation;
 
 
-    @Column(name = "dateOfTakeOver", nullable = false)
+    @Column(name = "dateOfTakeOver", nullable = true)
     private LocalDateTime dateOfTakeOver;
 
 
-    @Column(name = "collected", nullable = false)
+    @Column(name = "collected", nullable = true)
     private Boolean collected;//da li je preuzet lijek
 
 
-    @Column(name = "reservationCode", nullable = false)
+    @Column(name = "reservationCode", nullable = true)
     private long reservationCode;
 
 
-    @Column(name = "cancelled", nullable = false)
+    @Column(name = "cancelled", nullable = true)
     private Boolean cancelled;
 
     public MedicationReservation() {
     }
 
-    public MedicationReservation(Integer id, int patientsId, long medicineCode, int pharmacyId, LocalDateTime dateOfReservation, LocalDateTime dateOfTakeOver, Boolean collected, long reservationCode, Boolean cancelled) {
-        this.id = id;
-        this.patientsId = patientsId;
-        this.medicineCode = medicineCode;
-        this.pharmacyId = pharmacyId;
-        this.dateOfReservation = dateOfReservation;
-        this.dateOfTakeOver = dateOfTakeOver;
-        this.collected = collected;
-        this.reservationCode = reservationCode;
-        this.cancelled = cancelled;
+    public Pharmacy getPharmacy() {
+        return pharmacy;
+    }
+
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
     public Integer getId() {
@@ -69,13 +75,6 @@ public class MedicationReservation {
         this.id = id;
     }
 
-    public int getPatientsId() {
-        return patientsId;
-    }
-
-    public void setPatientsId(int patientsId) {
-        this.patientsId = patientsId;
-    }
 
     public long getMedicineCode() {
         return medicineCode;
@@ -85,13 +84,6 @@ public class MedicationReservation {
         this.medicineCode = medicineCode;
     }
 
-    public int getPharmacyId() {
-        return pharmacyId;
-    }
-
-    public void setPharmacyId(int pharmacyId) {
-        this.pharmacyId = pharmacyId;
-    }
 
     public LocalDateTime getDateOfReservation() {
         return dateOfReservation;

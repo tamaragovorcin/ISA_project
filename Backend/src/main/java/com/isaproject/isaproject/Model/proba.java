@@ -2,18 +2,20 @@ package com.isaproject.isaproject.Model;
 
 
 import com.isaproject.isaproject.Model.Examinations.*;
-import com.isaproject.isaproject.Model.HelpModel.Complaint;
-import com.isaproject.isaproject.Model.HelpModel.Grading;
-import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
-import com.isaproject.isaproject.Model.HelpModel.Subscription;
+import com.isaproject.isaproject.Model.HelpModel.*;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Medicine.Specification;
+import com.isaproject.isaproject.Model.Orders.Offer;
+import com.isaproject.isaproject.Model.Orders.Order;
 import com.isaproject.isaproject.Model.Pharmacy.Actions;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
+import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
 import com.isaproject.isaproject.Model.Users.*;
 import org.apache.tomcat.jni.Local;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.logging.Level;
@@ -279,6 +281,53 @@ public class proba {
         pharmacyAdmin2.setSurname("Zikic");
         pharmacyAdmin2.setPharmacy(pharmacy);
 
+        MedicationPrice medicationPrice = new MedicationPrice();
+        medicationPrice.setPrice(452.0);
+        medicationPrice.setDate(LocalDate.now());
+        medicationPrice.setPharmacy(pharmacy);
+
+        MedicationReservation medicationReservation =  new MedicationReservation();
+        medicationReservation.setPatient(patient);
+        medicationReservation.setDateOfReservation(LocalDateTime.now());
+        medicationReservation.setCancelled(false);
+        medicationReservation.setCollected(false);
+        medicationReservation.setMedicineCode(1224);
+        medicationReservation.setPharmacy(pharmacy);
+        medicationReservation.setDateOfTakeOver(LocalDateTime.now());
+
+        Set<Offer> offers = new HashSet<Offer>();
+        Set<Order> orders = new HashSet<Order>();
+
+        Set<Consulting> consultings = new HashSet<Consulting>();
+
+        Order order = new Order();
+        order.setPharmacyAdmin(pharmacyAdmin);
+        order.setPharmacy(pharmacy);
+        order.setDate(LocalDate.now());
+        order.setStatus("blabla");
+        order.setOffer(offers);
+
+        Set<Supplier> suppliers = new HashSet<Supplier>();
+        Offer offer = new Offer();
+        offer.setMedications(medications);
+        offer.setDateOfDelivery(LocalDate.now());
+        offer.setSummaryPrice(555);
+        offer.setSuppliers(suppliers);
+        offer.setOrder(order);
+        offer.setConsulting(consultings);
+
+        HolidayScheduleDermatologist holidayScheduleDermatologist = new HolidayScheduleDermatologist();
+        holidayScheduleDermatologist.setDermatologist(dermatologist);
+        holidayScheduleDermatologist.setApproved(false);
+        holidayScheduleDermatologist.setMassage("porukica neka");
+        holidayScheduleDermatologist.setEndDate(LocalDate.now());
+
+        HolidaySchedulePharmacist holidaySchedulePharmacist = new HolidaySchedulePharmacist();
+        holidaySchedulePharmacist.setPharmacist(pharmacist);
+        holidaySchedulePharmacist.setMassage("neka poruka farmaceuta");
+        holidaySchedulePharmacist.setApproved(true);
+        holidaySchedulePharmacist.setEndDate(LocalDate.now());
+
 
 
 
@@ -316,6 +365,14 @@ public class proba {
         manager.persist(patientsMedicationAlergy);
         manager.persist(pharmacyAdmin);
         manager.persist(pharmacyAdmin2);
+        manager.persist(medicationPrice);
+        manager.persist(medicationReservation);
+        manager.persist(order);
+        manager.persist(offer);
+        manager.persist(holidayScheduleDermatologist);
+        manager.persist(holidaySchedulePharmacist);
+
+
         manager.getTransaction().commit();
 
         manager.close();

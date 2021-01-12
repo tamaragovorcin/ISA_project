@@ -12,19 +12,19 @@ public class Specification {
     private Integer id;
 
 
-    @Column(name = "contraIndications", nullable = false)
+    @Column(name = "contraIndications", nullable = true)
     private String contraIndications;
 
 
-    @Column(name = "structure", nullable = false)
+    @Column(name = "structure", nullable = true)
     private String structure;
 
 
-    @Column(name = "recommendedConsumption", nullable = false)
+    @Column(name = "recommendedConsumption", nullable = true)
     private String recommendedConsumption;
 
 
-    @Column(name = "manufacturer", nullable = false)
+    @Column(name = "manufacturer", nullable = true)
     private String manufacturer;
 
 

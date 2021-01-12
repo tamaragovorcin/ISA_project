@@ -3,7 +3,9 @@ package com.isaproject.isaproject.Model.Medicine;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
 import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
+import com.isaproject.isaproject.Model.Orders.Offer;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -48,6 +50,9 @@ public class Medication  {
     @JoinTable(name = "eprescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "eprescription_id", referencedColumnName = "id"))
     private Set<EPrescription> ePrescriptions = new HashSet<EPrescription>();
 
+    @ManyToMany
+    @JoinTable(name = "offer_medication", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "offer_id", referencedColumnName = "id"))
+    private Set<Offer> offer = new HashSet<Offer>();
 
     @ManyToMany
     @JoinTable(name = "prescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
@@ -79,6 +84,14 @@ public class Medication  {
         this.issuanceRegime = issuanceRegime;
         this.mark = mark;
         this.loyaltyPoints = loyaltyPoints;
+    }
+
+    public Set<Offer> getOffer() {
+        return offer;
+    }
+
+    public void setOffer(Set<Offer> offer) {
+        this.offer = offer;
     }
 
     public Specification getSpecification() {

@@ -21,7 +21,7 @@ public class PatientsMedicationAlergy {
     @JoinColumn(name = "medication_id", referencedColumnName = "id", nullable = false, unique = false)
     private Medication medication;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = true)
     private String description;
 
 
