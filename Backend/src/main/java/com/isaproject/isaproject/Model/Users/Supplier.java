@@ -1,14 +1,22 @@
 package com.isaproject.isaproject.Model.Users;
+import com.isaproject.isaproject.Model.Orders.Offer;
 
-public class Supplier extends User{
-    public Supplier() {
-    }
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
-    public Supplier(int id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country) {
-        super(id, name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
-    }
+//ovom anotacijom se navodi vrednost diskriminatorske kolone koja vazi za
+//objekte ove klase
 
-    public Supplier(String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country) {
-        super(name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
-    }
+@Entity
+@DiscriminatorValue("Supplier")
+public class Supplier extends PersonUser{
+
+    @ManyToMany
+    @JoinTable(name = "offer_table", joinColumns = @JoinColumn(name = "offer_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "supplier_id", referencedColumnName = "id"))
+    private Set<Offer> offer = new HashSet<Offer>();
+
+    public Supplier() {}
+
+
 }

@@ -1,49 +1,78 @@
 package com.isaproject.isaproject.Model.Orders;
 
-import com.isaproject.isaproject.Model.Entity;
+import com.isaproject.isaproject.Model.Examinations.EPrescription;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-public class Order extends Entity {
-    private int pharmacyId;
-    private int adminId;
+@Entity
+
+@Table(name="order_table")
+public class Order  {
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Pharmacy pharmacy;
+
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "admin_id", referencedColumnName = "id", nullable = false, unique = false)
+    private PharmacyAdmin pharmacyAdmin;
+
+
+    @Column(name = "date", nullable = false)
     private LocalDate date;
+
+
+    @Column(name = "status", nullable = false)
     private String status;
 
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Offer> offer = new HashSet<Offer>();
+
     public Order() {
-        super();
     }
 
-    public Order(int id, int pharmacyId, int adminId, LocalDate date, String status) {
-        super(id);
-        this.pharmacyId = pharmacyId;
-        this.adminId = adminId;
-        this.date = date;
-        this.status = status;
+    public PharmacyAdmin getPharmacyAdmin() {
+        return pharmacyAdmin;
     }
 
-    public Order(int pharmacyId, int adminId, LocalDate date, String status) {
-        this.pharmacyId = pharmacyId;
-        this.adminId = adminId;
-        this.date = date;
-        this.status = status;
+    public void setPharmacyAdmin(PharmacyAdmin pharmacyAdmin) {
+        this.pharmacyAdmin = pharmacyAdmin;
     }
 
-    public int getPharmacyId() {
-        return pharmacyId;
+    public Pharmacy getPharmacy() {
+        return pharmacy;
     }
 
-    public void setPharmacyId(int pharmacyId) {
-        this.pharmacyId = pharmacyId;
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
     }
 
-    public int getAdminId() {
-        return adminId;
+    public Set<Offer> getOffer() {
+        return offer;
     }
 
-    public void setAdminId(int adminId) {
-        this.adminId = adminId;
+    public void setOffer(Set<Offer> offer) {
+        this.offer = offer;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public LocalDate getDate() {

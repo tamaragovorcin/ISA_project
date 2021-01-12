@@ -1,14 +1,11 @@
 package com.isaproject.isaproject.Model.Users;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
-public class SystemAdmin extends User{
-    public SystemAdmin() {
-    }
 
-    public SystemAdmin(int id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country) {
-        super(id, name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
-    }
+@Entity
+@DiscriminatorValue("SystemAdmin")
+public class SystemAdmin extends PersonUser{
 
-    public SystemAdmin(String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country) {
-        super(name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
-    }
+    public SystemAdmin() {}
 }

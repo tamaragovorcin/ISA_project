@@ -1,45 +1,60 @@
 package com.isaproject.isaproject.Model.Schedule;
 
-import com.isaproject.isaproject.Model.Entity;
+import com.isaproject.isaproject.Model.Users.Dermatologist;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class HolidayScheduleDermatologist extends Entity {
-    private int dermatologistsId;
+@Entity
+public class HolidayScheduleDermatologist {
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "dermatologist_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Dermatologist dermatologist;
+
+
+    @Column(name = "startDate", nullable = true)
     private LocalDate startDate;
+
+
+    @Column(name = "endDate", nullable = true)
     private LocalDate endDate;
+
+
+    @Column(name = "approved", nullable = true)
     private Boolean approved;
+
+
+    @Column(name = "massage", nullable = true)
     private String massage;
 
     public HolidayScheduleDermatologist() {
         super();
     }
-    public HolidayScheduleDermatologist(int id, int dermatologistsId, LocalDate startDate, LocalDate endDate, Boolean approved, String massage) {
-        super(id);
-        this.dermatologistsId = dermatologistsId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.approved = approved;
-        this.massage = massage;
+
+    public Dermatologist getDermatologist() {
+        return dermatologist;
     }
 
-    public HolidayScheduleDermatologist(int dermatologistsId, LocalDate startDate, LocalDate endDate, Boolean approved, String massage) {
-        this.dermatologistsId = dermatologistsId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.approved = approved;
-        this.massage = massage;
-
+    public void setDermatologist(Dermatologist dermatologist) {
+        this.dermatologist = dermatologist;
     }
 
-    public int getDermatologistsId() {
-        return dermatologistsId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setDermatologistsId(int dermatologistsId) {
-        this.dermatologistsId = dermatologistsId;
+    public void setId(Integer id) {
+        this.id = id;
     }
+
+
 
     public LocalDate getStartDate() {
         return startDate;

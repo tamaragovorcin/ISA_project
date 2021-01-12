@@ -1,32 +1,52 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
-import com.isaproject.isaproject.Model.Entity;
+import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 
+import javax.persistence.*;
 import java.time.LocalDate;
+@Entity
+public class MedicationPrice {
 
-public class MedicationPrice extends Entity {
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "medicineCode", nullable = true)
     private long medicineCode;
+
+
+    @Column(name = "price", nullable = true)
     private double price;
+
+
+    @Column(name = "date", nullable = true)
     private LocalDate date;
-    private int pharmacyId;
+
+
+    @OneToOne
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = true, unique = false)
+    private Pharmacy pharmacy;
 
     public MedicationPrice() {
-        super();
     }
 
-    public MedicationPrice(int id, long medicineCode, double price, LocalDate date, int pharmacyId) {
-        super(id);
-        this.medicineCode = medicineCode;
-        this.price = price;
-        this.date = date;
-        this.pharmacyId = pharmacyId;
+    public Pharmacy getPharmacy() {
+        return pharmacy;
     }
 
-    public MedicationPrice(long medicineCode, double price, LocalDate date, int pharmacyId) {
-        this.medicineCode = medicineCode;
-        this.price = price;
-        this.date = date;
-        this.pharmacyId = pharmacyId;
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public long getMedicineCode() {
@@ -53,11 +73,4 @@ public class MedicationPrice extends Entity {
         this.date = date;
     }
 
-    public int getPharmacyId() {
-        return pharmacyId;
-    }
-
-    public void setPharmacyId(int pharmacyId) {
-        this.pharmacyId = pharmacyId;
-    }
 }

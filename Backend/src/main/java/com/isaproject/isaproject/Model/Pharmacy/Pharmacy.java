@@ -1,90 +1,181 @@
 package com.isaproject.isaproject.Model.Pharmacy;
 
-import com.isaproject.isaproject.Model.Entity;
+import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
+import com.isaproject.isaproject.Model.Examinations.Prescription;
+import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
+import com.isaproject.isaproject.Model.HelpModel.Subscription;
+import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Orders.Order;
+import com.isaproject.isaproject.Model.Users.Address;
+import com.isaproject.isaproject.Model.Users.Dermatologist;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
+import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
 
-public class Pharmacy extends Entity {
-    private String name;
-    private String town;
-    private String street;
-    private int number;
-    private int postalCode;
-    private String country;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name="pharmacy_table")
+public class Pharmacy {
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "pharmacyName", nullable = true)
+    private String pharmacyName;
+
+
+    @Column(name = "mark", nullable = true)
     private double mark;
+
+    @Column(name = "consultingPrice", nullable = true)
     private double consultingPrice;
 
-    public Pharmacy() {
-        super();
-    }
-    public Pharmacy(int id, String name, String town, String street, int number, int postalCode, String country, double mark, double consultingPrice) {
-        super(id);
-        this.name = name;
-        this.town = town;
-        this.street = street;
-        this.number = number;
-        this.postalCode = postalCode;
-        this.country = country;
-        this.mark = mark;
-        this.consultingPrice = consultingPrice;
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ExaminationSchedule> examinationSchedules = new HashSet<ExaminationSchedule>();
+
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MedicationReservation> medicationReservations = new HashSet<MedicationReservation>();
+
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Prescription> prescriptions = new HashSet<Prescription>();
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = false, unique = false)
+    private Address address;
+
+    @ManyToMany(mappedBy = "pharmacies")
+    private Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
+
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
+
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Subscription> subscriptions = new HashSet<Subscription>();
+
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<PharmacyAdmin> pharmacyAdmins = new HashSet<PharmacyAdmin>();
+
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Actions> actions = new HashSet<Actions>();
+
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Order> order = new HashSet<Order>();
+
+
+    @ManyToMany
+    @JoinTable(name = "medications_pharmacies", joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"))
+    private Set<Medication> medications = new HashSet<Medication>();
+
+    public Pharmacy() {}
+
+    public Set<Order> getOrder() {
+        return order;
     }
 
-    public Pharmacy(String name, String town, String street, int number, int postalCode, String country, double mark, double consultingPrice) {
-        this.name = name;
-        this.town = town;
-        this.street = street;
-        this.number = number;
-        this.postalCode = postalCode;
-        this.country = country;
-        this.mark = mark;
-        this.consultingPrice = consultingPrice;
+    public void setOrder(Set<Order> order) {
+        this.order = order;
     }
 
-    public String getName() {
-        return name;
+    public Set<MedicationReservation> getMedicationReservations() {
+        return medicationReservations;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMedicationReservations(Set<MedicationReservation> medicationReservations) {
+        this.medicationReservations = medicationReservations;
     }
 
-    public String getTown() {
-        return town;
+    public Set<Actions> getActions() {
+        return actions;
     }
 
-    public void setTown(String town) {
-        this.town = town;
+    public void setActions(Set<Actions> actions) {
+        this.actions = actions;
     }
 
-    public String getStreet() {
-        return street;
+    public Set<Medication> getMedications() {
+        return medications;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setMedications(Set<Medication> medications) {
+        this.medications = medications;
     }
 
-    public int getNumber() {
-        return number;
+    public Set<Subscription> getSubscriptions() {
+        return subscriptions;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setSubscriptions(Set<Subscription> subscriptions) {
+        this.subscriptions = subscriptions;
     }
 
-    public int getPostalCode() {
-        return postalCode;
+    public Set<PharmacyAdmin> getPharmacyAdmins() {
+        return pharmacyAdmins;
     }
 
-    public void setPostalCode(int postalCode) {
-        this.postalCode = postalCode;
+    public void setPharmacyAdmins(Set<PharmacyAdmin> pharmacyAdmins) {
+        this.pharmacyAdmins = pharmacyAdmins;
     }
 
-    public String getCountry() {
-        return country;
+    public Set<Dermatologist> getDermatologists() {
+        return dermatologists;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setDermatologists(Set<Dermatologist> dermatologists) {
+        this.dermatologists = dermatologists;
     }
+
+    public Set<Pharmacist> getPharmacists() {
+        return pharmacists;
+    }
+
+    public void setPharmacists(Set<Pharmacist> pharmacists) {
+        this.pharmacists = pharmacists;
+    }
+
+    public Set<ExaminationSchedule> getExaminationSchedules() {
+        return examinationSchedules;
+    }
+
+    public void setExaminationSchedules(Set<ExaminationSchedule> examinationSchedules) {
+        this.examinationSchedules = examinationSchedules;
+    }
+
+    public Set<Prescription> getPrescriptions() {
+        return prescriptions;
+    }
+
+    public void setPrescriptions(Set<Prescription> prescriptions) {
+        this.prescriptions = prescriptions;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getPharmacyName() {
+        return pharmacyName;
+    }
+
+    public void setPharmacyName(String pharmacyName) {
+        this.pharmacyName = pharmacyName;
+    }
+
 
     public double getMark() {
         return mark;

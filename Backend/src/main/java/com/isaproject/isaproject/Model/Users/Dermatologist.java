@@ -1,32 +1,58 @@
 package com.isaproject.isaproject.Model.Users;
+import com.isaproject.isaproject.Model.Examinations.Consulting;
+import com.isaproject.isaproject.Model.Examinations.EPrescription;
+import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
+import com.isaproject.isaproject.Model.HelpModel.Subscription;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
 
-public class Dermatologist extends User{
-    private double mark;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
-    public Dermatologist(double mark) {
-        this.mark = mark;
+//ovom anotacijom se navodi vrednost diskriminatorske kolone koja vazi za
+//objekte ove klase
+
+@Entity
+@DiscriminatorValue("Dermatologist")
+public class Dermatologist extends PersonUser{
+
+    @Column(name = "markDermatologist", nullable = true)
+    private double markDermatologist;
+
+    @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ExaminationSchedule> examinationSchedules = new HashSet<ExaminationSchedule>();
+
+    @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<HolidayScheduleDermatologist> holidayScheduleDermatologists = new HashSet<HolidayScheduleDermatologist>();
+
+    @ManyToMany
+    @JoinTable(name = "dermatologists_pharmacies", joinColumns = @JoinColumn(name = "dermatologist_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
+    private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
+
+    public Dermatologist() {}
+
+    public Set<ExaminationSchedule> getExaminationSchedules() {
+        return examinationSchedules;
     }
 
-    public Dermatologist(int id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country, double mark) {
-        super(id, name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
-        this.mark = mark;
+    public void setExaminationSchedules(Set<ExaminationSchedule> examinationSchedules) {
+        this.examinationSchedules = examinationSchedules;
     }
 
-    public Dermatologist(String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country, double mark) {
-        super(name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
-        this.mark = mark;
-    }
-    public Dermatologist() {
-        super();
-
+    public Set<Pharmacy> getPharmacies() {
+        return pharmacies;
     }
 
-    public double getMark() {
-        return mark;
+    public void setPharmacies(Set<Pharmacy> pharmacies) {
+        this.pharmacies = pharmacies;
     }
 
-    public void setMark(double mark) {
-        this.mark = mark;
+    public double getMarkDermatologist() {
+        return markDermatologist;
     }
 
+    public void setMarkDermatologist(double mark) {
+        this.markDermatologist = mark;
+    }
 }

@@ -1,43 +1,66 @@
 package com.isaproject.isaproject.Model.Users;
+import com.isaproject.isaproject.Model.Examinations.Consulting;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
+import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
 
-public class Pharmacist extends  User{
-    private int pharmacyId;
-    private double mark;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
-    public Pharmacist() {
-        super();
+//ovom anotacijom se navodi vrednost diskriminatorske kolone koja vazi za
+//objekte ove klase
+
+@Entity
+@DiscriminatorValue("Pharmacist")
+public class Pharmacist extends  PersonUser implements Serializable {
+
+    @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Consulting> consulting = new HashSet<Consulting>();
+
+
+    @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<HolidaySchedulePharmacist> holidaySchedulePharmacists = new HashSet<HolidaySchedulePharmacist>();
+
+    @Column(name = "markPharmacist", nullable = true)
+    private double markPharmacist;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_Pharmacist", referencedColumnName = "id", nullable = true, unique = false)
+    private Pharmacy pharmacy;
+
+
+    public Set<Consulting> getConsulting() {
+        return consulting;
     }
 
-    public Pharmacist(int pharmacyId, double mark) {
-        this.pharmacyId = pharmacyId;
-        this.mark = mark;
+    public void setConsulting(Set<Consulting> consulting) {
+        this.consulting = consulting;
     }
 
-    public Pharmacist(int id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country, int pharmacyId, double mark) {
-        super(id, name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
-        this.pharmacyId = pharmacyId;
-        this.mark = mark;
+
+    public Pharmacist(Set<Consulting> consulting,  double markPharmacist) {
+        this.consulting = consulting;
+        this.markPharmacist = markPharmacist;
     }
 
-    public Pharmacist(String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country, int pharmacyId, double mark) {
-        super(name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
-        this.pharmacyId = pharmacyId;
-        this.mark = mark;
+    public Pharmacist() { }
+
+    public Pharmacy getPharmacy() {
+        return pharmacy;
     }
 
-    public int getPharmacyId() {
-        return pharmacyId;
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
     }
 
-    public void setPharmacyId(int pharmacyId) {
-        this.pharmacyId = pharmacyId;
+    public double getMarkPharmacist() {
+        return markPharmacist;
     }
 
-    public double getMark() {
-        return mark;
-    }
-
-    public void setMark(double mark) {
-        this.mark = mark;
+    public void setMarkPharmacist(double mark) {
+        this.markPharmacist = mark;
     }
 }
+

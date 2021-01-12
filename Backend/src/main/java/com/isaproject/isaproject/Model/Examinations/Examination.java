@@ -1,53 +1,64 @@
 package com.isaproject.isaproject.Model.Examinations;
 
-import com.isaproject.isaproject.Model.Entity;
+import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
+
+import javax.persistence.*;
 
 
+@Entity
+public class Examination {
 
-public class Examination extends Entity {
-    private int patientsId;
-    private int examinationId;
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Patient patient;
+
+    @Column(name = "cancelled", nullable = true)
     private Boolean cancelled;
+
+
+    @Column(name = "showedUp", nullable = true)
     private Boolean showedUp;
+
+    @OneToOne
+    @JoinColumn(name = "examination_id", referencedColumnName = "id", nullable = true, unique = false)
+    private ExaminationSchedule examinationSchedule;
+
+    @Column(name = "information", nullable = true)
     private String information;
 
-
-
     public Examination() {
-        super();
+
     }
 
-    public Examination(int id, int patientsId, int examinationId, Boolean cancelled, Boolean showedUp, String information) {
-        super(id);
-        this.patientsId = patientsId;
-        this.examinationId = examinationId;
-        this.cancelled = cancelled;
-        this.showedUp = showedUp;
-        this.information = information;
+    public ExaminationSchedule getExaminationSchedule() {
+        return examinationSchedule;
     }
 
-    public Examination(int patientsId, int examinationId, Boolean cancelled, Boolean showedUp, String information) {
-        this.patientsId = patientsId;
-        this.examinationId = examinationId;
-        this.cancelled = cancelled;
-        this.showedUp = showedUp;
-        this.information = information;
+    public void setExaminationSchedule(ExaminationSchedule examinationSchedule) {
+        this.examinationSchedule = examinationSchedule;
     }
 
-    public int getPatientsId() {
-        return patientsId;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientsId(int patientsId) {
-        this.patientsId = patientsId;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
-    public int getExaminationId() {
-        return examinationId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setExaminationId(int examinationId) {
-        this.examinationId = examinationId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Boolean getCancelled() {

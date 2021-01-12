@@ -1,39 +1,77 @@
 package com.isaproject.isaproject.Model.Examinations;
 
-import com.isaproject.isaproject.Model.Entity;
+import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Users.Patient;
 
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-public class EPrescription extends Entity {
-    private int patientId;
+@Entity
+public class EPrescription {
+
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Patient patient;
+
+
+    @Column(name = "code", nullable = false)
     private long code;
+
+
+    @Column(name = "date", nullable = false)
     private LocalDate date;
+
+
+    @Column(name = "status", nullable = false)
     private String status;
 
+    @ManyToMany(mappedBy = "ePrescriptions")
+    private Set<Medication> medications = new HashSet<Medication>();
+
     public EPrescription() {
-        super();
+
     }
-    public EPrescription(int id, int patientId, long code, LocalDate date, String status) {
-        super(id);
-        this.patientId = patientId;
+
+    public EPrescription(Integer id, Patient patient, long code, LocalDate date, String status) {
+        this.id = id;
+        this.patient = patient;
         this.code = code;
         this.date = date;
         this.status = status;
     }
 
-    public EPrescription(int patientId, long code, LocalDate date, String status) {
-        this.patientId = patientId;
-        this.code = code;
-        this.date = date;
-        this.status = status;
+    public Set<Medication> getMedications() {
+        return medications;
     }
 
-    public int getPatientId() {
-        return patientId;
+    public void setMedications(Set<Medication> medications) {
+        this.medications = medications;
     }
 
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
     public long getCode() {

@@ -1,29 +1,51 @@
 package com.isaproject.isaproject.Model.Orders;
 
-import com.isaproject.isaproject.Model.Entity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-public class MedicationInOffer extends Entity {
+@Entity
+public class MedicationInOffer  {
+
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "medicationCode", nullable = true)
     private long medicationCode;
+
+
+    @Column(name = "price", nullable = true)
     private double price;
+
+
+    @Column(name = "quantity", nullable = true)
     private int quantity;
+
+
+    @Column(name = "offerId", nullable = true)
     private int offerId;
 
     public MedicationInOffer() {
-        super();
     }
-    public MedicationInOffer(int id, long medicationCode, double price, int quantity, int offerId) {
-        super(id);
+
+    public MedicationInOffer(Integer id, long medicationCode, double price, int quantity, int offerId) {
+        this.id = id;
         this.medicationCode = medicationCode;
         this.price = price;
         this.quantity = quantity;
         this.offerId = offerId;
     }
 
-    public MedicationInOffer(long medicationCode, double price, int quantity, int offerId) {
-        this.medicationCode = medicationCode;
-        this.price = price;
-        this.quantity = quantity;
-        this.offerId = offerId;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public long getMedicationCode() {

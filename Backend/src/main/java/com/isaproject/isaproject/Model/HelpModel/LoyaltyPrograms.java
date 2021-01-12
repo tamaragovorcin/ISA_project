@@ -1,22 +1,55 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
-import com.isaproject.isaproject.Model.Entity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-public class LoyaltyPrograms extends Entity {
+@Entity
+public class LoyaltyPrograms {
+
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @Column(name = "consultingPoints", nullable = true)
     private double consultingPoints;
+
+
+    @Column(name = "examinationPoints", nullable = true)
     private double examinationPoints;
+
+
+    @Column(name = "regularLimit", nullable = true)
     private double regularLimit;
+
+
+    @Column(name = "silverLimit", nullable = true)
     private double silverLimit;
+
+
+    @Column(name = "goldLimit", nullable = true)
     private double goldLimit;
+
+
+    @Column(name = "regularDiscount", nullable = true)
     private double regularDiscount;
+
+
+    @Column(name = "silverDiscount", nullable = true)
     private double silverDiscount;
+
+
+    @Column(name = "goldenDiscount", nullable = true)
     private double goldenDiscount;
 
     public LoyaltyPrograms() {
-        super();
     }
-    public LoyaltyPrograms(int id, double consultingPoints, double examinationPoints, double regularLimit, double silverLimit, double goldLimit, double regularDiscount, double silverDiscount, double goldenDiscount) {
-        super(id);
+
+    public LoyaltyPrograms(Integer id, double consultingPoints, double examinationPoints, double regularLimit, double silverLimit, double goldLimit, double regularDiscount, double silverDiscount, double goldenDiscount) {
+        this.id = id;
         this.consultingPoints = consultingPoints;
         this.examinationPoints = examinationPoints;
         this.regularLimit = regularLimit;
@@ -27,15 +60,12 @@ public class LoyaltyPrograms extends Entity {
         this.goldenDiscount = goldenDiscount;
     }
 
-    public LoyaltyPrograms(double consultingPoints, double examinationPoints, double regularLimit, double silverLimit, double goldLimit, double regularDiscount, double silverDiscount, double goldenDiscount) {
-        this.consultingPoints = consultingPoints;
-        this.examinationPoints = examinationPoints;
-        this.regularLimit = regularLimit;
-        this.silverLimit = silverLimit;
-        this.goldLimit = goldLimit;
-        this.regularDiscount = regularDiscount;
-        this.silverDiscount = silverDiscount;
-        this.goldenDiscount = goldenDiscount;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public double getConsultingPoints() {

@@ -1,37 +1,51 @@
 package com.isaproject.isaproject.Model.Pharmacy;
 
-import com.isaproject.isaproject.Model.Entity;
-
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class Actions extends Entity {
-    private int pharmacyId;
+@Entity
+@Table(name="actions_table")
+public class Actions{
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Pharmacy pharmacy;
+
+    @Column(name = "description", nullable = true)
     private String description;
+
+
+    @Column(name = "expiryDate", nullable = true)
     private LocalDate expiryDate;
 
-    public Actions() {
-        super();
-    }
-    public Actions(int id, int pharmacyId, String description, LocalDate expiryDate) {
-        super(id);
-        this.pharmacyId = pharmacyId;
+    public Actions() {}
+
+    public Actions(Integer id, int pharmacyId, String description, LocalDate expiryDate) {
+        this.id = id;
         this.description = description;
         this.expiryDate = expiryDate;
     }
 
-    public Actions(int pharmacyId, String description, LocalDate expiryDate) {
-        this.pharmacyId = pharmacyId;
-        this.description = description;
-        this.expiryDate = expiryDate;
+    public Integer getId() {
+        return id;
     }
 
-    public int getPharmacyId() {
-        return pharmacyId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setPharmacyId(int pharmacyId) {
-        this.pharmacyId = pharmacyId;
+    public Pharmacy getPharmacy() {
+        return pharmacy;
+    }
+
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
     }
 
     public String getDescription() {

@@ -1,49 +1,90 @@
 package com.isaproject.isaproject.Model.Orders;
 
-import com.isaproject.isaproject.Model.Entity;
+import com.isaproject.isaproject.Model.Examinations.Consulting;
+import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
+import com.isaproject.isaproject.Model.Users.Supplier;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-public class Offer extends Entity {
-    private int supplierId;
-    private int orderId;
+@Entity
+public class Offer {
+
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @ManyToMany(mappedBy = "offer")
+    private Set<Supplier> suppliers = new HashSet<Supplier>();
+
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Order order;
+
+
+    @Column(name = "dateOfDelivery", nullable = true)
     private LocalDate dateOfDelivery;
+
+
+    @Column(name = "summaryPrice", nullable = true)
     private double summaryPrice;
 
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Consulting> consulting = new HashSet<Consulting>();
+
+    @ManyToMany(mappedBy = "offer")
+    private Set<Medication> medications = new HashSet<Medication>();
+
     public Offer() {
-        super();
-    }
-    public Offer(int id, int supplierId, int orderId, LocalDate dateOfDelivery, double summaryPrice) {
-        super(id);
-        this.supplierId = supplierId;
-        this.orderId = orderId;
-        this.dateOfDelivery = dateOfDelivery;
-        this.summaryPrice = summaryPrice;
     }
 
-    public Offer(int supplierId, int orderId, LocalDate dateOfDelivery, double summaryPrice) {
-        this.supplierId = supplierId;
-        this.orderId = orderId;
-        this.dateOfDelivery = dateOfDelivery;
-        this.summaryPrice = summaryPrice;
+    public Set<Supplier> getSuppliers() {
+        return suppliers;
     }
 
-    public int getSupplierId() {
-        return supplierId;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setSupplierId(int supplierId) {
-        this.supplierId = supplierId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
-    public int getOrderId() {
-        return orderId;
+    public void setSuppliers(Set<Supplier> suppliers) {
+        this.suppliers = suppliers;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public Set<Consulting> getConsulting() {
+        return consulting;
     }
+
+    public void setConsulting(Set<Consulting> consulting) {
+        this.consulting = consulting;
+    }
+
+    public Set<Medication> getMedications() {
+        return medications;
+    }
+
+    public void setMedications(Set<Medication> medications) {
+        this.medications = medications;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
 
     public LocalDate getDateOfDelivery() {
         return dateOfDelivery;

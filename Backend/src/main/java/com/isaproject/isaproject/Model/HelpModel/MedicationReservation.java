@@ -1,55 +1,80 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
-import com.isaproject.isaproject.Model.Entity;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+@Entity
+public class MedicationReservation {
 
-public class MedicationReservation extends Entity {
-    private int patientsId;
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Patient patient;
+
+    @Column(name = "medicineCode", nullable = true)
     private long medicineCode;
-    private int pharmacyId;
+
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Pharmacy pharmacy;
+
+
+    @Column(name = "dateOfReservation", nullable = true)
     private LocalDateTime dateOfReservation;
+
+
+    @Column(name = "dateOfTakeOver", nullable = true)
     private LocalDateTime dateOfTakeOver;
+
+
+    @Column(name = "collected", nullable = true)
     private Boolean collected;//da li je preuzet lijek
+
+
+    @Column(name = "reservationCode", nullable = true)
     private long reservationCode;
+
+
+    @Column(name = "cancelled", nullable = true)
     private Boolean cancelled;
 
     public MedicationReservation() {
-        super();
     }
 
-    public MedicationReservation(int id, int patientsId, long medicineCode, int pharmacyId, LocalDateTime dateOfReservation, LocalDateTime dateOfTakeOver, Boolean collected, long reservationCode, Boolean cancelled) {
-        super(id);
-        this.patientsId = patientsId;
-        this.medicineCode = medicineCode;
-        this.pharmacyId = pharmacyId;
-        this.dateOfReservation = dateOfReservation;
-        this.dateOfTakeOver = dateOfTakeOver;
-        this.collected = collected;
-        this.reservationCode = reservationCode;
-        this.cancelled = cancelled;
+    public Pharmacy getPharmacy() {
+        return pharmacy;
     }
 
-    public MedicationReservation(int patientsId, long medicineCode, int pharmacyId, LocalDateTime dateOfReservation, LocalDateTime dateOfTakeOver, Boolean collected, long reservationCode, Boolean cancelled) {
-        this.patientsId = patientsId;
-        this.medicineCode = medicineCode;
-        this.pharmacyId = pharmacyId;
-        this.dateOfReservation = dateOfReservation;
-        this.dateOfTakeOver = dateOfTakeOver;
-        this.collected = collected;
-        this.reservationCode = reservationCode;
-        this.cancelled = cancelled;
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
     }
 
-    public int getPatientsId() {
-        return patientsId;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientsId(int patientsId) {
-        this.patientsId = patientsId;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
 
     public long getMedicineCode() {
         return medicineCode;
@@ -59,13 +84,6 @@ public class MedicationReservation extends Entity {
         this.medicineCode = medicineCode;
     }
 
-    public int getPharmacyId() {
-        return pharmacyId;
-    }
-
-    public void setPharmacyId(int pharmacyId) {
-        this.pharmacyId = pharmacyId;
-    }
 
     public LocalDateTime getDateOfReservation() {
         return dateOfReservation;

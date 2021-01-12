@@ -1,30 +1,37 @@
 package com.isaproject.isaproject.Model.Users;
+import com.isaproject.isaproject.Model.Orders.Order;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 
-public class PharmacyAdmin extends User{
-    private int pharmacyId;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
-    public PharmacyAdmin(int pharmacyId) {
-        this.pharmacyId = pharmacyId;
+@Entity
+@DiscriminatorValue("PharmacyAdmin")
+public class PharmacyAdmin extends PersonUser{
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_PharmacyAdmin", referencedColumnName = "id", nullable = true, unique = false)
+    private Pharmacy pharmacy;
+
+    @OneToMany(mappedBy = "pharmacyAdmin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Order> orders = new HashSet<Order>();
+
+    public PharmacyAdmin() {}
+
+    public Set<Order> getOrders() {
+        return orders;
     }
 
-    public PharmacyAdmin(int id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country, int pharmacyId) {
-        super(id, name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
-        this.pharmacyId = pharmacyId;
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
-    public PharmacyAdmin(String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, String town, String street, int number, int postalCode, String country, int pharmacyId) {
-        super(name, surname, email, password, phoneNumber, firstLogged, town, street, number, postalCode, country);
-        this.pharmacyId = pharmacyId;
-    }
-    public PharmacyAdmin() {
-        super();
+    public Pharmacy getPharmacy() {
+        return pharmacy;
     }
 
-    public int getPharmacyId() {
-        return pharmacyId;
-    }
-
-    public void setPharmacyId(int pharmacyId) {
-        this.pharmacyId = pharmacyId;
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
     }
 }

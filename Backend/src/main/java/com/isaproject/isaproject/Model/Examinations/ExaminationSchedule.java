@@ -1,59 +1,77 @@
 package com.isaproject.isaproject.Model.Examinations;
 
-import com.isaproject.isaproject.Model.Entity;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.Dermatologist;
+import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+@Entity
+public class ExaminationSchedule {
+    @Id
+    @GeneratedValue
+    @Column(name="id", unique=true, nullable=false)
+    private Integer id;
 
-public class ExaminationSchedule extends Entity {
-    private int dermatologistId;
-    private int pharmacyId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "dermatologist_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Dermatologist dermatologist;
+
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Pharmacy pharmacy;
+
+
+
+    @Column(name = "date", nullable = true)
     private LocalDate date;
+
+
+    @Column(name = "startTime", nullable = true)
     private LocalTime startTime;
+
+
+    @Column(name = "duration", nullable = true)
     private double duration;
+
+
+    @Column(name = "finished", nullable = true)
     private Boolean finished;
+
+
+    @Column(name = "price", nullable = true)
     private double price;
 
 
     public ExaminationSchedule() {
-        super();
     }
 
-    public ExaminationSchedule(int id, int dermatologistId, int pharmacyId, LocalDate date, LocalTime startTime, double duration, Boolean finished, double price) {
-        super(id);
-        this.dermatologistId = dermatologistId;
-        this.pharmacyId = pharmacyId;
-        this.date = date;
-        this.startTime = startTime;
-        this.duration = duration;
-        this.finished = finished;
-        this.price = price;
+
+    public Integer getId() {
+        return id;
     }
 
-    public ExaminationSchedule(int dermatologistId, int pharmacyId, LocalDate date, LocalTime startTime, double duration, Boolean finished, double price) {
-        this.dermatologistId = dermatologistId;
-        this.pharmacyId = pharmacyId;
-        this.date = date;
-        this.startTime = startTime;
-        this.duration = duration;
-        this.finished = finished;
-        this.price = price;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public int getDermatologistId() {
-        return dermatologistId;
+    public Dermatologist getDermatologist() {
+        return dermatologist;
     }
 
-    public void setDermatologistId(int dermatologistId) {
-        this.dermatologistId = dermatologistId;
+    public void setDermatologist(Dermatologist dermatologist) {
+        this.dermatologist = dermatologist;
     }
 
-    public int getPharmacyId() {
-        return pharmacyId;
+    public Pharmacy getPharmacy() {
+        return pharmacy;
     }
 
-    public void setPharmacyId(int pharmacyId) {
-        this.pharmacyId = pharmacyId;
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
     }
 
     public LocalDate getDate() {
