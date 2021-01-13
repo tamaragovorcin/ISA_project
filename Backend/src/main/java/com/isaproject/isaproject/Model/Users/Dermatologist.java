@@ -5,6 +5,7 @@ import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.HelpModel.Subscription;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
+import com.isaproject.isaproject.Model.Schedule.WorkingHoursDermatologist;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -25,6 +26,9 @@ public class Dermatologist extends PersonUser{
 
     @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<HolidayScheduleDermatologist> holidayScheduleDermatologists = new HashSet<HolidayScheduleDermatologist>();
+
+    @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<WorkingHoursDermatologist> workingHoursDermatologists = new HashSet<WorkingHoursDermatologist>();
 
     @ManyToMany
     @JoinTable(name = "dermatologists_pharmacies", joinColumns = @JoinColumn(name = "dermatologist_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
@@ -54,5 +58,21 @@ public class Dermatologist extends PersonUser{
 
     public void setMarkDermatologist(double mark) {
         this.markDermatologist = mark;
+    }
+
+    public Set<HolidayScheduleDermatologist> getHolidayScheduleDermatologists() {
+        return holidayScheduleDermatologists;
+    }
+
+    public void setHolidayScheduleDermatologists(Set<HolidayScheduleDermatologist> holidayScheduleDermatologists) {
+        this.holidayScheduleDermatologists = holidayScheduleDermatologists;
+    }
+
+    public Set<WorkingHoursDermatologist> getWorkingHoursDermatologists() {
+        return workingHoursDermatologists;
+    }
+
+    public void setWorkingHoursDermatologists(Set<WorkingHoursDermatologist> workingHoursDermatologists) {
+        this.workingHoursDermatologists = workingHoursDermatologists;
     }
 }

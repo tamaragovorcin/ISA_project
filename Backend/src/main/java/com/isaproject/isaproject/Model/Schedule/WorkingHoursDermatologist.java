@@ -1,9 +1,9 @@
 package com.isaproject.isaproject.Model.Schedule;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.Dermatologist;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -19,12 +19,14 @@ public class WorkingHoursDermatologist  {
     private LocalDate date;
 
 
-    @Column(name = "pharmacyId", nullable = true)
-    private int pharmacyId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Pharmacy pharmacy;
 
 
-    @Column(name = "dermatologistId", nullable = true)
-    private int dermatologistId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "dermatologist_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Dermatologist dermatologist;
 
 
     @Column(name = "startTime", nullable = true)
@@ -38,11 +40,11 @@ public class WorkingHoursDermatologist  {
         super();
     }
 
-    public WorkingHoursDermatologist(Integer id, LocalDate date, int pharmacyId, int dermatologistId, LocalTime startTime, LocalTime endTime) {
+    public WorkingHoursDermatologist(Integer id, LocalDate date, Pharmacy pharmacy, Dermatologist dermatologist, LocalTime startTime, LocalTime endTime) {
         this.id = id;
         this.date = date;
-        this.pharmacyId = pharmacyId;
-        this.dermatologistId = dermatologistId;
+        this.pharmacy = pharmacy;
+        this.dermatologist = dermatologist;
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -63,20 +65,20 @@ public class WorkingHoursDermatologist  {
         this.date = date;
     }
 
-    public int getPharmacyId() {
-        return pharmacyId;
+    public Pharmacy getPharmacy() {
+        return pharmacy;
     }
 
-    public void setPharmacyId(int pharmacyId) {
-        this.pharmacyId = pharmacyId;
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
     }
 
-    public int getDermatologistId() {
-        return dermatologistId;
+    public Dermatologist getDermatologist() {
+        return dermatologist;
     }
 
-    public void setDermatologistId(int dermatologistId) {
-        this.dermatologistId = dermatologistId;
+    public void setDermatologist(Dermatologist dermatologist) {
+        this.dermatologist = dermatologist;
     }
 
     public LocalTime getStartTime() {

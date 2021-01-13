@@ -1,24 +1,24 @@
 package com.isaproject.isaproject.Model.Schedule;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 @Entity
 public class WorkingHoursPharmacist {
     @Id
     @GeneratedValue
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
     @Column(name = "date", nullable = true)
     private LocalDate date;
 
 
-    @Column(name = "pharmacistId", nullable = true)
-    private int pharmacistId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacist_id", referencedColumnName = "id", nullable = false, unique = false)
+    private Pharmacist pharmacist;
 
 
     @Column(name = "startTime", nullable = true)
@@ -32,10 +32,10 @@ public class WorkingHoursPharmacist {
         super();
     }
 
-    public WorkingHoursPharmacist(Integer id, LocalDate date, int pharmacistId, LocalTime startTime, LocalTime endTime) {
+    public WorkingHoursPharmacist(Integer id, LocalDate date, Pharmacist pharmacist, LocalTime startTime, LocalTime endTime) {
         this.id = id;
         this.date = date;
-        this.pharmacistId = pharmacistId;
+        this.pharmacist = pharmacist;
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -56,12 +56,12 @@ public class WorkingHoursPharmacist {
         this.date = date;
     }
 
-    public int getPharmacistId() {
-        return pharmacistId;
+    public Pharmacist getPharmacist() {
+        return pharmacist;
     }
 
-    public void setPharmacistId(int pharmacistId) {
-        this.pharmacistId = pharmacistId;
+    public void setPharmacist(Pharmacist pharmacist) {
+        this.pharmacist = pharmacist;
     }
 
     public LocalTime getStartTime() {

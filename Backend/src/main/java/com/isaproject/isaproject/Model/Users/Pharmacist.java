@@ -3,6 +3,7 @@ import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
 import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
+import com.isaproject.isaproject.Model.Schedule.WorkingHoursPharmacist;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,6 +23,9 @@ public class Pharmacist extends  PersonUser implements Serializable {
 
     @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<HolidaySchedulePharmacist> holidaySchedulePharmacists = new HashSet<HolidaySchedulePharmacist>();
+
+    @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<WorkingHoursPharmacist> workingHoursPharmacists = new HashSet<WorkingHoursPharmacist>();
 
     @Column(name = "markPharmacist", nullable = true)
     private double markPharmacist;
@@ -45,7 +49,23 @@ public class Pharmacist extends  PersonUser implements Serializable {
         this.markPharmacist = markPharmacist;
     }
 
-    public Pharmacist() { }
+    public Pharmacist() { super();}
+
+    public Set<WorkingHoursPharmacist> getWorkingHoursPharmacists() {
+        return workingHoursPharmacists;
+    }
+
+    public void setWorkingHoursPharmacists(Set<WorkingHoursPharmacist> workingHoursPharmacists) {
+        this.workingHoursPharmacists = workingHoursPharmacists;
+    }
+
+    public Set<HolidaySchedulePharmacist> getHolidaySchedulePharmacists() {
+        return holidaySchedulePharmacists;
+    }
+
+    public void setHolidaySchedulePharmacists(Set<HolidaySchedulePharmacist> holidaySchedulePharmacists) {
+        this.holidaySchedulePharmacists = holidaySchedulePharmacists;
+    }
 
     public Pharmacy getPharmacy() {
         return pharmacy;

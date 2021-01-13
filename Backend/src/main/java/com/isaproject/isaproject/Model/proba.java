@@ -11,6 +11,8 @@ import com.isaproject.isaproject.Model.Pharmacy.Actions;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
 import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
+import com.isaproject.isaproject.Model.Schedule.WorkingHoursDermatologist;
+import com.isaproject.isaproject.Model.Schedule.WorkingHoursPharmacist;
 import com.isaproject.isaproject.Model.Users.*;
 import org.apache.tomcat.jni.Local;
 
@@ -160,7 +162,7 @@ public class proba {
 
         Specification specification = new Specification();
         specification.setContraIndications("Bol");
-        specification.setManufacturer("Proizvodjac");
+        specification.setManufacturer("Galenika");
         specification.setStructure("Tableta");
         specification.setRecommendedConsumption("2 puta dnevno");
 
@@ -304,7 +306,7 @@ public class proba {
         order.setPharmacyAdmin(pharmacyAdmin);
         order.setPharmacy(pharmacy);
         order.setDate(LocalDate.now());
-        order.setStatus("blabla");
+        order.setStatus("closed");
         order.setOffer(offers);
 
         Set<Supplier> suppliers = new HashSet<Supplier>();
@@ -328,7 +330,18 @@ public class proba {
         holidaySchedulePharmacist.setApproved(true);
         holidaySchedulePharmacist.setEndDate(LocalDate.now());
 
+        WorkingHoursPharmacist workingHoursPharmacist = new WorkingHoursPharmacist();
+        workingHoursPharmacist.setPharmacist(pharmacist);
+        workingHoursPharmacist.setDate(LocalDate.now());
+        workingHoursPharmacist.setStartTime(LocalTime.now());
+        workingHoursPharmacist.setEndTime(LocalTime.now());
 
+        WorkingHoursDermatologist workingHoursDermatologist = new WorkingHoursDermatologist();
+        workingHoursDermatologist.setDermatologist(dermatologist);
+        workingHoursDermatologist.setPharmacy(pharmacy);
+        workingHoursDermatologist.setDate(LocalDate.now());
+        workingHoursDermatologist.setStartTime(LocalTime.now());
+        workingHoursDermatologist.setEndTime(LocalTime.now());
 
 
 

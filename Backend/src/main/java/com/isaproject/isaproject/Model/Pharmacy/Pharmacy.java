@@ -6,6 +6,8 @@ import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
 import com.isaproject.isaproject.Model.HelpModel.Subscription;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.Order;
+import com.isaproject.isaproject.Model.Schedule.WorkingHoursDermatologist;
+import com.isaproject.isaproject.Model.Schedule.WorkingHoursPharmacist;
 import com.isaproject.isaproject.Model.Users.Address;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
@@ -65,12 +67,22 @@ public class Pharmacy {
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Order> order = new HashSet<Order>();
 
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<WorkingHoursDermatologist> workingHoursDermatologists = new HashSet<WorkingHoursDermatologist>();
 
     @ManyToMany
     @JoinTable(name = "medications_pharmacies", joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"))
     private Set<Medication> medications = new HashSet<Medication>();
 
     public Pharmacy() {}
+
+    public Set<WorkingHoursDermatologist> getWorkingHoursDermatologists() {
+        return workingHoursDermatologists;
+    }
+
+    public void setWorkingHoursDermatologists(Set<WorkingHoursDermatologist> workingHoursDermatologists) {
+        this.workingHoursDermatologists = workingHoursDermatologists;
+    }
 
     public Set<Order> getOrder() {
         return order;
