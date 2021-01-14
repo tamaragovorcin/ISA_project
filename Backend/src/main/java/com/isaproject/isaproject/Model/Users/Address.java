@@ -48,6 +48,15 @@ public class Address {
         this.country = country;
     }
 
+    public Address(String town, String street, int number, int postalCode, String country) {
+
+        this.town = town;
+        this.street = street;
+        this.number = number;
+        this.postalCode = postalCode;
+        this.country = country;
+    }
+
     public Address() {}
 
     public Set<Pharmacy> getPharmacies() {
