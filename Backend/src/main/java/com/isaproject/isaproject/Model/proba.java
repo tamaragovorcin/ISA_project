@@ -384,6 +384,8 @@ public class proba {
         manager.persist(offer);
         manager.persist(holidayScheduleDermatologist);
         manager.persist(holidaySchedulePharmacist);
+        manager.persist(workingHoursPharmacist);
+        manager.persist(workingHoursDermatologist);
 
 
         manager.getTransaction().commit();
