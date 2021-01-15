@@ -19,7 +19,6 @@ public class Address {
     @OneToMany(mappedBy = "address", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PersonUser> personUsers = new HashSet<PersonUser>();
 
-
     @OneToMany(mappedBy = "address", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
 

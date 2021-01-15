@@ -9,7 +9,9 @@ import com.isaproject.isaproject.Model.HelpModel.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -67,13 +69,21 @@ public class Patient extends PersonUser implements Serializable {
         this.consulting = consulting;
     }
 
-    public Patient() {}
+    public Patient() {super();}
 
-    public Patient(Integer id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, Set<Consulting> consulting, Set<Examination> examinations, Set<Complaint> complaints, int penalties, int points, String loyaltyCategory, double discount) {
-        super(id, name, surname, email, password, phoneNumber, firstLogged);
+
+
+    public Patient(Integer id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, boolean enabled, Timestamp lastPasswordResetDate, List<Authority> authorities, Address address, Set<Consulting> consulting, Set<Examination> examinations, Set<Complaint> complaints, Set<Grading> gradings, Set<EPrescription> ePrescriptions, Set<Prescription> prescriptions, Set<Subscription> subscriptions, Set<PatientsMedicationAlergy> patientsMedicationAlergy, Set<MedicationReservation> medicationReservations, int penalties, int points, String loyaltyCategory, double discount) {
+        super(id, name, surname, email, password, phoneNumber, firstLogged, enabled, lastPasswordResetDate, authorities, address);
         this.consulting = consulting;
         this.examinations = examinations;
         this.complaints = complaints;
+        this.gradings = gradings;
+        this.ePrescriptions = ePrescriptions;
+        this.prescriptions = prescriptions;
+        this.subscriptions = subscriptions;
+        this.patientsMedicationAlergy = patientsMedicationAlergy;
+        this.medicationReservations = medicationReservations;
         this.penalties = penalties;
         this.points = points;
         this.loyaltyCategory = loyaltyCategory;
