@@ -16,19 +16,16 @@ public class AuthorityService implements IAuthorityService {
     private AuthorityRepository authorityRepository;
 
     @Override
-    public List<Authority> findById(Integer id) {
+    public Authority findById(Integer id) {
         Authority auth = this.authorityRepository.getOne(id);
-        List<Authority> auths = new ArrayList<>();
-        auths.add(auth);
-        return auths;
+
+        return auth;
     }
 
     @Override
-    public List<Authority> findByname(String name) {
+    public Authority findByname(String name) {
         Authority auth = this.authorityRepository.findByName(name);
-        List<Authority> auths = new ArrayList<>();
-        auths.add(auth);
-        return auths;
+        return auth;
     }
 
 

@@ -7,6 +7,7 @@ import com.isaproject.isaproject.Service.Implementations.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -27,7 +28,9 @@ public class PatientController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patient);
     }
+
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<Patient> getById(@PathVariable Integer id)
     {
         Patient patient = patientService.findById(id);

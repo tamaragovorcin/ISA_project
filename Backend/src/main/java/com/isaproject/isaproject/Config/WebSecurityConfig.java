@@ -69,9 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
                 // svim korisnicima dopusti da pristupe putanjama /auth/**, (/h2-console/** ako se koristi H2 baza) i /api/foo
-                .authorizeRequests().antMatchers("/auth/**").permitAll().antMatchers("/h2-console/**")
-                .permitAll().antMatchers("/api/foo").permitAll().antMatchers("/api/patient/register")
-                .permitAll().antMatchers("/api/patient/{id}").permitAll()
+                .authorizeRequests().antMatchers("/api/**").permitAll().antMatchers("/h2-console/**")
+                .permitAll().antMatchers("/api/foo").permitAll().antMatchers("/api/patient/register") .permitAll()
                 .antMatchers("/api/patient").permitAll()
                 .antMatchers("/api/patient/email/{id}").permitAll()
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
@@ -90,9 +89,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
-        web.ignoring().antMatchers(HttpMethod.POST, "/auth/login");
+        web.ignoring().antMatchers(HttpMethod.POST, "/api/login");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/patient/register");
-        web.ignoring().antMatchers(HttpMethod.GET, "/api/patient/{id}");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/patient");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/patient/email/{id}");
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html",

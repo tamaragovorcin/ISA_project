@@ -1,27 +1,30 @@
 package com.isaproject.isaproject.Model.Users;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Address {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Address implements Serializable {
 
     @Id
     @SequenceGenerator(name = "mySeqGenV2", sequenceName = "mySeqV2", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV2")
     @Column(name = "address_id", nullable = false)
     private Integer id;
-
+/*
     @OneToMany(mappedBy = "address", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PersonUser> personUsers = new HashSet<PersonUser>();
 
     @OneToMany(mappedBy = "address", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
-
+*/
     @Column(name = "town", nullable = true)
     private String town;
 
@@ -37,9 +40,8 @@ public class Address {
     @Column(name = "country", nullable = true)
     private String country;
 
-    public Address(Integer id, Set<PersonUser> personUsers, String town, String street, int number, int postalCode, String country) {
+    public Address(Integer id,  String town, String street, int number, int postalCode, String country) {
         this.id = id;
-        this.personUsers = personUsers;
         this.town = town;
         this.street = street;
         this.number = number;
@@ -57,7 +59,7 @@ public class Address {
     }
 
     public Address() {}
-
+/*
     public Set<Pharmacy> getPharmacies() {
         return pharmacies;
     }
@@ -65,7 +67,7 @@ public class Address {
     public void setPharmacies(Set<Pharmacy> pharmacies) {
         this.pharmacies = pharmacies;
     }
-
+*/
     public Integer getId() {
         return id;
     }
@@ -73,7 +75,7 @@ public class Address {
     public void setId(Integer id) {
         this.id = id;
     }
-
+/*
     public Set<PersonUser> getPersonUsers() {
         return personUsers;
     }
@@ -81,7 +83,7 @@ public class Address {
     public void setPersonUsers(Set<PersonUser> personUsers) {
         this.personUsers = personUsers;
     }
-
+*/
     public String getTown() {
         return town;
     }

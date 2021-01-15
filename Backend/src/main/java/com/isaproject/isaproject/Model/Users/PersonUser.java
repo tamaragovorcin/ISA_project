@@ -9,6 +9,7 @@ import static javax.persistence.InheritanceType.SINGLE_TABLE;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -17,7 +18,7 @@ import java.util.*;
 @Inheritance(strategy=SINGLE_TABLE)
 @DiscriminatorColumn(name="type", discriminatorType=STRING)
 
-public class PersonUser implements UserDetails {
+public class PersonUser implements UserDetails, Serializable {
     @Id
     @SequenceGenerator(name = "mySeqGenV2", sequenceName = "mySeqV2", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV2")
@@ -48,7 +49,7 @@ public class PersonUser implements UserDetails {
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.REFRESH)
     @JoinTable(name = "user_authority",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))

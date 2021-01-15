@@ -6,6 +6,7 @@ import java.util.List;
 
 
 public interface IAuthorityService {
-    List<Authority> findById(Integer id);
-    List<Authority> findByname(String name);
+    Authority findById(Integer id);
+    Authority findByname(String name);
+
 }
