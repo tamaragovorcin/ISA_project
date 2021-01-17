@@ -12,7 +12,9 @@ import PatientProfile from '../views/patient/PatientProfile.vue'
 import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vue'
 import Order from '../views/pharmacyAdmin/Order.vue'
 import PharmacyProfile from '../views/PharmacyProfile.vue'
-
+import AddNewPharmacist from '../views/pharmacyAdmin/AddNewPharmacist.vue'
+import MyPharmacy from '../views/pharmacyAdmin/MyPharmacy.vue'
+import ActionsAndBenefits from '../views/pharmacyAdmin/ActionsAndBenefits.vue'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -77,6 +79,21 @@ const routes = [
       path: '/pharmacyProfile',
       name: 'PharmacyProfile',
       component: PharmacyProfile
+    },
+    {
+      path: '/addNewPharmacist',
+      name: 'AddNewPharmacist',
+      component: AddNewPharmacist
+    },
+    {
+      path: '/myPharmacy',
+      name: 'MyPharmacy',
+      component: MyPharmacy
+    },
+    {
+      path: '/actionsAndBenefits',
+      name: 'ActionsAndBenefits',
+      component: ActionsAndBenefits
     },
 ]
 
