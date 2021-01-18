@@ -61,9 +61,20 @@ export default {
                 .then(response => {
                     localStorage.setItem('token', JSON.stringify(response.data.accessToken));
                     console.log(response.data.token);
-                     window.location.href = '/patientProfile'
+                    let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+                    this.axios.get('/patient/account',{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }
+                    }).then(response => {
+                            if(response.data.authorities[0].authority==="ROLE_PATIENT") 
+                                window.location.href = '/patientProfile';
+                    }).catch(res => {
+                                alert("NOT OK");
+                                    console.log(res);
+                            });
 
-                })
+                            })
                 .catch(response => {
                        alert("Please enter valid data!");
                         console.log(response);
