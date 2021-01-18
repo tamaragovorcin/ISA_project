@@ -62,7 +62,7 @@ export default {
                     localStorage.setItem('token', JSON.stringify(response.data.accessToken));
                     console.log(response.data.token);
                     let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-                    this.axios.get('/patient/account',{ 
+                    this.axios.get('/authority',{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                         }

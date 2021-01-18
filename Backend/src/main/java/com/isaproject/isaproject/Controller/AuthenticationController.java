@@ -9,6 +9,7 @@ import com.isaproject.isaproject.Authentification.JwtAuthenticationRequest;
 import com.isaproject.isaproject.Authentification.TokenUtils;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
+import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Model.Users.UserTokenState;
 import com.isaproject.isaproject.Service.IServices.IPersonUserService;
@@ -103,6 +104,18 @@ public class AuthenticationController {
         Map<String, String> result = new HashMap<>();
         result.put("result", "success");
         return ResponseEntity.accepted().body(result);
+    }
+
+    @GetMapping("/authority")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<PersonUser> getMyAccount()
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PersonUser userWithId = userService.findById(user.getId());
+        return userWithId == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(userWithId);
     }
 
     static class PasswordChanger {
