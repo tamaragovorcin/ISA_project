@@ -12,6 +12,9 @@ import PatientProfile from '../views/patient/PatientProfile.vue'
 import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vue'
 import Order from '../views/pharmacyAdmin/Order.vue'
 import PharmacyProfile from '../views/PharmacyProfile.vue'
+import PatientFirstLogin from '../views/patient/PatientFirstLogin.vue'
+
+
 
 
 Vue.use(BootstrapVue)
@@ -78,6 +81,11 @@ const routes = [
       name: 'PharmacyProfile',
       component: PharmacyProfile
     },
+    {
+      path: '/patientFirstLogin',
+      name: 'PatientFirstLogin',
+      component: PatientFirstLogin
+    }
 ]
 
 const router = new VueRouter({

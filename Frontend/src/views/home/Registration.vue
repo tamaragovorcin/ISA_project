@@ -22,7 +22,7 @@
 
         <div style="background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
             <h3 style="color: #0D184F">Registration</h3>
-                <form>
+                
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Name:</label>
@@ -83,7 +83,7 @@
                    
                     <button class="btn btn-primary btn-lg" v-on:click = "register">Register</button>
                     <div style="height:30px;"></div>
-                </form>
+                
 
 
 
@@ -116,8 +116,32 @@ export default {
   },
 
   methods:{
+       
       register : function(){
-
+          const addressInfo ={
+              town : this.town,
+              street : this.street,
+              number : this.number,
+              postalcode : this.postalCode,
+              country : this.country
+          }
+            const userInfo ={
+                email : this.email,
+                password : this.password,
+                firstname : this.firstname,
+                surname : this.surname,
+                phonenumber : this.phoneNumber,
+                address : addressInfo
+            }
+            this.axios.post('/patient/register',userInfo)
+                .then(response => {
+                       alert("Please check your email and complete registration!");
+                        console.log(response.data);
+                })
+                .catch(response => {
+                       alert("NIJE REGISTROVAN");
+                        console.log(response);
+                 });    
       },
       showRegistrationForm : function(){
              window.location.href = "/registration";
