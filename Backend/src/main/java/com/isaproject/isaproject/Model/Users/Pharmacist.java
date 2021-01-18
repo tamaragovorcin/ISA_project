@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Entity
 @DiscriminatorValue("Pharmacist")
-public class Pharmacist extends  PersonUser implements Serializable {
+public class Pharmacist extends  PersonUser {
 
     @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Consulting> consulting = new HashSet<Consulting>();

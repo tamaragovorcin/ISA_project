@@ -5,6 +5,7 @@ import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.Model.Users.Address;
 import com.isaproject.isaproject.Model.Users.Authority;
 import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Repository.AuthorityRepository;
 import com.isaproject.isaproject.Repository.PatientRepository;
 import com.isaproject.isaproject.Service.IServices.IAuthorityService;
 import com.isaproject.isaproject.Service.IServices.IPatientService;
@@ -14,19 +15,22 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PatientService implements IPatientService {
     @Autowired
     PatientRepository patientRepository;
     @Autowired
-    private IAuthorityService authService;
+    private AuthorityService authService;
+    @Autowired
+    private AuthorityRepository authorityRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     public Patient findById(Integer id) {
-        return patientRepository.getOne(id);
+        return patientRepository.findById(id).get();
     }
 
     @Override
@@ -54,13 +58,20 @@ public class PatientService implements IPatientService {
         patient.setPoints(0);
         patient.setLoyaltyCategory("REGULAR");
         patient.setEmail(userRequest.getEmail());
-        patient.setPassword(passwordEncoder.encode(userRequest.getPassword()));        patient.setFirstLogged(true);
+        patient.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        patient.setFirstLogged(true);
+        patient.setPhoneNumber(userRequest.getPhonenumber());
+        Authority authorityPatient = authService.findByname("ROLE_PATIENT");
         List<Authority> auth = new ArrayList<Authority>();
-        auth.add(new Authority("ROLE_PATIENT"));
-        //List<Authority> auth = authService.findByname("ROLE_PATIENT");
-        // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
+        if(authorityPatient==null) {
+            authorityRepository.save(new Authority("ROLE_PATIENT"));
+            auth.add(authService.findByname("ROLE_PATIENT"));
+        }
+        else {
+            auth.add(authorityPatient);
+        }
         patient.setAuthorities(auth);
-        patient.setEnabled(true);
+        patient.setEnabled(false);
         return patientRepository.save(patient);
     }
 }

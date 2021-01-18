@@ -59,9 +59,9 @@ public class PersonUserService implements IPersonUserService {
         u.setFirstLogged(true);
         u.setPhoneNumber(userRequest.getPhonenumber());
 
-        List<Authority> auth = authService.findByname("ROLE_USER");
+        Authority auth = authService.findByname("ROLE_USER");
         // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
-        u.setAuthorities(auth);
+        //u.setAuthorities(auth);
 
         u = this.personUserRepository.save(u);
         return u;

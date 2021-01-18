@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Entity
 @DiscriminatorValue("Patient")
-public class Patient extends PersonUser implements Serializable {
+public class Patient extends PersonUser{
 
    /* @ManyToMany
     @JoinTable(name = "consulting", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "consulting_id", referencedColumnName = "id"))

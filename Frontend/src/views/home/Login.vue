@@ -21,7 +21,7 @@
         <div style = "background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
                        <h3 style="color: #0D184F;margin-bottom:20px">Logging in</h3>
 
-           <form>
+          
                 <div class="form-group">
                     <label>Email address:</label>
                     <input type="email" class="form-control" v-model="email" aria-describedby="emailHelp" placeholder="Enter email">
@@ -32,7 +32,7 @@
                     <input type="password" class="form-control" v-model="password" placeholder="Password">
                 </div>
                 <button v-on:click = "login" class="btn btn-primary">Login</button>
-            </form>
+           
         </div>
 
       
@@ -51,6 +51,36 @@ export default {
   },
 
   methods:{
+      login : function() {
+            const loginInfo ={
+                email : this.email,
+                password : this.password,
+            }
+          
+            this.axios.post('/login',loginInfo)
+                .then(response => {
+                    localStorage.setItem('token', JSON.stringify(response.data.accessToken));
+                    console.log(response.data.token);
+                    let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+                    this.axios.get('/authority',{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }
+                    }).then(response => {
+                            if(response.data.authorities[0].authority==="ROLE_PATIENT") 
+                                window.location.href = '/patientProfile';
+                    }).catch(res => {
+                                alert("NOT OK");
+                                    console.log(res);
+                            });
+
+                            })
+                .catch(response => {
+                       alert("Please enter valid data!");
+                        console.log(response);
+                 });    
+      },
+
       showRegistrationForm : function(){
           window.location.href = '/registration'
       },
@@ -61,9 +91,6 @@ export default {
       showHomePage : function(){
           window.location.href = "/isaHomePage";
       },
-      login : function(){
-          
-      }
 }
 }
 </script>

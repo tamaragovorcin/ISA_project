@@ -2,9 +2,9 @@ package com.isaproject.isaproject.Service.IServices;
 
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.Model.Users.Patient;
-import com.isaproject.isaproject.Model.Users.PersonUser;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IPatientService {
     Patient findById(Integer id);

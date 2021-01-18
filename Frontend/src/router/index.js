@@ -16,6 +16,9 @@ import AddNewPharmacist from '../views/pharmacyAdmin/AddNewPharmacist.vue'
 import MyPharmacy from '../views/pharmacyAdmin/MyPharmacy.vue'
 import ActionsAndBenefits from '../views/pharmacyAdmin/ActionsAndBenefits.vue'
 
+
+
+
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
@@ -94,7 +97,7 @@ const routes = [
       path: '/actionsAndBenefits',
       name: 'ActionsAndBenefits',
       component: ActionsAndBenefits
-    },
+    }
 ]
 
 const router = new VueRouter({
