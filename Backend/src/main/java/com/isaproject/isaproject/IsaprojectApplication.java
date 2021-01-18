@@ -34,10 +34,5 @@ public class IsaprojectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(IsaprojectApplication.class, args);
-
-
-
-
-
 	}
 }

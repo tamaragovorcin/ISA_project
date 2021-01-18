@@ -73,6 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll().antMatchers("/api/foo").permitAll().antMatchers("/api/patient/register") .permitAll()
                 .antMatchers("/api/patient").permitAll()
                 .antMatchers("/api/patient/email/{id}").permitAll()
+                .antMatchers("/api/patient/confirm-account").permitAll()
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
                 // za development svrhe ukljuci konfiguraciju za CORS iz WebConfig klase
@@ -93,6 +94,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.POST, "/api/patient/register");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/patient");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/patient/email/{id}");
+        web.ignoring().antMatchers(HttpMethod.POST, "/api/patient/confirm-account");
+
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html",
                 "/**/*.css", "/**/*.js");
     }

@@ -1,6 +1,5 @@
 package com.isaproject.isaproject.Model.Users;
 
-import com.isaproject.isaproject.Model.Medicine.Medication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -59,7 +58,6 @@ public class PersonUser implements UserDetails, Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Address address;
-
 
     public PersonUser(Integer id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, boolean enabled, Timestamp lastPasswordResetDate, List<Authority> authorities, Address address) {
         this.id = id;
