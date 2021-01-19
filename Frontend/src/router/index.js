@@ -13,6 +13,12 @@ import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vu
 import Order from '../views/pharmacyAdmin/Order.vue'
 import PharmacyProfile from '../views/PharmacyProfile.vue'
 import PatientFirstLogin from '../views/patient/PatientFirstLogin.vue'
+import SystemAdminProfile from '../views/systemAdmin/SystemAdminProfile.vue'
+import RegisterPharmacy from '../views/systemAdmin/RegisterPharmacy.vue'
+import RegisterPharmacyAdmin from '../views/systemAdmin/RegisterPharmacyAdmin.vue'
+import RegisterSupplier from '../views/systemAdmin/RegisterSupplier.vue'
+import RegisterDermatologist from '../views/systemAdmin/RegisterDermatologist.vue'
+import RegisterSystemAdmin from '../views/systemAdmin/RegisterSystemAdmin.vue'
 
 
 
@@ -85,6 +91,40 @@ const routes = [
       path: '/patientFirstLogin',
       name: 'PatientFirstLogin',
       component: PatientFirstLogin
+    },
+    {
+      path: '/systemAdminProfile',
+      name: 'SystemAdminProfile',
+      component: SystemAdminProfile
+    }
+    ,
+    {
+      path: '/registerPharmacy',
+      name: 'RegisterPharmacy',
+      component: RegisterPharmacy
+    }
+    ,
+    {
+      path: '/registerPharmacyAdmin',
+      name: 'RegisterPharmacyAdmin',
+      component: RegisterPharmacyAdmin
+    }
+    ,
+    {
+      path: '/registerSupplier',
+      name: 'RegisterSupplier',
+      component: RegisterSupplier
+    }
+    ,
+    {
+      path: '/registerDermatologist',
+      name: 'RegisterDermatologist',
+      component: RegisterDermatologist
+    },
+    {
+      path: '/registerSystemAdmin',
+      name: 'RegisterSystemAdmin',
+      component: RegisterSystemAdmin
     }
 ]
 
