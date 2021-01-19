@@ -1,7 +1,12 @@
 package com.isaproject.isaproject.Controller;
 
 
+import com.isaproject.isaproject.DTO.ActionsDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.Model.Pharmacy.Actions;
+import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Service.Implementations.ActionsService;
+
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
 import com.isaproject.isaproject.Repository.PatientRepository;
@@ -20,6 +25,10 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+
+import javax.swing.*;
+import javax.websocket.server.PathParam;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -31,6 +40,7 @@ import java.util.UUID;
 public class PatientController {
     @Autowired
     PatientService patientService;
+
 
     @Autowired
     PatientRepository patientRepository;
@@ -149,7 +159,6 @@ public class PatientController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(email);
     }
-
 
 
 }

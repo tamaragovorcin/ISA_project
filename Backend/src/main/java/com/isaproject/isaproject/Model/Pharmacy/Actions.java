@@ -1,20 +1,27 @@
 package com.isaproject.isaproject.Model.Pharmacy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
+import static javax.persistence.DiscriminatorType.STRING;
+import static javax.persistence.InheritanceType.SINGLE_TABLE;
 
 @Entity
 @Table(name="actions_table")
-public class Actions{
+@Inheritance(strategy=SINGLE_TABLE)
+@DiscriminatorColumn(name="type", discriminatorType=STRING)
+public class Actions implements Serializable {
 
     @Id
-    @GeneratedValue
     @Column(name="id", unique=true, nullable=false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV2")
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Pharmacy pharmacy;
 
     @Column(name = "description", nullable = true)
@@ -22,12 +29,18 @@ public class Actions{
 
 
     @Column(name = "expiryDate", nullable = true)
-    private LocalDate expiryDate;
+    private Date expiryDate;
 
     public Actions() {}
 
-    public Actions(Integer id, int pharmacyId, String description, LocalDate expiryDate) {
+    public Actions(Integer id, int pharmacyId, String description, Date expiryDate) {
         this.id = id;
+        this.description = description;
+        this.expiryDate = expiryDate;
+    }
+
+    public Actions(Pharmacy pharmacy, String description, Date expiryDate) {
+        this.pharmacy = pharmacy;
         this.description = description;
         this.expiryDate = expiryDate;
     }
@@ -56,11 +69,11 @@ public class Actions{
         this.description = description;
     }
 
-    public LocalDate getExpiryDate() {
+    public Date getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(LocalDate expiryDate) {
+    public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
 }
