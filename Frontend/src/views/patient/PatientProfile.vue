@@ -189,6 +189,7 @@ export default {
           window.location.href = "/isaHomePage";
       },
       logOut : function(){
+          localStorage.removeItem('token');
           window.location.href = "/login";
 
       },
@@ -222,7 +223,21 @@ export default {
             window.location.href = "/showPharmaciesPatient";
 
       }
-}
+},
+    mounted() {
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+
+             }
+         }).then(response => {
+                console.log(response.data);
+         }).catch(res => {
+                       alert("NOT OK");
+                        console.log(res);
+                 });
+    }
 }
 </script>
 

@@ -3,7 +3,7 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-            <span style="float: left; margin: 15px;">
+              <span style="float: left; margin-left: 270px;!important">
                 <a href= "/isaHomePage">Home</a>
                 <b class="tab"></b>    
                 <a href = "/pharmacyAdminProfile">My profile</a>
@@ -16,18 +16,20 @@
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
                 
                 </span>
-
         </div>
-        <div>
+        
         <div class="sidenav">
         <hr/>
         <a href = "/pharmacyDermatologists">Dermatologists</a>
         <a href = "/pharmacyPharmacists">Pharmacists</a>
         <a href = "/pharmacyMedications">Medications</a>
-        <a href = "/actionsAndBenefits">Actions and benefits</a>
-        <a href="/order">Orders</a>
+        <a href="#">Contact</a>
         </div>
-    <b-button class = "btn btn-warning btn-lg" @click="showModal">+ Make new order</b-button>
+
+        <div class="container-fluid">
+
+        <div v-if="showMed">
+       <b-button class = "btn btn-warning btn-lg" @click="showModal">+ Make new order</b-button>
     <b-modal ref="my-modal" hide-footer scrollable title="Fill order form" size="lg" modal-class="b-modal">
                     <div modal-class="modal-dialog" role="document">
                     <div class="modal-content" style="background-color:whitesmoke">
@@ -44,7 +46,7 @@
                                                     <label >Medication:</label>
                                                 </div>
                                                 <div class="col">
-                                                <input type="text" class="form-control" v-model="medicine">
+                                                <input type="text" class="form-control">
 
                                                 </div>
 
@@ -56,7 +58,7 @@
                                                     <label>Quantity:</label>
                                                 </div>
                                                 <div class="col">
-                                                    <input type="number" v-model="quantity" placeholder="Enter quantity..">
+                                                    <input type="number"  placeholder="Enter quantity..">
                                                 </div>
 
                                             </div>
@@ -64,10 +66,10 @@
                                                 <div class="col">
                                                 </div>
                                                 <div class="col">
-                                                    <button class="btn btn-secondary" style="margin-left:3px" v-on:click="addNewMedicine">&nbsp;&nbsp;+&nbsp;&nbsp;</button>
+                                                    <button class="btn btn-secondary" style="margin-left:3px">&nbsp;&nbsp;+&nbsp;&nbsp;</button>
                                                 </div>
                                             </div>
-                                            <hr v-if="showTable" />
+                                           
 
 
 
@@ -75,15 +77,12 @@
 
                                         </div>
                                         <div class="row">
-                                            <table v-if="showTable" class="table table-striped table-dark">
+                                            <table class="table table-striped table-dark">
                                                 <thead>
                                                 <th>Medicine name</th>
                                                 <th>Quantity</th>
                                                 </thead>
-                                                <tr v-for="med in medicationQuantityList" :key="med.id">
-                                                    <td>{{med.medicineName}}</td>
-                                                    <td>{{med.quantity}}</td>
-                                                </tr>
+                                                
                                             </table>
                                         </div>
                                         <hr />
@@ -92,7 +91,7 @@
                                                 <label for="name">Closing date:</label>
                                             </div>
                                             <div class="col">
-                                                <input type="text" v-model="endDate" placeholder="01/01/2020" />
+                                                <input type="text"  placeholder="01/01/2020" />
                                             </div>
                                         </div>
                     
@@ -109,7 +108,15 @@
                 </div>
     
     </b-modal>
-  </div>
+
+
+
+        </div>
+
+
+        </div>
+        
+
        
 
        
@@ -119,28 +126,44 @@
 
 <script>
 export default {
+
   data() {
     return {
-       show : false,
-       medicine : "",
-       quantity : 0,
-       showTable : false,
-       medicationQuantityList : [],
-       endDate : "",
+       showMed : false,
     }
   },
+
   methods:{
        showHomePage : function(){
           window.location.href = "/isaHomePage";
       },
       showMyProfile: function(){
+
       },
        showActionsAndBenefitsForm : function(){
+              this.$refs['my-modal'].show()
       },
        showOrderForm : function(){
+          window.location.href = "/order";
+
       },
        logOut : function(){
            window.location.href = "/login";
+      },
+      showMyPharmacy : function (){
+          window.location.href = "/myPharmacy"
+      },
+      addNewPharmacist : function(){
+        window.location.href = "/addNewPharmacist";
+      },
+      showDermatologists : function(){
+
+      },
+      showPharmacists : function(){
+
+      },
+      showMedications : function(){
+        this.showMed = true;
       },
       showModal() {
         this.$refs['my-modal'].show()
@@ -148,46 +171,18 @@ export default {
       hideModal() {
         this.$refs['my-modal'].hide()
       },
-      addNewMedicine : function(){
-               this.showTable = true;
-                const medicineWithQuantity = {
-                    medicineName: this.medicine,
-                    quantity: this.quantity,
-                };
-                this.medicationQuantityList.push(medicineWithQuantity)
-      },
-      sendOrder : function(){
-           const order = {
-                    medicinesWithQuantity: this.medicationQuantityList,
-                    date: this.endDate,
-                };
-            console.log(order);
-      }
-   
 }
 }
 </script>
 
 <style>
-@media (min-width: 992px){}
- .modal-lg {
-    max-width: auto !important;
-   }
-@media (min-width: 992px){}
- .modal-dialog {
-    margin: 100px !important;
-   }
-@media (min-width: 800px){}
-  .modal-dialog {
-    max-width: auto !important;
-  }
 body {
   font-family: "Lato", sans-serif;
 }
 
 .sidenav {
   height: 100%;
-  width: 270px;
+  width: 200px;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -202,7 +197,7 @@ body {
   padding: 6px 6px 6px 0px;
   text-decoration: none;
   font-size: 25px;
-  color: white;
+  color: #white;
   display: block;
 }
 
@@ -215,6 +210,7 @@ body {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
-
-
 </style>
+
+
+  

@@ -61,7 +61,7 @@ public class PatientService implements IPatientService {
         patient.setEmail(userRequest.getEmail());
         patient.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         patient.setFirstLogged(true);
-
+        patient.setPhoneNumber(userRequest.getPhonenumber());
         Authority authorityPatient = authService.findByname("ROLE_PATIENT");
         List<Authority> auth = new ArrayList<Authority>();
         if(authorityPatient==null) {
@@ -72,7 +72,7 @@ public class PatientService implements IPatientService {
             auth.add(authorityPatient);
         }
         patient.setAuthorities(auth);
-        patient.setEnabled(true);
+        patient.setEnabled(false);
         return patientRepository.save(patient);
     }
 
