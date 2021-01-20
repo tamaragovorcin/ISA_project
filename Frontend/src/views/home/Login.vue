@@ -74,11 +74,11 @@ export default {
                             else if(authority==="ROLE_DERMATOLOGIST")
                                 alert("Dermatologist is logged in :)");
                             else if(authority==="ROLE_SUPPLIER")
-                                alert("Supplier is logged in :)");   
+                                window.location.href = '/supplierProfile';
                             else if(authority==="ROLE_SYSTEM_ADMIN")
                                 window.location.href = '/systemAdminProfile';
                             else if(authority==="ROLE_PHARMACY_ADMIN")
-                                alert("Pharmacy admin is logged in :)");   
+                                window.location.href = '/pharmacyAdminProfile';   
                             else if(authority==="ROLE_PHARMACIST")
                                 alert("Pharmacist is logged in :)"); 
                             else alert("Error has occured."); 

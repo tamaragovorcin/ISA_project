@@ -72,17 +72,13 @@ export default {
 
   data() {
     return {
-        name : "",
-        surname : "",
-        email : "",
-        password : "",
-        repeatPassword : "",
-        phoneNumber : "",
+        pharmacyName : "",
         town : "",
         street : "",
         number : "",
         postalCode : "",
         country : "",
+        consultingPrice : 0,
         accountInformation :null,
         allowSystemAdminRegistration : false,
         notallowSystemAdminRegistration : false
@@ -113,17 +109,16 @@ export default {
               postalcode : this.postalCode,
               country : this.country
           }
-            const userInfo ={
-                email : this.email,
-                password : this.password,
-                firstname : this.firstname,
-                surname : this.surname,
-                phonenumber : this.phoneNumber,
-                address : addressInfo
+            const pharmacyInfo ={
+                
+                pharmacyName : this.pharmacyName,
+                address : addressInfo,
+                consultingPrice : this.consultingPrice
+
             }
             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
 
-            this.axios.post('/pharmacy/register',userInfo,{ 
+            this.axios.post('/pharmacy/register',pharmacyInfo,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                         }})

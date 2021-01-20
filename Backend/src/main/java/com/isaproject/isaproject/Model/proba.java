@@ -87,14 +87,14 @@ public class proba {
 
         Actions action1 = new Actions();
         action1.setDescription("Akcija");
-        action1.setExpiryDate(LocalDate.now());
+        //action1.setExpiryDate(LocalDate.now());
         action1.setDescription("Akcija za panadol");
         action1.setPharmacy(pharmacy);
 
 
         Actions action2 = new Actions();
         action2.setDescription("Akcija 22");
-        action2.setExpiryDate(LocalDate.now());
+       // action2.setExpiryDate(LocalDate.now());
         action2.setDescription("Akcija za brufen");
         action2.setPharmacy(pharmacy2);
 

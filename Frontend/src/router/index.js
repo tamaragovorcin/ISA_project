@@ -19,6 +19,10 @@ import RegisterPharmacyAdmin from '../views/systemAdmin/RegisterPharmacyAdmin.vu
 import RegisterSupplier from '../views/systemAdmin/RegisterSupplier.vue'
 import RegisterDermatologist from '../views/systemAdmin/RegisterDermatologist.vue'
 import RegisterSystemAdmin from '../views/systemAdmin/RegisterSystemAdmin.vue'
+import AddNewPharmacist from '../views/pharmacyAdmin/AddNewPharmacist.vue'
+import MyPharmacy from '../views/pharmacyAdmin/MyPharmacy.vue'
+import ActionsAndBenefits from '../views/pharmacyAdmin/ActionsAndBenefits.vue'
+import SupplierProfile from '../views/supplier/SupplierProfile.vue'
 
 
 
@@ -125,6 +129,26 @@ const routes = [
       path: '/registerSystemAdmin',
       name: 'RegisterSystemAdmin',
       component: RegisterSystemAdmin
+    },
+    {
+      path: '/addNewPharmacist',
+      name: 'AddNewPharmacist',
+      component: AddNewPharmacist
+    },
+    {
+      path: '/myPharmacy',
+      name: 'MyPharmacy',
+      component: MyPharmacy
+    },
+    {
+      path: '/actionsAndBenefits',
+      name: 'ActionsAndBenefits',
+      component: ActionsAndBenefits
+    },
+    {
+      path: '/supplierProfile',
+      name: 'SupplierProfile',
+      component: SupplierProfile
     }
 ]
 
