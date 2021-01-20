@@ -26,6 +26,9 @@ public class PharmacyService implements IPharmacyService {
         return pharmacyRepository.findAll();
     }
 
+    public Pharmacy findByPharmacyName(String pharmacyName) {
+        return pharmacyRepository.findByPharmacyName(pharmacyName);
+    }
     @Override
     public Pharmacy save(PharmacyDTO pharmacy) {
         Pharmacy pharmacy1 = new Pharmacy();
@@ -33,6 +36,7 @@ public class PharmacyService implements IPharmacyService {
         AddressDTO addressDTO = pharmacy.getAddress();
         Address address = new Address(addressDTO.getTown(),addressDTO.getStreet(),addressDTO.getNumber(),addressDTO.getPostalCode(),addressDTO.getCountry());
         pharmacy1.setAddress(address);
+        pharmacy1.setConsultingPrice(pharmacy.getConsultingPrice());
         return pharmacyRepository.save(pharmacy1);
     }
 }

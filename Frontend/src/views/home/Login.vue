@@ -56,7 +56,8 @@ export default {
                 email : this.email,
                 password : this.password,
             }
-          
+            localStorage.removeItem('token');
+
             this.axios.post('/login',loginInfo)
                 .then(response => {
                     localStorage.setItem('token', JSON.stringify(response.data.accessToken));
@@ -67,8 +68,21 @@ export default {
                                 'Authorization': 'Bearer ' + token,
                         }
                     }).then(response => {
-                            if(response.data.authorities[0].authority==="ROLE_PATIENT") 
+                            var authority = response.data.authorities[0].authority;
+                            if(authority==="ROLE_PATIENT") 
                                 window.location.href = '/patientProfile';
+                            else if(authority==="ROLE_DERMATOLOGIST")
+                                alert("Dermatologist is logged in :)");
+                            else if(authority==="ROLE_SUPPLIER")
+                                window.location.href = '/supplierProfile';
+                            else if(authority==="ROLE_SYSTEM_ADMIN")
+                                window.location.href = '/systemAdminProfile';
+                            else if(authority==="ROLE_PHARMACY_ADMIN")
+                                window.location.href = '/pharmacyAdminProfile';   
+                            else if(authority==="ROLE_PHARMACIST")
+                                alert("Pharmacist is logged in :)"); 
+                            else alert("Error has occured."); 
+
                     }).catch(res => {
                                 alert("NOT OK");
                                     console.log(res);

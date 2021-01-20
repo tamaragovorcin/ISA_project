@@ -77,6 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/pharmacy/add").permitAll()
                 .antMatchers("/api/pharmacy/actions/{id}").permitAll()
                 .antMatchers("/api/patient/confirm-account").permitAll()
+                .antMatchers("/api/systemAdmin/register") .permitAll()
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
                 .cors().and()
@@ -100,6 +101,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/add");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/actions/{id}");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/patient/confirm-account");
+        web.ignoring().antMatchers(HttpMethod.POST, "/api/systemAdmin/register");
+
 
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html",
                 "/**/*.css", "/**/*.js");

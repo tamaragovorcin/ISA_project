@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Model.Pharmacy;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
@@ -13,6 +14,7 @@ import com.isaproject.isaproject.Model.Users.Address;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
 import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -30,7 +32,7 @@ public class Pharmacy implements Serializable{
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "pharmacyName", nullable = true)
+    @Column(name = "pharmacyName", nullable = true,unique=true)
     private String pharmacyName;
 
 
@@ -62,11 +64,13 @@ public class Pharmacy implements Serializable{
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Subscription> subscriptions = new HashSet<Subscription>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PharmacyAdmin> pharmacyAdmins = new HashSet<PharmacyAdmin>();
 
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Order> order = new HashSet<Order>();
+
 
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<WorkingHoursDermatologist> workingHoursDermatologists = new HashSet<WorkingHoursDermatologist>();
@@ -89,7 +93,6 @@ public class Pharmacy implements Serializable{
         this.dermatologists = dermatologists;
         this.pharmacists = pharmacists;
         this.subscriptions = subscriptions;
-        this.pharmacyAdmins = pharmacyAdmins;
         this.order = order;
         this.workingHoursDermatologists = workingHoursDermatologists;
         this.medications = medications;

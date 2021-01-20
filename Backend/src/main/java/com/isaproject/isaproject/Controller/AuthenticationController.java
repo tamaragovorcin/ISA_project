@@ -107,7 +107,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("/authority")
-    @PreAuthorize("hasRole('PATIENT')")
+    //@PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACY_ADMIN', 'PHARMACIST')")
     ResponseEntity<PersonUser> getMyAccount()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
