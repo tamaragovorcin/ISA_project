@@ -12,6 +12,10 @@ import PatientProfile from '../views/patient/PatientProfile.vue'
 import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vue'
 import Order from '../views/pharmacyAdmin/Order.vue'
 import PharmacyProfile from '../views/PharmacyProfile.vue'
+import MyProfile from '../views/patient/MyProfile.vue'
+import UpdateProfilePatient from '../views/patient/UpdateProfilePatient.vue'
+import MedicationReservation from '../views/patient/MedicationReservation.vue'
+import ShowPharmaciesPatient from '../views/patient/ShowPharmaciesPatient.vue'
 
 
 Vue.use(BootstrapVue)
@@ -77,6 +81,26 @@ const routes = [
       path: '/pharmacyProfile',
       name: 'PharmacyProfile',
       component: PharmacyProfile
+    },
+    {
+      path: '/myProfilePatient',
+      name: 'MyProfile',
+      component: MyProfile
+    },
+    {
+      path: '/updateProfilePatient',
+      name: 'UpdateProfilePatient',
+      component: UpdateProfilePatient
+    },
+    {
+      path: '/medicationReservation',
+      name: 'medicationReservation',
+      component: MedicationReservation
+    },
+    {
+      path: '/showPharmaciesPatient',
+      name: 'showPharmaciesPatient',
+      component: ShowPharmaciesPatient
     },
 ]
 

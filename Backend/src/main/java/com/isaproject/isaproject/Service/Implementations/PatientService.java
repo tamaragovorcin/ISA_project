@@ -30,6 +30,7 @@ public class PatientService implements IPatientService {
 
     @Override
     public Patient findById(Integer id) {
+        System.out.println("OVO JE "+id);
         return patientRepository.findById(id).get();
     }
 
@@ -73,5 +74,44 @@ public class PatientService implements IPatientService {
         patient.setAuthorities(auth);
         patient.setEnabled(true);
         return patientRepository.save(patient);
+    }
+
+    @Override
+    public Patient update(PersonUserDTO userRequest, Integer id) {
+        Patient patient =  new Patient();
+        patient.setId(id);
+        patient.setName(userRequest.getFirstname());
+        patient.setSurname(userRequest.getSurname());
+        AddressDTO addressDTO = userRequest.getAddress();
+        Address address = new Address(addressDTO.getTown(),addressDTO.getStreet(),addressDTO.getNumber(),addressDTO.getPostalCode(),addressDTO.getCountry());
+        patient.setAddress(address);
+        patient.setPenalties(0);
+        patient.setPoints(0);
+        patient.setLoyaltyCategory("REGULAR");
+        patient.setEmail(userRequest.getEmail());
+        patient.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        patient.setFirstLogged(true);
+
+        Authority authorityPatient = authService.findByname("ROLE_PATIENT");
+        List<Authority> auth = new ArrayList<Authority>();
+        if(authorityPatient==null) {
+            authorityRepository.save(new Authority("ROLE_PATIENT"));
+            auth.add(authService.findByname("ROLE_PATIENT"));
+        }
+        else {
+            auth.add(authorityPatient);
+        }
+        patient.setAuthorities(auth);
+        patient.setEnabled(true);
+        System.out.println("bbbbbbbbbbbbbbbbBBBBBBBBBBBBBBBBBBBBBBBBB " + patient.getId());
+        return patientRepository.save(patient);
+    }
+
+    @Override
+    public void delete(Patient patient) {
+
+        patientRepository.delete(patient);
+
+
     }
 }

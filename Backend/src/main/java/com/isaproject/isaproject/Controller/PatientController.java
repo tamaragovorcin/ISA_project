@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Controller;
 
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Service.Implementations.PatientService;
@@ -30,10 +31,11 @@ public class PatientController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('PATIENT')")
+    //@PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<Patient> getById(@PathVariable Integer id)
     {
-        Patient patient = patientService.findById(id);
+        Integer idd = 1;
+        Patient patient = patientService.findById(idd);
         return patient == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patient);
@@ -56,6 +58,17 @@ public class PatientController {
                 ResponseEntity.ok(email);
     }
 
-
+    @PostMapping("/update")
+    ResponseEntity<Patient> update(@RequestBody PersonUserDTO person)
+    {
+        Patient per = patientService.findByEmail(person.getEmail());
+        Integer id = per.getId();
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+id);
+        patientService.delete(per);
+        Patient patient = patientService.update(person, id);
+        return patient == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(patient);
+    }
 
 }
