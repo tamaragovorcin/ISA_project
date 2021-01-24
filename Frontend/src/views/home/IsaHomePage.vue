@@ -35,7 +35,7 @@ export default {
 
       },
       showLoginForm: function(){
-        window.location.href = "/login";
+        window.location.href = "/pharmacistHomePage";
 
       },
       showHomePage : function(){
