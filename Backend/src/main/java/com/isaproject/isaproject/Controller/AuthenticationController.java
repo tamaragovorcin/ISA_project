@@ -106,8 +106,17 @@ public class AuthenticationController {
         return ResponseEntity.accepted().body(result);
     }
 
+    @RequestMapping(value = "/passwordFirstLogin", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACY_ADMIN', 'PHARMACIST')")
+    public ResponseEntity<?> changePasswordFirstLogin(@RequestBody PasswordChanger passwordChanger) {
+        userDetailsService.changePasswordFirstLogin(passwordChanger.oldPassword, passwordChanger.newPassword);
+
+        Map<String, String> result = new HashMap<>();
+        result.put("result", "success");
+        return ResponseEntity.accepted().body(result);
+    }
+
     @GetMapping("/authority")
-    //@PreAuthorize("hasRole('PATIENT')")
     @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACY_ADMIN', 'PHARMACIST')")
     ResponseEntity<PersonUser> getMyAccount()
     {
@@ -118,6 +127,9 @@ public class AuthenticationController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(userWithId);
     }
+
+
+
 
     static class PasswordChanger {
         public String oldPassword;

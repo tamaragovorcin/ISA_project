@@ -1,7 +1,10 @@
 package com.isaproject.isaproject.Service.Implementations;
 
+import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
+import com.isaproject.isaproject.Model.Users.SystemAdmin;
 import com.isaproject.isaproject.Repository.PersonUserRepository;
+import com.isaproject.isaproject.Repository.SystemAdminRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private PersonUserRepository userRepository;
+
+    @Autowired
+    private SystemAdminRepository systemAdminRepository;
+
+    @Autowired
+    private SystemAdminService systemAdminService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -54,6 +63,8 @@ public class CustomUserDetailsService implements UserDetailsService {
             LOGGER.debug("Re-authenticating user '" + username + "' for password change request.");
 
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));
+
+
         } else {
             LOGGER.debug("No authentication manager set. can't change Password!");
 
@@ -69,5 +80,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
 
+    }
+    public void changePasswordFirstLogin(String oldPassword, String newPassword) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setFirstLogged(false);
+        userRepository.save(user);
     }
 }

@@ -20,8 +20,6 @@
 
         <div style = "background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
                        <h3 style="color: #0D184F;margin-bottom:20px">Logging in</h3>
-
-          
                 <div class="form-group">
                     <label>Email address:</label>
                     <input type="email" class="form-control" v-model="email" aria-describedby="emailHelp" placeholder="Enter email">
@@ -34,9 +32,27 @@
                 <button v-on:click = "login" class="btn btn-primary">Login</button>
            
         </div>
-
-      
-
+        <b-modal ref="my-modal" hide-footer scrollable title="Please change password to continue" size="lg" modal-class="b-modal">
+            <div modal-class="modal-dialog" role="document">
+                <div class="modal-content" style="background-color:whitesmoke">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Current Password:</label>
+                            <input type="password" class="form-control" v-model="currentPassword" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label>New password:</label>
+                            <input type="password" class="form-control" v-model="newPassword" placeholder=" New Password">
+                        </div>
+                        <div class="form-group">
+                            <label>Repeat new password:</label>
+                            <input type="password" class="form-control" v-model="newPasswordRepeat" placeholder="Repeat new Password">
+                        </div>
+                        <button v-on:click = "changePassword" class="btn btn-primary">Confirm</button>        
+                    </div>                
+                </div>
+            </div>
+        </b-modal>
     </div>
 </template>
 
@@ -47,6 +63,10 @@ export default {
     return {
         email : "",
         password : "",
+        currentPassword : "",
+        newPassword : "",
+        newPasswordRepeat : "",
+        authority :""
     }
   },
 
@@ -68,18 +88,33 @@ export default {
                                 'Authorization': 'Bearer ' + token,
                         }
                     }).then(response => {
-                            var authority = response.data.authorities[0].authority;
-                            if(authority==="ROLE_PATIENT") 
+                            this.authority = response.data.authorities[0].authority;
+                            if(this.authority==="ROLE_PATIENT") 
                                 window.location.href = '/patientProfile';
-                            else if(authority==="ROLE_DERMATOLOGIST")
+                            else if(this.authority==="ROLE_DERMATOLOGIST")
                                 alert("Dermatologist is logged in :)");
-                            else if(authority==="ROLE_SUPPLIER")
-                                window.location.href = '/supplierProfile';
-                            else if(authority==="ROLE_SYSTEM_ADMIN")
-                                window.location.href = '/systemAdminProfile';
-                            else if(authority==="ROLE_PHARMACY_ADMIN")
-                                window.location.href = '/pharmacyAdminProfile';   
-                            else if(authority==="ROLE_PHARMACIST")
+                            else if(this.authority==="ROLE_SUPPLIER")
+                                if(response.data.firstLogged) {
+                                    this.$refs['my-modal'].show();
+                                }
+                                else {
+                                    window.location.href = '/supplierProfile';
+                                }
+                            else if(this.authority==="ROLE_SYSTEM_ADMIN")
+                                if(response.data.firstLogged) {
+                                     this.$refs['my-modal'].show();
+                                }
+                                else {
+                                     window.location.href = '/systemAdminProfile';
+                                }
+                            else if(this.authority==="ROLE_PHARMACY_ADMIN")
+                                if(response.data.firstLogged) {
+                                       this.$refs['my-modal'].show();
+                                }
+                                else {
+                                    window.location.href = '/pharmacyAdminProfile';   
+                                }
+                            else if(this.authority==="ROLE_PHARMACIST")
                                 alert("Pharmacist is logged in :)"); 
                             else alert("Error has occured."); 
 
@@ -105,6 +140,42 @@ export default {
       showHomePage : function(){
           window.location.href = "/isaHomePage";
       },
+      changePassword : function() {
+
+        if(this.newPassword != this.newPasswordRepeat) {
+            alert("New passwords must be equal.")
+            return;
+        }
+
+        const changePasswordInfo ={
+                oldPassword : this.currentPassword,
+                newPassword : this.newPassword,
+            } 
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.post('/passwordFirstLogin',changePasswordInfo,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                }}).then(response => {
+                    console.log(response);
+                    if(this.authority==="ROLE_SYSTEM_ADMIN")
+                        window.location.href = '/systemAdminProfile';
+                    else if(this.authority==="ROLE_PATIENT") 
+                        window.location.href = '/patientProfile';
+                    else if(this.authority==="ROLE_DERMATOLOGIST")
+                        alert("Dermatologist is logged in :)");
+                    else if(this.authority==="ROLE_SUPPLIER")
+                        window.location.href = '/supplierProfile';
+                    else if(this.authority==="ROLE_PHARMACY_ADMIN")
+                        window.location.href = '/pharmacyAdminProfile';   
+                    else if(this.authority==="ROLE_PHARMACIST")
+                        alert("Pharmacist is logged in :)"); 
+                    else alert("Error has occured."); 
+                }).catch(res => {
+                       alert("Please try later.");
+                        console.log(res);
+                });
+
+      }
 }
 }
 </script>

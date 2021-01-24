@@ -12,7 +12,6 @@ import PatientProfile from '../views/patient/PatientProfile.vue'
 import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vue'
 import Order from '../views/pharmacyAdmin/Order.vue'
 import PharmacyProfile from '../views/PharmacyProfile.vue'
-import PatientFirstLogin from '../views/patient/PatientFirstLogin.vue'
 import SystemAdminProfile from '../views/systemAdmin/SystemAdminProfile.vue'
 import RegisterPharmacy from '../views/systemAdmin/RegisterPharmacy.vue'
 import RegisterPharmacyAdmin from '../views/systemAdmin/RegisterPharmacyAdmin.vue'
@@ -23,8 +22,6 @@ import AddNewPharmacist from '../views/pharmacyAdmin/AddNewPharmacist.vue'
 import MyPharmacy from '../views/pharmacyAdmin/MyPharmacy.vue'
 import ActionsAndBenefits from '../views/pharmacyAdmin/ActionsAndBenefits.vue'
 import SupplierProfile from '../views/supplier/SupplierProfile.vue'
-
-
 
 
 Vue.use(BootstrapVue)
@@ -90,11 +87,6 @@ const routes = [
       path: '/pharmacyProfile',
       name: 'PharmacyProfile',
       component: PharmacyProfile
-    },
-    {
-      path: '/patientFirstLogin',
-      name: 'PatientFirstLogin',
-      component: PatientFirstLogin
     },
     {
       path: '/systemAdminProfile',
