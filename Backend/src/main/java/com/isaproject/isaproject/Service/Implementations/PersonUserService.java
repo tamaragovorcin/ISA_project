@@ -72,6 +72,7 @@ public class PersonUserService implements IPersonUserService {
     }
 
     @Override
+
     public void delete(PersonUser userRequest) {
         List<ConfirmationToken> confirmationTokens = confirmationTokenRepository.findAll();
         ConfirmationToken confirmationToken = new ConfirmationToken();
@@ -88,13 +89,13 @@ public class PersonUserService implements IPersonUserService {
     }
 
     @Override
-    public PersonUser update(PersonUserDTO userRequest, Integer id) {
-        PersonUser personUser =  new PersonUser();
+    public PersonUser updateProfile(PersonUserDTO userRequest, Integer id) {
+        PersonUser personUser = new PersonUser();
         personUser.setId(id);
         personUser.setName(userRequest.getFirstname());
         personUser.setSurname(userRequest.getSurname());
         AddressDTO addressDTO = userRequest.getAddress();
-        Address address = new Address(addressDTO.getTown(),addressDTO.getStreet(),addressDTO.getNumber(),addressDTO.getPostalCode(),addressDTO.getCountry());
+        Address address = new Address(addressDTO.getTown(), addressDTO.getStreet(), addressDTO.getNumber(), addressDTO.getPostalCode(), addressDTO.getCountry());
         personUser.setAddress(address);
         personUser.setEmail(userRequest.getEmail());
         personUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
@@ -105,6 +106,14 @@ public class PersonUserService implements IPersonUserService {
         System.out.println("bbbbbbbbbbbbbbbbBBBBBBBBBBBBBBBBBBBBBBBBB " + personUser.getId());
         personUser = this.personUserRepository.save(personUser);
         return personUser;
+
+    }
+
+    @Override
+    public PersonUser update(PersonUser userRequest) {
+        userRequest.setFirstLogged(false);
+        return this.personUserRepository.save(userRequest);
+
     }
 
 }

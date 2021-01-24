@@ -12,5 +12,7 @@ public interface IPersonUserService {
     List<PersonUser> findAll ();
     PersonUser save(PersonUserDTO userRequest);
     void delete(PersonUser userRequest);
-    PersonUser update(PersonUserDTO userRequest, Integer id);
+    PersonUser updateProfile(PersonUserDTO userRequest, Integer id);
+    PersonUser update(PersonUser userRequest);
+
 }

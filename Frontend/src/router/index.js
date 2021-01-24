@@ -29,8 +29,6 @@ import ActionsAndBenefits from '../views/pharmacyAdmin/ActionsAndBenefits.vue'
 import SupplierProfile from '../views/supplier/SupplierProfile.vue'
 import dermatologistAppointments from '../views/patient/dermatologistAppointments.vue'
 
-
-
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
@@ -96,6 +94,7 @@ const routes = [
       component: PharmacyProfile
     },
     {
+
 
       path: '/myProfilePatient',
       name: 'MyProfile',

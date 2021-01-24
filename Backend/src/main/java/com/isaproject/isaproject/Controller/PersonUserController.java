@@ -61,7 +61,7 @@ public class PersonUserController {
         Integer id = per.getId();
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+id);
         userService.delete(per);
-        PersonUser patient = userService.update(person, id);
+        PersonUser patient = userService.updateProfile(person, id);
         return patient == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patient);
