@@ -23,7 +23,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Name:</label>
-                        <input type="text" id = "name" name = "name" class="form-control" v-model="patient.name" placeholder="Enter name">
+                        <input type="text" id = "name" name = "name" class="form-control" v-model = "patient.name"  placeholder="Enter name">
                         </div>
                         <div class="form-group col-md-6">
                         <label>Surname:</label>
@@ -84,12 +84,8 @@
                         <label>Alergies:</label>
                         <p>Choose medication:</p>
                         <div class="col">
-                                                                                  <select v-model="pharmacy">
-                                                                                        <option v-for="ph in pharmacies" :key="ph.id">
-                                                                                            {{ph.name}}
-                                                                                        </option>
-                                                                                   </select>
-                                                                            </div>
+                                                                              
+                        </div>
                         </div>
                        
                     </div>
@@ -117,7 +113,7 @@ export default {
   data() {
     return {
         id : this.$route.params.id,
-        patient: "",
+        patient: null,
         name : "",
         surname : "",
         email : "",
@@ -132,10 +128,23 @@ export default {
     }
   },
 mounted() {
-      this.axios.get('/patient/1')
-          .then(response => {
-                this.patient= response.data;
-          })
+
+ let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+
+             }})
+             .then(response => {
+                this.patient = response.data;
+                console.log(response.data);
+         }).catch(res => {
+                       alert("NOT OK");
+                        console.log(res);
+                 });
+
+
+
 
    
 
@@ -172,7 +181,7 @@ mounted() {
                 };
 
               
-                this.axios.post('/patient/update',p)
+                this.axios.post('/update',p)
                     .then(res => {
                        
                         console.log(res);

@@ -1,14 +1,15 @@
 package com.isaproject.isaproject.Service.Implementations;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
-import com.isaproject.isaproject.Model.Users.Address;
-import com.isaproject.isaproject.Model.Users.Authority;
-import com.isaproject.isaproject.Model.Users.PersonUser;
+import com.isaproject.isaproject.Model.Users.*;
+import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
 import com.isaproject.isaproject.Repository.PersonUserRepository;
 import com.isaproject.isaproject.Service.IServices.IAuthorityService;
 import com.isaproject.isaproject.Service.IServices.IPersonUserService;
+import net.schmizz.sshj.ConfigImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +22,9 @@ public class PersonUserService implements IPersonUserService {
 
     @Autowired
     private PersonUserRepository personUserRepository;
+
+    @Autowired
+    private ConfirmationTokenRepository confirmationTokenRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -65,6 +69,42 @@ public class PersonUserService implements IPersonUserService {
 
         u = this.personUserRepository.save(u);
         return u;
+    }
+
+    @Override
+    public void delete(PersonUser userRequest) {
+        List<ConfirmationToken> confirmationTokens = confirmationTokenRepository.findAll();
+        ConfirmationToken confirmationToken = new ConfirmationToken();
+
+        for(ConfirmationToken confirmationToken1 : confirmationTokens){
+
+            if (confirmationToken1.getPersonUser().getId()==userRequest.getId()){
+                confirmationTokenRepository.delete(confirmationToken1);
+            }
+
+        }
+
+        personUserRepository.delete(userRequest);
+    }
+
+    @Override
+    public PersonUser update(PersonUserDTO userRequest, Integer id) {
+        PersonUser personUser =  new PersonUser();
+        personUser.setId(id);
+        personUser.setName(userRequest.getFirstname());
+        personUser.setSurname(userRequest.getSurname());
+        AddressDTO addressDTO = userRequest.getAddress();
+        Address address = new Address(addressDTO.getTown(),addressDTO.getStreet(),addressDTO.getNumber(),addressDTO.getPostalCode(),addressDTO.getCountry());
+        personUser.setAddress(address);
+        personUser.setEmail(userRequest.getEmail());
+        personUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        personUser.setFirstLogged(true);
+
+        Authority auth = authService.findByname("ROLE_USER");
+
+        System.out.println("bbbbbbbbbbbbbbbbBBBBBBBBBBBBBBBBBBBBBBBBB " + personUser.getId());
+        personUser = this.personUserRepository.save(personUser);
+        return personUser;
     }
 
 }
