@@ -1,5 +1,7 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
@@ -9,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class MedicationReservation {
 
     @Id
@@ -16,15 +19,16 @@ public class MedicationReservation {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = false)
+    @JsonBackReference(value="patient-medication")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = true)
     private Patient patient;
 
     @Column(name = "medicineCode", nullable = true)
     private long medicineCode;
 
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference(value="pharmacy-medication")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
     private Pharmacy pharmacy;
 

@@ -56,7 +56,7 @@ public class PharmacyController {
     }
 
     @PostMapping("/register")
-    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacyDTO pharmacyDTO) {
 
         Pharmacy existedPharmacy = pharmacyService.findByPharmacyName(pharmacyDTO.getPharmacyName());

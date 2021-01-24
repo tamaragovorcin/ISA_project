@@ -338,7 +338,7 @@ export default {
         window.location.href = "/myProfilePatient";
       },
       allDermatologists : function(){
-          window.location.href = "/isaHomePage";
+          window.location.href = "/dermatologistAppointments";
       },
       allPharmacists : function(){
           window.location.href = "/login";

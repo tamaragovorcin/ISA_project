@@ -27,6 +27,7 @@ import AddNewPharmacist from '../views/pharmacyAdmin/AddNewPharmacist.vue'
 import MyPharmacy from '../views/pharmacyAdmin/MyPharmacy.vue'
 import ActionsAndBenefits from '../views/pharmacyAdmin/ActionsAndBenefits.vue'
 import SupplierProfile from '../views/supplier/SupplierProfile.vue'
+import dermatologistAppointments from '../views/patient/dermatologistAppointments.vue'
 
 
 
@@ -173,6 +174,11 @@ const routes = [
       path: '/supplierProfile',
       name: 'SupplierProfile',
       component: SupplierProfile
+    },
+    {
+      path: '/dermatologistAppointments',
+      name: 'dermatologistAppointments',
+      component: dermatologistAppointments
     }
 
 ]
