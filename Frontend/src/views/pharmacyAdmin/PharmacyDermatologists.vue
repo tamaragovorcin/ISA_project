@@ -197,7 +197,7 @@ body {
   padding: 6px 6px 6px 0px;
   text-decoration: none;
   font-size: 25px;
-  color: #white;
+  color: white;
   display: block;
 }
 

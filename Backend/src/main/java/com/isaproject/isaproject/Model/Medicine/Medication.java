@@ -66,9 +66,11 @@ public class Medication  {
     @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
 
-    @OneToOne
-    @JoinColumn(name = "specification_id", referencedColumnName = "id", nullable = false, unique = false)
+
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "specification_id", referencedColumnName = "id", nullable = true, unique = false)
     private Specification specification;
+
 
     @ManyToMany(mappedBy = "medications")
     private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
