@@ -3,19 +3,20 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-            <span style="float: left; margin: 15px;">
-                <button class = "btn btn-secondary btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home page</button>
-                  
+           
+              <span style="float: left; margin: 15px;">
+                <a href= "/isaHomePage">Home</a>
+                <b class="tab"></b>    
+                <a href = "/pharmacyAdminProfile">My profile</a>
+                <b class="tab"></b>    
+                <a href = "/myPharmacy">My Pharmacy</a>
+                       
             </span>
               <span  style="float:right;margin:15px">
-                    <button class = "btn btn-secondary btn-lg" v-on:click = "showLoginForm">&nbsp;&nbsp;Login&nbsp;&nbsp;</button>
-
-                    <b class="tab"></b>                
                    
-
-                    <button class = "btn btn-secondary btn-lg" style="margin-right:20px;" v-on:click = "showRegistrationForm">Register</button>
+                    <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
+                
                 </span>
-
         </div>
 
       
@@ -81,9 +82,9 @@
                         </div>
                     </div>
                    
-                    <button class="btn btn-primary btn-lg" v-on:click = "register">Register</button>
+                    <button class="btn btn-primary btn-lg" v-on:click = "add">Add</button>
                     <div style="height:30px;"></div>
-                
+               
 
 
 
@@ -116,43 +117,37 @@ export default {
   },
 
   methods:{
-       
-      register : function(){
-          const addressInfo ={
-              town : this.town,
-              street : this.street,
-              number : this.number,
-              postalcode : this.postalCode,
-              country : this.country
-          }
-            const userInfo ={
-                email : this.email,
-                password : this.password,
-                firstname : this.firstname,
-                surname : this.surname,
-                phonenumber : this.phoneNumber,
-                address : addressInfo
-            }
-            this.axios.post('/patient/register',userInfo)
-                .then(response => {
-                       alert("Please check your email and complete registration!");
-                        console.log(response.data);
-                })
-                .catch(response => {
-                       alert("NIJE REGISTROVAN");
-                        console.log(response);
-                 });    
-      },
-      showRegistrationForm : function(){
-             window.location.href = "/registration";
-
-      },
-      showLoginForm: function(){
-          window.location.href = "/login";
-      },
-      showHomePage : function(){
+       showHomePage : function(){
           window.location.href = "/isaHomePage";
       },
+      showMyProfile: function(){
+
+      },
+       showActionsAndBenefitsForm : function(){
+              this.$refs['my-modal'].show()
+      },
+       hideModal() {
+        this.$refs['my-modal'].hide()
+      },
+       showOrderForm : function(){
+          window.location.href = "/order";
+
+      },
+       logOut : function(){
+           window.location.href = "/login";
+      },
+      sendComplaint : function(){
+
+      },
+      showMyPharmacy : function (){
+        window.location.href = "/myPharmacy";
+      },
+      addNewPharmacist : function(){
+        window.location.href = "/addNewPharmacist";
+      },
+      add : function(){
+
+      }
 }
 }
 </script>

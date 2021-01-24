@@ -67,4 +67,10 @@ public class PersonUserService implements IPersonUserService {
         return u;
     }
 
+    @Override
+    public PersonUser update(PersonUser userRequest) {
+        userRequest.setFirstLogged(false);
+        return this.personUserRepository.save(userRequest);
+    }
+
 }

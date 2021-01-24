@@ -17,6 +17,16 @@ import DermatologistHomePage from '../views/dermatologist/DermatologistHomePage.
 import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vue'
 import Order from '../views/pharmacyAdmin/Order.vue'
 import PharmacyProfile from '../views/PharmacyProfile.vue'
+import SystemAdminProfile from '../views/systemAdmin/SystemAdminProfile.vue'
+import RegisterPharmacy from '../views/systemAdmin/RegisterPharmacy.vue'
+import RegisterPharmacyAdmin from '../views/systemAdmin/RegisterPharmacyAdmin.vue'
+import RegisterSupplier from '../views/systemAdmin/RegisterSupplier.vue'
+import RegisterDermatologist from '../views/systemAdmin/RegisterDermatologist.vue'
+import RegisterSystemAdmin from '../views/systemAdmin/RegisterSystemAdmin.vue'
+import AddNewPharmacist from '../views/pharmacyAdmin/AddNewPharmacist.vue'
+import MyPharmacy from '../views/pharmacyAdmin/MyPharmacy.vue'
+import ActionsAndBenefits from '../views/pharmacyAdmin/ActionsAndBenefits.vue'
+import SupplierProfile from '../views/supplier/SupplierProfile.vue'
 
 
 Vue.use(BootstrapVue)
@@ -108,6 +118,60 @@ const routes = [
       name: 'PharmacyProfile',
       component: PharmacyProfile
     },
+    {
+      path: '/systemAdminProfile',
+      name: 'SystemAdminProfile',
+      component: SystemAdminProfile
+    }
+    ,
+    {
+      path: '/registerPharmacy',
+      name: 'RegisterPharmacy',
+      component: RegisterPharmacy
+    }
+    ,
+    {
+      path: '/registerPharmacyAdmin',
+      name: 'RegisterPharmacyAdmin',
+      component: RegisterPharmacyAdmin
+    }
+    ,
+    {
+      path: '/registerSupplier',
+      name: 'RegisterSupplier',
+      component: RegisterSupplier
+    }
+    ,
+    {
+      path: '/registerDermatologist',
+      name: 'RegisterDermatologist',
+      component: RegisterDermatologist
+    },
+    {
+      path: '/registerSystemAdmin',
+      name: 'RegisterSystemAdmin',
+      component: RegisterSystemAdmin
+    },
+    {
+      path: '/addNewPharmacist',
+      name: 'AddNewPharmacist',
+      component: AddNewPharmacist
+    },
+    {
+      path: '/myPharmacy',
+      name: 'MyPharmacy',
+      component: MyPharmacy
+    },
+    {
+      path: '/actionsAndBenefits',
+      name: 'ActionsAndBenefits',
+      component: ActionsAndBenefits
+    },
+    {
+      path: '/supplierProfile',
+      name: 'SupplierProfile',
+      component: SupplierProfile
+    }
 ]
 
 const router = new VueRouter({
