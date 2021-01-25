@@ -20,7 +20,8 @@
                 </b-dropdown> 
                 <b class="tab"></b>
                 <button class = "btn btn-link btn-lg" v-on:click = "addMedicine">Add medicine</button>
-   
+                <b class="tab"></b>   
+                 <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
             </span>
               <span  style="float:right;margin:15px">
                      <b class="tab"></b>    
@@ -197,8 +198,9 @@ export default {
             this.selectedPharmacy = pharmacy;
             this.pharmacyName = this.selectedPharmacy.pharmacyName;
             console.log(this.selectedPharmacy)
-
-
+      },
+      defineLoyaltyProgram : function(){
+          window.location.href = "/loyaltyProgram";
       }
 },
  mounted() {

@@ -20,7 +20,8 @@
                  </b-dropdown> 
                  <b class="tab"></b>   
                  <button class = "btn btn-link btn-lg" v-on:click = "addMedicine">Add medicine</button>
-
+                <b class="tab"></b>   
+                 <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
             </span>
             <span  style="float:right;margin:15px">
                      <b class="tab"></b>    
@@ -257,6 +258,9 @@ export default {
       },
       confirmAltenratives : function() {
           this.$refs['alternatives-modal'].hide()
+      },
+      defineLoyaltyProgram : function(){
+          window.location.href = "/loyaltyProgram";
       }
 
       

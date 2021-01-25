@@ -20,7 +20,8 @@
                  </b-dropdown> 
                  <b class="tab"></b>   
                  <button class = "btn btn-link btn-lg" v-on:click = "addMedicine">Add medicine</button>
-
+                 <b class="tab"></b>   
+                 <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
             </span>
               <span  style="float:right;margin:15px">
                      <b class="tab"></b>    
@@ -65,6 +66,9 @@ export default {
       },
       addMedicine : function() {
            window.location.href = "/addMedicine";
+      },
+      defineLoyaltyProgram : function(){
+          window.location.href = "/loyaltyProgram";
       }
       
 },

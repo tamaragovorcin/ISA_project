@@ -83,13 +83,6 @@
                    
                     <button class="btn btn-primary btn-lg" v-on:click = "register">Register</button>
                     <div style="height:30px;"></div>
-                
-
-
-
-
-
-
         </div>
 
 
