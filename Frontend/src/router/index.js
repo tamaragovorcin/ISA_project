@@ -16,7 +16,6 @@ import MyProfile from '../views/patient/MyProfile.vue'
 import UpdateProfilePatient from '../views/patient/UpdateProfilePatient.vue'
 import MedicationReservation from '../views/patient/MedicationReservation.vue'
 import ShowPharmaciesPatient from '../views/patient/ShowPharmaciesPatient.vue'
-import PatientFirstLogin from '../views/patient/PatientFirstLogin.vue'
 import SystemAdminProfile from '../views/systemAdmin/SystemAdminProfile.vue'
 import RegisterPharmacy from '../views/systemAdmin/RegisterPharmacy.vue'
 import RegisterPharmacyAdmin from '../views/systemAdmin/RegisterPharmacyAdmin.vue'
@@ -115,11 +114,6 @@ const routes = [
       path: '/showPharmaciesPatient',
       name: 'showPharmaciesPatient',
       component: ShowPharmaciesPatient
-    },
-{
-      path: '/patientFirstLogin',
-      name: 'PatientFirstLogin',
-      component: PatientFirstLogin
     },
     {
       path: '/systemAdminProfile',
