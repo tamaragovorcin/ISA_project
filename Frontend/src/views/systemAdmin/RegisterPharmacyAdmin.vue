@@ -50,7 +50,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Name:</label>
-                        <input type="text" class="form-control" v-model="name" placeholder="Enter name">
+                        <input type="text" class="form-control" v-model="name2" placeholder="Enter name">
                         </div>
                         <div class="form-group col-md-6">
                         <label>Surname:</label>
@@ -116,7 +116,7 @@ export default {
 
   data() {
     return {
-          name : "",
+          name2 : "",
           surname : "",
           email : "",
           password : "",
@@ -157,13 +157,13 @@ export default {
               town : this.town,
               street : this.street,
               number : this.number,
-              postalcode : this.postalCode,
+              postalCode : this.postalCode,
               country : this.country
           }
             const userInfo ={
                 email : this.email,
                 password : this.password,
-                firstname : this.firstname,
+                firstname : this.name2,
                 surname : this.surname,
                 phonenumber : this.phoneNumber,
                 address : addressInfo,

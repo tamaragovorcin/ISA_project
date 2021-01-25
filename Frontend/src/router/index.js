@@ -22,6 +22,7 @@ import AddNewPharmacist from '../views/pharmacyAdmin/AddNewPharmacist.vue'
 import MyPharmacy from '../views/pharmacyAdmin/MyPharmacy.vue'
 import ActionsAndBenefits from '../views/pharmacyAdmin/ActionsAndBenefits.vue'
 import SupplierProfile from '../views/supplier/SupplierProfile.vue'
+import SupplierProfileInfo from '../views/supplier/SupplierProfileInfo.vue'
 
 
 Vue.use(BootstrapVue)
@@ -141,6 +142,11 @@ const routes = [
       path: '/supplierProfile',
       name: 'SupplierProfile',
       component: SupplierProfile
+    },
+    {
+      path: '/supplierProfileInfo',
+      name: 'SupplierProfileInfo',
+      component: SupplierProfileInfo
     }
 ]
 
