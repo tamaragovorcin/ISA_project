@@ -139,10 +139,8 @@ public class PatientController {
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
-        System.out.println("*******************************     user   "             + user.getId());
 
         Patient patient = patientService.findById(user.getId());
-        System.out.println("*******************************     patient    "             + patient.getId());
         return patient.getAddress() == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patient.getAddress());

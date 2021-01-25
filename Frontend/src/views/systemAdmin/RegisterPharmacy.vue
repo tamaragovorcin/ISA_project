@@ -106,7 +106,7 @@ export default {
               town : this.town,
               street : this.street,
               number : this.number,
-              postalcode : this.postalCode,
+              postalCode : this.postalCode,
               country : this.country
           }
             const pharmacyInfo ={
