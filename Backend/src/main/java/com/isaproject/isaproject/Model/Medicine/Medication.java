@@ -45,6 +45,9 @@ public class Medication  {
     @Column(name = "loyaltyPoints", nullable = true)
     private double loyaltyPoints;
 
+    @Column(name = "wayOfSelling", nullable = true)
+    private String wayOfSelling;
+
 
     @ManyToMany
     @JoinTable(name = "eprescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "eprescription_id", referencedColumnName = "id"))
@@ -77,7 +80,7 @@ public class Medication  {
 
     public Medication() {}
 
-    public Medication(Integer id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints) {
+    public Medication(Integer id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints, String wayOfSelling) {
         this.id = id;
         this.name = name;
         this.code = code;
@@ -86,6 +89,15 @@ public class Medication  {
         this.issuanceRegime = issuanceRegime;
         this.mark = mark;
         this.loyaltyPoints = loyaltyPoints;
+        this.wayOfSelling = wayOfSelling;
+    }
+
+    public String getWayOfSelling() {
+        return wayOfSelling;
+    }
+
+    public void setWayOfSelling(String wayOfSelling) {
+        this.wayOfSelling = wayOfSelling;
     }
 
     public Set<Offer> getOffer() {

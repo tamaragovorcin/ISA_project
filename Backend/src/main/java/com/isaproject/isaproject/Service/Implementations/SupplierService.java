@@ -46,8 +46,6 @@ public class SupplierService implements ISupplierService {
 
     @Override
     public Supplier save(PersonUserDTO userRequest) {
-        System.out.println("USER IME   dobavljac      "  + userRequest.getFirstname());
-
         Supplier supplier =  new Supplier();
         supplier.setName(userRequest.getFirstname());
         supplier.setSurname(userRequest.getSurname());

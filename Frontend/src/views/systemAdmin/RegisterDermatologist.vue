@@ -18,7 +18,9 @@
                          <b-dropdown-item v-on:click = "registerSystemAdmin" disabled>System admin</b-dropdown-item>
                     </div>           
                 </b-dropdown> 
-                 <b class="tab"></b>   
+                <b class="tab"></b>   
+                <button class = "btn btn-link btn-lg" v-on:click = "addMedicine">Add medicine</button>
+
             </span>
               <span  style="float:right;margin:15px">
                      <b class="tab"></b>    
@@ -130,6 +132,9 @@ export default {
       },
       registerSystemAdmin: function() {
            window.location.href = "/registerSystemAdmin";
+      },
+      addMedicine : function() {
+           window.location.href = "/addMedicine";
       },
       register : function(){
           const addressInfo ={
