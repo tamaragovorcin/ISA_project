@@ -116,12 +116,13 @@ export default {
                 consultingPrice : this.consultingPrice
 
             }
-            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+            //let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
 
             this.axios.post('/pharmacy/register',pharmacyInfo,{ 
-                         headers: {
-                                'Authorization': 'Bearer ' + token,
-                        }})
+                         //headers: {
+                                //'Authorization': 'Bearer ' + token,
+                        //}
+                        })
                 .then(response => {
                        alert("Pharmacy is successfully registred!");
                         console.log(response.data);

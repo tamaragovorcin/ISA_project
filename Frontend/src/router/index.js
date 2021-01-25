@@ -12,6 +12,11 @@ import PatientProfile from '../views/patient/PatientProfile.vue'
 import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vue'
 import Order from '../views/pharmacyAdmin/Order.vue'
 import PharmacyProfile from '../views/PharmacyProfile.vue'
+import MyProfile from '../views/patient/MyProfile.vue'
+import UpdateProfilePatient from '../views/patient/UpdateProfilePatient.vue'
+import MedicationReservation from '../views/patient/MedicationReservation.vue'
+import ShowPharmaciesPatient from '../views/patient/ShowPharmaciesPatient.vue'
+import PatientFirstLogin from '../views/patient/PatientFirstLogin.vue'
 import SystemAdminProfile from '../views/systemAdmin/SystemAdminProfile.vue'
 import RegisterPharmacy from '../views/systemAdmin/RegisterPharmacy.vue'
 import RegisterPharmacyAdmin from '../views/systemAdmin/RegisterPharmacyAdmin.vue'
@@ -23,7 +28,7 @@ import MyPharmacy from '../views/pharmacyAdmin/MyPharmacy.vue'
 import ActionsAndBenefits from '../views/pharmacyAdmin/ActionsAndBenefits.vue'
 import SupplierProfile from '../views/supplier/SupplierProfile.vue'
 import SupplierProfileInfo from '../views/supplier/SupplierProfileInfo.vue'
-
+import dermatologistAppointments from '../views/patient/dermatologistAppointments.vue'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -90,6 +95,33 @@ const routes = [
       component: PharmacyProfile
     },
     {
+
+
+      path: '/myProfilePatient',
+      name: 'MyProfile',
+      component: MyProfile
+    },
+    {
+      path: '/updateProfilePatient',
+      name: 'UpdateProfilePatient',
+      component: UpdateProfilePatient
+    },
+    {
+      path: '/medicationReservation',
+      name: 'medicationReservation',
+      component: MedicationReservation
+    },
+    {
+      path: '/showPharmaciesPatient',
+      name: 'showPharmaciesPatient',
+      component: ShowPharmaciesPatient
+    },
+{
+      path: '/patientFirstLogin',
+      name: 'PatientFirstLogin',
+      component: PatientFirstLogin
+    },
+    {
       path: '/systemAdminProfile',
       name: 'SystemAdminProfile',
       component: SystemAdminProfile
@@ -144,10 +176,17 @@ const routes = [
       component: SupplierProfile
     },
     {
+
       path: '/supplierProfileInfo',
       name: 'SupplierProfileInfo',
       component: SupplierProfileInfo
+    },
+    {
+      path: '/dermatologistAppointments',
+      name: 'dermatologistAppointments',
+      component: dermatologistAppointments
     }
+
 ]
 
 const router = new VueRouter({

@@ -5,15 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Service.IServices.IPersonUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 // Primer kontrolera cijim metodama mogu pristupiti samo autorizovani korisnici
@@ -50,5 +51,19 @@ public class PersonUserController {
         Map<String, String> fooObj = new HashMap<>();
         fooObj.put("foo", "bar");
         return fooObj;
+    }
+
+    @PostMapping("/update")
+    ResponseEntity<PersonUser> update(@RequestBody PersonUserDTO person)
+    {
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        PersonUser per = userService.findByEmail(person.getEmail());
+        Integer id = per.getId();
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+id);
+        userService.delete(per);
+        PersonUser patient = userService.updateProfile(person, id);
+        return patient == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(patient);
     }
 }

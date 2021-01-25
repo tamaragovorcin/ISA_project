@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Model.Users;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Examinations.Examination;
@@ -46,6 +47,7 @@ public class Patient extends PersonUser{
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
 
+    @JsonManagedReference(value="patient-medication")
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<MedicationReservation> medicationReservations = new HashSet<MedicationReservation>();
 
