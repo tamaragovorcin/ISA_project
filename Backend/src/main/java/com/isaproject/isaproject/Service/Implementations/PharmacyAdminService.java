@@ -47,7 +47,6 @@ public class PharmacyAdminService implements IPharmacyAdminService {
 
     @Override
     public PharmacyAdmin save(PharmacyAdminDTO userRequest) {
-        System.out.println("USER IME         "  + userRequest.getFirstname());
         PharmacyAdmin pharmacyAdmin =  new PharmacyAdmin();
         pharmacyAdmin.setName(userRequest.getFirstname());
         pharmacyAdmin.setSurname(userRequest.getSurname());

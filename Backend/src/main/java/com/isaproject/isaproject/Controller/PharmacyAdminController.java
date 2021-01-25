@@ -26,8 +26,6 @@ public class PharmacyAdminController {
     @PostMapping("/register")
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacyAdminDTO userRequest) {
-        System.out.println("*******************************");
-
         System.out.println(userRequest.getPharmacy().getPharmacyName());
 
         PersonUser existUser = pharmacyAdminService.findByEmail(userRequest.getEmail());

@@ -28,6 +28,9 @@ import ActionsAndBenefits from '../views/pharmacyAdmin/ActionsAndBenefits.vue'
 import SupplierProfile from '../views/supplier/SupplierProfile.vue'
 import SupplierProfileInfo from '../views/supplier/SupplierProfileInfo.vue'
 import dermatologistAppointments from '../views/patient/dermatologistAppointments.vue'
+import AddMedicine from '../views/systemAdmin/AddMedicine.vue'
+import LoyaltyProgram from '../views/systemAdmin/LoyaltyProgram.vue'
+
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -179,7 +182,17 @@ const routes = [
       path: '/dermatologistAppointments',
       name: 'dermatologistAppointments',
       component: dermatologistAppointments
-    }
+    }, 
+    {
+      path: '/addMedicine',
+      name: 'AddMedicine',
+      component: AddMedicine
+    },
+    {
+      path: '/loyaltyProgram',
+      name: 'LoyaltyProgram',
+      component: LoyaltyProgram
+    },
 
 ]
 

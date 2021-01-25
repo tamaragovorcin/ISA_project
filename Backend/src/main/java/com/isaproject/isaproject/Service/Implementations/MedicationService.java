@@ -46,7 +46,7 @@ public class MedicationService implements IMedicationService {
         specification.setRecommendedConsumption(medicationDTO.getSpecification().getRecommendedConsumption());
 
         medication1.setSpecification(specification);
-
+        medication1.setMedications(medicationDTO.getMedicationsAlternatives());
         return medicationRepository.save(medication1);
        
     }
