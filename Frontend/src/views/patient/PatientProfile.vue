@@ -16,11 +16,10 @@ ines (39 sloc)  1.61 KB
 
                     <b class="tab"></b>                
                    
-
-   
-
                     <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "writeComplaint">Write complaint</button>
                     <b class="tab"></b>   
+                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "showSubscriptions">My subscriptions</button>
+                    <b class="tab"></b>  
             </span>
               <span  style="float:right;margin:15px">
                     
