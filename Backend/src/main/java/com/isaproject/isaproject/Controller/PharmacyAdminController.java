@@ -3,6 +3,8 @@ package com.isaproject.isaproject.Controller;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.DTO.PharmacyAdminDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
 import com.isaproject.isaproject.Model.Users.Supplier;
@@ -16,6 +18,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @RestController
 @RequestMapping("/api/pharmacyAdmin")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -24,7 +28,7 @@ public class PharmacyAdminController {
     PharmacyAdminService pharmacyAdminService;
 
     @PostMapping("/register")
-    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+   // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacyAdminDTO userRequest) {
         System.out.println(userRequest.getPharmacy().getPharmacyName());
 
@@ -46,5 +50,40 @@ public class PharmacyAdminController {
         return pharmacyAdmin == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacyAdmin);
+    }
+    @PostMapping("/update")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<PharmacyAdmin> update(@RequestBody PharmacyAdminDTO person)
+    {
+        PharmacyAdmin per = pharmacyAdminService.findByEmail(person.getEmail());
+        Integer id = per.getId();
+        pharmacyAdminService.delete(per);
+        PharmacyAdmin patient = pharmacyAdminService.save(person);
+        return patient == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(patient);
+    }
+    @GetMapping("/myPharmacy")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<Pharmacy> getMyPharmacy()
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
+        return pharmacyAdmin.getPharmacy() == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacyAdmin.getPharmacy());
+    }
+    @GetMapping("/dermatologists")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<Set<Dermatologist>> getOurDermatologists()
+    {
+        System.out.println("POGODIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
+        return pharmacyAdmin.getPharmacy().getDermatologists() == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacyAdmin.getPharmacy().getDermatologists());
     }
 }

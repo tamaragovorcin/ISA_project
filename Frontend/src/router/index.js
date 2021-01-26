@@ -30,6 +30,8 @@ import SupplierProfileInfo from '../views/supplier/SupplierProfileInfo.vue'
 import dermatologistAppointments from '../views/patient/dermatologistAppointments.vue'
 import AddMedicine from '../views/systemAdmin/AddMedicine.vue'
 import LoyaltyProgram from '../views/systemAdmin/LoyaltyProgram.vue'
+import PhAdminProfileUpdate from '../views/pharmacyAdmin/PhAdminProfileUpdate.vue'
+import PharmacyDermatologists from '../views/pharmacyAdmin/PharmacyDermatologists.vue'
 
 
 Vue.use(BootstrapVue)
@@ -193,7 +195,18 @@ const routes = [
       name: 'LoyaltyProgram',
       component: LoyaltyProgram
     },
-
+    {
+      path: '/updateProfilePharmacyAdmin',
+      name: 'PhAdminProfileUpdate',
+      component: PhAdminProfileUpdate
+    },
+    
+    {
+      path: '/pharmacyDermatologists',
+      name: 'PharmacyDermatologists',
+      component: PharmacyDermatologists
+    },
+  
 ]
 
 const router = new VueRouter({
