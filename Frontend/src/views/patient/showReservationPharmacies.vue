@@ -81,41 +81,11 @@ ines (39 sloc)  1.61 KB
       <td>Luna Zivkovic</td>
     
     </tr>
-    <tr>
-      <th scope="row"></th>
-      <td>Apoteka</td>
-      <td>Jankovic</td>
-
-    </tr>
-    <tr>
-      <th scope="row"></th>
-      <td>Datum</td>
-      <td>14.02.2021</td>
-     
-    </tr>
-        <tr>
-      <th scope="row"></th>
-      <td>Pocetak</td>
-      <td>15:15</td>
-     
-    </tr>
-        <tr>
-      <th scope="row"></th>
-      <td>Trajanje</td>
-      <td>15 min</td>
-     
-    </tr>
-        <tr>
-      <th scope="row"></th>
-      <td>Cena</td>
-      <td>1700</td>
-     
-    </tr>
-   
+   <tr> <button class = "btn btn-link btn" style="color:black; " v-on:click = "choosenPharmacy">Apoteka Jankovic</button></tr>
   </tbody>
 </table>
        
-        <button class = "btn btn-link btn" style="color:black; " v-on:click = "searchName">Make a reservation</button>
+       
 
 
       
@@ -193,6 +163,11 @@ export default {
       },
       sendComplaint : function(){
 
+
+ 
+        },
+          choosenPharmacy : function(){
+            window.location.href = "/choosenPharmacy";
 
  
         },

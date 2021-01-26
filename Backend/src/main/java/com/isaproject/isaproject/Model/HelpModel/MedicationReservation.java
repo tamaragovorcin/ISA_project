@@ -2,6 +2,7 @@ package com.isaproject.isaproject.Model.HelpModel;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
@@ -24,8 +25,10 @@ public class MedicationReservation {
     @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = true)
     private Patient patient;
 
-    @Column(name = "medicineCode", nullable = true)
-    private long medicineCode;
+    @JsonBackReference(value="medicine-medicationReservations")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "medicine", referencedColumnName = "id", nullable = true, unique = false)
+    private Medication medicine;
 
     @JsonBackReference(value="pharmacy-medication")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
@@ -55,6 +58,14 @@ public class MedicationReservation {
     public MedicationReservation() {
     }
 
+    public Medication getMedicine() {
+        return medicine;
+    }
+
+    public void setMedicine(Medication medicine) {
+        this.medicine = medicine;
+    }
+
     public Pharmacy getPharmacy() {
         return pharmacy;
     }
@@ -77,15 +88,6 @@ public class MedicationReservation {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-
-    public long getMedicineCode() {
-        return medicineCode;
-    }
-
-    public void setMedicineCode(long medicineCode) {
-        this.medicineCode = medicineCode;
     }
 
 

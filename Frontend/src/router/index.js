@@ -16,7 +16,6 @@ import MyProfile from '../views/patient/MyProfile.vue'
 import UpdateProfilePatient from '../views/patient/UpdateProfilePatient.vue'
 import MedicationReservation from '../views/patient/MedicationReservation.vue'
 import ShowPharmaciesPatient from '../views/patient/ShowPharmaciesPatient.vue'
-import PatientFirstLogin from '../views/patient/PatientFirstLogin.vue'
 import SystemAdminProfile from '../views/systemAdmin/SystemAdminProfile.vue'
 import RegisterPharmacy from '../views/systemAdmin/RegisterPharmacy.vue'
 import RegisterPharmacyAdmin from '../views/systemAdmin/RegisterPharmacyAdmin.vue'
@@ -28,6 +27,9 @@ import MyPharmacy from '../views/pharmacyAdmin/MyPharmacy.vue'
 import ActionsAndBenefits from '../views/pharmacyAdmin/ActionsAndBenefits.vue'
 import SupplierProfile from '../views/supplier/SupplierProfile.vue'
 import dermatologistAppointments from '../views/patient/dermatologistAppointments.vue'
+import PharmacistConsultation from '../views/patient/PharmacistConsultation.vue'
+import showReservationPharmacies from '../views/patient/showReservationPharmacies.vue'
+import choosenPharmacy from '../views/patient/choosenPharmacy.vue'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -115,11 +117,6 @@ const routes = [
       name: 'showPharmaciesPatient',
       component: ShowPharmaciesPatient
     },
-{
-      path: '/patientFirstLogin',
-      name: 'PatientFirstLogin',
-      component: PatientFirstLogin
-    },
     {
       path: '/systemAdminProfile',
       name: 'SystemAdminProfile',
@@ -178,6 +175,21 @@ const routes = [
       path: '/dermatologistAppointments',
       name: 'dermatologistAppointments',
       component: dermatologistAppointments
+    },
+    {
+      path: '/pharmacistConsultation',
+      name: 'pharmacistConsultation',
+      component: PharmacistConsultation
+    },
+    {
+      path: '/showReservationPharmacies',
+      name: 'showReservationPharmacies',
+      component: showReservationPharmacies
+    },
+    {
+      path: '/choosenPharmacy',
+      name: 'choosenPharmacy',
+      component: choosenPharmacy
     }
 
 ]

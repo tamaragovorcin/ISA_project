@@ -23,7 +23,8 @@ public class MedicationReservationService implements IMedicationReservationServi
 
     @Override
     public List<MedicationReservation> findAll() {
-        return null;
+
+        return medicationRepository.findAll();
     }
 
     @Override
@@ -33,7 +34,7 @@ public class MedicationReservationService implements IMedicationReservationServi
         MedicationReservation medication = new MedicationReservation();
         medication.setDateOfTakeOver(medicationDTO.getDateOfTakeOver());
         medication.setPharmacy(medicationDTO.getPharmacy());
-        medication.setMedicineCode(medicationDTO.getMedicineCode());
+        medication.setMedicine(medicationDTO.getMedication());
         medication.setPatient(medicationDTO.getPatient());
 
 
@@ -42,6 +43,6 @@ public class MedicationReservationService implements IMedicationReservationServi
 
     @Override
     public void delete(MedicationReservation medication) {
-
+            medicationRepository.delete(medication);
     }
 }

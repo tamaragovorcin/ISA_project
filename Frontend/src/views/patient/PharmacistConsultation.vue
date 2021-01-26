@@ -70,52 +70,19 @@ ines (39 sloc)  1.61 KB
 
       <div style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
 
+           <div class="form-row">
+                       
+                        <label>Choose a date:</label>
+                        <input type="text" class="form-control" v-model="name" placeholder="Enter date">
+                        
+                        
+                        <label>Choose the time:</label>
+                        <input type="text" class="form-control" v-model = "surname" placeholder="Enter time">
+                       
+                    </div>
 
-<table class="table">
-  <thead>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row"></th>
-      <td>Ime dermatologa</td>
-      <td>Luna Zivkovic</td>
-    
-    </tr>
-    <tr>
-      <th scope="row"></th>
-      <td>Apoteka</td>
-      <td>Jankovic</td>
-
-    </tr>
-    <tr>
-      <th scope="row"></th>
-      <td>Datum</td>
-      <td>14.02.2021</td>
-     
-    </tr>
-        <tr>
-      <th scope="row"></th>
-      <td>Pocetak</td>
-      <td>15:15</td>
-     
-    </tr>
-        <tr>
-      <th scope="row"></th>
-      <td>Trajanje</td>
-      <td>15 min</td>
-     
-    </tr>
-        <tr>
-      <th scope="row"></th>
-      <td>Cena</td>
-      <td>1700</td>
-     
-    </tr>
-   
-  </tbody>
-</table>
        
-        <button class = "btn btn-link btn" style="color:black; " v-on:click = "searchName">Make a reservation</button>
+        <button class = "btn btn-link btn" style="color:black; " v-on:click = "makeAReservation">Make a reservation</button>
 
 
       
@@ -153,7 +120,7 @@ export default {
            window.location.href = "/dermatologistAppointments";
       },
       allPharmacists : function(){
-          window.location.href = "/PharmacistConsultation";
+          window.location.href = "/login";
 
       },
       showMyProfile: function(){
@@ -194,6 +161,11 @@ export default {
       sendComplaint : function(){
 
 
+ 
+        },
+            makeAReservation : function(){
+
+      window.location.href = "/showReservationPharmacies";
  
         },
        showPharmacies : function(){

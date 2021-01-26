@@ -35,16 +35,19 @@ ines (39 sloc)  1.61 KB
         <div style="background: lightgray; height: 60px;">
             
             <span style="float: left; margin: 15px;">
-                <b><button class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" v-on:click = "allPharmacies">Show all pharmacies</button></b>
+                <b><button class = "btn btn-link btn" style=" color:black; float:left; margin-left:20px; margin-top:0px;" v-on:click = "allPharmacies">Show all pharmacies</button></b>
                      <b class="tab"></b>                
 
-                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">Make a new dermatologist appointment</button>
+                    <button class = "btn btn-link btn" style="color:black; " v-on:click = "allDermatologists">Make a new dermatologist appointment</button>
 
                     <b class="tab"></b>    
-                     <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">My dermatologist appointments</button>
+                     <button class = "btn btn-link btn" style="color:black; " v-on:click = "allDermatologists">My dermatologist appointments</button>
 
                     <b class="tab"></b>  
-                   <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allPharmacists">Pharmacist consultation</button>
+                   <button class = "btn btn-link btn" style="color:black; " v-on:click = "allPharmacists">Pharmacist consultation</button>
+
+                    <b class="tab"></b> 
+                     <button class = "btn btn-link btn" style="color:black; " v-on:click = "allPharmacists">My pharmacist appointments</button>
 
                     <b class="tab"></b>                
                    
@@ -68,7 +71,7 @@ ines (39 sloc)  1.61 KB
         </div>
 
 
-      <div style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
+      <div style="background: whitesmoke; border: 3px solid #0D184F; height: 200px; width:1000px; margin-left:300px; margin-top: 20px">
 
 
 <table class="table">
@@ -77,40 +80,23 @@ ines (39 sloc)  1.61 KB
   <tbody>
     <tr>
       <th scope="row"></th>
-      <td>Ime dermatologa</td>
-      <td>Luna Zivkovic</td>
+      <td>Ime farmaceuta</td>
+      <td>Luna </td>
     
     </tr>
     <tr>
       <th scope="row"></th>
-      <td>Apoteka</td>
+      <td>Prezime farmaceuta</td>
       <td>Jankovic</td>
 
     </tr>
     <tr>
       <th scope="row"></th>
-      <td>Datum</td>
-      <td>14.02.2021</td>
+      <td>Ocena </td>
+      <td>5</td>
      
     </tr>
-        <tr>
-      <th scope="row"></th>
-      <td>Pocetak</td>
-      <td>15:15</td>
-     
-    </tr>
-        <tr>
-      <th scope="row"></th>
-      <td>Trajanje</td>
-      <td>15 min</td>
-     
-    </tr>
-        <tr>
-      <th scope="row"></th>
-      <td>Cena</td>
-      <td>1700</td>
-     
-    </tr>
+        
    
   </tbody>
 </table>

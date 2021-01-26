@@ -1,7 +1,9 @@
 package com.isaproject.isaproject.Model.Medicine;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
+import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
 import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
 import com.isaproject.isaproject.Model.Orders.Offer;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
@@ -66,6 +68,9 @@ public class Medication  {
     @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
 
+    @JsonManagedReference(value="medicine-medicationReservations")
+    @OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MedicationReservation> medicationReservations = new HashSet<MedicationReservation>();
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "specification_id", referencedColumnName = "id", nullable = true, unique = false)
@@ -77,7 +82,7 @@ public class Medication  {
 
     public Medication() {}
 
-    public Medication(Integer id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints) {
+    public Medication(Integer id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints, Set<EPrescription> ePrescriptions, Set<Offer> offer, Set<Prescription> prescriptions, Set<Medication> medications, Set<PatientsMedicationAlergy> patientsMedicationAlergy, Set<MedicationReservation> medicationReservations, Specification specification, Set<Pharmacy> pharmacies) {
         this.id = id;
         this.name = name;
         this.code = code;
@@ -86,6 +91,22 @@ public class Medication  {
         this.issuanceRegime = issuanceRegime;
         this.mark = mark;
         this.loyaltyPoints = loyaltyPoints;
+        this.ePrescriptions = ePrescriptions;
+        this.offer = offer;
+        this.prescriptions = prescriptions;
+        this.medications = medications;
+        this.patientsMedicationAlergy = patientsMedicationAlergy;
+        this.medicationReservations = medicationReservations;
+        this.specification = specification;
+        this.pharmacies = pharmacies;
+    }
+
+    public Set<MedicationReservation> getMedicationReservations() {
+        return medicationReservations;
+    }
+
+    public void setMedicationReservations(Set<MedicationReservation> medicationReservations) {
+        this.medicationReservations = medicationReservations;
     }
 
     public Set<Offer> getOffer() {

@@ -293,7 +293,7 @@ public class proba {
         medicationReservation.setDateOfReservation(LocalDateTime.now());
         medicationReservation.setCancelled(false);
         medicationReservation.setCollected(false);
-        medicationReservation.setMedicineCode(1224);
+        medicationReservation.setMedicine(medication);
         medicationReservation.setPharmacy(pharmacy);
         medicationReservation.setDateOfTakeOver(LocalDateTime.now());
 

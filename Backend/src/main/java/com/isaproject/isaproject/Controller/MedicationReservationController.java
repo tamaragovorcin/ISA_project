@@ -2,11 +2,13 @@ package com.isaproject.isaproject.Controller;
 
 import com.isaproject.isaproject.DTO.MedicationDTO;
 import com.isaproject.isaproject.DTO.MedicationReservationDTO;
+import com.isaproject.isaproject.DTO.MedicationReservationFrontDTO;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
+import com.isaproject.isaproject.Repository.MedicationReservationRepository;
 import com.isaproject.isaproject.Service.Implementations.ActionsService;
 import com.isaproject.isaproject.Service.Implementations.MedicationReservationService;
 import com.isaproject.isaproject.Service.Implementations.PatientService;
@@ -20,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -51,13 +54,42 @@ public class MedicationReservationController {
                 ResponseEntity.ok(medication);
     }
 
-    @GetMapping("")
-    ResponseEntity<List<MedicationReservation>> getAll()
+    @GetMapping("{id}")
+    ResponseEntity<List<MedicationReservationFrontDTO>> getAll(@PathVariable Integer id)
     {
         List<MedicationReservation> medications = medicationReservationService.findAll();
-        System.out.println(medications.size());
-        return medications == null ?
+        List<MedicationReservationFrontDTO> medicationReservationFrontDTOS = new ArrayList<MedicationReservationFrontDTO>();
+        for( MedicationReservation med : medications){
+                if(med.getPatient().getId() == id){
+                    MedicationReservationFrontDTO medicationReservationFrontDTO = new MedicationReservationFrontDTO();
+                    medicationReservationFrontDTO.setId(med.getId());
+                    medicationReservationFrontDTO.setCode(med.getMedicine().getCode());
+                    medicationReservationFrontDTO.setForm(med.getMedicine().getForm());
+                    medicationReservationFrontDTO.setName(med.getMedicine().getName());
+                    medicationReservationFrontDTO.setPharmacyName(med.getPharmacy().getPharmacyName());
+                    medicationReservationFrontDTO.setDateOfTakeOver(med.getDateOfTakeOver());
+
+                    medicationReservationFrontDTOS.add(medicationReservationFrontDTO);
+                }
+
+        }
+
+        return medicationReservationFrontDTOS == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(medications);
+                ResponseEntity.ok(medicationReservationFrontDTOS);
+    }
+
+    @GetMapping("/cancel/{id}")
+        //@PreAuthorize("hasRole('PATIENT')")
+    void cancel(@PathVariable Integer id)
+    {
+        List<MedicationReservation> medications = medicationReservationService.findAll();
+        for( MedicationReservation med : medications){
+            if (med.getId() == id){
+                medicationReservationService.delete(med);
+            }
+        }
+
+
     }
 }
