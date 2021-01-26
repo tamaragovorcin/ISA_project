@@ -79,12 +79,10 @@ public class PharmacyController {
                 ResponseEntity.ok(pharmacies);
     }
     @PostMapping("/addDermatologist")
-    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody WorkingHoursDermatologistDTO dto) {
-        System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getPharmacy().getPharmacyName());
-        Pharmacy ph = pharmacyService.findById(dto.getPharmacy().getId());
-        Set<Dermatologist> dermatologistSet = ph.getDermatologists();
-        dermatologistSet.add(dto.getDermatologist());
+        System.out.println("pogodiooo" +dto.getPharmacy().getPharmacyName());
+        System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getDermatologist().getName());
         if(pharmacyService.savePharmacy(dto)){
             return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
 

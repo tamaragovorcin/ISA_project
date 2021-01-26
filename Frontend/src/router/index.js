@@ -22,7 +22,6 @@ import RegisterPharmacyAdmin from '../views/systemAdmin/RegisterPharmacyAdmin.vu
 import RegisterSupplier from '../views/systemAdmin/RegisterSupplier.vue'
 import RegisterDermatologist from '../views/systemAdmin/RegisterDermatologist.vue'
 import RegisterSystemAdmin from '../views/systemAdmin/RegisterSystemAdmin.vue'
-import AddNewPharmacist from '../views/pharmacyAdmin/AddNewPharmacist.vue'
 import MyPharmacy from '../views/pharmacyAdmin/MyPharmacy.vue'
 import ActionsAndBenefits from '../views/pharmacyAdmin/ActionsAndBenefits.vue'
 import SupplierProfile from '../views/supplier/SupplierProfile.vue'
@@ -32,6 +31,8 @@ import AddMedicine from '../views/systemAdmin/AddMedicine.vue'
 import LoyaltyProgram from '../views/systemAdmin/LoyaltyProgram.vue'
 import PhAdminProfileUpdate from '../views/pharmacyAdmin/PhAdminProfileUpdate.vue'
 import PharmacyDermatologists from '../views/pharmacyAdmin/PharmacyDermatologists.vue'
+import PharmacyPharmacists from '../views/pharmacyAdmin/PharmacyPharmacists.vue'
+import AddPharmacist from '../views/pharmacyAdmin/AddPharmacist.vue'
 
 
 Vue.use(BootstrapVue)
@@ -155,11 +156,6 @@ const routes = [
       component: RegisterSystemAdmin
     },
     {
-      path: '/addNewPharmacist',
-      name: 'AddNewPharmacist',
-      component: AddNewPharmacist
-    },
-    {
       path: '/myPharmacy',
       name: 'MyPharmacy',
       component: MyPharmacy
@@ -205,6 +201,16 @@ const routes = [
       path: '/pharmacyDermatologists',
       name: 'PharmacyDermatologists',
       component: PharmacyDermatologists
+    },  
+    {
+      path: '/pharmacyPharmacists',
+      name: 'PharmacyPharmacists',
+      component: PharmacyPharmacists
+    },
+    {
+      path: '/addPharmacist',
+      name: 'AddPharmacist',
+      component: AddPharmacist
     },
   
 ]

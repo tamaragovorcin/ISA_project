@@ -1,7 +1,9 @@
 package com.isaproject.isaproject.Model.Pharmacy;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
@@ -24,6 +26,7 @@ import java.util.Set;
 @Entity
 @Table(name="pharmacy_table")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Pharmacy implements Serializable{
 
     @Id
@@ -58,9 +61,10 @@ public class Pharmacy implements Serializable{
     @JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = false, unique = false)
     private Address address;
 
-    @ManyToMany(mappedBy = "pharmacies",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+   @ManyToMany(mappedBy = "pharmacies")
     private Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
 
