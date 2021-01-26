@@ -3,13 +3,23 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-             <span style="float: left; margin: 15px;">
-                <a  style="float:left;margin-left:20px;" href= "/isaHomePage">Home</a>
+              <span style="float: left; margin: 15px;">
+                <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
                 <b class="tab"></b>    
-                <a href = "/pharmacyAdminProfile">My profile</a>
+                <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
                 <b class="tab"></b>    
-                <a href = "/myPharmacy">My Pharmacy</a>
-                       
+                <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
+                 <b class="tab"></b>    
+
+        <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Dermatologists</a>
+                <b class="tab"></b>    
+        <a class = "btn btn-secondary" href = "/pharmacyPharmacists">Pharmacists</a>
+                <b class="tab"></b>    
+        <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
+                <b class="tab"></b>    
+        <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
+                <b class="tab"></b>    
+        <a   class = "btn btn-secondary" href="/order">Orders</a>
             </span>
               <span  style="float:right;margin:15px">
                    
@@ -19,32 +29,18 @@
 
         </div>
         
-       
-        <div class="sidenav">
-        <hr/>
-        <a href = "/pharmacyDermatologists">Dermatologists</a>
-        <hr/>
-        <a href = "/pharmacyPharmacists">Pharmacists</a>
-        <hr/>
-        <a href = "/pharmacyMedications">Medications</a>
-        <hr/>
-        <a href = "/actionsAndBenefits">Actions and benefits</a>
-        <hr/>
-        <a href="/order">Orders</a>
-        </div>
-
+      
         <div class="container-fluid">
           
-      <h3 style="color: #0D184F; font-size: 35px; font-weight:bold; margin-top:45px">EXPERA</h3>
+      <h3 style="color: #0D184F; font-size: 35px; font-weight:bold; margin-top:45px"></h3>
 
             
 
-            <nav class="navbar navbarB">
                 
           
 
-                
-            </nav>
+                <button class="btn btn-primary" v-on:click ="showMyProfile">Show</button>
+        
 
           
 
@@ -65,13 +61,42 @@ export default {
   data() {
     return {
       pharmacy : null,
+      admin : null,
     }
   },
 
+ mounted() {
+   let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/pharmacyAdmin/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+         }).then(response => {
+              this.admin=response.data;
+              alert(this.admin.id);
+         }).catch(res => {
+                       alert("NOT OK");
+                        console.log(res);
+                 });
+
+     
+
+
+ },
   methods:{
     
       showMyProfile: function(){
+           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
 
+           var id = this.admin.id;
+      alert(id);
+      this.axios.get('/pharmacy/admin/'+this.admin.id,{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+          }).then(response => {
+            this.pharmacy = response.data;
+          });
       },
        
        logOut : function(){

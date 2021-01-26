@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Controller;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Service.Implementations.DermatologistService;
@@ -12,6 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/dermatologist")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -20,7 +24,7 @@ public class DermatologistController {
     DermatologistService dermatologistService;
 
     @PostMapping("/register")
-    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+   // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PersonUserDTO userRequest) {
 
         PersonUser existUser = dermatologistService.findByEmail(userRequest.getEmail());
@@ -42,4 +46,13 @@ public class DermatologistController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(dermatologist);
     }
+    @GetMapping("")
+    ResponseEntity<List<Dermatologist>> getAll()
+    {
+        List<Dermatologist> dermatologists = dermatologistService.findAll();
+        return dermatologists == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(dermatologists);
+    }
+
 }

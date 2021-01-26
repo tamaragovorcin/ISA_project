@@ -10,4 +10,6 @@ public interface IPharmacyAdminService {
     PharmacyAdmin findByEmail(String email);
     List<PharmacyAdmin> findAll ();
     PharmacyAdmin save(PharmacyAdminDTO userRequest);
+    void delete(PharmacyAdmin admin);
+
 }

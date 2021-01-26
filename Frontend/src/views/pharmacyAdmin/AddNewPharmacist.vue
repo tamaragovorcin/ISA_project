@@ -3,14 +3,24 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-           
-              <span style="float: left; margin: 15px;">
-                <a href= "/isaHomePage">Home</a>
+            
+                <span style="float: left; margin: 15px;">
+                <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
                 <b class="tab"></b>    
-                <a href = "/pharmacyAdminProfile">My profile</a>
+                <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
                 <b class="tab"></b>    
-                <a href = "/myPharmacy">My Pharmacy</a>
-                       
+                <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
+                                <b class="tab"></b>    
+
+                <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Dermatologists</a>
+                        <b class="tab"></b>    
+                <a class = "btn btn-secondary" href = "/pharmacyPharmacists">Pharmacists</a>
+                        <b class="tab"></b>    
+                <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
+                        <b class="tab"></b>    
+                <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
+                        <b class="tab"></b>    
+                <a   class = "btn btn-secondary" href="/order">Orders</a>
             </span>
               <span  style="float:right;margin:15px">
                    
@@ -146,7 +156,7 @@ export default {
         window.location.href = "/addNewPharmacist";
       },
       add : function(){
-
+          
       }
 }
 }

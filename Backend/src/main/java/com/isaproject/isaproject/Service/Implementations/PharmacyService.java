@@ -2,20 +2,26 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PharmacyDTO;
+import com.isaproject.isaproject.DTO.WorkingHoursDermatologistDTO;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Address;
+import com.isaproject.isaproject.Model.Users.Dermatologist;
+import com.isaproject.isaproject.Model.Users.PersonUser;
+import com.isaproject.isaproject.Repository.DermatologistRepository;
 import com.isaproject.isaproject.Repository.PharmacyRepository;
 import com.isaproject.isaproject.Service.IServices.IPharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PharmacyService implements IPharmacyService {
     @Autowired
     PharmacyRepository pharmacyRepository;
-
+    @Autowired
+    DermatologistRepository dermatologistRepository;
     @Override
     public Pharmacy findById(Integer id) {
         return pharmacyRepository.getOne(id);
@@ -38,5 +44,34 @@ public class PharmacyService implements IPharmacyService {
         pharmacy1.setAddress(address);
         pharmacy1.setConsultingPrice(pharmacy.getConsultingPrice());
         return pharmacyRepository.save(pharmacy1);
+    }
+
+    @Override
+    public Boolean savePharmacy(WorkingHoursDermatologistDTO dto) {
+        System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getPharmacy().getPharmacyName());
+        Pharmacy ph = findById(dto.getPharmacy().getId());
+        Set<Dermatologist> dermatologistSet = ph.getDermatologists();
+        dermatologistSet.add(dto.getDermatologist());
+        ph.setDermatologists(dermatologistSet);
+        System.out.println("ISPISI******************\n");
+        for (Dermatologist derm: ph.getDermatologists()){
+            System.out.println("Dermatolozi"+derm.getName());
+        }
+        Dermatologist dermatologist =  dto.getDermatologist();
+
+
+        Set<Pharmacy> pharmacies =  dermatologist.getPharmacies();
+        pharmacies.add(ph);
+        dermatologist.setPharmacies(pharmacies);
+        this.dermatologistRepository.save(dermatologist);
+        this.pharmacyRepository.save(ph);
+
+        return  true;
+
+    }
+    @Override
+    public Pharmacy update(Pharmacy pharmacy) {
+        return this.pharmacyRepository.save(pharmacy);
+
     }
 }

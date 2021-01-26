@@ -1,66 +1,38 @@
-package com.isaproject.isaproject.Model.Examinations;
+package com.isaproject.isaproject.DTO;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
-import com.isaproject.isaproject.Model.Users.Patient;
-import com.isaproject.isaproject.Model.Users.Pharmacist;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-@Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class ExaminationSchedule {
-    @Id
-    @GeneratedValue
-    @Column(name="id", unique=true, nullable=false)
-    private Integer id;
 
-
-    @JsonBackReference(value="dermatologist-schedule")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "dermatologist_id", referencedColumnName = "id", nullable = false, unique = false)
+public class ExaminationScheduleDTO {
     private Dermatologist dermatologist;
 
-    @JsonBackReference(value="pharmacy-schedule")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
     private Pharmacy pharmacy;
 
-
-
-    @Column(name = "date", nullable = true)
     private LocalDate date;
 
-
-    @Column(name = "startTime", nullable = true)
     private LocalTime startTime;
 
-
-    @Column(name = "duration", nullable = true)
     private double duration;
 
-
-    @Column(name = "finished", nullable = true)
     private Boolean finished;
 
-
-    @Column(name = "price", nullable = true)
     private double price;
 
-
-    public ExaminationSchedule() {
+    public ExaminationScheduleDTO() {
     }
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public ExaminationScheduleDTO(Dermatologist dermatologist, Pharmacy pharmacy, LocalDate date, LocalTime startTime, double duration, Boolean finished, double price) {
+        this.dermatologist = dermatologist;
+        this.pharmacy = pharmacy;
+        this.date = date;
+        this.startTime = startTime;
+        this.duration = duration;
+        this.finished = finished;
+        this.price = price;
     }
 
     public Dermatologist getDermatologist() {
