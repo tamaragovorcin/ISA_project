@@ -50,23 +50,13 @@ public class PharmacyService implements IPharmacyService {
     public Boolean savePharmacy(WorkingHoursDermatologistDTO dto) {
         System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getPharmacy().getPharmacyName());
         Pharmacy ph = findById(dto.getPharmacy().getId());
-        Set<Dermatologist> dermatologistSet = ph.getDermatologists();
-        dermatologistSet.add(dto.getDermatologist());
-        ph.setDermatologists(dermatologistSet);
-        System.out.println("ISPISI******************\n");
-        for (Dermatologist derm: ph.getDermatologists()){
-            System.out.println("Dermatolozi"+derm.getName());
+        try{
+            ph.getDermatologists().add(dto.getDermatologist());
+            pharmacyRepository.save(ph);
+            return true;
+        }catch (Exception e){
+            return false;
         }
-        Dermatologist dermatologist =  dto.getDermatologist();
-
-
-        Set<Pharmacy> pharmacies =  dermatologist.getPharmacies();
-        pharmacies.add(ph);
-        dermatologist.setPharmacies(pharmacies);
-        this.dermatologistRepository.save(dermatologist);
-        this.pharmacyRepository.save(ph);
-
-        return  true;
 
     }
     @Override

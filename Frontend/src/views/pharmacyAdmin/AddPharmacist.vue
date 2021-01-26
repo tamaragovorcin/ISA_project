@@ -2,20 +2,23 @@
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-            
-            
-                <span style="float: left; margin: 15px;">
+        
+             <span style="float: left; margin: 15px;">
                 <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
                 <b class="tab"></b>    
                 <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
                 <b class="tab"></b>    
                 <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
-                                <b class="tab"></b>    
-
-                <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Dermatologists</a>
-                        <b class="tab"></b>    
-                <a class = "btn btn-secondary" href = "/pharmacyPharmacists">Pharmacists</a>
-                        <b class="tab"></b>    
+                 <b class="tab"></b>    
+                 <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
+                 
+                <b class="tab"></b>    
+                <a  class = "btn btn-secondary" href = "/addPharmacist">Add pharmacist</a>    
+                <b class="tab"></b> 
+                 <a  class = "btn btn-secondary" href = "/pharmacyPharmacists">Our pharmacists</a> 
+                  <b class="tab"></b>  
+                <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
+                <b class="tab"></b> 
                 <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
                         <b class="tab"></b>    
                 <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
@@ -23,21 +26,19 @@
                 <a   class = "btn btn-secondary" href="/order">Orders</a>
             </span>
               <span  style="float:right;margin:15px">
-                   
+                     <b class="tab"></b>    
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
                 
                 </span>
         </div>
-
-      
-
         <div style="background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <h3 style="color: #0D184F">Registration</h3>
+            <h3 style="color: #0D184F">Add new pharmacist</h3>
+                
                 
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Name:</label>
-                        <input type="text" class="form-control" v-model="name" placeholder="Enter name">
+                        <input type="text" class="form-control" v-model="name2" placeholder="Enter name">
                         </div>
                         <div class="form-group col-md-6">
                         <label>Surname:</label>
@@ -94,16 +95,7 @@
                    
                     <button class="btn btn-primary btn-lg" v-on:click = "add">Add</button>
                     <div style="height:30px;"></div>
-               
-
-
-
-
-
-
         </div>
-
-
     </div>
 </template>
 
@@ -112,53 +104,95 @@ export default {
 
   data() {
     return {
-        name : "",
-        surname : "",
-        email : "",
-        password : "",
-        repeatPassword : "",
-        phoneNumber : "",
-        town : "",
-        street : "",
-        number : "",
-        postalCode : "",
-        country : ""
-    }
+          name2 : "",
+          surname : "",
+          email : "",
+          password : "",
+          repeatPassword : "",
+          phoneNumber : "",
+          town : "",
+          street : "",
+          number : "",
+          postalCode : "",
+          country : "",
+          accountInformation :null,
+          pharmacies : [],
+          pharmacy : null,
+          pharmacyName : ""
+           }
   },
 
   methods:{
-       showHomePage : function(){
-          window.location.href = "/isaHomePage";
-      },
-      showMyProfile: function(){
+      add : function(){
+            const addressInfo ={
+              town : this.town,
+              street : this.street,
+              number : this.number,
+              postalCode : this.postalCode,
+              country : this.country
+          }
+            const userInfo ={
+                email : this.email,
+                password : this.password,
+                firstname : this.name2,
+                surname : this.surname,
+                phonenumber : this.phoneNumber,
+                address : addressInfo,
+                pharmacy : this.pharmacy
+            }
+            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
 
+            this.axios.post('/pharmacist/register',userInfo,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+                .then(response => {
+                       alert("Pharmacist is successfully registred!");
+                        console.log(response.data);
+                })
+                .catch(response => {
+                       alert("Please try later.");
+                        console.log(response);
+                 });    
       },
-       showActionsAndBenefitsForm : function(){
-              this.$refs['my-modal'].show()
-      },
-       hideModal() {
-        this.$refs['my-modal'].hide()
-      },
-       showOrderForm : function(){
-          window.location.href = "/order";
-
-      },
-       logOut : function(){
+      logOut : function(){
+            localStorage.removeItem('token');
            window.location.href = "/login";
       },
-      sendComplaint : function(){
+     
+},
+  mounted() {
+       let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/pharmacyAdmin/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+         }).then(response => {
+                this.admin = response.data;
+                console.log(this.admin);
+                this.axios.get('/pharmacyAdmin/myPharmacy',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            this.pharmacy = response.data;
+                            console.log(this.pharmacy);
+                             
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
+                    
+                
+         
 
-      },
-      showMyPharmacy : function (){
-        window.location.href = "/myPharmacy";
-      },
-      addNewPharmacist : function(){
-        window.location.href = "/addNewPharmacist";
-      },
-      add : function(){
-          
-      }
-}
+         }).catch(res => {
+                alert("NOT OK");
+                console.log(res);
+        });
+        
+    }
+     
 }
 </script>
 

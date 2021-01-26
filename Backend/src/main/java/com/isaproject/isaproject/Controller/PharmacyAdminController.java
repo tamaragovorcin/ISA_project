@@ -4,10 +4,7 @@ import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.DTO.PharmacyAdminDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
-import com.isaproject.isaproject.Model.Users.Dermatologist;
-import com.isaproject.isaproject.Model.Users.PersonUser;
-import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
-import com.isaproject.isaproject.Model.Users.Supplier;
+import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Service.Implementations.PharmacyAdminService;
 import com.isaproject.isaproject.Service.Implementations.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,12 +75,23 @@ public class PharmacyAdminController {
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<Set<Dermatologist>> getOurDermatologists()
     {
-        System.out.println("POGODIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
         return pharmacyAdmin.getPharmacy().getDermatologists() == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacyAdmin.getPharmacy().getDermatologists());
+    }
+    @GetMapping("/pharmacists")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<Set<Pharmacist>> getPharmacists()
+    {
+        System.out.println("POGODIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
+        return pharmacyAdmin.getPharmacy().getPharmacists() == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacyAdmin.getPharmacy().getPharmacists());
     }
 }
