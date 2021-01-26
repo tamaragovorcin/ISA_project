@@ -17,7 +17,7 @@ public class MedicationDTO {
 
     private String type;
 
-    private String issuanceRegime;//rezim upotrebe
+    private String issuanceRegime;
 
     private double mark;
 

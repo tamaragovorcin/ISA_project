@@ -158,7 +158,7 @@ ines (39 sloc)  1.61 KB
                         <th></th>
                     </tr>
 
-                    <tr v-for="item in this.completeDictionary" v-bind:key="item.pharmacy.id">
+                    <tr v-for="item in this.completeDictionary" v-bind:key="item.pharmacy.pharmacyName">
                         <td>{{item.pharmacy.pharmacyName}}</td>
                         <td v-if = "item.subscribed==='NO'">
                             <button class = "btn btn-link btn-lg" v-on:click = "subrsribe($event,item.pharmacy)">Subscribe</button>
@@ -264,8 +264,10 @@ export default {
              headers: {
                  'Authorization': 'Bearer ' + token,
              }
-            }).then(response => {
+            }).then(response => { 
+                this.pharmaciesSubscriptions=[];
                 this.pharmaciesSubscriptions=response.data;
+                console.log(this.pharmaciesSubscriptions)
             }).catch(res => {
                         alert("Please try again later.");
                         console.log(res);});
@@ -275,6 +277,7 @@ export default {
                  'Authorization': 'Bearer ' + token,
              }
             }).then(response => {
+                this.patientsSubscriptions = [];
                 this.patientsSubscriptions=response.data;
                 var i = 0;
                 for (i = 0; i < this.pharmaciesSubscriptions.length; i++) {

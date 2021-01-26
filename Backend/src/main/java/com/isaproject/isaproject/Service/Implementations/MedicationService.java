@@ -55,4 +55,9 @@ public class MedicationService implements IMedicationService {
     public void delete(Medication medication) {
 
     }
+
+    @Override
+    public Medication findByName(String name) {
+        return medicationRepository.findByName(name);
+    }
 }

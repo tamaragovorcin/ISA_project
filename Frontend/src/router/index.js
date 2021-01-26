@@ -31,6 +31,7 @@ import dermatologistAppointments from '../views/patient/dermatologistAppointment
 import AddMedicine from '../views/systemAdmin/AddMedicine.vue'
 import LoyaltyProgram from '../views/systemAdmin/LoyaltyProgram.vue'
 import SubscriptionsToPharmacies from '../views/patient/SubscriptionsToPharmacies.vue'
+import SystemAdminMedicationSearch from '../views/systemAdmin/SystemAdminMedicationSearch.vue'
 
 
 Vue.use(BootstrapVue)
@@ -198,6 +199,11 @@ const routes = [
       path: '/subscriptionsToPharmacies',
       name: 'SubscriptionsToPharmacies',
       component: SubscriptionsToPharmacies
+    },
+    {
+      path: '/systemAdminMedicationSearch',
+      name: 'SystemAdminMedicationSearch',
+      component: SystemAdminMedicationSearch
     }
 ]
 const router = new VueRouter({

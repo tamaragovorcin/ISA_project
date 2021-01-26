@@ -1,8 +1,11 @@
 package com.isaproject.isaproject.Controller;
 
 import com.isaproject.isaproject.DTO.MedicationDTO;
+import com.isaproject.isaproject.DTO.MedicationSearchDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.DTO.SpecificationDTO;
 import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Medicine.Specification;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Service.Implementations.MedicationService;
 import com.isaproject.isaproject.Service.Implementations.PatientService;
@@ -39,4 +42,19 @@ public class MedicationController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medications);
     }
+
+    @GetMapping("searchName/{medicationName}")
+    ResponseEntity<MedicationSearchDTO> getAll(@PathVariable String medicationName)
+    {
+        Medication medication= medicationService.findByName(medicationName);
+        Specification specification = medication.getSpecification();
+        SpecificationDTO specificationDTO= new SpecificationDTO(specification.getContraIndications(),
+                specification.getStructure(), specification.getRecommendedConsumption(), specification.getManufacturer());
+        MedicationSearchDTO medicationSearchDTO = new MedicationSearchDTO(medication.getName(), medication.getForm(), medication.getType(),
+                medication.getIssuanceRegime(), medication.getMark(), specificationDTO);
+        return medicationSearchDTO == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(medicationSearchDTO);
+    }
+
 }
