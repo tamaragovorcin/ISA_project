@@ -1,6 +1,8 @@
 package com.isaproject.isaproject.Model.Users;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
@@ -18,6 +20,7 @@ import java.util.Set;
 
 @Entity
 @DiscriminatorValue("Patient")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Patient extends PersonUser{
 
    /* @ManyToMany
@@ -42,8 +45,11 @@ public class Patient extends PersonUser{
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Prescription> prescriptions = new HashSet<Prescription>();
 
+
+
     @ManyToMany
-    @JoinTable(name = "patients_subscriptions", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
+    @JoinTable(name = "patients_subscriptions", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
     private Set<Pharmacy> subscribedToPharmacies = new HashSet<Pharmacy>();
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

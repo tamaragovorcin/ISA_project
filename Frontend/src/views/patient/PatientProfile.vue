@@ -215,12 +215,12 @@ export default {
       },
       sendComplaint : function(){
 
-
- 
-        },
-       showPharmacies : function(){
+      },
+      showPharmacies : function(){
             window.location.href = "/showPharmaciesPatient";
-
+      },
+      showSubscriptions : function() {
+            window.location.href = "/subscriptionsToPharmacies";
       }
 },
     mounted() {

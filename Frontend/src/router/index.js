@@ -30,6 +30,7 @@ import SupplierProfileInfo from '../views/supplier/SupplierProfileInfo.vue'
 import dermatologistAppointments from '../views/patient/dermatologistAppointments.vue'
 import AddMedicine from '../views/systemAdmin/AddMedicine.vue'
 import LoyaltyProgram from '../views/systemAdmin/LoyaltyProgram.vue'
+import SubscriptionsToPharmacies from '../views/patient/SubscriptionsToPharmacies.vue'
 
 
 Vue.use(BootstrapVue)
@@ -193,9 +194,12 @@ const routes = [
       name: 'LoyaltyProgram',
       component: LoyaltyProgram
     },
-
+    {
+      path: '/subscriptionsToPharmacies',
+      name: 'SubscriptionsToPharmacies',
+      component: SubscriptionsToPharmacies
+    }
 ]
-
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
