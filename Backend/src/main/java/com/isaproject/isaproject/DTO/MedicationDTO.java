@@ -1,8 +1,11 @@
 package com.isaproject.isaproject.DTO;
 
+import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Medicine.Specification;
 
 import javax.persistence.Column;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MedicationDTO {
 
@@ -22,7 +25,11 @@ public class MedicationDTO {
 
     private SpecificationDTO specification;
 
-    public MedicationDTO(String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints, SpecificationDTO specification) {
+    private Set<Medication> medicationsAlternatives;
+
+    private String wayOfSelling;
+
+    public MedicationDTO(String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints, SpecificationDTO specification, Set<Medication> medicationsAlternatives, String wayOfSelling) {
         this.name = name;
         this.code = code;
         this.form = form;
@@ -31,9 +38,27 @@ public class MedicationDTO {
         this.mark = mark;
         this.loyaltyPoints = loyaltyPoints;
         this.specification = specification;
+        this.medicationsAlternatives = medicationsAlternatives;
+        this.wayOfSelling = wayOfSelling;
     }
 
     public MedicationDTO() {
+    }
+
+    public String getWayOfSelling() {
+        return wayOfSelling;
+    }
+
+    public void setWayOfSelling(String wayOfSelling) {
+        this.wayOfSelling = wayOfSelling;
+    }
+
+    public Set<Medication> getMedicationsAlternatives() {
+        return medicationsAlternatives;
+    }
+
+    public void setMedicationsAlternatives(Set<Medication> medicationsAlternatives) {
+        this.medicationsAlternatives = medicationsAlternatives;
     }
 
     public SpecificationDTO getSpecification() {

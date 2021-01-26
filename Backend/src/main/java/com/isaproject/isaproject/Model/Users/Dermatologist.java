@@ -1,4 +1,8 @@
 package com.isaproject.isaproject.Model.Users;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
@@ -16,11 +20,14 @@ import java.util.Set;
 
 @Entity
 @DiscriminatorValue("Dermatologist")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Dermatologist extends PersonUser{
 
     @Column(name = "markDermatologist", nullable = true)
     private double markDermatologist;
 
+    @JsonManagedReference(value="dermatologist-schedule")
     @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ExaminationSchedule> examinationSchedules = new HashSet<ExaminationSchedule>();
 

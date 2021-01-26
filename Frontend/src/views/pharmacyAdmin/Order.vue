@@ -2,14 +2,27 @@
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-            
             <span style="float: left; margin: 15px;">
-                <a href= "/isaHomePage">Home</a>
+                <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
                 <b class="tab"></b>    
-                <a href = "/pharmacyAdminProfile">My profile</a>
+                <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
                 <b class="tab"></b>    
-                <a href = "/myPharmacy">My Pharmacy</a>
-                       
+                <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
+                 <b class="tab"></b>    
+                 <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
+                 
+                <b class="tab"></b>    
+                <a  class = "btn btn-secondary" href = "/addPharmacist">Add pharmacist</a>    
+                <b class="tab"></b> 
+                 <a  class = "btn btn-secondary" href = "/pharmacyPharmacists">Our pharmacists</a> 
+                  <b class="tab"></b>  
+                <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
+                <b class="tab"></b> 
+                <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
+                        <b class="tab"></b>    
+                <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
+                        <b class="tab"></b>    
+                <a   class = "btn btn-secondary" href="/order">Orders</a>
             </span>
               <span  style="float:right;margin:15px">
                    
@@ -19,14 +32,7 @@
 
         </div>
         <div>
-        <div class="sidenav">
-        <hr/>
-        <a href = "/pharmacyDermatologists">Dermatologists</a>
-        <a href = "/pharmacyPharmacists">Pharmacists</a>
-        <a href = "/pharmacyMedications">Medications</a>
-        <a href = "/actionsAndBenefits">Actions and benefits</a>
-        <a href="/order">Orders</a>
-        </div>
+      
     <b-button class = "btn btn-warning btn-lg" @click="showModal">+ Make new order</b-button>
     <b-modal ref="my-modal" hide-footer scrollable title="Fill order form" size="lg" modal-class="b-modal">
                     <div modal-class="modal-dialog" role="document">
@@ -169,15 +175,15 @@ export default {
 </script>
 
 <style>
-@media (min-width: 992px){}
+@media (min-width: 992px)
  .modal-lg {
     max-width: auto !important;
    }
-@media (min-width: 992px){}
+@media (min-width: 992px)
  .modal-dialog {
     margin: 100px !important;
    }
-@media (min-width: 800px){}
+@media (min-width: 800px)
   .modal-dialog {
     max-width: auto !important;
   }
@@ -202,7 +208,7 @@ body {
   padding: 6px 6px 6px 0px;
   text-decoration: none;
   font-size: 25px;
-  color: white;
+  color: #white;
   display: block;
 }
 

@@ -47,6 +47,9 @@ public class Medication  {
     @Column(name = "loyaltyPoints", nullable = true)
     private double loyaltyPoints;
 
+    @Column(name = "wayOfSelling", nullable = true)
+    private String wayOfSelling;
+
 
     @ManyToMany
     @JoinTable(name = "eprescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "eprescription_id", referencedColumnName = "id"))
@@ -82,7 +85,7 @@ public class Medication  {
 
     public Medication() {}
 
-    public Medication(Integer id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints, Set<EPrescription> ePrescriptions, Set<Offer> offer, Set<Prescription> prescriptions, Set<Medication> medications, Set<PatientsMedicationAlergy> patientsMedicationAlergy, Set<MedicationReservation> medicationReservations, Specification specification, Set<Pharmacy> pharmacies) {
+    public Medication(Integer id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints, String wayOfSelling, Set<EPrescription> ePrescriptions, Set<Offer> offer, Set<Prescription> prescriptions, Set<Medication> medications, Set<PatientsMedicationAlergy> patientsMedicationAlergy, Set<MedicationReservation> medicationReservations, Specification specification, Set<Pharmacy> pharmacies) {
         this.id = id;
         this.name = name;
         this.code = code;
@@ -91,6 +94,7 @@ public class Medication  {
         this.issuanceRegime = issuanceRegime;
         this.mark = mark;
         this.loyaltyPoints = loyaltyPoints;
+        this.wayOfSelling = wayOfSelling;
         this.ePrescriptions = ePrescriptions;
         this.offer = offer;
         this.prescriptions = prescriptions;
@@ -107,6 +111,15 @@ public class Medication  {
 
     public void setMedicationReservations(Set<MedicationReservation> medicationReservations) {
         this.medicationReservations = medicationReservations;
+    }
+
+    public String getWayOfSelling() {
+        return wayOfSelling;
+    }
+
+    public void setWayOfSelling(String wayOfSelling) {
+        this.wayOfSelling = wayOfSelling;
+
     }
 
     public Set<Offer> getOffer() {

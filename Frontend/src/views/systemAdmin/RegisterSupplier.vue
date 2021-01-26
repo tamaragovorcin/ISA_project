@@ -18,7 +18,10 @@
                          <b-dropdown-item v-on:click = "registerSystemAdmin" disabled>System admin</b-dropdown-item>
                     </div>          
                 </b-dropdown> 
-                 <b class="tab"></b>   
+                <b class="tab"></b>   
+                <button class = "btn btn-link btn-lg" v-on:click = "addMedicine">Add medicine</button>
+                <b class="tab"></b>   
+                 <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
             </span>
               <span  style="float:right;margin:15px">
                      <b class="tab"></b>    
@@ -32,7 +35,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Name:</label>
-                        <input type="text" class="form-control" v-model="name" placeholder="Enter name">
+                        <input type="text" class="form-control" v-model="name2" placeholder="Enter name">
                         </div>
                         <div class="form-group col-md-6">
                         <label>Surname:</label>
@@ -98,7 +101,7 @@ export default {
 
   data() {
     return {
-       name : "",
+       name2 : "",
         surname : "",
         email : "",
         password : "",
@@ -130,18 +133,22 @@ export default {
       },
       registerSystemAdmin: function() {
            window.location.href = "/registerSystemAdmin";
-      },register : function(){
+      },
+      addMedicine : function() {
+           window.location.href = "/addMedicine";
+      },
+      register : function(){
           const addressInfo ={
               town : this.town,
               street : this.street,
               number : this.number,
-              postalcode : this.postalCode,
+              postalCode : this.postalCode,
               country : this.country
           }
             const userInfo ={
                 email : this.email,
                 password : this.password,
-                firstname : this.firstname,
+                firstname : this.name2,
                 surname : this.surname,
                 phonenumber : this.phoneNumber,
                 address : addressInfo
@@ -164,6 +171,9 @@ export default {
       logOut : function(){
             localStorage.removeItem('token');
            window.location.href = "/login";
+      },
+      defineLoyaltyProgram : function(){
+          window.location.href = "/loyaltyProgram";
       }
 },
  mounted() {

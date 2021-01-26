@@ -17,8 +17,11 @@
                      <div v-if = "notallowSystemAdminRegistration">
                          <b-dropdown-item v-on:click = "registerSystemAdmin" disabled>System admin</b-dropdown-item>
                     </div>                    
-                </b-dropdown> 
+                 </b-dropdown> 
                  <b class="tab"></b>   
+                 <button class = "btn btn-link btn-lg" v-on:click = "addMedicine">Add medicine</button>
+                 <b class="tab"></b>   
+                 <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
             </span>
               <span  style="float:right;margin:15px">
                      <b class="tab"></b>    
@@ -58,8 +61,14 @@ export default {
            window.location.href = "/registerSystemAdmin";
       },
       logOut : function(){
-            localStorage.removeItem('token');
-           window.location.href = "/login";
+          localStorage.removeItem('token');
+          window.location.href = "/login";
+      },
+      addMedicine : function() {
+           window.location.href = "/addMedicine";
+      },
+      defineLoyaltyProgram : function(){
+          window.location.href = "/loyaltyProgram";
       }
       
 },

@@ -43,6 +43,16 @@ public class SupplierController {
                 ResponseEntity.ok(supplier);
     }
 
+    @PostMapping("/update")
+    @PreAuthorize("hasRole('SUPPLIER')")
+    public ResponseEntity<String> update(@RequestBody Supplier userRequest) {
+
+        Supplier user = supplierService.update(userRequest);
+        return user.getSurname() == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                new ResponseEntity<>("Supplier is successfully updated!", HttpStatus.CREATED);
+    }
+
 
 
 }

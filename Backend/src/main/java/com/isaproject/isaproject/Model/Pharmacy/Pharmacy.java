@@ -1,7 +1,9 @@
 package com.isaproject.isaproject.Model.Pharmacy;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
@@ -24,6 +26,7 @@ import java.util.Set;
 @Entity
 @Table(name="pharmacy_table")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Pharmacy implements Serializable{
 
     @Id
@@ -32,7 +35,7 @@ public class Pharmacy implements Serializable{
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "pharmacyName", nullable = true,unique=true)
+    @Column(name = "pharmacyName", nullable = true,unique=false)
     private String pharmacyName;
 
 
@@ -42,7 +45,9 @@ public class Pharmacy implements Serializable{
     @Column(name = "consultingPrice", nullable = true)
     private double consultingPrice;
 
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+    @JsonManagedReference(value="pharmacy-schedule")
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<ExaminationSchedule> examinationSchedules = new HashSet<ExaminationSchedule>();
 
     @JsonManagedReference(value="pharmacy-medication")
@@ -56,9 +61,10 @@ public class Pharmacy implements Serializable{
     @JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = false, unique = false)
     private Address address;
 
-    @ManyToMany(mappedBy = "pharmacies")
+   @ManyToMany(mappedBy = "pharmacies")
     private Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
 

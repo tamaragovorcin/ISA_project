@@ -22,14 +22,20 @@ import RegisterPharmacyAdmin from '../views/systemAdmin/RegisterPharmacyAdmin.vu
 import RegisterSupplier from '../views/systemAdmin/RegisterSupplier.vue'
 import RegisterDermatologist from '../views/systemAdmin/RegisterDermatologist.vue'
 import RegisterSystemAdmin from '../views/systemAdmin/RegisterSystemAdmin.vue'
-import AddNewPharmacist from '../views/pharmacyAdmin/AddNewPharmacist.vue'
 import MyPharmacy from '../views/pharmacyAdmin/MyPharmacy.vue'
 import ActionsAndBenefits from '../views/pharmacyAdmin/ActionsAndBenefits.vue'
 import SupplierProfile from '../views/supplier/SupplierProfile.vue'
+import SupplierProfileInfo from '../views/supplier/SupplierProfileInfo.vue'
 import dermatologistAppointments from '../views/patient/dermatologistAppointments.vue'
 import PharmacistConsultation from '../views/patient/PharmacistConsultation.vue'
 import showReservationPharmacies from '../views/patient/showReservationPharmacies.vue'
 import choosenPharmacy from '../views/patient/choosenPharmacy.vue'
+import AddMedicine from '../views/systemAdmin/AddMedicine.vue'
+import LoyaltyProgram from '../views/systemAdmin/LoyaltyProgram.vue'
+import PhAdminProfileUpdate from '../views/pharmacyAdmin/PhAdminProfileUpdate.vue'
+import PharmacyDermatologists from '../views/pharmacyAdmin/PharmacyDermatologists.vue'
+import PharmacyPharmacists from '../views/pharmacyAdmin/PharmacyPharmacists.vue'
+import AddPharmacist from '../views/pharmacyAdmin/AddPharmacist.vue'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -152,11 +158,6 @@ const routes = [
       component: RegisterSystemAdmin
     },
     {
-      path: '/addNewPharmacist',
-      name: 'AddNewPharmacist',
-      component: AddNewPharmacist
-    },
-    {
       path: '/myPharmacy',
       name: 'MyPharmacy',
       component: MyPharmacy
@@ -170,6 +171,12 @@ const routes = [
       path: '/supplierProfile',
       name: 'SupplierProfile',
       component: SupplierProfile
+    },
+    {
+
+      path: '/supplierProfileInfo',
+      name: 'SupplierProfileInfo',
+      component: SupplierProfileInfo
     },
     {
       path: '/dermatologistAppointments',
@@ -190,8 +197,41 @@ const routes = [
       path: '/choosenPharmacy',
       name: 'choosenPharmacy',
       component: choosenPharmacy
-    }
+    
 
+    }, 
+    {
+      path: '/addMedicine',
+      name: 'AddMedicine',
+      component: AddMedicine
+    },
+    {
+      path: '/loyaltyProgram',
+      name: 'LoyaltyProgram',
+      component: LoyaltyProgram
+    },
+    {
+      path: '/updateProfilePharmacyAdmin',
+      name: 'PhAdminProfileUpdate',
+      component: PhAdminProfileUpdate
+    },
+    
+    {
+      path: '/pharmacyDermatologists',
+      name: 'PharmacyDermatologists',
+      component: PharmacyDermatologists
+    },  
+    {
+      path: '/pharmacyPharmacists',
+      name: 'PharmacyPharmacists',
+      component: PharmacyPharmacists
+    },
+    {
+      path: '/addPharmacist',
+      name: 'AddPharmacist',
+      component: AddPharmacist
+    },
+  
 ]
 
 const router = new VueRouter({

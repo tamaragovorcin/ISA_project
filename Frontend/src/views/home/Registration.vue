@@ -83,13 +83,6 @@
                    
                     <button class="btn btn-primary btn-lg" v-on:click = "register">Register</button>
                     <div style="height:30px;"></div>
-                
-
-
-
-
-
-
         </div>
 
 
@@ -122,13 +115,13 @@ export default {
               town : this.town,
               street : this.street,
               number : this.number,
-              postalcode : this.postalCode,
+              postalCode : this.postalCode,
               country : this.country
           }
             const userInfo ={
                 email : this.email,
                 password : this.password,
-                firstname : this.firstname,
+                firstname : this.name,
                 surname : this.surname,
                 phonenumber : this.phoneNumber,
                 address : addressInfo
