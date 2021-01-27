@@ -30,11 +30,16 @@ public class MedicationInOrder {
 
     @JsonBackReference(value="order-medicationInOrder")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false, unique = false)
+    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = true, unique = false)
     private Order order;
 
 
     public MedicationInOrder() {
+    }
+
+    public MedicationInOrder(Medication medication, int quantity) {
+        this.medication = medication;
+        this.quantity = quantity;
     }
 
     public MedicationInOrder(Integer id, Medication medicine, int quantity, Order order) {
