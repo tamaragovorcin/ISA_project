@@ -8,6 +8,7 @@ import com.isaproject.isaproject.DTO.ActionsDTO;
 
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.Model.Pharmacy.Actions;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Service.Implementations.ActionsService;
 
@@ -169,12 +170,43 @@ public class PatientController {
     {
         Patient per = patientService.findByEmail(person.getEmail());
         Integer id = per.getId();
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+id);
         patientService.delete(per);
         Patient patient = patientService.update(person, id);
         return patient == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patient);
     }
+
+    @GetMapping("/mySubscriptions")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<Set<Pharmacy>> getMySubscriptions()
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+
+        Patient patient = patientService.findById(user.getId());
+        return patient.getSubscribedToPharmacies() == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(patient.getSubscribedToPharmacies());
+    }
+
+    @PostMapping("/subscribeToPharmacy")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<String> subsribe(@RequestBody Pharmacy pharmacy)
+    {
+        return patientService.subsribeToPharmacy(pharmacy) == false ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
+    }
+
+    @PostMapping("/unsubscribeToPharmacy")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<String> unsubsribe(@RequestBody Pharmacy pharmacy)
+    {
+        return patientService.unsubsribeToPharmacy(pharmacy) == false ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
+    }
+
 
 }

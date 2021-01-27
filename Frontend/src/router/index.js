@@ -29,6 +29,8 @@ import SupplierProfileInfo from '../views/supplier/SupplierProfileInfo.vue'
 import dermatologistAppointments from '../views/patient/dermatologistAppointments.vue'
 import AddMedicine from '../views/systemAdmin/AddMedicine.vue'
 import LoyaltyProgram from '../views/systemAdmin/LoyaltyProgram.vue'
+import SubscriptionsToPharmacies from '../views/patient/SubscriptionsToPharmacies.vue'
+import SystemAdminMedicationSearch from '../views/systemAdmin/SystemAdminMedicationSearch.vue'
 import PhAdminProfileUpdate from '../views/pharmacyAdmin/PhAdminProfileUpdate.vue'
 import PharmacyDermatologists from '../views/pharmacyAdmin/PharmacyDermatologists.vue'
 import PharmacyPharmacists from '../views/pharmacyAdmin/PharmacyPharmacists.vue'
@@ -192,6 +194,16 @@ const routes = [
       component: LoyaltyProgram
     },
     {
+      path: '/subscriptionsToPharmacies',
+      name: 'SubscriptionsToPharmacies',
+      component: SubscriptionsToPharmacies
+    },
+    {
+      path: '/systemAdminMedicationSearch',
+      name: 'SystemAdminMedicationSearch',
+      component: SystemAdminMedicationSearch
+    },
+    {
       path: '/updateProfilePharmacyAdmin',
       name: 'PhAdminProfileUpdate',
       component: PhAdminProfileUpdate
@@ -214,7 +226,6 @@ const routes = [
     },
   
 ]
-
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,

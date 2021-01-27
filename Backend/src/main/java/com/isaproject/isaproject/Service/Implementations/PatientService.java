@@ -2,14 +2,18 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Address;
 import com.isaproject.isaproject.Model.Users.Authority;
 import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
 import com.isaproject.isaproject.Repository.PatientRepository;
 import com.isaproject.isaproject.Service.IServices.IAuthorityService;
 import com.isaproject.isaproject.Service.IServices.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -103,15 +107,39 @@ public class PatientService implements IPatientService {
         }
         patient.setAuthorities(auth);
         patient.setEnabled(true);
-        System.out.println("bbbbbbbbbbbbbbbbBBBBBBBBBBBBBBBBBBBBBBBBB " + patient.getId());
         return patientRepository.save(patient);
     }
 
     @Override
     public void delete(Patient patient) {
-
         patientRepository.delete(patient);
+    }
 
+    public boolean subsribeToPharmacy(Pharmacy pharmacy) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
 
+        Patient patient = patientRepository.getOne(user.getId());
+
+        try {
+            patient.getSubscribedToPharmacies().add(pharmacy);
+            patientRepository.save(patient);
+            return true;
+        }
+        catch(Exception e) {return false;}
+    }
+
+    public boolean unsubsribeToPharmacy(Pharmacy pharmacy) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+
+        Patient patient = patientRepository.getOne(user.getId());
+
+        try {
+            //patient.getSubscribedToPharmacies();
+            //patientRepository.save(patient);
+            return true;
+        }
+        catch(Exception e) {return false;}
     }
 }
