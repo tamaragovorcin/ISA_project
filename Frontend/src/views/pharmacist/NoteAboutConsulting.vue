@@ -37,54 +37,122 @@
              </span>
     </div>
     <div>
-            <h2> Consulgting </h2>
+    <section class = "border">
+        <h3 align="center"><b>Search your patients</b></h3>
+			<form accept-charset="UTF-8">
+                <table align="center">
+                    <tr>
+                        <b class="tab"></b> 
+                        <td align="left">Patient's name::</td>
+                        <td>&nbsp;</td>
+                            <input style="width: 200px;" class="form-control" placeholder="Enter patient's name" name="name" type="text" id="name" >              
+                        <td>&nbsp;</td>  
+                         
+                         
+                        <b class="tab"></b>     
+                        <b class="tab"></b>  
 
-            <div style="font-size:30px" class="text-dark d-flex justify-content-start p-2 md-2">
-                <b class="tab"></b>  
-                    <b class="tab"></b>  
-                    <b class="tab"></b>  
+                        <td align="left">Patient's secondname:</td>
+                        <td>&nbsp;</td>
+                            <input style="width: 200px;" class="form-control" placeholder="Enter patient's secondname" name="secondname" type="text" id="secondname">              
+                        <td>&nbsp;</td>  
+                        <b class="tab"></b>     
+                        <b class="tab"></b>  
 
-                <label>Choose your patient:</label>
-                 <select v-model="patient">
-                    <option v-for="patient in patients" :key="patient.id">
-                        {{patient.name}}+{{patient.surname}}
-                    </option>
-                </select>
-                <b class="tab"></b>  
-                <b class="tab"></b> 
-                 <b class="tab"></b>  
-                <b class="tab"></b>  
 
-            </div>
-            <div class="d-flex align-content-center flex-wrap md-2 p-5">
-                <b class="tab"></b>  
-                <b class="tab"></b>  
+                        <td align="right" ><button  class = "btn btn-success" v-on:click="search">Search</button></td>
+                        <b class="tab"></b>  
+                       
+                    </tr>
 
-                <button class="btn btn-success">Saved consulting</button>
-                <b class="tab"></b>  
-                
-                <button class="btn btn-danger">The patient did not show up for counseling.</button>
-            </div>
-
+                    
+                </table>   
+		</form>
+    </section>    
     </div>
- <div>
+
+    <div class="container-fluid">
+                    <b class="tab"></b>     
+                    <b class="tab"></b>  
+                    <h3 align = "center"><b>Your patients</b></h3>
+                    <div v-for="patient in patients" :key="patient.id" class="col-md-12 border ">
+                        <div class="blog-box" >
+                            <div class="blog-desc" style="font-size:25">
+                                <p>Name: {{patient.name}} </p>
+                                <p>Surname: {{patient.surname}} </p>
+                                <button class ="btn btn-primary" v-on:click = "note($event, patient.id)">Note consulting</button>
+                                <b class="tab"></b> 
+                                <button class ="btn btn-danger" v-on:click = "ignored">Patient ignored consulting</button>
+                            </div>
+                        </div>
+                    </div>
+    </div>
+<div>
      <b-modal ref="my-modal" hide-footer scrollable title="Write complaint" size="lg" modal-class="b-modal">
                     <div modal-class="modal-dialog" role="document">
                             <div class="modal-content" style="background-color:whitesmoke">
-                                    <div class="modal-header">
-                        
-                                    </div>
-                                    <div class="modal-body">
-                                        <label>Input comment about this consulting</label>
-                                    </div>
-                                     <div class="modal-footer">
-                                        <button class="btn btn-secondary">Close</button>
-                                        <button class="btn btn-primary">Send complaint</button>
-                                    </div>
-                            </div>
-                    </div>
+                                      <div class="modal-header">
+                                      
+                                      <h3>Note consulting</h3>
+                                      </div>
+                                      <div class="modal-body">
+                                      
+                                      <div class="row justify-content-md-end">
+                                          <label style="font-size:17">Date:</label>
+                                          <input type="date" name="date" v-model="date">
+                                      </div>
+                                        
+                                        <div class="row justify-content-md-center">
+
+                                          <div class="col-25">
+                                          <label style="font-size: 20px;">Your comment about consulting:</label>
+                                          </div>
+                                          <b class="tab"></b> 
+                                          <div class="col-75">
+                                          <input type="text" style="font-size: 20px; background:white; height:80px" size="80" placeholder="Enter consulting.." v-model="information">
+                                          </div>
+                                           <b class="tab"></b> 
+                                        <b class="tab"></b> 
+                                        <b class="tab"></b> 
+                                         </div>
+                                         <b class="tab"></b> 
+                                        <b class="tab"></b> 
+                                        <b class="tab"></b> 
+                                        
+                                        <div class="row justify-content-md-center">
+
+                                          <div class="col-25">
+                                          <label style="font-size: 20px;">Start time:</label>
+                                          </div>
+                                          <b class="tab"></b> 
+                                          <div class="col-75">
+                                          <input type="time" style="font-size: 20px;" size="80" placeholder="Enter time.." v-model="startTime">
+                                          </div>
+
+                                         </div>
+                                        
+
+                                        <div class="row justify-content-md-center">
+
+                                          <div class="col-25">
+                                          <label style="font-size: 20px;">Duration of consulting:</label>
+                                          </div>
+                                          <b class="tab"></b> 
+                                          <div class="col-75">
+                                          <input type="number" style="font-size: 20px;" size="80" placeholder="Enter duration of consulting.." v-model="duration">
+                                          </div>
+
+                                         </div>
+                                        
+                                      </div>
+                                      <div class="modal-footer">
+                                         <button class="btn btn-secondary" click="hideModal">Close</button>
+                                        <button class="btn btn-primary" click="sendConfirm">Confirm consulting</button>
+                                      </div>
+                              </div>
+                      </div>
     </b-modal>
-</div>
+  </div>
 
 </div>
 </template>
@@ -96,20 +164,42 @@ export default {
     return {
       
        patients : [],
-       patient: ""
+       pharmacist: "", 
+       patient: "",
+       date: "",
+       startTime: "",
+       duration: "", 
+       price: "",
+       canceled: false,
+       showedUp: false,
+       information: ""
+
       
 
     }
   },
    mounted(){
+     let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/pharmacist/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+         }).then(response => {
+               this.pharmacist=response.data;
+         }).catch(res => {
+                       alert("NOT OK");
+                        console.log(res);
+                 });
+      
+
 		this.axios.get('/patient')
-        .then(response => {
+      .then(response => {
           this.patients = response.data;
           console.log(response);
 
       })
-    },
- 
+   },
+     
      methods:{
       showMyProfile: function(){
          
@@ -126,7 +216,18 @@ export default {
        search: function(){
          
       },
-       cancel: function(){
+      
+      note: function(){
+         this.$refs['my-modal'].show()
+      },
+       hideModal() {
+        this.$refs['my-modal'].hide()
+      },
+      sendConfirm: function() {
+    
+
+      },
+      ignored: function(){
          
       },
       showHomePage : function(){

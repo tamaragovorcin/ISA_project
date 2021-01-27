@@ -177,7 +177,7 @@ export default {
 
     }
   },
-
+  
   methods:{
       showLoyalty : function(){
 

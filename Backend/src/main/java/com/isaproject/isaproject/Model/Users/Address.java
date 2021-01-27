@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Model.Users;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 
@@ -11,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Address implements Serializable {
+public class Address extends AddressDTO implements Serializable {
 
     @Id
     @SequenceGenerator(name = "mySeqGenV2", sequenceName = "mySeqV2", initialValue = 1, allocationSize = 1)

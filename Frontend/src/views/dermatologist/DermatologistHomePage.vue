@@ -120,7 +120,7 @@ export default {
 
       },
       showMyProfile: function(){
-
+           window.location.href = "/dermatologistProfile";
       },
       showHomePage : function(){
           window.location.href = "/isaHomePage";

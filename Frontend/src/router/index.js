@@ -13,7 +13,11 @@ import PharmacistProfile from '../views/pharmacist/PharmacistProfile.vue'
 import PharmacistClients from '../views/pharmacist/PharmacistClients.vue'
 import NoteAboutConsulting from '../views/pharmacist/NoteAboutConsulting.vue'
 import PharmacistHomePage from '../views/pharmacist/PharmacistHomePage.vue'
+import CreateRequestVacation from '../views/pharmacist/CreateRequestVacation.vue'
+import PharmacistUpdateProfile from '../views/pharmacist/PharmacistUpdateProfile.vue'
 import DermatologistHomePage from '../views/dermatologist/DermatologistHomePage.vue'
+import DermatologistProfile from '../views/dermatologist/DermatologistProfile.vue'
+import DermatologistUpdateProfile from '../views/dermatologist/DermatologistUpdateProfile.vue'
 import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vue'
 import Order from '../views/pharmacyAdmin/Order.vue'
 import PharmacyProfile from '../views/PharmacyProfile.vue'
@@ -84,6 +88,21 @@ const routes = [
       component: PharmacistProfile
     },
     {
+      path: '/pharmacistUpdateProfile',
+      name: 'PharmacistUpdateProfile',
+      component: PharmacistUpdateProfile
+    },
+    {
+      path: '/dermatologistProfile',
+      name: 'DermatologistProfile',
+      component: DermatologistProfile
+    },
+    {
+      path: '/dermatologistUpdateProfile',
+      name: 'DermatologistUpdateProfile',
+      component: DermatologistUpdateProfile
+    },
+    {
       path: '/pharmacistClients',
       name: 'PharmacistClients',
       component: PharmacistClients
@@ -92,6 +111,11 @@ const routes = [
       path: '/noteConsultig',
       name: 'NoteAboutConsulting',
       component: NoteAboutConsulting
+    },
+    {
+      path: '/createRequestVacation',
+      name: 'CreateRequestVacation',
+      component: CreateRequestVacation
     },
     {
       path: '/pharmacistHomePage',

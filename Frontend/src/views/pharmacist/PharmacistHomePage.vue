@@ -146,7 +146,7 @@ export default {
 
       },
       vacation: function(){
-
+           window.location.href = "/createRequestVacation";
       },
       scheduleConsulting : function(){
 
