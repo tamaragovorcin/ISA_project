@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -136,8 +137,13 @@ public class PatientService implements IPatientService {
         Patient patient = patientRepository.getOne(user.getId());
 
         try {
-            //patient.getSubscribedToPharmacies();
-            //patientRepository.save(patient);
+            for (Iterator<Pharmacy> iterator = patient.getSubscribedToPharmacies().iterator(); iterator.hasNext();) {
+                Pharmacy s =  iterator.next();
+                if (pharmacy.getId().equals(s.getId())) {
+                    iterator.remove();
+                }
+            }
+            patientRepository.save(patient);
             return true;
         }
         catch(Exception e) {return false;}

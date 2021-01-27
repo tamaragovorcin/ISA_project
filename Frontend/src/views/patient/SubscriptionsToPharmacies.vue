@@ -150,11 +150,11 @@ ines (39 sloc)  1.61 KB
     </b-modal>
   </div>
 
-    <div style = "background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+    <div style = "background-color:lightgray; margin: auto; width: 13%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
 
                 <table class="form-group">
                     <tr>
-                        <th>Pharmacy</th>
+                        <th></th>
                         <th></th>
                     </tr>
 
@@ -241,7 +241,17 @@ export default {
             window.location.href = "/subscriptionsToPharmacies";
       },
       unsubrsribe : function(event, pharmacy) {
-        this.p = pharmacy;
+         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+            this.axios.post('/patient/unsubscribeToPharmacy',pharmacy,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                }}).then(response => {
+                    this.refreshInformation();
+                    console.log(response)
+                }).catch(res => {
+                       alert("Please try later.");
+                        console.log(res);
+                });
       },
       subrsribe : function(event, pharmacy){
             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
@@ -249,64 +259,62 @@ export default {
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                 }}).then(response => {
-                    console.log(response);
-                   
+                    this.refreshInformation();
+                    console.log(response)
                 }).catch(res => {
                        alert("Please try later.");
                         console.log(res);
                 });
+      },
+      refreshInformation : function() {
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.completeDictionary = [];
+        this.patientsSubscriptions = [];
+        this.axios.get('/patient/mySubscriptions',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                        this.patientsSubscriptions=response.data;
+                        var i = 0;
+                        for (i = 0; i < this.pharmaciesSubscriptions.length; i++) {
+                            if(this.patientsSubscriptions.includes(this.pharmaciesSubscriptions[i])) {
+                                const dict = {
+                                        pharmacy : {pharmacyName : this.pharmaciesSubscriptions[i] },
+                                        subscribed : "YES"
+                                    }
+                                    this.completeDictionary.push(dict)
+                            }
+                            else {
+                                const dict = {
+                                        pharmacy : { pharmacyName: this.pharmaciesSubscriptions[i] },
+                                        subscribed : "NO"
+                                    }
+                                this.completeDictionary.push(dict)
+                                
+                            }   
+                        }
+                        
+                    }).catch(res => {
+                                alert("Please try again later.");
+                                console.log(res);});
       }
 },
     beforeMount() {
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
        
-        this.axios.get('/pharmacy/all',{ 
+        this.axios.get('/pharmacy/allNames',{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
              }
             }).then(response => { 
                 this.pharmaciesSubscriptions=[];
                 this.pharmaciesSubscriptions=response.data;
-                console.log(this.pharmaciesSubscriptions)
             }).catch(res => {
                         alert("Please try again later.");
                         console.log(res);});
 
-        this.axios.get('/patient/mySubscriptions',{ 
-             headers: {
-                 'Authorization': 'Bearer ' + token,
-             }
-            }).then(response => {
-                this.patientsSubscriptions = [];
-                this.patientsSubscriptions=response.data;
-                var i = 0;
-                for (i = 0; i < this.pharmaciesSubscriptions.length; i++) {
-                     this.patientsSubscriptions.filter((pharmacy) => {
-                        if(pharmacy.id===this.pharmaciesSubscriptions[i].id) {
-                             const dict = {
-                                pharmacy :this.pharmaciesSubscriptions[i],
-                                subscribed : "YES"
-                            }
-                            this.completeDictionary.push(dict)
-                             return "YES";
-                            }
-                        else {
-                            const dict = {
-                                pharmacy :this.pharmaciesSubscriptions[i],
-                                subscribed : "NO"
-                            }
-                            this.completeDictionary.push(dict)
-                            return "NO";
-                        }
-                        
-                    });
-                    
-                    
-                }
-                //console.log(this.completeDictionary)
-            }).catch(res => {
-                        alert("Please try again later.");
-                        console.log(res);});
+        this.refreshInformation()
         
     }
 }
