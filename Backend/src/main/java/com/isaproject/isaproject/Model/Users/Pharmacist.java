@@ -1,4 +1,6 @@
 package com.isaproject.isaproject.Model.Users;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
@@ -15,6 +17,7 @@ import java.util.Set;
 
 @Entity
 @DiscriminatorValue("Pharmacist")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Pharmacist extends  PersonUser {
 
     @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -30,7 +33,9 @@ public class Pharmacist extends  PersonUser {
     @Column(name = "markPharmacist", nullable = true)
     private double markPharmacist;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @JsonBackReference
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "pharmacy_Pharmacist", referencedColumnName = "id", nullable = true, unique = false)
     private Pharmacy pharmacy;
 

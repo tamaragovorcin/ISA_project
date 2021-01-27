@@ -71,4 +71,8 @@ public class PharmacyAdminService implements IPharmacyAdminService {
         pharmacyAdmin.setPharmacy(userRequest.getPharmacy());
         return pharmacyAdminRepository.save(pharmacyAdmin);
     }
+    @Override
+    public void delete(PharmacyAdmin admin) {
+        pharmacyAdminRepository.delete(admin);
+    }
 }
