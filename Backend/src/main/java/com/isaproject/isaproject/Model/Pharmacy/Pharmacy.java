@@ -1,20 +1,17 @@
 package com.isaproject.isaproject.Model.Pharmacy;
 
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
-import com.isaproject.isaproject.Model.HelpModel.Subscription;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.Order;
 import com.isaproject.isaproject.Model.Schedule.WorkingHoursDermatologist;
-import com.isaproject.isaproject.Model.Schedule.WorkingHoursPharmacist;
-import com.isaproject.isaproject.Model.Users.Address;
-import com.isaproject.isaproject.Model.Users.Dermatologist;
-import com.isaproject.isaproject.Model.Users.Pharmacist;
-import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
-import net.minidev.json.annotate.JsonIgnore;
+import com.isaproject.isaproject.Model.Users.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,6 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name="pharmacy_table")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Pharmacy implements Serializable{
 
     @Id
@@ -32,7 +30,7 @@ public class Pharmacy implements Serializable{
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "pharmacyName", nullable = true,unique=true)
+    @Column(name = "pharmacyName", nullable = true,unique=false)
     private String pharmacyName;
 
 
@@ -42,10 +40,13 @@ public class Pharmacy implements Serializable{
     @Column(name = "consultingPrice", nullable = true)
     private double consultingPrice;
 
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+    @JsonManagedReference(value="pharmacy-schedule")
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<ExaminationSchedule> examinationSchedules = new HashSet<ExaminationSchedule>();
 
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference(value="pharmacy-medication")
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<MedicationReservation> medicationReservations = new HashSet<MedicationReservation>();
 
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -55,22 +56,19 @@ public class Pharmacy implements Serializable{
     @JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = false, unique = false)
     private Address address;
 
-    @ManyToMany(mappedBy = "pharmacies")
+   @ManyToMany(mappedBy = "pharmacies")
     private Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
 
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Subscription> subscriptions = new HashSet<Subscription>();
+    @ManyToMany(mappedBy = "subscribedToPharmacies")
+    private Set<Patient> subscribedPatients= new HashSet<Patient>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PharmacyAdmin> pharmacyAdmins = new HashSet<PharmacyAdmin>();
-
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Order> order = new HashSet<Order>();
-
 
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<WorkingHoursDermatologist> workingHoursDermatologists = new HashSet<WorkingHoursDermatologist>();
@@ -81,7 +79,7 @@ public class Pharmacy implements Serializable{
 
     public Pharmacy() {}
 
-    public Pharmacy(Integer id, String pharmacyName, double mark, double consultingPrice, Set<ExaminationSchedule> examinationSchedules, Set<MedicationReservation> medicationReservations, Set<Prescription> prescriptions, Address address, Set<Dermatologist> dermatologists, Set<Pharmacist> pharmacists, Set<Subscription> subscriptions, Set<PharmacyAdmin> pharmacyAdmins, Set<Order> order, Set<WorkingHoursDermatologist> workingHoursDermatologists, Set<Medication> medications) {
+    public Pharmacy(Integer id, String pharmacyName, double mark, double consultingPrice, Set<ExaminationSchedule> examinationSchedules, Set<MedicationReservation> medicationReservations, Set<Prescription> prescriptions, Address address, Set<Dermatologist> dermatologists, Set<Pharmacist> pharmacists, Set<PharmacyAdmin> pharmacyAdmins, Set<WorkingHoursDermatologist> workingHoursDermatologists, Set<Medication> medications) {
         this.id = id;
         this.pharmacyName = pharmacyName;
         this.mark = mark;
@@ -92,8 +90,6 @@ public class Pharmacy implements Serializable{
         this.address = address;
         this.dermatologists = dermatologists;
         this.pharmacists = pharmacists;
-        this.subscriptions = subscriptions;
-        this.order = order;
         this.workingHoursDermatologists = workingHoursDermatologists;
         this.medications = medications;
     }
@@ -106,13 +102,6 @@ public class Pharmacy implements Serializable{
         this.workingHoursDermatologists = workingHoursDermatologists;
     }
 
-    public Set<Order> getOrder() {
-        return order;
-    }
-
-    public void setOrder(Set<Order> order) {
-        this.order = order;
-    }
 
     public Set<MedicationReservation> getMedicationReservations() {
         return medicationReservations;
@@ -136,12 +125,12 @@ public class Pharmacy implements Serializable{
         this.medications = medications;
     }
 
-    public Set<Subscription> getSubscriptions() {
-        return subscriptions;
+    public Set<Patient> getSubscribedPatients() {
+        return subscribedPatients;
     }
 
-    public void setSubscriptions(Set<Subscription> subscriptions) {
-        this.subscriptions = subscriptions;
+    public void setSubscribedPatients(Set<Patient> subscribedPatients) {
+        this.subscribedPatients = subscribedPatients;
     }
 
     public Set<PharmacyAdmin> getPharmacyAdmins() {

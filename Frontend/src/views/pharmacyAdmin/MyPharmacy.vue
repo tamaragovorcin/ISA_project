@@ -3,13 +3,27 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-             <span style="float: left; margin: 15px;">
-                <a  style="float:left;margin-left:20px;" href= "/isaHomePage">Home</a>
+               <span style="float: left; margin: 15px;">
+                <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
                 <b class="tab"></b>    
-                <a href = "/pharmacyAdminProfile">My profile</a>
+                <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
                 <b class="tab"></b>    
-                <a href = "/myPharmacy">My Pharmacy</a>
-                       
+                <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
+                 <b class="tab"></b>    
+                 <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
+                 
+                <b class="tab"></b>    
+                <a  class = "btn btn-secondary" href = "/addPharmacist">Add pharmacist</a>    
+                <b class="tab"></b> 
+                 <a  class = "btn btn-secondary" href = "/pharmacyPharmacists">Our pharmacists</a> 
+                  <b class="tab"></b>  
+                <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
+                <b class="tab"></b> 
+                <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
+                        <b class="tab"></b>    
+                <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
+                        <b class="tab"></b>    
+                <a   class = "btn btn-secondary" href="/order">Orders</a>
             </span>
               <span  style="float:right;margin:15px">
                    
@@ -19,32 +33,12 @@
 
         </div>
         
-       
-        <div class="sidenav">
-        <hr/>
-        <a href = "/pharmacyDermatologists">Dermatologists</a>
-        <hr/>
-        <a href = "/pharmacyPharmacists">Pharmacists</a>
-        <hr/>
-        <a href = "/pharmacyMedications">Medications</a>
-        <hr/>
-        <a href = "/actionsAndBenefits">Actions and benefits</a>
-        <hr/>
-        <a href="/order">Orders</a>
-        </div>
-
+      
         <div class="container-fluid">
           
-      <h3 style="color: #0D184F; font-size: 35px; font-weight:bold; margin-top:45px">EXPERA</h3>
+      <h3 style="color: #0D184F; font-size: 35px; font-weight:bold; margin-top:45px"></h3>
 
-            
-
-            <nav class="navbar navbarB">
-                
-          
-
-                
-            </nav>
+        
 
           
 
@@ -65,20 +59,21 @@ export default {
   data() {
     return {
       pharmacy : null,
+      admin : null,
     }
   },
 
-  methods:{
-    
-      showMyProfile: function(){
+ mounted() {
 
-      },
+
+     
+
+
+ },
+  methods:{
        
        logOut : function(){
            window.location.href = "/login";
-      },
-      showMyPharmacy : function (){
-          window.location.href = "/myPharmacy"
       },
       showModal() {
         this.$refs['my-modal'].show()

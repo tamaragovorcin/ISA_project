@@ -1,8 +1,9 @@
+
 package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.AddressDTO;
-import com.isaproject.isaproject.DTO.DermatologistDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.DTO.WorkingHoursDermatologistDTO;
 import com.isaproject.isaproject.Model.Users.Address;
 import com.isaproject.isaproject.Model.Users.Authority;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
@@ -47,7 +48,6 @@ public class DermatologistService implements IDermatologistService {
         Dermatologist dermatologist =  new Dermatologist();
         dermatologist.setName(userRequest.getFirstname());
         dermatologist.setSurname(userRequest.getSurname());
-      //  dermatologist.setMarkDermatologist(userRequest.getMarkDermatologist());
         AddressDTO addressDTO = userRequest.getAddress();
         Address address = new Address(addressDTO.getTown(),addressDTO.getStreet(),addressDTO.getNumber(),addressDTO.getPostalCode(),addressDTO.getCountry());
         dermatologist.setAddress(address);
@@ -69,8 +69,16 @@ public class DermatologistService implements IDermatologistService {
         dermatologist.setEnabled(true);
         return dermatologistRepository.save(dermatologist);
     }
-    @Override
-    public void delete(Dermatologist admin) {
-        dermatologistRepository.delete(admin);
+    public Boolean addPharmacy(WorkingHoursDermatologistDTO dto) {
+        System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getPharmacy().getPharmacyName());
+        Dermatologist ph = findById(dto.getDermatologist().getId());
+        try{
+            ph.getPharmacies().add(dto.getPharmacy());
+            dermatologistRepository.save(ph);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+
     }
 }

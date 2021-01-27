@@ -1,5 +1,6 @@
 package com.isaproject.isaproject.Service.IServices;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 
 import java.util.List;
@@ -10,5 +11,8 @@ public interface IPersonUserService {
     PersonUser findByEmail(String email);
     List<PersonUser> findAll ();
     PersonUser save(PersonUserDTO userRequest);
+    void delete(PersonUser userRequest);
+    PersonUser updateProfile(PersonUserDTO userRequest, Integer id);
     PersonUser update(PersonUser userRequest);
+
 }

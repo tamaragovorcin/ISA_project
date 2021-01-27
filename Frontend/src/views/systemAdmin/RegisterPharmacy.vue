@@ -18,7 +18,12 @@
                          <b-dropdown-item v-on:click = "registerSystemAdmin" disabled>System admin</b-dropdown-item>
                     </div>           
                 </b-dropdown> 
+                <b class="tab"></b>   
+                 <button class = "btn btn-link btn-lg" v-on:click = "addMedicine">Add medication</button>
                  <b class="tab"></b>   
+                 <button class = "btn btn-link btn-lg" v-on:click = "medicationSearch">Medications</button>
+                 <b class="tab"></b>  
+                 <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
             </span>
               <span  style="float:right;margin:15px">
                      <b class="tab"></b>    
@@ -101,12 +106,18 @@ export default {
       registerSystemAdmin: function() {
            window.location.href = "/registerSystemAdmin";
       },
+      addMedicine : function() {
+           window.location.href = "/addMedicine";
+      },
+      medicationSearch : function() {
+          window.location.href = "/systemAdminMedicationSearch";
+      },
       register : function(){
           const addressInfo ={
               town : this.town,
               street : this.street,
               number : this.number,
-              postalcode : this.postalCode,
+              postalCode : this.postalCode,
               country : this.country
           }
             const pharmacyInfo ={
@@ -116,12 +127,13 @@ export default {
                 consultingPrice : this.consultingPrice
 
             }
-            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+            //let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
 
             this.axios.post('/pharmacy/register',pharmacyInfo,{ 
-                         headers: {
-                                'Authorization': 'Bearer ' + token,
-                        }})
+                         //headers: {
+                                //'Authorization': 'Bearer ' + token,
+                        //}
+                        })
                 .then(response => {
                        alert("Pharmacy is successfully registred!");
                         console.log(response.data);
@@ -134,6 +146,9 @@ export default {
       logOut : function(){
             localStorage.removeItem('token');
            window.location.href = "/login";
+      },
+      defineLoyaltyProgram : function(){
+          window.location.href = "/loyaltyProgram";
       }
 },
  mounted() {

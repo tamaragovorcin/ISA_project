@@ -2,18 +2,23 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Address;
 import com.isaproject.isaproject.Model.Users.Authority;
 import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
 import com.isaproject.isaproject.Repository.PatientRepository;
 import com.isaproject.isaproject.Service.IServices.IAuthorityService;
 import com.isaproject.isaproject.Service.IServices.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +35,7 @@ public class PatientService implements IPatientService {
 
     @Override
     public Patient findById(Integer id) {
+        System.out.println("OVO JE "+id);
         return patientRepository.findById(id).get();
     }
 
@@ -73,5 +79,73 @@ public class PatientService implements IPatientService {
         patient.setAuthorities(auth);
         patient.setEnabled(false);
         return patientRepository.save(patient);
+    }
+
+    @Override
+    public Patient update(PersonUserDTO userRequest, Integer id) {
+        Patient patient =  new Patient();
+        patient.setId(id);
+        patient.setName(userRequest.getFirstname());
+        patient.setSurname(userRequest.getSurname());
+        AddressDTO addressDTO = userRequest.getAddress();
+        Address address = new Address(addressDTO.getTown(),addressDTO.getStreet(),addressDTO.getNumber(),addressDTO.getPostalCode(),addressDTO.getCountry());
+        patient.setAddress(address);
+        patient.setPenalties(0);
+        patient.setPoints(0);
+        patient.setLoyaltyCategory("REGULAR");
+        patient.setEmail(userRequest.getEmail());
+        patient.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        patient.setFirstLogged(true);
+
+        Authority authorityPatient = authService.findByname("ROLE_PATIENT");
+        List<Authority> auth = new ArrayList<Authority>();
+        if(authorityPatient==null) {
+            authorityRepository.save(new Authority("ROLE_PATIENT"));
+            auth.add(authService.findByname("ROLE_PATIENT"));
+        }
+        else {
+            auth.add(authorityPatient);
+        }
+        patient.setAuthorities(auth);
+        patient.setEnabled(true);
+        return patientRepository.save(patient);
+    }
+
+    @Override
+    public void delete(Patient patient) {
+        patientRepository.delete(patient);
+    }
+
+    public boolean subsribeToPharmacy(Pharmacy pharmacy) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+
+        Patient patient = patientRepository.getOne(user.getId());
+
+        try {
+            patient.getSubscribedToPharmacies().add(pharmacy);
+            patientRepository.save(patient);
+            return true;
+        }
+        catch(Exception e) {return false;}
+    }
+
+    public boolean unsubsribeToPharmacy(Pharmacy pharmacy) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+
+        Patient patient = patientRepository.getOne(user.getId());
+
+        try {
+            for (Iterator<Pharmacy> iterator = patient.getSubscribedToPharmacies().iterator(); iterator.hasNext();) {
+                Pharmacy s =  iterator.next();
+                if (pharmacy.getId().equals(s.getId())) {
+                    iterator.remove();
+                }
+            }
+            patientRepository.save(patient);
+            return true;
+        }
+        catch(Exception e) {return false;}
     }
 }

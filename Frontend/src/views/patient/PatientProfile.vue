@@ -9,16 +9,17 @@ ines (39 sloc)  1.61 KB
                 <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
                      <b class="tab"></b>                
 
+                    <button class = "btn btn-link btn-lg" v-on:click = "showPharmacies">Pharmacies</button>
+
+                    <b class="tab"></b>     
                    <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
 
                     <b class="tab"></b>                
                    
-
-                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "showLoyalty">My loyalty program</button>
-                    <b class="tab"></b>    
-
                     <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "writeComplaint">Write complaint</button>
                     <b class="tab"></b>   
+                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "showSubscriptions">My subscriptions</button>
+                    <b class="tab"></b>  
             </span>
               <span  style="float:right;margin:15px">
                     
@@ -179,11 +180,9 @@ export default {
   },
   
   methods:{
-      showLoyalty : function(){
-
-      },
+     
       showMyProfile: function(){
-
+        window.location.href = "/myProfilePatient";
       },
       showHomePage : function(){
           window.location.href = "/isaHomePage";
@@ -216,6 +215,12 @@ export default {
       },
       sendComplaint : function(){
 
+      },
+      showPharmacies : function(){
+            window.location.href = "/showPharmaciesPatient";
+      },
+      showSubscriptions : function() {
+            window.location.href = "/subscriptionsToPharmacies";
       }
 },
     mounted() {

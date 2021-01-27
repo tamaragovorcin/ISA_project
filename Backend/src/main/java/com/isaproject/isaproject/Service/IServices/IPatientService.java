@@ -11,6 +11,8 @@ public interface IPatientService {
     Patient findByEmail(String email);
     List<Patient> findAll ();
     Patient save(PersonUserDTO userRequest);
+    void delete(Patient userRequest);
+    Patient update(PersonUserDTO userRequest, Integer id);
 
 }
 

@@ -1,15 +1,16 @@
 package com.isaproject.isaproject.Controller;
 
 
-import com.isaproject.isaproject.DTO.ActionsDTO;
-import com.isaproject.isaproject.DTO.PersonUserDTO;
-import com.isaproject.isaproject.DTO.PharmacyDTO;
+import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
+import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.Pharmacy.Actions;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Service.Implementations.ActionsService;
+import com.isaproject.isaproject.Service.Implementations.ExaminationScheduleService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/pharmacy")
@@ -28,6 +31,8 @@ public class PharmacyController {
     PharmacyService pharmacyService;
     @Autowired
     ActionsService  actionsService;
+    @Autowired
+    ExaminationScheduleService examinationScheduleService;
 
     @PostMapping("/add")
     ResponseEntity<Pharmacy> add(@RequestBody PharmacyDTO ph)
@@ -56,7 +61,7 @@ public class PharmacyController {
     }
 
     @PostMapping("/register")
-    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacyDTO pharmacyDTO) {
 
         Pharmacy existedPharmacy = pharmacyService.findByPharmacyName(pharmacyDTO.getPharmacyName());
@@ -73,6 +78,49 @@ public class PharmacyController {
         return pharmacies == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacies);
+    }
+    @GetMapping("/{id}")
+    ResponseEntity<Pharmacy> getPharmacyById(@PathVariable Integer id) {
+        Pharmacy pharmacy = pharmacyService.findById(id);
+        return pharmacy == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacy);
+    }
+
+    @GetMapping("/allNames")
+    ResponseEntity<List<String>> getAllPharmaciesNames()
+    {
+        List<Pharmacy> pharmacies = pharmacyService.findAll();
+        List<String>pharmaciesNames = new ArrayList<>();
+        for (Pharmacy pharmacy: pharmacies)
+            pharmaciesNames.add(pharmacy.getPharmacyName());{
+        }
+        return pharmaciesNames == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmaciesNames);
+    }
+
+    @PostMapping("/addDermatologist")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    public ResponseEntity<String> addUser(@RequestBody WorkingHoursDermatologistDTO dto) {
+
+        if(pharmacyService.savePharmacy(dto)){
+            return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
+
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+
+    }
+
+    @PostMapping("/addExaminationSchedule")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    public ResponseEntity<ExaminationSchedule> addSchedule(@RequestBody ExaminationScheduleDTO dto) {
+        ExaminationSchedule examinationSchedule = examinationScheduleService.save(dto);
+        return examinationSchedule == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(examinationSchedule);
+
     }
 
 }

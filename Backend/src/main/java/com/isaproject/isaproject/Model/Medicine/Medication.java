@@ -1,8 +1,11 @@
 package com.isaproject.isaproject.Model.Medicine;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
 import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
+import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
 import com.isaproject.isaproject.Model.Orders.Offer;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
@@ -12,6 +15,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@DiscriminatorValue("Medication")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Medication  {
     @Id
     @GeneratedValue
@@ -45,6 +50,9 @@ public class Medication  {
     @Column(name = "loyaltyPoints", nullable = true)
     private double loyaltyPoints;
 
+    @Column(name = "wayOfSelling", nullable = true)
+    private String wayOfSelling;
+
 
     @ManyToMany
     @JoinTable(name = "eprescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "eprescription_id", referencedColumnName = "id"))
@@ -66,16 +74,22 @@ public class Medication  {
     @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
 
-    @OneToOne
-    @JoinColumn(name = "specification_id", referencedColumnName = "id", nullable = false, unique = false)
+
+    @JsonManagedReference(value="medication-medicationInOrder")
+    @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MedicationInOrder> medicationInOrder = new HashSet<MedicationInOrder>();
+
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "specification_id", referencedColumnName = "id", nullable = true, unique = false)
     private Specification specification;
+
 
     @ManyToMany(mappedBy = "medications")
     private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
 
     public Medication() {}
 
-    public Medication(Integer id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints) {
+    public Medication(Integer id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints, String wayOfSelling) {
         this.id = id;
         this.name = name;
         this.code = code;
@@ -84,6 +98,15 @@ public class Medication  {
         this.issuanceRegime = issuanceRegime;
         this.mark = mark;
         this.loyaltyPoints = loyaltyPoints;
+        this.wayOfSelling = wayOfSelling;
+    }
+
+    public String getWayOfSelling() {
+        return wayOfSelling;
+    }
+
+    public void setWayOfSelling(String wayOfSelling) {
+        this.wayOfSelling = wayOfSelling;
     }
 
     public Set<Offer> getOffer() {

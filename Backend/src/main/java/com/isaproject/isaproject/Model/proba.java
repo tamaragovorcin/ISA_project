@@ -245,15 +245,7 @@ public class proba {
         prescription.setInformation("Information");
         prescription.setPharmacy(pharmacy);
 
-        Subscription subscription = new Subscription();
-        subscription.setPatient(patient);
-        subscription.setPharmacy(pharmacy);
-        subscription.setSubscribed(true);
 
-        Subscription subscription2 = new Subscription();
-        subscription2.setPatient(patient);
-        subscription2.setPharmacy(pharmacy2);
-        subscription2.setSubscribed(false);
 
 
         PatientsMedicationAlergy patientsMedicationAlergy = new PatientsMedicationAlergy();
@@ -304,7 +296,6 @@ public class proba {
 
         Order order = new Order();
         order.setPharmacyAdmin(pharmacyAdmin);
-        order.setPharmacy(pharmacy);
         order.setDate(LocalDate.now());
         order.setStatus("closed");
         order.setOffer(offers);
@@ -372,8 +363,7 @@ public class proba {
         manager.persist(medication3);
         manager.persist(eprescription);
         manager.persist(prescription);
-        manager.persist(subscription);
-        manager.persist(subscription2);
+
 
         manager.persist(patientsMedicationAlergy);
         manager.persist(pharmacyAdmin);

@@ -2,14 +2,27 @@
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-            
             <span style="float: left; margin: 15px;">
-                <a href= "/isaHomePage">Home</a>
+                <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
                 <b class="tab"></b>    
-                <a href = "/pharmacyAdminProfile">My profile</a>
+                <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
                 <b class="tab"></b>    
-                <a href = "/myPharmacy">My Pharmacy</a>
-                       
+                <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
+                 <b class="tab"></b>    
+                 <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
+                 
+                <b class="tab"></b>    
+                <a  class = "btn btn-secondary" href = "/addPharmacist">Add pharmacist</a>    
+                <b class="tab"></b> 
+                 <a  class = "btn btn-secondary" href = "/pharmacyPharmacists">Our pharmacists</a> 
+                  <b class="tab"></b>  
+                <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
+                <b class="tab"></b> 
+                <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
+                        <b class="tab"></b>    
+                <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
+                        <b class="tab"></b>    
+                <a   class = "btn btn-secondary" href="/order">Orders</a>
             </span>
               <span  style="float:right;margin:15px">
                    
@@ -19,14 +32,7 @@
 
         </div>
         <div>
-        <div class="sidenav">
-        <hr/>
-        <a href = "/pharmacyDermatologists">Dermatologists</a>
-        <a href = "/pharmacyPharmacists">Pharmacists</a>
-        <a href = "/pharmacyMedications">Medications</a>
-        <a href = "/actionsAndBenefits">Actions and benefits</a>
-        <a href="/order">Orders</a>
-        </div>
+      
     <b-button class = "btn btn-warning btn-lg" @click="showModal">+ Make new order</b-button>
     <b-modal ref="my-modal" hide-footer scrollable title="Fill order form" size="lg" modal-class="b-modal">
                     <div modal-class="modal-dialog" role="document">
@@ -44,7 +50,12 @@
                                                     <label >Medication:</label>
                                                 </div>
                                                 <div class="col">
-                                                <input type="text" class="form-control" v-model="medicine">
+                                                                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologist"
+                                        class = "btn btn-link btn-lg" style="float:left; width=200px;">
+                                            <b-dropdown-item v-for="medicine in this.medications"  v-on:click = "dermatologistIsSelected($event, medicine)" v-bind:key="medicine.id"> 
+                                            {{ medicine.name }}<div style="width:20px"></div>{{medicine.type }}
+                                            </b-dropdown-item>
+                                    </b-dropdown> 
 
                                                 </div>
 
@@ -81,7 +92,7 @@
                                                 <th>Quantity</th>
                                                 </thead>
                                                 <tr v-for="med in medicationQuantityList" :key="med.id">
-                                                    <td>{{med.medicineName}}</td>
+                                                    <td>{{med.medicine.name}}</td>
                                                     <td>{{med.quantity}}</td>
                                                 </tr>
                                             </table>
@@ -92,7 +103,7 @@
                                                 <label for="name">Closing date:</label>
                                             </div>
                                             <div class="col">
-                                                <input type="text" v-model="endDate" placeholder="01/01/2020" />
+                                                <input type="date" v-model="endDate" />
                                             </div>
                                         </div>
                     
@@ -103,7 +114,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                        <button class="btn btn-primary" @click="hideModal">Share order</button>
+                        <button class="btn btn-primary" @click="shareOrder">Share order</button>
                     </div>
                     </div>
                 </div>
@@ -122,13 +133,57 @@ export default {
   data() {
     return {
        show : false,
-       medicine : "",
+       medications : null,
        quantity : 0,
        showTable : false,
        medicationQuantityList : [],
        endDate : "",
+       admin : {},
+       pharmacy : {},
+       selectedMedication : {}
     }
   },
+   mounted() {
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/pharmacyAdmin/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+         }).then(response => {
+                this.admin = response.data;
+                console.log(this.admin);
+                this.axios.get('/pharmacyAdmin/myPharmacy',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            this.pharmacy = response.data;
+                            console.log(this.pharmacy);
+                             
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
+                    this.axios.get('/medication',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            this.medications = response.data;
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
+                    
+                
+         
+
+         }).catch(res => {
+                alert("NOT OK");
+                console.log(res);
+        });
+        
+    },
   methods:{
        showHomePage : function(){
           window.location.href = "/isaHomePage";
@@ -148,21 +203,45 @@ export default {
       hideModal() {
         this.$refs['my-modal'].hide()
       },
+     dermatologistIsSelected : function(event, medicine) {
+            this.selectedMedication = medicine;
+
+            console.log(event);
+
+
+      },
       addNewMedicine : function(){
                this.showTable = true;
                 const medicineWithQuantity = {
-                    medicineName: this.medicine,
+                    medicine: this.selectedMedication,
                     quantity: this.quantity,
                 };
                 this.medicationQuantityList.push(medicineWithQuantity)
       },
-      sendOrder : function(){
-           const order = {
-                    medicinesWithQuantity: this.medicationQuantityList,
+      shareOrder : function(){
+          const order = {
+                    medicationsInOrderDTO: this.medicationQuantityList,
                     date: this.endDate,
+                    pharmacyAdmin : this.admin,
+                    status : "KREIRANA"
                 };
             console.log(order);
+             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+
+            this.axios.post('/order/add',order,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+                .then(response => {
+                       alert("Order is successfully sent!");
+                       console.log(response.data);
+                })
+                .catch(response => {
+                       alert("Please try later.");
+                        console.log(response);
+                 });    
       }
+   
    
 }
 }
@@ -184,7 +263,6 @@ export default {
 body {
   font-family: "Lato", sans-serif;
 }
-
 .sidenav {
   height: 100%;
   width: 270px;
@@ -197,7 +275,6 @@ body {
   padding-top: 20px;
   margin-top : 90px;
 }
-
 .sidenav a {
   padding: 6px 6px 6px 0px;
   text-decoration: none;
@@ -205,16 +282,11 @@ body {
   color: #white;
   display: block;
 }
-
 .sidenav a:hover {
   color: #f1f1f1;
 }
-
-
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
-
-
 </style>

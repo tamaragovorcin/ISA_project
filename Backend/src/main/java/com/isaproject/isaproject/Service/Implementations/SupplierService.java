@@ -2,14 +2,13 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
-import com.isaproject.isaproject.Model.Users.Address;
-import com.isaproject.isaproject.Model.Users.Authority;
-import com.isaproject.isaproject.Model.Users.Dermatologist;
-import com.isaproject.isaproject.Model.Users.Supplier;
+import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
 import com.isaproject.isaproject.Repository.SupplierRepository;
 import com.isaproject.isaproject.Service.IServices.ISupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +67,33 @@ public class SupplierService implements ISupplierService {
         }
         supplier.setAuthorities(auth);
         supplier.setEnabled(true);
-        return supplierRepository.save(supplier);
+        return this.supplierRepository.save(supplier);
+    }
+
+    public Supplier update(Supplier userRequest) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+
+        Supplier supplier= findById(user.getId());
+        supplier.setAddress(userRequest.getAddress());
+        List<Authority> auth = new ArrayList<Authority>();
+        Authority authoritySupplier = authService.findByname("ROLE_SUPPLIER");
+
+        if(authoritySupplier==null) {
+            authorityRepository.save(new Authority("ROLE_SUPPLIER"));
+            auth.add(authService.findByname("ROLE_SUPPLIER"));
+        }
+        else {
+            auth.add(authoritySupplier);
+        }
+        supplier.setAuthorities(auth);        supplier.setEmail(userRequest.getEmail());
+        supplier.setEnabled(true);
+        supplier.setFirstLogged(userRequest.getFirstLogged());
+        supplier.setName(userRequest.getName());
+        supplier.setSurname(userRequest.getSurname());
+        supplier.setPhoneNumber(userRequest.getPhoneNumber());
+        supplier.setPassword(supplier.getPassword());
+        supplier.setLastPasswordResetDate(userRequest.getLastPasswordResetDate());
+        return this.supplierRepository.save(supplier);
     }
 }

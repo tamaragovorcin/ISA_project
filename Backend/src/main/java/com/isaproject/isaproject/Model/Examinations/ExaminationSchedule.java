@@ -1,5 +1,7 @@
 package com.isaproject.isaproject.Model.Examinations;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.Patient;
@@ -9,18 +11,21 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ExaminationSchedule {
     @Id
     @GeneratedValue
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @JsonBackReference(value="dermatologist-schedule")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "dermatologist_id", referencedColumnName = "id", nullable = false, unique = false)
     private Dermatologist dermatologist;
 
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference(value="pharmacy-schedule")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
     private Pharmacy pharmacy;
 

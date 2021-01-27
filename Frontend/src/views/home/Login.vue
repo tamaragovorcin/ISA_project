@@ -33,7 +33,7 @@
            
         </div>
         <b-modal ref="my-modal" hide-footer scrollable title="Please change password to continue" size="lg" modal-class="b-modal">
-            <div modal-class="modal-dialog" role="document">
+            <div modal-class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content" style="background-color:whitesmoke">
                     <div class="modal-body">
                         <div class="form-group">

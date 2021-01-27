@@ -1,11 +1,13 @@
 package com.isaproject.isaproject.Model.Users;
 
 
+import com.fasterxml.jackson.annotation.*;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Examinations.Examination;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
 import com.isaproject.isaproject.Model.HelpModel.*;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,6 +18,8 @@ import java.util.Set;
 
 @Entity
 @DiscriminatorValue("Patient")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Patient extends PersonUser{
 
    /* @ManyToMany
@@ -40,12 +44,17 @@ public class Patient extends PersonUser{
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Prescription> prescriptions = new HashSet<Prescription>();
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Subscription> subscriptions = new HashSet<Subscription>();
+
+
+    @ManyToMany
+    @JoinTable(name = "patients_subscriptions", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
+    private Set<Pharmacy> subscribedToPharmacies = new HashSet<Pharmacy>();
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
 
+    @JsonManagedReference(value="patient-medication")
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<MedicationReservation> medicationReservations = new HashSet<MedicationReservation>();
 
@@ -73,7 +82,7 @@ public class Patient extends PersonUser{
 
 
 
-    public Patient(Integer id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, boolean enabled, Timestamp lastPasswordResetDate, List<Authority> authorities, Address address, Set<Consulting> consulting, Set<Examination> examinations, Set<Complaint> complaints, Set<Grading> gradings, Set<EPrescription> ePrescriptions, Set<Prescription> prescriptions, Set<Subscription> subscriptions, Set<PatientsMedicationAlergy> patientsMedicationAlergy, Set<MedicationReservation> medicationReservations, int penalties, int points, String loyaltyCategory, double discount) {
+    public Patient(Integer id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, boolean enabled, Timestamp lastPasswordResetDate, List<Authority> authorities, Address address, Set<Consulting> consulting, Set<Examination> examinations, Set<Complaint> complaints, Set<Grading> gradings, Set<EPrescription> ePrescriptions, Set<Prescription> prescriptions, Set<PatientsMedicationAlergy> patientsMedicationAlergy, Set<MedicationReservation> medicationReservations, int penalties, int points, String loyaltyCategory, double discount) {
         super(id, name, surname, email, password, phoneNumber, firstLogged, enabled, lastPasswordResetDate, authorities, address);
         this.consulting = consulting;
         this.examinations = examinations;
@@ -81,7 +90,6 @@ public class Patient extends PersonUser{
         this.gradings = gradings;
         this.ePrescriptions = ePrescriptions;
         this.prescriptions = prescriptions;
-        this.subscriptions = subscriptions;
         this.patientsMedicationAlergy = patientsMedicationAlergy;
         this.medicationReservations = medicationReservations;
         this.penalties = penalties;
@@ -106,12 +114,12 @@ public class Patient extends PersonUser{
         this.patientsMedicationAlergy = patientsMedicationAlergy;
     }
 
-    public Set<Subscription> getSubscriptions() {
-        return subscriptions;
+    public Set<Pharmacy> getSubscribedToPharmacies() {
+        return subscribedToPharmacies;
     }
 
-    public void setSubscriptions(Set<Subscription> subscriptions) {
-        this.subscriptions = subscriptions;
+    public void setSubscribedToPharmacies(Set<Pharmacy> subscribedToPharmacies) {
+        this.subscribedToPharmacies = subscribedToPharmacies;
     }
 
     public Set<EPrescription> getePrescriptions() {

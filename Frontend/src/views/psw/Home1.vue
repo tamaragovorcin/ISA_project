@@ -63,6 +63,9 @@ export default {
     .tab {
          margin-left: 1cm
         }
+     .tab2 {
+         margin-left: 0.6cm
+        }
 
 </style>
 
