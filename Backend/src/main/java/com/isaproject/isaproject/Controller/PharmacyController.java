@@ -19,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -78,11 +79,24 @@ public class PharmacyController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacies);
     }
+
+    @GetMapping("/allNames")
+    ResponseEntity<List<String>> getAllPharmaciesNames()
+    {
+        List<Pharmacy> pharmacies = pharmacyService.findAll();
+        List<String>pharmaciesNames = new ArrayList<>();
+        for (Pharmacy pharmacy: pharmacies)
+            pharmaciesNames.add(pharmacy.getPharmacyName());{
+        }
+        return pharmaciesNames == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmaciesNames);
+    }
+
     @PostMapping("/addDermatologist")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody WorkingHoursDermatologistDTO dto) {
-        System.out.println("pogodiooo" +dto.getPharmacy().getPharmacyName());
-        System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getDermatologist().getName());
+
         if(pharmacyService.savePharmacy(dto)){
             return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
 
@@ -93,7 +107,6 @@ public class PharmacyController {
     @PostMapping("/addExaminationSchedule")
     //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<ExaminationSchedule> addSchedule(@RequestBody ExaminationScheduleDTO dto) {
-        System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getPharmacy().getPharmacyName());
         ExaminationSchedule examinationSchedule = examinationScheduleService.save(dto);
         return examinationSchedule == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
