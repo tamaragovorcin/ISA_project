@@ -69,7 +69,7 @@
                         <label>Average mark around:</label> 
                     </div>
                     <div class="form-group col-md-2">
-                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication type" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication mark" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
                               <b-dropdown-item v-for="item in this.marks"  v-on:click ="markIsSelected($event, item.mark)" v-bind:key="item.mark"> {{item.mark }}</b-dropdown-item>
                         </b-dropdown> 
                     </div>
@@ -144,7 +144,7 @@
                             <label >{{medicine.mark}}</label>
                         </div>
                         <div class=" form-group col">
-                            <button v-on:click = "showMedicationSpecification" class="btn btn-primary">Specification</button>
+                            <button v-on:click = "showMedicationSpecificationList($event, medicine.name)" class="btn btn-primary">Specification</button>
                         </div>
                 </div>
                </div>
@@ -178,20 +178,55 @@
                                       <label>{{medicationInfo.specification.recommendedConsumption}}</label> 
                                 </div>
                              </div>
+                            
                             <div class="row">
-                                <div class=" form-group col">
-                                    <label>Issuance regime</label>
-                                </div>
-                                <div class=" form-group col">  
-                                      <label>{{medicationInfo.issuanceRegime}}</label> 
-                                </div>
-                             </div>
-                                <div class="row">
                                 <div class=" form-group col">
                                     <label>Manufacturer</label>
                                 </div>
                                 <div class=" form-group col">  
                                       <label>{{medicationInfo.specification.manufacturer}}</label> 
+                                </div>
+                             </div>                               
+                         </div>                
+                    </div>
+               </div>
+          </b-modal>
+       </div>
+       <div> 
+          <b-modal ref="specificationList-modal" hide-footer scrollable title="Medication specification" size="lg" modal-class="b-modal">
+               <div modal-class="modal-dialog" role="document">
+                    <div class="modal-content" style="background-color:whitesmoke">
+                         <div class="modal-body">
+                             <div class="row">
+                                <div class=" form-group col">
+                                     <label>Contra indications</label> 
+                                </div>
+                                <div class=" form-group col">  
+                                      <label>{{concreteSpecification.contraIndications}}</label> 
+                                </div>
+                             </div>
+                            <div class="row">
+                                <div class=" form-group col">
+                                     <label>Structure</label> 
+                                </div>
+                                <div class=" form-group col">  
+                                      <label>{{concreteSpecification.structure}}</label> 
+                                </div>
+                             </div>
+                             <div class="row">
+                                <div class=" form-group col">
+                                     <label>Recommended consumption</label>
+                                </div>
+                                <div class=" form-group col">  
+                                      <label>{{concreteSpecification.recommendedConsumption}}</label> 
+                                </div>
+                             </div>
+                            <div class="row">
+                                <div class=" form-group col">
+                                    <label>Manufacturer</label>
+                                </div>
+                                <div class=" form-group col">  
+                                      <label>{{concreteSpecification.manufacturer}}</label> 
                                 </div>
                              </div>                               
                          </div>                
@@ -248,17 +283,23 @@ export default {
           { type: 'For addiction' },
       ],
       marks: [
-          { mark: 1 },
-          { mark: 2 },
-          { mark: 3 },
-          { mark: 4 },
-          { mark: 5 },
+          { mark: "0-1" },
+          { mark: "1-2" },
+          { mark: "2-3" },
+          { mark: "3-4" },
+          { mark: "4-5" },
       ],
       choosenForm : "",
       choosenType : "",
       choosenMark :0,
       medicationSeacrhList : [],
-      showMedicationListInfoDiv: false
+      showMedicationListInfoDiv: false,
+      concreteSpecification :{
+                    contraIndications :"",
+                    structure : "",
+                    recommendedConsumption : "",
+                    manufacturer : ""
+            },
     }
   },
 
@@ -314,7 +355,10 @@ export default {
                     });
       },
       markIsSelected : function(event, mark) { 
-            this.axios.get('/medication/searchMark/'+mark).
+            var marks = mark.split('-')
+            var MarkMin = parseInt(marks[0])
+            var MarkMax = parseInt(marks[1])
+            this.axios.get('/medication/searchMark/'+MarkMin+"/"+MarkMax).
                 then(response => {
                      this.medicationSeacrhList= response.data;
                      this.showMedicationInfoDiv=false;
@@ -340,6 +384,18 @@ export default {
       },
       closeSpecification : function() {
         this.$refs['specification-modal'].hide()
+      },
+      showMedicationSpecificationList : function($event, name) {
+          let i =0;
+          for(i=0; i< this.medicationSeacrhList.length;i++) {
+              if(this.medicationSeacrhList[i].name===name) {
+                  this.concreteSpecification = this.medicationSeacrhList[i].specification;
+              }
+          }
+          this.$refs['specificationList-modal'].show();
+      },
+       closeSpecificationList : function() {
+        this.$refs['specificationList-modal'].hide()
       },
       
 },

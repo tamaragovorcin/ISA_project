@@ -60,4 +60,21 @@ public class MedicationService implements IMedicationService {
     public Medication findByName(String name) {
         return medicationRepository.findByName(name);
     }
+
+    @Override
+    public List<Medication> findByForm(String form) {
+        return medicationRepository.findByForm(form);
+    }
+
+    @Override
+    public List<Medication> findByType(String type) {
+        return medicationRepository.findByType(type);
+    }
+
+    @Override
+    public List<Medication> findByMark(int markMin, int markMax) {
+        return medicationRepository.findAllByMarkBetweenMinAndMax(markMin,markMax);
+    }
+
+
 }

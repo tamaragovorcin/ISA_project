@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -47,14 +48,59 @@ public class MedicationController {
     ResponseEntity<MedicationSearchDTO> getAll(@PathVariable String medicationName)
     {
         Medication medication= medicationService.findByName(medicationName);
-        Specification specification = medication.getSpecification();
-        SpecificationDTO specificationDTO= new SpecificationDTO(specification.getContraIndications(),
-                specification.getStructure(), specification.getRecommendedConsumption(), specification.getManufacturer());
-        MedicationSearchDTO medicationSearchDTO = new MedicationSearchDTO(medication.getName(), medication.getForm(), medication.getType(),
-                medication.getIssuanceRegime(), medication.getMark(), specificationDTO);
+        MedicationSearchDTO medicationSearchDTO = getMedicationSearchDTO(medication);
         return medicationSearchDTO == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medicationSearchDTO);
+    }
+
+    @GetMapping("searchForm/{medicationForm}")
+    ResponseEntity<List<MedicationSearchDTO>> getAllByForm(@PathVariable String medicationForm)
+    {
+        List<Medication> medications= medicationService.findByForm(medicationForm);
+        List<MedicationSearchDTO> medicationsForFront = new ArrayList<>();
+        for (Medication medication: medications) {
+            MedicationSearchDTO medicationSearchDTO = getMedicationSearchDTO(medication);
+            medicationsForFront.add(medicationSearchDTO);
+        }
+        return medicationsForFront == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(medicationsForFront);
+    }
+    @GetMapping("searchType/{medicationType}")
+    ResponseEntity<List<MedicationSearchDTO>> getAllByType(@PathVariable String medicationType)
+    {
+        List<Medication> medications= medicationService.findByType(medicationType);
+        List<MedicationSearchDTO> medicationsForFront = new ArrayList<>();
+        for (Medication medication: medications) {
+            MedicationSearchDTO medicationSearchDTO = getMedicationSearchDTO(medication);
+            medicationsForFront.add(medicationSearchDTO);
+        }
+        return medicationsForFront == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(medicationsForFront);
+    }
+
+    @GetMapping("searchMark/{MarkMin}/{MarkMax}")
+    ResponseEntity<List<MedicationSearchDTO>> getAllByType(@PathVariable int MarkMin,@PathVariable int MarkMax )
+    {
+        List<Medication> medications= medicationService.findByMark(MarkMin,MarkMax);
+        List<MedicationSearchDTO> medicationsForFront = new ArrayList<>();
+        for (Medication medication: medications) {
+            MedicationSearchDTO medicationSearchDTO = getMedicationSearchDTO(medication);
+            medicationsForFront.add(medicationSearchDTO);
+        }
+        return medicationsForFront == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(medicationsForFront);
+    }
+
+    private MedicationSearchDTO getMedicationSearchDTO(Medication medication) {
+        Specification specification = medication.getSpecification();
+        SpecificationDTO specificationDTO = new SpecificationDTO(specification.getContraIndications(),
+                specification.getStructure(), specification.getRecommendedConsumption(), specification.getManufacturer());
+        return new MedicationSearchDTO(medication.getName(), medication.getForm(), medication.getType(),
+                medication.getIssuanceRegime(), medication.getMark(), specificationDTO);
     }
 
 }
