@@ -7,7 +7,9 @@ import ch.qos.logback.core.net.SyslogOutputStream;
 import com.isaproject.isaproject.DTO.ActionsDTO;
 
 import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.DTO.PharmacyNameDTO;
 import com.isaproject.isaproject.Model.Pharmacy.Actions;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Service.Implementations.ActionsService;
 
@@ -15,6 +17,7 @@ import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
 import com.isaproject.isaproject.Repository.PatientRepository;
 import com.isaproject.isaproject.Service.Implementations.PatientService;
+import com.isaproject.isaproject.Service.Implementations.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +36,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.swing.*;
 import javax.websocket.server.PathParam;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/patient")
@@ -44,7 +44,8 @@ import java.util.UUID;
 public class PatientController {
     @Autowired
     PatientService patientService;
-
+    @Autowired
+    PharmacyService pharmacyService;
 
     @Autowired
     PatientRepository patientRepository;
@@ -169,12 +170,51 @@ public class PatientController {
     {
         Patient per = patientService.findByEmail(person.getEmail());
         Integer id = per.getId();
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+id);
         patientService.delete(per);
         Patient patient = patientService.update(person, id);
         return patient == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patient);
     }
+
+    @GetMapping("/mySubscriptions")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<String>> getMySubscriptions()
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+
+        Patient patient = patientService.findById(user.getId());
+        Set<Pharmacy> pharmacies = patient.getSubscribedToPharmacies();
+        List<String>pharmaciesNames =  new ArrayList<>();
+        for (Pharmacy pharmacy: pharmacies)
+            pharmaciesNames.add(pharmacy.getPharmacyName());{
+    }
+        return pharmaciesNames == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmaciesNames);
+    }
+
+    @PostMapping("/subscribeToPharmacy")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<String> subsribe(@RequestBody PharmacyNameDTO pharmacyName)
+    {
+        Pharmacy pharmacy =pharmacyService.findByPharmacyName(pharmacyName.getPharmacyName());
+        return patientService.subsribeToPharmacy(pharmacy) == false ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
+    }
+
+    @PostMapping("/unsubscribeToPharmacy")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<String> unsubsribe(@RequestBody PharmacyNameDTO pharmacyName)
+    {
+        Pharmacy pharmacy =pharmacyService.findByPharmacyName(pharmacyName.getPharmacyName());
+
+        return patientService.unsubsribeToPharmacy(pharmacy) == false ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.isaproject.isaproject.Model.Pharmacy;
 
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -7,16 +8,10 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
-import com.isaproject.isaproject.Model.HelpModel.Subscription;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.Order;
 import com.isaproject.isaproject.Model.Schedule.WorkingHoursDermatologist;
-import com.isaproject.isaproject.Model.Schedule.WorkingHoursPharmacist;
-import com.isaproject.isaproject.Model.Users.Address;
-import com.isaproject.isaproject.Model.Users.Dermatologist;
-import com.isaproject.isaproject.Model.Users.Pharmacist;
-import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
-import net.minidev.json.annotate.JsonIgnore;
+import com.isaproject.isaproject.Model.Users.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -68,8 +63,8 @@ public class Pharmacy implements Serializable{
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
 
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Subscription> subscriptions = new HashSet<Subscription>();
+    @ManyToMany(mappedBy = "subscribedToPharmacies")
+    private Set<Patient> subscribedPatients= new HashSet<Patient>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -89,7 +84,7 @@ public class Pharmacy implements Serializable{
 
     public Pharmacy() {}
 
-    public Pharmacy(Integer id, String pharmacyName, double mark, double consultingPrice, Set<ExaminationSchedule> examinationSchedules, Set<MedicationReservation> medicationReservations, Set<Prescription> prescriptions, Address address, Set<Dermatologist> dermatologists, Set<Pharmacist> pharmacists, Set<Subscription> subscriptions, Set<PharmacyAdmin> pharmacyAdmins, Set<Order> order, Set<WorkingHoursDermatologist> workingHoursDermatologists, Set<Medication> medications) {
+    public Pharmacy(Integer id, String pharmacyName, double mark, double consultingPrice, Set<ExaminationSchedule> examinationSchedules, Set<MedicationReservation> medicationReservations, Set<Prescription> prescriptions, Address address, Set<Dermatologist> dermatologists, Set<Pharmacist> pharmacists, Set<PharmacyAdmin> pharmacyAdmins, Set<Order> order, Set<WorkingHoursDermatologist> workingHoursDermatologists, Set<Medication> medications) {
         this.id = id;
         this.pharmacyName = pharmacyName;
         this.mark = mark;
@@ -100,7 +95,6 @@ public class Pharmacy implements Serializable{
         this.address = address;
         this.dermatologists = dermatologists;
         this.pharmacists = pharmacists;
-        this.subscriptions = subscriptions;
         this.order = order;
         this.workingHoursDermatologists = workingHoursDermatologists;
         this.medications = medications;
@@ -144,12 +138,12 @@ public class Pharmacy implements Serializable{
         this.medications = medications;
     }
 
-    public Set<Subscription> getSubscriptions() {
-        return subscriptions;
+    public Set<Patient> getSubscribedPatients() {
+        return subscribedPatients;
     }
 
-    public void setSubscriptions(Set<Subscription> subscriptions) {
-        this.subscriptions = subscriptions;
+    public void setSubscribedPatients(Set<Patient> subscribedPatients) {
+        this.subscribedPatients = subscribedPatients;
     }
 
     public Set<PharmacyAdmin> getPharmacyAdmins() {
