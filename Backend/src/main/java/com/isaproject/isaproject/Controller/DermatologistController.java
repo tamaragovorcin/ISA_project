@@ -1,5 +1,6 @@
 package com.isaproject.isaproject.Controller;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.DTO.WorkingHoursDermatologistDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
@@ -53,6 +54,18 @@ public class DermatologistController {
         return dermatologists == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(dermatologists);
+    }
+    @PostMapping("/addPharmacy")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    public ResponseEntity<String> addPharmacy(@RequestBody WorkingHoursDermatologistDTO dto) {
+        System.out.println("pogodiooo" +dto.getPharmacy().getPharmacyName());
+        System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getDermatologist().getName());
+        if(dermatologistService.addPharmacy(dto)){
+            return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
+
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
 }

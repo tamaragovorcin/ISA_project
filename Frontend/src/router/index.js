@@ -192,7 +192,7 @@ const routes = [
       component: LoyaltyProgram
     },
     {
-      path: '/updateProfilePharmacyAdmin',
+      path: '/phAdminProfileUpdate',
       name: 'PhAdminProfileUpdate',
       component: PhAdminProfileUpdate
     },

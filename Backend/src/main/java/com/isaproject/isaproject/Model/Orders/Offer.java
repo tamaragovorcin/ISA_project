@@ -25,7 +25,7 @@ public class Offer {
 
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false, unique = false)
+    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = true, unique = false)
     private Order order;
 
 

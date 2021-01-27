@@ -78,22 +78,18 @@ public class PharmacyController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacies);
     }
-    @PostMapping("/addDermatologist")
-    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    public ResponseEntity<String> addUser(@RequestBody WorkingHoursDermatologistDTO dto) {
-        System.out.println("pogodiooo" +dto.getPharmacy().getPharmacyName());
-        System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getDermatologist().getName());
-        if(pharmacyService.savePharmacy(dto)){
-            return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
-
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+    @GetMapping("/{id}")
+    ResponseEntity<Pharmacy> getPharmacyById(@PathVariable Integer id)
+    {
+        Pharmacy pharmacy = pharmacyService.findById(id);
+        return pharmacy == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacy);
     }
+
     @PostMapping("/addExaminationSchedule")
-    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<ExaminationSchedule> addSchedule(@RequestBody ExaminationScheduleDTO dto) {
-        System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getPharmacy().getPharmacyName());
         ExaminationSchedule examinationSchedule = examinationScheduleService.save(dto);
         return examinationSchedule == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

@@ -37,7 +37,7 @@ public class PharmacistController {
     }
     @PostMapping("/delete")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    public ResponseEntity<String> addUser(@RequestBody Pharmacist pharmacist) {
+    public ResponseEntity<String> removeUser(@RequestBody Pharmacist pharmacist) {
         System.out.println(pharmacist.getName());
         pharmacistService.delete(pharmacist);
         return new ResponseEntity<>("Pharmacist is successfully removed!", HttpStatus.CREATED);
