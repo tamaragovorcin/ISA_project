@@ -2,6 +2,7 @@ package com.isaproject.isaproject.Controller;
 
 import com.isaproject.isaproject.DTO.PharmacistDTO;
 import com.isaproject.isaproject.DTO.PharmacyAdminDTO;
+import com.isaproject.isaproject.DTO.UserBasicInfoDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
@@ -15,6 +16,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pharmacist")
@@ -53,5 +57,18 @@ public class PharmacistController {
         return pharmacist == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacist);
+    }
+
+    @GetMapping("/basicInfo")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<UserBasicInfoDTO>> getPharmacistsBasicInfo()
+    {   List<UserBasicInfoDTO> basicInfos = new ArrayList<>();
+        List<Pharmacist> pharmacists = pharmacistService.findAll();
+        for (Pharmacist pharmacist: pharmacists) {
+            basicInfos.add(new UserBasicInfoDTO(pharmacist.getName() + " " + pharmacist.getSurname(), pharmacist.getEmail()));
+        }
+        return basicInfos == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(basicInfos);
     }
 }

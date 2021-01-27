@@ -18,13 +18,7 @@ public class Address implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV2")
     @Column(name = "address_id", nullable = false)
     private Integer id;
-/*
-    @OneToMany(mappedBy = "address", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<PersonUser> personUsers = new HashSet<PersonUser>();
 
-    @OneToMany(mappedBy = "address", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
-*/
     @Column(name = "town", nullable = true)
     private String town;
 
@@ -59,15 +53,7 @@ public class Address implements Serializable {
     }
 
     public Address() {}
-/*
-    public Set<Pharmacy> getPharmacies() {
-        return pharmacies;
-    }
 
-    public void setPharmacies(Set<Pharmacy> pharmacies) {
-        this.pharmacies = pharmacies;
-    }
-*/
     public Integer getId() {
         return id;
     }
@@ -75,15 +61,7 @@ public class Address implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-/*
-    public Set<PersonUser> getPersonUsers() {
-        return personUsers;
-    }
 
-    public void setPersonUsers(Set<PersonUser> personUsers) {
-        this.personUsers = personUsers;
-    }
-*/
     public String getTown() {
         return town;
     }

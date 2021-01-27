@@ -70,11 +70,6 @@ public class Pharmacy implements Serializable{
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PharmacyAdmin> pharmacyAdmins = new HashSet<PharmacyAdmin>();
 
-    @JsonManagedReference(value = "pharmacy-order")
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Order> order = new HashSet<Order>();
-
-
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<WorkingHoursDermatologist> workingHoursDermatologists = new HashSet<WorkingHoursDermatologist>();
 
@@ -84,7 +79,7 @@ public class Pharmacy implements Serializable{
 
     public Pharmacy() {}
 
-    public Pharmacy(Integer id, String pharmacyName, double mark, double consultingPrice, Set<ExaminationSchedule> examinationSchedules, Set<MedicationReservation> medicationReservations, Set<Prescription> prescriptions, Address address, Set<Dermatologist> dermatologists, Set<Pharmacist> pharmacists, Set<PharmacyAdmin> pharmacyAdmins, Set<Order> order, Set<WorkingHoursDermatologist> workingHoursDermatologists, Set<Medication> medications) {
+    public Pharmacy(Integer id, String pharmacyName, double mark, double consultingPrice, Set<ExaminationSchedule> examinationSchedules, Set<MedicationReservation> medicationReservations, Set<Prescription> prescriptions, Address address, Set<Dermatologist> dermatologists, Set<Pharmacist> pharmacists, Set<PharmacyAdmin> pharmacyAdmins, Set<WorkingHoursDermatologist> workingHoursDermatologists, Set<Medication> medications) {
         this.id = id;
         this.pharmacyName = pharmacyName;
         this.mark = mark;
@@ -95,7 +90,6 @@ public class Pharmacy implements Serializable{
         this.address = address;
         this.dermatologists = dermatologists;
         this.pharmacists = pharmacists;
-        this.order = order;
         this.workingHoursDermatologists = workingHoursDermatologists;
         this.medications = medications;
     }
@@ -106,14 +100,6 @@ public class Pharmacy implements Serializable{
 
     public void setWorkingHoursDermatologists(Set<WorkingHoursDermatologist> workingHoursDermatologists) {
         this.workingHoursDermatologists = workingHoursDermatologists;
-    }
-
-    public Set<Order> getOrder() {
-        return order;
-    }
-
-    public void setOrder(Set<Order> order) {
-        this.order = order;
     }
 
     public Set<MedicationReservation> getMedicationReservations() {

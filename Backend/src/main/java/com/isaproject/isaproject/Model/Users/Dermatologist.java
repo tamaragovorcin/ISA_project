@@ -15,9 +15,6 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-//ovom anotacijom se navodi vrednost diskriminatorske kolone koja vazi za
-//objekte ove klase
-
 @Entity
 @DiscriminatorValue("Dermatologist")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
