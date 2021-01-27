@@ -17,7 +17,7 @@ export default {
   },
   mounted() {
        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-        this.axios.get('/pharmacy/'+1,{ 
+        this.axios.get('/pharmacy/'+3,{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
              }

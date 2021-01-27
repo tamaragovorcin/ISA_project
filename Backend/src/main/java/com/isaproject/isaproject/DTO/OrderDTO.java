@@ -6,30 +6,31 @@ import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 
 public class OrderDTO {
-    private Pharmacy pharmacy;
     private PharmacyAdmin pharmacyAdmin;
     private LocalDate date;
     private String status;
+    private Set<MedicationsInOrderDTO> medicationsInOrderDTO;
 
     public OrderDTO() {
     }
 
-    public OrderDTO(Pharmacy pharmacy, PharmacyAdmin pharmacyAdmin, LocalDate date, String status) {
-        this.pharmacy = pharmacy;
+    public OrderDTO(PharmacyAdmin pharmacyAdmin, LocalDate date, String status, Set<MedicationsInOrderDTO> medicationsInOrderDTO) {
         this.pharmacyAdmin = pharmacyAdmin;
         this.date = date;
         this.status = status;
+        this.medicationsInOrderDTO = medicationsInOrderDTO;
     }
 
-    public Pharmacy getPharmacy() {
-        return pharmacy;
+    public Set<MedicationsInOrderDTO> getMedicationsInOrderDTO() {
+        return medicationsInOrderDTO;
     }
 
-    public void setPharmacy(Pharmacy pharmacy) {
-        this.pharmacy = pharmacy;
+    public void setMedicationsInOrderDTO(Set<MedicationsInOrderDTO> medicationsInOrderDTO) {
+        this.medicationsInOrderDTO = medicationsInOrderDTO;
     }
 
     public PharmacyAdmin getPharmacyAdmin() {

@@ -296,7 +296,6 @@ public class proba {
 
         Order order = new Order();
         order.setPharmacyAdmin(pharmacyAdmin);
-        order.setPharmacy(pharmacy);
         order.setDate(LocalDate.now());
         order.setStatus("closed");
         order.setOffer(offers);

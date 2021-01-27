@@ -50,11 +50,12 @@
                                                     <label >Medication:</label>
                                                 </div>
                                                 <div class="col">
-                                                                        <select v-model="medicine">
-                                                                            <option v-for="med in medications" :key="med.id">
-                                                                                {{med.name}}
-                                                                            </option>
-                                                                        </select>
+                                                                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologist"
+                                        class = "btn btn-link btn-lg" style="float:left; width=200px;">
+                                            <b-dropdown-item v-for="medicine in this.medications"  v-on:click = "dermatologistIsSelected($event, medicine)" v-bind:key="medicine.id"> 
+                                            {{ medicine.name }}<div style="width:20px"></div>{{medicine.type }}
+                                            </b-dropdown-item>
+                                    </b-dropdown> 
 
                                                 </div>
 
@@ -91,7 +92,7 @@
                                                 <th>Quantity</th>
                                                 </thead>
                                                 <tr v-for="med in medicationQuantityList" :key="med.id">
-                                                    <td>{{med.medicineName}}</td>
+                                                    <td>{{med.medicine.name}}</td>
                                                     <td>{{med.quantity}}</td>
                                                 </tr>
                                             </table>
@@ -102,7 +103,7 @@
                                                 <label for="name">Closing date:</label>
                                             </div>
                                             <div class="col">
-                                                <input type="text" v-model="endDate" placeholder="01/01/2020" />
+                                                <input type="date" v-model="endDate" />
                                             </div>
                                         </div>
                     
@@ -113,7 +114,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                        <button class="btn btn-primary" @click="hideModal">Share order</button>
+                        <button class="btn btn-primary" @click="shareOrder">Share order</button>
                     </div>
                     </div>
                 </div>
@@ -132,18 +133,18 @@ export default {
   data() {
     return {
        show : false,
-       medicine :{},
+       medications : null,
        quantity : 0,
        showTable : false,
        medicationQuantityList : [],
        endDate : "",
        admin : {},
        pharmacy : {},
-
+       selectedMedication : {}
     }
   },
    mounted() {
-       let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
         this.axios.get('/pharmacyAdmin/account',{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
@@ -169,7 +170,6 @@ export default {
                     }
                     }).then(response => {
                             this.medications = response.data;
-                            alert(this.pharmacists);
                     }).catch(res => {
                             alert("NOT OK");
                             console.log(res);
@@ -203,21 +203,45 @@ export default {
       hideModal() {
         this.$refs['my-modal'].hide()
       },
+     dermatologistIsSelected : function(event, medicine) {
+            this.selectedMedication = medicine;
+
+            console.log(event);
+
+
+      },
       addNewMedicine : function(){
                this.showTable = true;
                 const medicineWithQuantity = {
-                    medicineName: this.medicine,
+                    medicine: this.selectedMedication,
                     quantity: this.quantity,
                 };
                 this.medicationQuantityList.push(medicineWithQuantity)
       },
-      sendOrder : function(){
-           const order = {
-                    medicinesWithQuantity: this.medicationQuantityList,
+      shareOrder : function(){
+          const order = {
+                    medicationsInOrderDTO: this.medicationQuantityList,
                     date: this.endDate,
+                    pharmacyAdmin : this.admin,
+                    status : "KREIRANA"
                 };
             console.log(order);
+             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+
+            this.axios.post('/order/add',order,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+                .then(response => {
+                       alert("Order is successfully sent!");
+                       console.log(response.data);
+                })
+                .catch(response => {
+                       alert("Please try later.");
+                        console.log(response);
+                 });    
       }
+   
    
 }
 }
@@ -239,7 +263,6 @@ export default {
 body {
   font-family: "Lato", sans-serif;
 }
-
 .sidenav {
   height: 100%;
   width: 270px;
@@ -252,7 +275,6 @@ body {
   padding-top: 20px;
   margin-top : 90px;
 }
-
 .sidenav a {
   padding: 6px 6px 6px 0px;
   text-decoration: none;
@@ -260,16 +282,11 @@ body {
   color: #white;
   display: block;
 }
-
 .sidenav a:hover {
   color: #f1f1f1;
 }
-
-
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
-
-
 </style>

@@ -15,6 +15,7 @@ import java.util.Set;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "orders")
 public class Order  {
 
     @Id
@@ -22,11 +23,6 @@ public class Order  {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-
-    @JsonBackReference(value = "pharmacy-order")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = true, unique = false)
-    private Pharmacy pharmacy;
 
     @JsonBackReference(value = "pharmacyAdmin-order")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
@@ -51,9 +47,8 @@ public class Order  {
     public Order() {
     }
 
-    public Order(Integer id, Pharmacy pharmacy, PharmacyAdmin pharmacyAdmin, Set<MedicationInOrder> medicationInOrders, LocalDate date, String status, Set<Offer> offer) {
+    public Order(Integer id, PharmacyAdmin pharmacyAdmin, Set<MedicationInOrder> medicationInOrders, LocalDate date, String status, Set<Offer> offer) {
         this.id = id;
-        this.pharmacy = pharmacy;
         this.pharmacyAdmin = pharmacyAdmin;
         this.medicationInOrders = medicationInOrders;
         this.date = date;
@@ -69,13 +64,6 @@ public class Order  {
         this.id = id;
     }
 
-    public Pharmacy getPharmacy() {
-        return pharmacy;
-    }
-
-    public void setPharmacy(Pharmacy pharmacy) {
-        this.pharmacy = pharmacy;
-    }
 
     public PharmacyAdmin getPharmacyAdmin() {
         return pharmacyAdmin;
