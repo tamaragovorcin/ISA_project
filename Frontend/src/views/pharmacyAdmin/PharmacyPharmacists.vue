@@ -77,6 +77,8 @@
                                                     <td>{{pharmacist.surname}}</td>
                                                     <td>{{pharmacist.email}}</td>
                                                     <td>{{pharmacist.phoneNumber}}</td>
+                                                  	<td><button  v-on:click ="remove($event, pharmacist)" class="btn btn-info">Remove</button></td>
+
                                                 </tr>
    
   </tbody>
@@ -125,6 +127,23 @@ export default {
        logOut : function(){
             
       },
+      remove : function(event,pharmacist){
+          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        	this.axios.post('pharmacist/delete', pharmacist,{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            console.log(response);
+                          
+                             
+                    }).catch(response => {
+                            alert("NOT OK");
+                            console.log(response);
+                    });
+          window.location.href = "/pharmacyPharmacists";
+
+		}
 },
   mounted() {
        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);

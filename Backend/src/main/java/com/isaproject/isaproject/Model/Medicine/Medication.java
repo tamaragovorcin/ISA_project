@@ -1,8 +1,11 @@
 package com.isaproject.isaproject.Model.Medicine;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
 import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
+import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
 import com.isaproject.isaproject.Model.Orders.Offer;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
@@ -12,6 +15,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@DiscriminatorValue("Medication")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Medication  {
     @Id
     @GeneratedValue
@@ -69,6 +74,10 @@ public class Medication  {
     @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
 
+
+    @JsonManagedReference(value="medication-medicationInOrder")
+    @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MedicationInOrder> medicationInOrder = new HashSet<MedicationInOrder>();
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "specification_id", referencedColumnName = "id", nullable = true, unique = false)

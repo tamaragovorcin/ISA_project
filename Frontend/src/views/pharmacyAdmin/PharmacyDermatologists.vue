@@ -37,7 +37,7 @@
 
         <div class="container-fluid">
 
-         <b-button class = "btn btn-warning" @click="showModal">+ Add dermatologist</b-button>
+         <b-button class = "btn btn-warning" @click="showModal">+ Add examination terms</b-button>
         
         <b-modal ref="my-modal" hide-footer scrollable title="Add examination to schedule" size="lg" modal-class="b-modal">
                     <div modal-class="modal-dialog" role="document">
@@ -109,6 +109,54 @@
                     </div>
     
     </b-modal>
+
+
+<b-button class = "btn btn-warning" @click="showModal1">+ Add dermatologist</b-button>
+        
+        <b-modal ref="my-modal1" hide-footer scrollable title="Add dermatologist as employee" size="lg" modal-class="b-modal">
+                    <div modal-class="modal-dialog" role="document">
+                            <div class="modal-content" style="background-color:whitesmoke">
+                                    
+                                    <div class="modal-body">
+                                    
+                                    <label>Choose dermatologist:</label>
+                            <div class="form-row">
+                                 <div class="form-group col">
+                                        <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologist"
+                                        class = "btn btn-link btn-lg" style="float:left; width=200px;">
+                                            <b-dropdown-item v-for="dermatologist in this.allDermatologists"  v-on:click = "dermatologistIsSelected1($event, dermatologist)" v-bind:key="dermatologist.id"> 
+                                            {{ dermatologist.firstname }}<div style="width:20px"></div>{{dermatologist.surname }}
+                                            </b-dropdown-item>
+                                    </b-dropdown> 
+                                 </div>
+                                <div class="form-group col-md-6 ">
+                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist1.firstname}}</label>
+                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist1.surname}}</label>
+                                </div>
+                                    
+                            </div>
+                                          
+                                             
+                            
+
+                                     
+                                     
+                                    </div>
+                    <div class="modal-footer">
+                                        <button class="btn btn-secondary" block @click="hideModal1">Close</button>
+                                        <button class="btn btn-primary" v-on:click="addDermatologist">Add</button>
+                   </div>
+
+                            
+                                   
+                            </div>
+                    </div>
+    
+    </b-modal>
+
+
+
+    
     <div style="height:45px"></div>
       <h3>Dermatologists of our pharmacy</h3>
 
@@ -136,8 +184,7 @@
 
 
         </div>
-        
-  <button v-on:click="dodaj">dodaj</button>
+
        
 
        
@@ -164,7 +211,8 @@ export default {
        pharmacy : {},
        admin : {},
        duration : 0,
-       price : 0
+       price : 0,
+       selectedDermatologist1 : {}
 
     }
   },
@@ -253,6 +301,12 @@ export default {
       hideModal() {
         this.$refs['my-modal'].hide()
       },
+      showModal1() {
+        this.$refs['my-modal1'].show()
+      },
+      hideModal1() {
+        this.$refs['my-modal1'].hide()
+      },
        add : function(){
             const data ={
               pharmacy : this.pharmacy,
@@ -288,22 +342,29 @@ export default {
 
 
       },
-      dodaj: function(){
+        dermatologistIsSelected1 : function(event, dermatologist) {
+            this.selectedDermatologist1 = dermatologist;
+            this.dermatologistName1 = this.selectedDermatologist1.name;
+            this.dermatologistSurName1 = this.selectedDermatologist1.surname;
+
+            console.log(event);
+
+
+      },
+      addDermatologist: function(){
          const data ={
               pharmacy : this.pharmacy,
-              dermatologist : this.selectedDermatologist,
-              date : this.date,
-              startTime : this.startTime,
-              endTime : this.startTime,
+              dermatologist : this.selectedDermatologist1,
+              
           }
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
 
-            this.axios.post('/pharmacy/addDermatologist',data,{ 
+            this.axios.post('/dermatologist/addPharmacy',data,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                         }})
                 .then(response => {
-
+                        alert("Dermatologist successfully added as employee in your pharmacy");
                         console.log(response.data);
                 })
                 .catch(response => {

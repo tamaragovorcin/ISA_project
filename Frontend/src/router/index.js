@@ -204,7 +204,7 @@ const routes = [
       component: SystemAdminMedicationSearch
     },
     {
-      path: '/updateProfilePharmacyAdmin',
+      path: '/phAdminProfileUpdate',
       name: 'PhAdminProfileUpdate',
       component: PhAdminProfileUpdate
     },

@@ -1,14 +1,8 @@
 <template>
-    <div class = "row h-100">
+   
     <div class="col-sm-1.5 vh-100" style="background-color:blue !important">  
            
-    </div>
-    <div class="col-sm" style="!important">  
-           
-    </div>
-    <div class="col-sm" style=" !important">  
-           
-    </div>
+   
     </div>
 
 </template>
@@ -17,14 +11,29 @@
 export default {
   data() {
     return {
-       show : false,
-       medicine : "",
-       quantity : 0,
-       showTable : false,
-       medicationQuantityList : [],
-       endDate : "",
+       id : this.$route.params.id,
+       pharmacy : {}
     }
   },
+  mounted() {
+       let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/pharmacy/'+1,{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+         }).then(response => {
+                this.pharmacy = response.data;
+                console.log(this.admin);
+               
+         }).catch(res => {
+                alert("NOT OK");
+                console.log(res);
+        });
+       
+
+        
+    }
+     ,
   methods:{
        showHomePage : function(){
           window.location.href = "/isaHomePage";

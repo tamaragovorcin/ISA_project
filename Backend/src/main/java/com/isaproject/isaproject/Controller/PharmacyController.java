@@ -79,6 +79,13 @@ public class PharmacyController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacies);
     }
+    @GetMapping("/{id}")
+    ResponseEntity<Pharmacy> getPharmacyById(@PathVariable Integer id) {
+        Pharmacy pharmacy = pharmacyService.findById(id);
+        return pharmacy == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacy);
+    }
 
     @GetMapping("/allNames")
     ResponseEntity<List<String>> getAllPharmaciesNames()
@@ -103,9 +110,11 @@ public class PharmacyController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+
     }
+
     @PostMapping("/addExaminationSchedule")
-    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<ExaminationSchedule> addSchedule(@RequestBody ExaminationScheduleDTO dto) {
         ExaminationSchedule examinationSchedule = examinationScheduleService.save(dto);
         return examinationSchedule == null ?

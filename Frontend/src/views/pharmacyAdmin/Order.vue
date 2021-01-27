@@ -50,7 +50,11 @@
                                                     <label >Medication:</label>
                                                 </div>
                                                 <div class="col">
-                                                <input type="text" class="form-control" v-model="medicine">
+                                                                        <select v-model="medicine">
+                                                                            <option v-for="med in medications" :key="med.id">
+                                                                                {{med.name}}
+                                                                            </option>
+                                                                        </select>
 
                                                 </div>
 
@@ -128,13 +132,58 @@ export default {
   data() {
     return {
        show : false,
-       medicine : "",
+       medicine :{},
        quantity : 0,
        showTable : false,
        medicationQuantityList : [],
        endDate : "",
+       admin : {},
+       pharmacy : {},
+
     }
   },
+   mounted() {
+       let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/pharmacyAdmin/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+         }).then(response => {
+                this.admin = response.data;
+                console.log(this.admin);
+                this.axios.get('/pharmacyAdmin/myPharmacy',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            this.pharmacy = response.data;
+                            console.log(this.pharmacy);
+                             
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
+                    this.axios.get('/medication',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            this.medications = response.data;
+                            alert(this.pharmacists);
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
+                    
+                
+         
+
+         }).catch(res => {
+                alert("NOT OK");
+                console.log(res);
+        });
+        
+    },
   methods:{
        showHomePage : function(){
           window.location.href = "/isaHomePage";

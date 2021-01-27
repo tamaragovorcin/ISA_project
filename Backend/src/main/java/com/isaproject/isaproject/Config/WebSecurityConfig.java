@@ -73,9 +73,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll().antMatchers("/api/foo").permitAll().antMatchers("/api/patient/register") .permitAll()
                 .antMatchers("/api/patient").permitAll()
                 .antMatchers("/api/patient/email/{id}").permitAll()
-
                 .antMatchers("/api/medication/add").permitAll()
-
+                .antMatchers("/api/medication").permitAll()
                 .antMatchers("/api/pharmacy/addActions").permitAll()
                 .antMatchers("/api/pharmacy/add").permitAll()
                 .antMatchers("/api/pharmacy/actions/{id}").permitAll()
@@ -84,6 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/dermatologist/register") .permitAll()
                 .antMatchers("/api/medicationReservation/add") .permitAll()
                 .antMatchers("/api/pharmacyAdmin/register") .permitAll()
+                .antMatchers("/api/pharmacy/{id}") .permitAll()
 
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
@@ -104,9 +104,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.POST, "/api/patient/register");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/patient");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/patient/email/{id}");
-
         web.ignoring().antMatchers(HttpMethod.POST, "/api/medication/add");
-
+        web.ignoring().antMatchers(HttpMethod.GET, "/api/medication");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/addActions");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/add");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/actions/{id}");
@@ -115,6 +114,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.POST, "/api/medicationReservation/add");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/dermatologist/register");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacyAdmin/register");
+        web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/{id}");
 
 
 

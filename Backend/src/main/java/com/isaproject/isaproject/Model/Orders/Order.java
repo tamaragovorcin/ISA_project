@@ -1,5 +1,8 @@
 package com.isaproject.isaproject.Model.Orders;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
@@ -11,8 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-
-@Table(name="order_table")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Order  {
 
     @Id
@@ -20,21 +22,27 @@ public class Order  {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
+
+    @JsonBackReference(value = "pharmacy-order")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = true, unique = false)
     private Pharmacy pharmacy;
 
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "admin_id", referencedColumnName = "id", nullable = false, unique = false)
+    @JsonBackReference(value = "pharmacyAdmin-order")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacyAdmin_id", referencedColumnName = "id", nullable = true, unique = false)
     private PharmacyAdmin pharmacyAdmin;
 
 
-    @Column(name = "date", nullable = false)
+    @JsonManagedReference(value="order-medicationInOrder")
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MedicationInOrder> medicationInOrders = new HashSet<MedicationInOrder>();
+
+    @Column(name = "date", nullable = true)
     private LocalDate date;
 
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = true)
     private String status;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -43,12 +51,22 @@ public class Order  {
     public Order() {
     }
 
-    public PharmacyAdmin getPharmacyAdmin() {
-        return pharmacyAdmin;
+    public Order(Integer id, Pharmacy pharmacy, PharmacyAdmin pharmacyAdmin, Set<MedicationInOrder> medicationInOrders, LocalDate date, String status, Set<Offer> offer) {
+        this.id = id;
+        this.pharmacy = pharmacy;
+        this.pharmacyAdmin = pharmacyAdmin;
+        this.medicationInOrders = medicationInOrders;
+        this.date = date;
+        this.status = status;
+        this.offer = offer;
     }
 
-    public void setPharmacyAdmin(PharmacyAdmin pharmacyAdmin) {
-        this.pharmacyAdmin = pharmacyAdmin;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Pharmacy getPharmacy() {
@@ -59,20 +77,20 @@ public class Order  {
         this.pharmacy = pharmacy;
     }
 
-    public Set<Offer> getOffer() {
-        return offer;
+    public PharmacyAdmin getPharmacyAdmin() {
+        return pharmacyAdmin;
     }
 
-    public void setOffer(Set<Offer> offer) {
-        this.offer = offer;
+    public void setPharmacyAdmin(PharmacyAdmin pharmacyAdmin) {
+        this.pharmacyAdmin = pharmacyAdmin;
     }
 
-    public Integer getId() {
-        return id;
+    public Set<MedicationInOrder> getMedicationInOrders() {
+        return medicationInOrders;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setMedicationInOrders(Set<MedicationInOrder> medicationInOrders) {
+        this.medicationInOrders = medicationInOrders;
     }
 
     public LocalDate getDate() {
@@ -89,5 +107,13 @@ public class Order  {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Set<Offer> getOffer() {
+        return offer;
+    }
+
+    public void setOffer(Set<Offer> offer) {
+        this.offer = offer;
     }
 }

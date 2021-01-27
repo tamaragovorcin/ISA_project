@@ -118,7 +118,8 @@
 export default {
   data() {
     return {
-        admin: "",
+        admin: {},
+        address : {},
         name : "",
         surname : "",
         email : "",
@@ -129,7 +130,8 @@ export default {
         street : "",
         number : "",
         postalCode : "",
-        country : ""
+        country : "",
+        
     }
   },
 mounted() {
