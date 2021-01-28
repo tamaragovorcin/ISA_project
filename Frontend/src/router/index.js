@@ -9,6 +9,15 @@ import IsaHomePage from '../views/home/IsaHomePage.vue'
 import Login from '../views/home/Login.vue'
 import Registration from '../views/home/Registration.vue'
 import PatientProfile from '../views/patient/PatientProfile.vue'
+import PharmacistProfile from '../views/pharmacist/PharmacistProfile.vue'
+import PharmacistClients from '../views/pharmacist/PharmacistClients.vue'
+import NoteAboutConsulting from '../views/pharmacist/NoteAboutConsulting.vue'
+import PharmacistHomePage from '../views/pharmacist/PharmacistHomePage.vue'
+import CreateRequestVacation from '../views/pharmacist/CreateRequestVacation.vue'
+import PharmacistUpdateProfile from '../views/pharmacist/PharmacistUpdateProfile.vue'
+import DermatologistHomePage from '../views/dermatologist/DermatologistHomePage.vue'
+import DermatologistProfile from '../views/dermatologist/DermatologistProfile.vue'
+import DermatologistUpdateProfile from '../views/dermatologist/DermatologistUpdateProfile.vue'
 import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vue'
 import Order from '../views/pharmacyAdmin/Order.vue'
 import PharmacyProfile from '../views/PharmacyProfile.vue'
@@ -73,7 +82,7 @@ const routes = [
     name: 'IsaHomePage',
     component: IsaHomePage
     },
-  {
+    {
       path: '/login',
       name: 'login',
       component: Login
@@ -87,6 +96,51 @@ const routes = [
       path: '/patientProfile',
       name: 'PatientProfile',
       component: PatientProfile
+    },
+    {
+      path: '/pharmacistProfile',
+      name: 'PharmacistProfile',
+      component: PharmacistProfile
+    },
+    {
+      path: '/pharmacistUpdateProfile',
+      name: 'PharmacistUpdateProfile',
+      component: PharmacistUpdateProfile
+    },
+    {
+      path: '/dermatologistProfile',
+      name: 'DermatologistProfile',
+      component: DermatologistProfile
+    },
+    {
+      path: '/dermatologistUpdateProfile',
+      name: 'DermatologistUpdateProfile',
+      component: DermatologistUpdateProfile
+    },
+    {
+      path: '/pharmacistClients',
+      name: 'PharmacistClients',
+      component: PharmacistClients
+    },
+    {
+      path: '/noteConsultig',
+      name: 'NoteAboutConsulting',
+      component: NoteAboutConsulting
+    },
+    {
+      path: '/createRequestVacation',
+      name: 'CreateRequestVacation',
+      component: CreateRequestVacation
+    },
+    {
+      path: '/pharmacistHomePage',
+      name: 'PharmacistHomePage',
+      component: PharmacistHomePage
+    },
+    {
+      path: '/dermatologistHomePage',
+      name: 'DermatologistHomePage',
+      component: DermatologistHomePage
     },
     {
       path: '/pharmacyAdminProfile',

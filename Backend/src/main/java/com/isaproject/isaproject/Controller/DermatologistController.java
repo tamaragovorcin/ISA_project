@@ -1,4 +1,5 @@
 package com.isaproject.isaproject.Controller;
+import com.isaproject.isaproject.DTO.DermatologistDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.DTO.UserBasicInfoDTO;
 import com.isaproject.isaproject.DTO.WorkingHoursDermatologistDTO;
@@ -49,6 +50,21 @@ public class DermatologistController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(dermatologist);
     }
+
+
+    @PostMapping("/update")
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    ResponseEntity<Dermatologist> update(@RequestBody PersonUserDTO person)
+    {
+        Dermatologist per = dermatologistService.findByEmail(person.getEmail());
+        Integer id = per.getId();
+        //dermatologistService.delete(per);
+        Dermatologist patient = dermatologistService.save(person);
+        return patient == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(patient);
+    }
+
     @GetMapping("")
     ResponseEntity<List<Dermatologist>> getAll()
     {

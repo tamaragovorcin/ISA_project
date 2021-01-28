@@ -1,9 +1,6 @@
-
 package com.isaproject.isaproject.DTO;
 
-import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
-
-public class PharmacistDTO {
+public class DermatologistDTO {
     private String email;
 
     private String password;
@@ -16,28 +13,20 @@ public class PharmacistDTO {
 
     private AddressDTO address;
 
-    private Pharmacy pharmacy;
+    private double markDermatologist;
 
-    public PharmacistDTO() {
-    }
 
-    public PharmacistDTO(String email, String password, String firstname, String surname, String phonenumber, AddressDTO address, Pharmacy pharmacy) {
+    public DermatologistDTO(String email, String password, String firstname, String surname, String phonenumber, AddressDTO address, double markDermatologist) {
         this.email = email;
         this.password = password;
         this.firstname = firstname;
         this.surname = surname;
         this.phonenumber = phonenumber;
         this.address = address;
-        this.pharmacy = pharmacy;
+        this.markDermatologist = markDermatologist;
     }
 
-    public Pharmacy getPharmacy() {
-        return pharmacy;
-    }
-
-    public void setPharmacy(Pharmacy pharmacy) {
-        this.pharmacy = pharmacy;
-    }
+    public DermatologistDTO() { }
 
     public String getEmail() {
         return email;
@@ -86,5 +75,12 @@ public class PharmacistDTO {
     public void setAddress(AddressDTO address) {
         this.address = address;
     }
-}
 
+    public double getMarkDermatologist() {
+        return markDermatologist;
+    }
+
+    public void setMarkDermatologist(double markDermatologist) {
+        this.markDermatologist = markDermatologist;
+    }
+}

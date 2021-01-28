@@ -92,7 +92,13 @@ export default {
                             if(this.authority==="ROLE_PATIENT") 
                                 window.location.href = '/patientProfile';
                             else if(this.authority==="ROLE_DERMATOLOGIST")
-                                alert("Dermatologist is logged in :)");
+                                if(response.data.firstLogged) {
+                                    this.$refs['my-modal'].show();
+                                }
+                                else {
+                                    window.location.href = '/dermatologistHomePage';
+                                }
+                                
                             else if(this.authority==="ROLE_SUPPLIER")
                                 if(response.data.firstLogged) {
                                     this.$refs['my-modal'].show();
@@ -115,7 +121,13 @@ export default {
                                     window.location.href = '/pharmacyAdminProfile';   
                                 }
                             else if(this.authority==="ROLE_PHARMACIST")
-                                alert("Pharmacist is logged in :)"); 
+                             if(response.data.firstLogged) {
+                                    this.$refs['my-modal'].show();
+                                }
+                                else {
+                                    window.location.href = '/pharmacistHomePage';
+                                }
+                               
                             else alert("Error has occured."); 
 
                     }).catch(res => {
@@ -147,6 +159,9 @@ export default {
             return;
         }
 
+
+
+        
         const changePasswordInfo ={
                 oldPassword : this.currentPassword,
                 newPassword : this.newPassword,
@@ -162,13 +177,13 @@ export default {
                     else if(this.authority==="ROLE_PATIENT") 
                         window.location.href = '/patientProfile';
                     else if(this.authority==="ROLE_DERMATOLOGIST")
-                        alert("Dermatologist is logged in :)");
+                       window.location.href = '/dermatologistHomePage';
                     else if(this.authority==="ROLE_SUPPLIER")
                         window.location.href = '/supplierProfile';
                     else if(this.authority==="ROLE_PHARMACY_ADMIN")
                         window.location.href = '/pharmacyAdminProfile';   
                     else if(this.authority==="ROLE_PHARMACIST")
-                        alert("Pharmacist is logged in :)"); 
+                         window.location.href = '/pharmacistHomePage';
                     else alert("Error has occured."); 
                 }).catch(res => {
                        alert("Please try later.");
