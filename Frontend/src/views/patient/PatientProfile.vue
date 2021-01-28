@@ -159,7 +159,7 @@ export default {
 
     }
   },
-
+  
   methods:{
      
       showMyProfile: function(){
