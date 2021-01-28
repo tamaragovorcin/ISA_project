@@ -1,6 +1,8 @@
 package com.isaproject.isaproject.Model.Pharmacy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,9 +12,8 @@ import static javax.persistence.DiscriminatorType.STRING;
 import static javax.persistence.InheritanceType.SINGLE_TABLE;
 
 @Entity
-@Table(name="actions_table")
-@Inheritance(strategy=SINGLE_TABLE)
-@DiscriminatorColumn(name="type", discriminatorType=STRING)
+@DiscriminatorValue("Actions")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Actions implements Serializable {
 
     @Id
@@ -20,8 +21,9 @@ public class Actions implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV2")
     private Integer id;
 
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JsonBackReference
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_actions", referencedColumnName = "id", nullable = true, unique = false)
     private Pharmacy pharmacy;
 
     @Column(name = "description", nullable = true)

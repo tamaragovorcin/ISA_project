@@ -116,17 +116,54 @@ export default {
   data() {
     return {
        showMed : false,
-       pharmacyId : 1,
        description : "",
        expiryDate : "",
-       actions : []
+       actions : [],
+       pharmacy : {}
     }
   },
-  mounted() {
-      this.axios.get('/pharmacy/actions/'+1)
-          .then(response => {
-                this.actions= response.data;
-          });
+    mounted() {
+       let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/pharmacyAdmin/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+         }).then(response => {
+                this.admin = response.data;
+                console.log(this.admin);
+                this.axios.get('/pharmacyAdmin/myPharmacy',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            this.pharmacy = response.data;
+                            console.log(this.pharmacy);
+                             
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
+                     this.axios.get('/pharmacyAdmin/actions',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            this.actions = response.data;
+                            console.log(this.pharmacy);
+                             
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
+                    
+                
+         
+
+         }).catch(res => {
+                alert("NOT OK");
+                console.log(res);
+        });
+          
      
 },
 
@@ -161,7 +198,7 @@ export default {
       },
       share : function(){
              const action = {
-                    pharmacyId : this.pharmacyId,
+                    pharmacy : this.pharmacy,
                     description: this.description,
                     expiryDate : this.expiryDate,
                   
