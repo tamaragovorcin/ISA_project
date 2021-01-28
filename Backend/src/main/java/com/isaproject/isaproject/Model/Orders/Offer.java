@@ -40,6 +40,8 @@ public class Offer {
     @Column(name = "summaryPrice", nullable = true)
     private double summaryPrice;
 
+    @Column(name = "status", nullable = true)
+    private String status;
 
     public Offer() {
     }
@@ -85,5 +87,13 @@ public class Offer {
 
     public void setSummaryPrice(double summaryPrice) {
         this.summaryPrice = summaryPrice;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
