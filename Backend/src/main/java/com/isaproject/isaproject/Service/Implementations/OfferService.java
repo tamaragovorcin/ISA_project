@@ -37,6 +37,7 @@ public class OfferService implements IOfferService {
         offer.setOrder(orderRepository.findById(offerDTO.getOrderId()).get());
         offer.setDateOfDelivery(offerDTO.getDateOfDelivery());
         offer.setSummaryPrice(offerDTO.getSummaryPrice());
+        offer.setStatus("CREATED");
         return offerRepository.save(offer);
     }
 
