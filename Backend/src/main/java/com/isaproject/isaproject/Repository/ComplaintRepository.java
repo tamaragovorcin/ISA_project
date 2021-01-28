@@ -8,6 +8,4 @@ import java.util.List;
 
 public interface ComplaintRepository extends JpaRepository<Complaint, Integer> {
 
-    @Query(value = "SELECT * from complaint where answered=true", nativeQuery=true)
-    List<Complaint> findAllNotAnswered();
 }

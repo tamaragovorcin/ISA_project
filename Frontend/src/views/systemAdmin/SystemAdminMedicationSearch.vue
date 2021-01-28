@@ -24,6 +24,8 @@
                  <button class = "btn btn-link btn-lg" v-on:click = "medicationSearch">Medications</button>
                  <b class="tab"></b>  
                  <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
+                 <b class="tab"></b>  
+                 <button class = "btn btn-link btn-lg" v-on:click = "showComplaints">Complaints</button>
                  
 
             </span>
@@ -396,7 +398,10 @@ export default {
       },
        closeSpecificationList : function() {
         this.$refs['specificationList-modal'].hide()
-      },
+      }, 
+      showComplaints : function() {
+            window.location.href = "/complaints";
+      }
       
 },
  mounted() {

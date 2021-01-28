@@ -8,5 +8,4 @@ public interface IComplaintService {
     Complaint findById(Integer id);
     List<Complaint> findAll ();
     Complaint save(ComplaintDTO complaintDTO);
-    List<Complaint> findAllNotAnswered();
 }

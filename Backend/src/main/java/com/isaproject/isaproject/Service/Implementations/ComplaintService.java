@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.ComplaintDTO;
+import com.isaproject.isaproject.DTO.ComplaintReviewDTO;
 import com.isaproject.isaproject.Model.HelpModel.Complaint;
 import com.isaproject.isaproject.Repository.ComplaintRepository;
 import com.isaproject.isaproject.Repository.DermatologistRepository;
@@ -8,6 +9,9 @@ import com.isaproject.isaproject.Repository.PharmacistRepository;
 import com.isaproject.isaproject.Repository.PharmacyRepository;
 import com.isaproject.isaproject.Service.IServices.IComplaintService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +26,11 @@ public class ComplaintService implements IComplaintService {
     PharmacyRepository pharmacyRepository;
     @Autowired
     PharmacistRepository pharmacistRepository;
+
+    @Autowired
+    JavaMailSenderImpl mailSender;
+    @Autowired
+    private Environment environment;
 
     @Override
     public Complaint findById(Integer id) {
@@ -54,8 +63,18 @@ public class ComplaintService implements IComplaintService {
         return complaintRepository.save(complaint);
     }
 
-    @Override
-    public List<Complaint> findAllNotAnswered() {
-        return complaintRepository.findAllNotAnswered();
+    public Complaint sendAnswerToPatient(ComplaintReviewDTO complaintReviewDTO) {
+        String email = complaintReviewDTO.getPatient().getEmail();
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setSubject("Complaint on " + complaintReviewDTO.getSubject() +"!");
+        mail.setFrom(environment.getProperty("spring.mail.username"));
+        mail.setText("Your complaint:  " + complaintReviewDTO.getMassage() + "\n\nAnswer:  " + complaintReviewDTO.getAnswer());
+        mailSender.send(mail);
+
+        Complaint complaint = complaintRepository.findById(complaintReviewDTO.getId()).get();
+        complaint.setAnswered(true);
+        complaint.setAnswer(complaintReviewDTO.getAnswer());
+        return complaintRepository.save(complaint);
     }
 }
