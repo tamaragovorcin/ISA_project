@@ -9,13 +9,18 @@ import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
 import com.isaproject.isaproject.Service.Implementations.ActionsService;
 import com.isaproject.isaproject.Service.Implementations.ExaminationScheduleService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.*;
@@ -33,6 +38,10 @@ public class PharmacyController {
     ActionsService  actionsService;
     @Autowired
     ExaminationScheduleService examinationScheduleService;
+    @Autowired
+    private Environment environment;
+    @Autowired
+    JavaMailSenderImpl mailSender;
 
     @PostMapping("/add")
     ResponseEntity<Pharmacy> add(@RequestBody PharmacyDTO ph)
@@ -46,9 +55,33 @@ public class PharmacyController {
     ResponseEntity<Actions> shareActions(@RequestBody ActionsDTO action)
     {
         Actions actions = actionsService.save(action);
-        return actions == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(actions);
+                if(actions != null) {
+                    Pharmacy pharmacy = action.getPharmacy();
+                    Set<Patient> subPatients = pharmacy.getSubscribedPatients();
+                    SimpleMailMessage mail = new SimpleMailMessage();
+                    System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+
+                    System.out.println("Take advantage of a special opportunity!\n"
+                            + " " + action.getDescription() + " till the " + action.getExpiryDate());
+                    for (Patient patient : subPatients) {
+                        mail.setTo(patient.getEmail());
+                        mail.setSubject("Complete Registration!");
+                        mail.setFrom(environment.getProperty("spring.mail.username"));
+                        //mail.setFrom("pharmacyisa@gmail.com");
+                        mail.setText("Take advantage of a special opportunity!\n"
+                                + " " + action.getDescription() + " till the " + action.getExpiryDate());
+                        mailSender.send(mail);
+                    }
+                        return ResponseEntity.ok(actions);
+
+
+
+                }else{
+                    return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+                }
     }
 
     @GetMapping("/actions/{id}")
@@ -98,6 +131,23 @@ public class PharmacyController {
         return pharmaciesNames == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmaciesNames);
+    }
+
+    @GetMapping("/dermatologists/{id}")
+    public ResponseEntity<Set<Dermatologist>> getDermatologists(@PathVariable Integer id) {
+        Set<Dermatologist> dermatologists = pharmacyService.findById(id).getDermatologists();
+        return dermatologists == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(dermatologists);
+
+    }
+    @GetMapping("/pharmacists/{id}")
+    public ResponseEntity<Set<Pharmacist>> getPharmacists(@PathVariable Integer id) {
+        Set<Pharmacist> pharmacists = pharmacyService.findById(id).getPharmacists();
+        return pharmacists == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacists);
+
     }
 
     @PostMapping("/addDermatologist")

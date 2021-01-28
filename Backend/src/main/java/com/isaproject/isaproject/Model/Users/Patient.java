@@ -32,6 +32,7 @@ public class Patient extends PersonUser{
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Examination> examinations = new HashSet<Examination>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Complaint> complaints = new HashSet<Complaint>();
 
