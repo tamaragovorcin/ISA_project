@@ -59,25 +59,18 @@ public class PharmacyController {
                     Pharmacy pharmacy = action.getPharmacy();
                     Set<Patient> subPatients = pharmacy.getSubscribedPatients();
                     SimpleMailMessage mail = new SimpleMailMessage();
-                    System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-                    System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
 
                     System.out.println("Take advantage of a special opportunity!\n"
                             + " " + action.getDescription() + " till the " + action.getExpiryDate());
                     for (Patient patient : subPatients) {
                         mail.setTo(patient.getEmail());
-                        mail.setSubject("Complete Registration!");
+                        mail.setSubject("Action in pharmacy " + pharmacy.getPharmacyName()+"!");
                         mail.setFrom(environment.getProperty("spring.mail.username"));
-                        //mail.setFrom("pharmacyisa@gmail.com");
                         mail.setText("Take advantage of a special opportunity!\n"
                                 + " " + action.getDescription() + " till the " + action.getExpiryDate());
                         mailSender.send(mail);
                     }
                         return ResponseEntity.ok(actions);
-
-
-
                 }else{
                     return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
 

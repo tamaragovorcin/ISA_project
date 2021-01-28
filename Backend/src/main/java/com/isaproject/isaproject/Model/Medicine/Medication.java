@@ -59,10 +59,6 @@ public class Medication  {
     private Set<EPrescription> ePrescriptions = new HashSet<EPrescription>();
 
     @ManyToMany
-    @JoinTable(name = "offer_medication", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "offer_id", referencedColumnName = "id"))
-    private Set<Offer> offer = new HashSet<Offer>();
-
-    @ManyToMany
     @JoinTable(name = "prescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
     private Set<Prescription> prescriptions = new HashSet<Prescription>();
 
@@ -109,13 +105,6 @@ public class Medication  {
         this.wayOfSelling = wayOfSelling;
     }
 
-    public Set<Offer> getOffer() {
-        return offer;
-    }
-
-    public void setOffer(Set<Offer> offer) {
-        this.offer = offer;
-    }
 
     public Specification getSpecification() {
         return specification;

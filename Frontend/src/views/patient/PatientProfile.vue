@@ -223,8 +223,7 @@ export default {
                 });
       },
       sendComplaintDermatologist : function() {
-          console.log("*********")
-        console.log(this.dermatologist)
+     
           const complaint= {
             answered : false,
             massage : this.complaintText,
