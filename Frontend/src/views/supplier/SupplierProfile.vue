@@ -3,8 +3,9 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             <span style="float: left; margin: 15px;">
-                  <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
-                  <b class="tab"></b>                
+                  <a  class = "btn btn-secondary" href = "/supplierProfileInfo">My profile</a>
+                  <b class="tab"></b>
+                  <a  class = "btn btn-secondary" href = "/supplierReviewsActiveTenders">Active tenders</a>
             </span>
             <span  style="float:right;margin:15px">
                      <b class="tab"></b>    
@@ -30,9 +31,7 @@ export default {
            localStorage.removeItem('token');
            window.location.href = "/login";
       },
-      showMyProfile : function() {
-          window.location.href = "/supplierProfileInfo";
-      }
+      
       
 },
  mounted() {

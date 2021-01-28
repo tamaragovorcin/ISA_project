@@ -39,9 +39,6 @@ public class OrderService implements IOrderService {
         order.setPharmacyAdmin(orderDTO.getPharmacyAdmin());
         MedicationInOrder medicationInOrder = new MedicationInOrder();
 
-       /* Set<MedicationInOrder> medicationInOrderSet = order.getMedicationInOrders();
-
-        order.setMedicationInOrders(medicationInOrderSet);*/
         Order order1 = orderRepository.save(order);
         for(MedicationsInOrderDTO medDto : orderDTO.getMedicationsInOrderDTO()){
             MedicationInOrder medicationInOrder1 = new MedicationInOrder(medDto.getMedicine(),medDto.getQuantity());

@@ -1,5 +1,7 @@
 package com.isaproject.isaproject.Model.Orders;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
@@ -12,19 +14,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Offer {
-
 
     @Id
     @GeneratedValue
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @ManyToMany(mappedBy = "offer")
-    private Set<Supplier> suppliers = new HashSet<Supplier>();
+    @JsonBackReference(value="supplier-createsOffer")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplier", referencedColumnName = "id", nullable = true, unique = false)
+    private Supplier supplier = new Supplier();
 
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference(value="offer-offerForOrder")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = true, unique = false)
     private Order order;
 
@@ -36,18 +40,11 @@ public class Offer {
     @Column(name = "summaryPrice", nullable = true)
     private double summaryPrice;
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Consulting> consulting = new HashSet<Consulting>();
-
-    @ManyToMany(mappedBy = "offer")
-    private Set<Medication> medications = new HashSet<Medication>();
 
     public Offer() {
     }
 
-    public Set<Supplier> getSuppliers() {
-        return suppliers;
-    }
+
 
     public Order getOrder() {
         return order;
@@ -57,24 +54,12 @@ public class Offer {
         this.order = order;
     }
 
-    public void setSuppliers(Set<Supplier> suppliers) {
-        this.suppliers = suppliers;
+    public Supplier getSupplier() {
+        return supplier;
     }
 
-    public Set<Consulting> getConsulting() {
-        return consulting;
-    }
-
-    public void setConsulting(Set<Consulting> consulting) {
-        this.consulting = consulting;
-    }
-
-    public Set<Medication> getMedications() {
-        return medications;
-    }
-
-    public void setMedications(Set<Medication> medications) {
-        this.medications = medications;
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 
     public Integer getId() {

@@ -80,7 +80,6 @@ public class PatientController {
             mail.setTo(person.getEmail());
             mail.setSubject("Complete Registration!");
             mail.setFrom(environment.getProperty("spring.mail.username"));
-            //mail.setFrom("pharmacyisa@gmail.com");
             mail.setText("To confirm your account, please click here : "
                     +"http://localhost:8082/api/patient/confirm-account/"+confirmationToken.getConfirmationToken());
 
