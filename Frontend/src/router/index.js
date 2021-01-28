@@ -36,6 +36,8 @@ import PharmacyDermatologists from '../views/pharmacyAdmin/PharmacyDermatologist
 import PharmacyPharmacists from '../views/pharmacyAdmin/PharmacyPharmacists.vue'
 import AddPharmacist from '../views/pharmacyAdmin/AddPharmacist.vue'
 import Complaints from '../views/systemAdmin/Complaints.vue'
+import Urgent from '../views/pharmacyAdmin/Urgent.vue'
+
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -228,6 +230,11 @@ const routes = [
       path: '/complaints',
       name: 'Complaints',
       component: Complaints
+    },
+    {
+      path: '/urgent',
+      name: 'Urgent',
+      component: Urgent
     },
   
 ]

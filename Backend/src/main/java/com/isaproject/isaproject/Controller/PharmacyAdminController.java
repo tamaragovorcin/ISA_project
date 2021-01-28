@@ -3,6 +3,7 @@ package com.isaproject.isaproject.Controller;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.DTO.PharmacyAdminDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
+import com.isaproject.isaproject.Model.Pharmacy.Actions;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Service.Implementations.PharmacyAdminService;
@@ -82,11 +83,21 @@ public class PharmacyAdminController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacyAdmin.getPharmacy().getDermatologists());
     }
+    @GetMapping("/actions")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<Set<Actions>> getActions()
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
+        return pharmacyAdmin.getPharmacy().getActions() == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacyAdmin.getPharmacy().getActions());
+    }
     @GetMapping("/pharmacists")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<Set<Pharmacist>> getPharmacists()
     {
-        System.out.println("POGODIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());

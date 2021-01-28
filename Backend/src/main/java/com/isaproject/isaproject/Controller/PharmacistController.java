@@ -4,6 +4,7 @@ import com.isaproject.isaproject.DTO.PharmacistDTO;
 import com.isaproject.isaproject.DTO.PharmacyAdminDTO;
 import com.isaproject.isaproject.DTO.UserBasicInfoDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
+import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
 import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
@@ -20,12 +21,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/pharmacist")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PharmacistController {
     @Autowired
     PharmacistService pharmacistService;
+
 
     @PostMapping("/register")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
@@ -39,6 +42,16 @@ public class PharmacistController {
         Pharmacist user = pharmacistService.save(userRequest);
         return new ResponseEntity<>("Supplier is successfully registred!", HttpStatus.CREATED);
     }
+
+    @GetMapping("")
+    public ResponseEntity<List<Pharmacist>> getAll() {
+        List<Pharmacist> pharmacists = pharmacistService.findAll();
+        return pharmacists == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacists);
+
+    }
+
     @PostMapping("/delete")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> removeUser(@RequestBody Pharmacist pharmacist) {

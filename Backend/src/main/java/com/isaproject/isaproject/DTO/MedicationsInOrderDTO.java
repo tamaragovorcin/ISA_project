@@ -9,7 +9,6 @@ import javax.persistence.*;
 public class MedicationsInOrderDTO {
     private Medication medicine;
     private int quantity;
-    private Order order;
 
     public MedicationsInOrderDTO() {
     }
@@ -17,7 +16,6 @@ public class MedicationsInOrderDTO {
     public MedicationsInOrderDTO(Medication medicine, int quantity, Order order) {
         this.medicine = medicine;
         this.quantity = quantity;
-        this.order = order;
     }
 
     public Medication getMedicine() {
@@ -34,13 +32,5 @@ public class MedicationsInOrderDTO {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
     }
 }

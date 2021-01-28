@@ -30,9 +30,7 @@ public class ActionsService implements IActionsService {
 
     @Override
     public Actions save(ActionsDTO action) {
-        System.out.println(action.getPharmacyId());
-        Pharmacy pharmacy = pharmacyService.findById(action.getPharmacyId());
-        Actions actions =  new Actions(pharmacy,action.getDescription(),action.getExpiryDate());
+        Actions actions =  new Actions(action.getPharmacy(),action.getDescription(),action.getExpiryDate());
         return actionsRepository.save(actions);
 
     }
