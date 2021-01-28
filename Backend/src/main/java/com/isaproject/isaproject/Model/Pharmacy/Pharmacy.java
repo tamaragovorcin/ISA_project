@@ -114,7 +114,6 @@ public class Pharmacy implements Serializable{
         this.workingHoursDermatologists = workingHoursDermatologists;
     }
 
-
     public Set<MedicationReservation> getMedicationReservations() {
         return medicationReservations;
     }

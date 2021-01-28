@@ -157,7 +157,7 @@ public class proba {
         complaint.setPatient(patient);
         complaint.setMassage("Message");
         complaint.setSubject("pharmacist");
-        complaint.setSubjectId(1);
+       // complaint.setSubjectId(1);
         complaint.setAnswered(true);
 
         Specification specification = new Specification();
@@ -296,6 +296,7 @@ public class proba {
 
         Order order = new Order();
         order.setPharmacyAdmin(pharmacyAdmin);
+
         order.setDate(LocalDate.now());
         order.setStatus("closed");
         order.setOffer(offers);
