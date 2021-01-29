@@ -6,6 +6,12 @@
                   <a  class = "btn btn-secondary" href = "/supplierProfileInfo">My profile</a>
                   <b class="tab"></b>
                   <a  class = "btn btn-secondary" href = "/supplierReviewsActiveTenders">Active tenders</a>
+                  <b class="tab"></b>
+                  <a  class = "btn btn-secondary" href = "/myOffers">My offers</a> 
+                  <b class="tab"></b>
+                  <a  class = "btn btn-secondary" href = "/supplierAddMedication">Add medication</a>   
+                  <b class="tab"></b>
+                  <a  class = "btn btn-secondary" href = "/supplierMyMedications">My medications</a>   
             </span>
             <span  style="float:right;margin:15px">
                      <b class="tab"></b>    

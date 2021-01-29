@@ -26,8 +26,6 @@ public class MedicationInOrder {
     @Column(name = "quantity", nullable = true)
     private int quantity;
 
-
-
     @JsonBackReference(value="order-medicationInOrder")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = true, unique = false)

@@ -41,7 +41,7 @@ public class Medication  {
 
 
     @Column(name = "issuanceRegime", nullable = true)
-    private String issuanceRegime;//rezim upotrebe
+    private String issuanceRegime;
 
 
     @Column(name = "mark", nullable = true)
@@ -70,11 +70,6 @@ public class Medication  {
 
     @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
-
-
-    @JsonManagedReference(value="medication-medicationInOrder")
-    @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<MedicationInOrder> medicationInOrder = new HashSet<MedicationInOrder>();
 
     @JsonManagedReference(value="medication-medicationPrice")
     @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -143,7 +138,6 @@ public class Medication  {
         this.prescriptions = prescriptions;
         this.medications = medications;
         this.patientsMedicationAlergy = patientsMedicationAlergy;
-        this.medicationInOrder = medicationInOrder;
         this.medicationPrices = medicationPrices;
         this.specification = specification;
     }
@@ -218,14 +212,6 @@ public class Medication  {
 
     public void setePrescriptions(Set<EPrescription> ePrescriptions) {
         this.ePrescriptions = ePrescriptions;
-    }
-
-    public Set<MedicationInOrder> getMedicationInOrder() {
-        return medicationInOrder;
-    }
-
-    public void setMedicationInOrder(Set<MedicationInOrder> medicationInOrder) {
-        this.medicationInOrder = medicationInOrder;
     }
 
     public Set<MedicationPrice> getMedicationPrices() {
