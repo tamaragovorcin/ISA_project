@@ -36,6 +36,8 @@ import PhAdminProfileUpdate from '../views/pharmacyAdmin/PhAdminProfileUpdate.vu
 import PharmacyDermatologists from '../views/pharmacyAdmin/PharmacyDermatologists.vue'
 import PharmacyPharmacists from '../views/pharmacyAdmin/PharmacyPharmacists.vue'
 import AddPharmacist from '../views/pharmacyAdmin/AddPharmacist.vue'
+import urgent from '../views/home/urgent.vue'
+import myDermatologistAppointments from '../views/patient/myDermatologistAppointments.vue'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -230,6 +232,16 @@ const routes = [
       path: '/addPharmacist',
       name: 'AddPharmacist',
       component: AddPharmacist
+    },
+    {
+      path: '/urgent',
+      name: 'urgent',
+      component: urgent
+    },
+    {
+      path: '/myDermatologistAppointments',
+      name: 'myDermatologistAppointments',
+      component: myDermatologistAppointments
     },
   
 ]

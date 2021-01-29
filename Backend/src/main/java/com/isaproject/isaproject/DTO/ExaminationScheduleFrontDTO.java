@@ -3,15 +3,18 @@ package com.isaproject.isaproject.DTO;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class ExaminationScheduleDTO {
+public class ExaminationScheduleFrontDTO {
 
-    private Dermatologist dermatologist;
+    private Integer id;
 
-    private Pharmacy pharmacy;
+    private String dermatologistFirst;
+
+    private String DermatologistLast;
+
+    private String pharmacy;
 
     private LocalDate date;
 
@@ -19,36 +22,50 @@ public class ExaminationScheduleDTO {
 
     private double duration;
 
-    private Boolean finished;
-
     private double price;
 
-    public ExaminationScheduleDTO() {
-    }
-
-    public ExaminationScheduleDTO(Dermatologist dermatologist, Pharmacy pharmacy, LocalDate date, LocalTime startTime, double duration, Boolean finished, double price) {
-        this.dermatologist = dermatologist;
+    public ExaminationScheduleFrontDTO(String dermatologistFirst, String dermatologistLast, String pharmacy, LocalDate date, LocalTime startTime, double duration, double price) {
+        this.dermatologistFirst = dermatologistFirst;
+        DermatologistLast = dermatologistLast;
         this.pharmacy = pharmacy;
         this.date = date;
         this.startTime = startTime;
         this.duration = duration;
-        this.finished = finished;
         this.price = price;
     }
 
-    public Dermatologist getDermatologist() {
-        return dermatologist;
+    public ExaminationScheduleFrontDTO() {
     }
 
-    public void setDermatologist(Dermatologist dermatologist) {
-        this.dermatologist = dermatologist;
+    public Integer getId() {
+        return id;
     }
 
-    public Pharmacy getPharmacy() {
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getDermatologistFirst() {
+        return dermatologistFirst;
+    }
+
+    public void setDermatologistFirst(String dermatologistFirst) {
+        this.dermatologistFirst = dermatologistFirst;
+    }
+
+    public String getDermatologistLast() {
+        return DermatologistLast;
+    }
+
+    public void setDermatologistLast(String dermatologistLast) {
+        DermatologistLast = dermatologistLast;
+    }
+
+    public String getPharmacy() {
         return pharmacy;
     }
 
-    public void setPharmacy(Pharmacy pharmacy) {
+    public void setPharmacy(String pharmacy) {
         this.pharmacy = pharmacy;
     }
 
@@ -74,14 +91,6 @@ public class ExaminationScheduleDTO {
 
     public void setDuration(double duration) {
         this.duration = duration;
-    }
-
-    public Boolean getFinished() {
-        return finished;
-    }
-
-    public void setFinished(Boolean finished) {
-        this.finished = finished;
     }
 
     public double getPrice() {

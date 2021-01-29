@@ -111,7 +111,7 @@ ines (39 sloc)  1.61 KB
       <td>{{dermatologistAppointment.price}} </td>
      
     </tr>
-     <button class = "btn btn-link btn" style="color:black; " v-on:click = "reserve($event, dermatologistAppointment)">Make a reservation</button>
+     <button class = "btn btn-link btn" style="color:black; " v-on:click = "reserve($event, dermatologistAppointment)">Cancel this reservation</button>
   </tbody>
 </table>
        
@@ -148,12 +148,7 @@ export default {
   },
 mounted() {
 
-    this.axios.get('/pharmacy/ExaminationSchedule')
-          .then(response => {
-                this.dermatologistAppointments= response.data;
-               console.log(this.dermatologistAppointments);
-              
-          })
+  
 
           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
         this.axios.get('/patient/account',{ 
@@ -163,18 +158,22 @@ mounted() {
              }
          }).then(response => {
                 this.patient = response.data;
-         
-         }).catch(res => {
-                       alert("NOT OK");
-                        console.log(res);
-                 });
+           console.log( this.patient);
+                 this.axios.get('/pharmacy/cancelExamination/'+this.patient.id)
+                    .then(response => {
+                this.dermatologistAppointments= response.data;
+               console.log(this.dermatologistAppointments);
+              
+          })
+
+         })
+
+
+      
 
 },
   methods:{
-       myDermatologistAppointments: function(){
-            window.location.href = "/myDermatologistAppointments";
-
-      },
+     
          allPharmacies: function(){
         window.location.href = "/myProfilePatient";
       },
@@ -229,22 +228,15 @@ mounted() {
             window.location.href = "/showPharmaciesPatient";
 
       },
-    
+      myDermatologistAppointments: function(){
+            window.location.href = "/myDermatologistAppointments";
+
+      },
 
          reserve : function(event, dermatologistAppointment) {
           this.dermatologistAppointment = dermatologistAppointment
-          alert(this.patient.id)
-          const examination = {
-              patient: this.patient,
-              cancelled : false,
-              showedUp: false,
-              examinationId: this.dermatologistAppointment.id,
-              information: null
-
-
-
-          }
-            this.axios.post('/pharmacy/addExamination', examination)
+        
+            this.axios.get('/pharmacy/cancel/'+dermatologistAppointment.id)
 
 
       },

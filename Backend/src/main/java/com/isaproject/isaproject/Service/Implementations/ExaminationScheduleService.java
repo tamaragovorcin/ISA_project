@@ -18,6 +18,7 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
 
     @Override
     public Optional<ExaminationSchedule> findById(Integer id) {
+
         return examinationScheduleRepository.findById(id);
     }
 

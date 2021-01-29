@@ -73,22 +73,82 @@ ines (39 sloc)  1.61 KB
            <div class="form-row">
                        
                         <label>Choose a date:</label>
-                        <input type="text" class="form-control" v-model="name" placeholder="Enter date">
                         
+                        <input type="date" v-model = "date" class="form-control" placeholder = "01/01/2021">
                         
+                       
                         <label>Choose the time:</label>
-                        <input type="text" class="form-control" v-model = "surname" placeholder="Enter time">
+                        <input type="time" v-model = "startTime" class="form-control" placeholder = "01/01/2021">
                        
                     </div>
 
        
-        <button class = "btn btn-link btn" style="color:black; " v-on:click = "makeAReservation">Make a reservation</button>
-
+        
+<button class="button3" v-on:click="showAvailability">Show pharmacies</button>
 
       
 
-      </div>                                                                
+      </div>  
 
+        <div id="customers" v-if="showTable" style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
+
+    <table>
+                    <thead>
+                        <tr style="font-weight: bold; ">
+                            <th style="width: 200px;" scope="col">Name of pharmacy</th>
+                            <th style="width: 200px;" scope="col">Location</th>
+
+                            <th style="width: 200px;" scope="col">Pharmacy Mark</th>
+                            <th style="width: 200px;" scope="col">Consultation mark</th>
+                       
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                      
+                        <tr  v-for="pharmacy in pharmacies" :key="pharmacy.id" v-on:click="goToBlabla(pharmacy)">
+                            <td>{{pharmacy.pharmacyName}}</td>
+                            <td>{{pharmacy.city}}</td>
+                            <td>{{pharmacy.mark}}</td>
+                            <td></td>
+                        </tr>
+                      
+                    </tbody>
+                </table>
+
+
+        </div>
+
+
+
+         <div id="customers" v-if="showSecondTable" style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
+
+    <table>
+                    <thead>
+                        <tr style="font-weight: bold; ">
+                            <th style="width: 200px;" scope="col">Pharmacist first name</th>
+                            <th style="width: 200px;" scope="col">Pharmacist last name</th>
+
+                            <th style="width: 200px;" scope="col">Pharmacist Mark</th>
+                          
+                       
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                      
+                        <tr  v-for="pharmacy in pharmacies" :key="pharmacy.id" v-on:click="goToBlabla(pharmacy)">
+                            <td>{{pharmacy.pharmacyName}}</td>
+                            <td>{{pharmacy.city}}</td>
+                            <td>{{pharmacy.mark}}</td>
+                      
+                        </tr>
+                      
+                    </tbody>
+                </table>
+
+
+        </div>
 </div>
 </template>
 
@@ -107,9 +167,25 @@ export default {
        showPharmacyComplaint : false,
        showPharmacistComplaint : false,
        showDermatologistComplaint : false,
+       date: null,
+       startTime: null,
+        showTable: false,
+                showTableAvailability : false,
+      showSecondTable : false
 
     }
   },
+mounted() {
+
+    this.axios.get('/pharmacy/allPharmacistPharmacies')
+          .then(response => {
+                this.pharmacies= response.data;
+               console.log(this.pharmacies);
+              
+          })
+          
+          
+          },
 
   methods:{
      
@@ -165,13 +241,26 @@ export default {
         },
             makeAReservation : function(){
 
-      window.location.href = "/showReservationPharmacies";
+      window.location.href = "/showReservationPharmacies/";
  
         },
        showPharmacies : function(){
             window.location.href = "/showPharmaciesPatient";
 
-      }
+      },
+
+      showAvailability: function () {
+                this.showTable = true;
+          
+              
+            }, 
+
+    goToBlabla: function (pharmacy) {
+                alert("Evo mee" + pharmacy)
+                 this.showTable = false;
+           this.showSecondTable = true;
+              
+            }, 
 }
 }
 </script>
