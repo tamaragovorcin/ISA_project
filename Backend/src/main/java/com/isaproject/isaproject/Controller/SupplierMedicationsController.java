@@ -1,5 +1,6 @@
 package com.isaproject.isaproject.Controller;
 import com.isaproject.isaproject.DTO.SupplierMedicationReviewDTO;
+import com.isaproject.isaproject.DTO.SupplierMedicationUpdateQuantityDTO;
 import com.isaproject.isaproject.DTO.SupplierMedicationsDTO;
 import com.isaproject.isaproject.Model.Medicine.SupplierMedications;
 import com.isaproject.isaproject.Model.Users.PersonUser;
@@ -31,7 +32,6 @@ public class SupplierMedicationsController {
     @PostMapping("/add")
     @PreAuthorize("hasRole('SUPPLIER')")
     public ResponseEntity<String> add(@RequestBody SupplierMedicationsDTO supplierMedicationsDTO) {
-        System.out.println("****************************************************************");
         SupplierMedications supplierMedications = supplierMedicationService.save(supplierMedicationsDTO);
         return supplierMedications == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -60,9 +60,9 @@ public class SupplierMedicationsController {
 
     @PostMapping("/update")
     @PreAuthorize("hasRole('SUPPLIER')")
-    public ResponseEntity<String> update(@RequestBody SupplierMedicationReviewDTO supplierMedicationReviewDTO) {
+    public ResponseEntity<String> update(@RequestBody SupplierMedicationUpdateQuantityDTO supplierMedicationDTO) {
 
-        SupplierMedications supplierMedications = supplierMedicationService.update(supplierMedicationReviewDTO);
+        SupplierMedications supplierMedications = supplierMedicationService.update(supplierMedicationDTO);
         return supplierMedications == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 new ResponseEntity<>("Medication is successfully added!", HttpStatus.CREATED);

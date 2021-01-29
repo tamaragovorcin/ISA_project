@@ -93,6 +93,19 @@ public class MedicationController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medicationsForFront);
     }
+    @GetMapping("getAll")
+    ResponseEntity<List<MedicationSearchDTO>> getAllMedications()
+    {
+        List<Medication> medications= medicationService.findAll();
+        List<MedicationSearchDTO> medicationsForFront = new ArrayList<>();
+        for (Medication medication: medications) {
+            MedicationSearchDTO medicationSearchDTO = getMedicationSearchDTO(medication);
+            medicationsForFront.add(medicationSearchDTO);
+        }
+        return medicationsForFront == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(medicationsForFront);
+    }
 
     private MedicationSearchDTO getMedicationSearchDTO(Medication medication) {
         Specification specification = medication.getSpecification();

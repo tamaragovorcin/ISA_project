@@ -40,7 +40,7 @@ public class Medication  {
 
 
     @Column(name = "issuanceRegime", nullable = true)
-    private String issuanceRegime;//rezim upotrebe
+    private String issuanceRegime;
 
 
     @Column(name = "mark", nullable = true)
@@ -69,11 +69,6 @@ public class Medication  {
 
     @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
-
-
-    @JsonManagedReference(value="medication-medicationInOrder")
-    @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<MedicationInOrder> medicationInOrder = new HashSet<MedicationInOrder>();
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "specification_id", referencedColumnName = "id", nullable = true, unique = false)

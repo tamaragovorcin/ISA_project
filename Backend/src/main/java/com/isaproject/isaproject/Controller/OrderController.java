@@ -1,10 +1,8 @@
 package com.isaproject.isaproject.Controller;
 
-        import com.isaproject.isaproject.DTO.MedicationDTO;
         import com.isaproject.isaproject.DTO.MedicationsInOrderReviewDTO;
         import com.isaproject.isaproject.DTO.OrderDTO;
         import com.isaproject.isaproject.DTO.OrderReviewDTO;
-        import com.isaproject.isaproject.Model.Medicine.Medication;
         import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
         import com.isaproject.isaproject.Model.Orders.Offer;
         import com.isaproject.isaproject.Model.Orders.Order;
@@ -12,7 +10,6 @@ package com.isaproject.isaproject.Controller;
         import com.isaproject.isaproject.Model.Users.Supplier;
         import com.isaproject.isaproject.Service.Implementations.OrderService;
         import com.isaproject.isaproject.Service.Implementations.SupplierService;
-        import org.aspectj.weaver.ast.Or;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.http.HttpStatus;
         import org.springframework.http.ResponseEntity;
@@ -24,7 +21,7 @@ package com.isaproject.isaproject.Controller;
         import java.time.LocalDate;
         import java.util.ArrayList;
         import java.util.List;
-        import java.util.Set;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/order")
@@ -83,11 +80,8 @@ public class OrderController {
 
         Set<Offer> offers = order.getOffer();
         for (Offer offer:offers) {
-            System.out.println("tu sammmmmmmm");
             Supplier offerSupplier = offer.getSupplier();
             if(offerSupplier.getId()==supplier.getId()) {
-                System.out.println("tu okkkkkkkkkkkkkkkkkkk");
-
                 return false;
             }
         }
