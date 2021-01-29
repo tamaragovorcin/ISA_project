@@ -8,13 +8,20 @@ package com.isaproject.isaproject.Controller;
         import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
         import com.isaproject.isaproject.Model.Orders.Offer;
         import com.isaproject.isaproject.Model.Orders.Order;
+        import com.isaproject.isaproject.Model.Users.PersonUser;
+        import com.isaproject.isaproject.Model.Users.Supplier;
         import com.isaproject.isaproject.Service.Implementations.OrderService;
+        import com.isaproject.isaproject.Service.Implementations.SupplierService;
         import org.aspectj.weaver.ast.Or;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.http.HttpStatus;
         import org.springframework.http.ResponseEntity;
+        import org.springframework.security.access.prepost.PreAuthorize;
+        import org.springframework.security.core.Authentication;
+        import org.springframework.security.core.context.SecurityContextHolder;
         import org.springframework.web.bind.annotation.*;
 
+        import java.time.LocalDate;
         import java.util.ArrayList;
         import java.util.List;
         import java.util.Set;
@@ -25,6 +32,9 @@ package com.isaproject.isaproject.Controller;
 public class OrderController {
     @Autowired
     OrderService orderService;
+
+    @Autowired
+    SupplierService supplierService;
 
 
     @PostMapping("/add")
@@ -47,17 +57,41 @@ public class OrderController {
     }
 
     @GetMapping("active")
-    ResponseEntity<List<OrderReviewDTO>> getAllActive()
+    @PreAuthorize("hasRole('SUPPLIER')")
+    ResponseEntity<List<OrderReviewDTO>> getAllActiveForSupplier()
     {
         List<Order> orders = orderService.findAll();
         List<OrderReviewDTO> ordersDto = new ArrayList<>();
         for (Order order: orders) {
-            ordersDto.add(new OrderReviewDTO(order.getId(),order.getDate(),order.getStatus(), getMedicationsInOrder(order.getMedicationInOrders()),
-                    order.getPharmacyAdmin().getPharmacy().getPharmacyName()));
+            if(order.getDate().isAfter(LocalDate.now()))
+            {
+                if(supplierHasMadeOffer(order)) {
+                    ordersDto.add(new OrderReviewDTO(order.getId(), order.getDate(), order.getStatus(), getMedicationsInOrder(order.getMedicationInOrders()),
+                            order.getPharmacyAdmin().getPharmacy().getPharmacyName()));
+                }
+            }
         }
         return ordersDto == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(ordersDto);
+    }
+
+    private boolean supplierHasMadeOffer(Order order) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        Supplier supplier = supplierService.findById(user.getId());
+
+        Set<Offer> offers = order.getOffer();
+        for (Offer offer:offers) {
+            System.out.println("tu sammmmmmmm");
+            Supplier offerSupplier = offer.getSupplier();
+            if(offerSupplier.getId()==supplier.getId()) {
+                System.out.println("tu okkkkkkkkkkkkkkkkkkk");
+
+                return false;
+            }
+        }
+        return true;
     }
 
     private List<MedicationsInOrderReviewDTO> getMedicationsInOrder(Set<MedicationInOrder> medicationInOrders) {

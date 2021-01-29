@@ -237,16 +237,12 @@ export default {
       },
       typeIsSelected : function(event, type) { 
            this.choosenType = type;
-           console.log(this.choosenType);
       },
       formIsSelected : function(event, form) { 
            this.choosenForm = form;
-           console.log(this.choosenForm);
       },
        wayOfSellingIsSelected : function(event, way) { 
           this.wayOfSellingIsSelected = way;
-          console.log(this.wayOfSellingIsSelected);
-
       },
       showSpecificationModal : function() {
           this.$refs['specification-modal'].show();
