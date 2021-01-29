@@ -46,12 +46,8 @@ import PharmacyPharmacists from '../views/pharmacyAdmin/PharmacyPharmacists.vue'
 import AddPharmacist from '../views/pharmacyAdmin/AddPharmacist.vue'
 import Complaints from '../views/systemAdmin/Complaints.vue'
 import Urgent from '../views/pharmacyAdmin/Urgent.vue'
-<<<<<<< HEAD
 import PharmacyMedication from '../views/pharmacyAdmin/PharmacyMedication.vue'
-
-=======
 import SupplierReviewsActiveTenders from '../views/supplier/SupplierReviewsActiveTenders.vue'
->>>>>>> 4fb9c9e2c4e75ffaec9fba668b1dd144e781a6f1
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -296,16 +292,17 @@ const routes = [
       component: Urgent
     },
     {
-<<<<<<< HEAD
+
       path: '/pharmacyMedications',
       name: 'PharmacyMedication',
       component: PharmacyMedication
-=======
+    },
+    {
       path: '/supplierReviewsActiveTenders',
       name: 'SupplierReviewsActiveTenders',
       component: SupplierReviewsActiveTenders
->>>>>>> 4fb9c9e2c4e75ffaec9fba668b1dd144e781a6f1
-    },
+    }
+  
   
 ]
 const router = new VueRouter({
