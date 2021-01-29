@@ -35,7 +35,6 @@ public class PatientService implements IPatientService {
 
     @Override
     public Patient findById(Integer id) {
-        System.out.println("OVO JE "+id);
         return patientRepository.findById(id).get();
     }
 

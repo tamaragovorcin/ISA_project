@@ -1,3 +1,4 @@
+
 package com.isaproject.isaproject.DTO;
 
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
@@ -86,3 +87,4 @@ public class PharmacistDTO {
         this.address = address;
     }
 }
+

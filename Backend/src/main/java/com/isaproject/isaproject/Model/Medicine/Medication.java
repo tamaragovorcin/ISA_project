@@ -60,10 +60,6 @@ public class Medication  {
     private Set<EPrescription> ePrescriptions = new HashSet<EPrescription>();
 
     @ManyToMany
-    @JoinTable(name = "offer_medication", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "offer_id", referencedColumnName = "id"))
-    private Set<Offer> offer = new HashSet<Offer>();
-
-    @ManyToMany
     @JoinTable(name = "prescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
     private Set<Prescription> prescriptions = new HashSet<Prescription>();
 
@@ -102,7 +98,48 @@ public class Medication  {
         this.loyaltyPoints = loyaltyPoints;
         this.wayOfSelling = wayOfSelling;
         this.ePrescriptions = ePrescriptions;
-        this.offer = offer;
+
+    }
+
+    public String getWayOfSelling() {
+        return wayOfSelling;
+    }
+
+    public void setWayOfSelling(String wayOfSelling) {
+        this.wayOfSelling = wayOfSelling;
+    }
+
+
+    public Specification getSpecification() {
+        return specification;
+    }
+
+    public void setSpecification(Specification specification) {
+        this.specification = specification;
+    }
+
+
+    public Set<PatientsMedicationAlergy> getPatientsMedicationAlergy() {
+        return patientsMedicationAlergy;
+    }
+
+    public void setPatientsMedicationAlergy(Set<PatientsMedicationAlergy> patientsMedicationAlergy) {
+        this.patientsMedicationAlergy = patientsMedicationAlergy;
+    }
+
+    public Set<Medication> getMedications() {
+        return medications;
+    }
+
+    public void setMedications(Set<Medication> medications) {
+        this.medications = medications;
+    }
+
+    public Set<Prescription> getPrescriptions() {
+        return prescriptions;
+    }
+
+    public void setPrescriptions(Set<Prescription> prescriptions) {
         this.prescriptions = prescriptions;
         this.medications = medications;
         this.patientsMedicationAlergy = patientsMedicationAlergy;
@@ -175,52 +212,12 @@ public class Medication  {
         this.loyaltyPoints = loyaltyPoints;
     }
 
-    public String getWayOfSelling() {
-        return wayOfSelling;
-    }
-
-    public void setWayOfSelling(String wayOfSelling) {
-        this.wayOfSelling = wayOfSelling;
-    }
-
     public Set<EPrescription> getePrescriptions() {
         return ePrescriptions;
     }
 
     public void setePrescriptions(Set<EPrescription> ePrescriptions) {
         this.ePrescriptions = ePrescriptions;
-    }
-
-    public Set<Offer> getOffer() {
-        return offer;
-    }
-
-    public void setOffer(Set<Offer> offer) {
-        this.offer = offer;
-    }
-
-    public Set<Prescription> getPrescriptions() {
-        return prescriptions;
-    }
-
-    public void setPrescriptions(Set<Prescription> prescriptions) {
-        this.prescriptions = prescriptions;
-    }
-
-    public Set<Medication> getMedications() {
-        return medications;
-    }
-
-    public void setMedications(Set<Medication> medications) {
-        this.medications = medications;
-    }
-
-    public Set<PatientsMedicationAlergy> getPatientsMedicationAlergy() {
-        return patientsMedicationAlergy;
-    }
-
-    public void setPatientsMedicationAlergy(Set<PatientsMedicationAlergy> patientsMedicationAlergy) {
-        this.patientsMedicationAlergy = patientsMedicationAlergy;
     }
 
     public Set<MedicationInOrder> getMedicationInOrder() {
@@ -237,13 +234,5 @@ public class Medication  {
 
     public void setMedicationPrices(Set<MedicationPrice> medicationPrices) {
         this.medicationPrices = medicationPrices;
-    }
-
-    public Specification getSpecification() {
-        return specification;
-    }
-
-    public void setSpecification(Specification specification) {
-        this.specification = specification;
     }
 }

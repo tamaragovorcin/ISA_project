@@ -14,8 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name="orders")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "orders")
 public class Order  {
 
     @Id
@@ -41,6 +41,8 @@ public class Order  {
     @Column(name = "status", nullable = true)
     private String status;
 
+
+    @JsonManagedReference(value="offer-offerForOrder")
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Offer> offer = new HashSet<Offer>();
 

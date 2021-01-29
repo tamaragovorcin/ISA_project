@@ -157,7 +157,7 @@ public class proba {
         complaint.setPatient(patient);
         complaint.setMassage("Message");
         complaint.setSubject("pharmacist");
-        complaint.setSubjectId(1);
+       // complaint.setSubjectId(1);
         complaint.setAnswered(true);
 
         Specification specification = new Specification();
@@ -295,18 +295,12 @@ public class proba {
 
         Order order = new Order();
         order.setPharmacyAdmin(pharmacyAdmin);
+
         order.setDate(LocalDate.now());
         order.setStatus("closed");
         order.setOffer(offers);
 
-        Set<Supplier> suppliers = new HashSet<Supplier>();
-        Offer offer = new Offer();
-        offer.setMedications(medications);
-        offer.setDateOfDelivery(LocalDate.now());
-        offer.setSummaryPrice(555);
-        offer.setSuppliers(suppliers);
-        offer.setOrder(order);
-        offer.setConsulting(consultings);
+
 
         HolidayScheduleDermatologist holidayScheduleDermatologist = new HolidayScheduleDermatologist();
         holidayScheduleDermatologist.setDermatologist(dermatologist);
@@ -370,7 +364,6 @@ public class proba {
         manager.persist(medicationPrice);
         manager.persist(medicationReservation);
         manager.persist(order);
-        manager.persist(offer);
         manager.persist(holidayScheduleDermatologist);
         manager.persist(holidaySchedulePharmacist);
         manager.persist(workingHoursPharmacist);

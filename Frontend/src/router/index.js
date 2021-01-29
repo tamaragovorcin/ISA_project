@@ -9,6 +9,15 @@ import IsaHomePage from '../views/home/IsaHomePage.vue'
 import Login from '../views/home/Login.vue'
 import Registration from '../views/home/Registration.vue'
 import PatientProfile from '../views/patient/PatientProfile.vue'
+import PharmacistProfile from '../views/pharmacist/PharmacistProfile.vue'
+import PharmacistClients from '../views/pharmacist/PharmacistClients.vue'
+import NoteAboutConsulting from '../views/pharmacist/NoteAboutConsulting.vue'
+import PharmacistHomePage from '../views/pharmacist/PharmacistHomePage.vue'
+import CreateRequestVacation from '../views/pharmacist/CreateRequestVacation.vue'
+import PharmacistUpdateProfile from '../views/pharmacist/PharmacistUpdateProfile.vue'
+import DermatologistHomePage from '../views/dermatologist/DermatologistHomePage.vue'
+import DermatologistProfile from '../views/dermatologist/DermatologistProfile.vue'
+import DermatologistUpdateProfile from '../views/dermatologist/DermatologistUpdateProfile.vue'
 import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vue'
 import Order from '../views/pharmacyAdmin/Order.vue'
 import PharmacyProfile from '../views/PharmacyProfile.vue'
@@ -35,9 +44,14 @@ import PhAdminProfileUpdate from '../views/pharmacyAdmin/PhAdminProfileUpdate.vu
 import PharmacyDermatologists from '../views/pharmacyAdmin/PharmacyDermatologists.vue'
 import PharmacyPharmacists from '../views/pharmacyAdmin/PharmacyPharmacists.vue'
 import AddPharmacist from '../views/pharmacyAdmin/AddPharmacist.vue'
+import Complaints from '../views/systemAdmin/Complaints.vue'
 import Urgent from '../views/pharmacyAdmin/Urgent.vue'
+<<<<<<< HEAD
 import PharmacyMedication from '../views/pharmacyAdmin/PharmacyMedication.vue'
 
+=======
+import SupplierReviewsActiveTenders from '../views/supplier/SupplierReviewsActiveTenders.vue'
+>>>>>>> 4fb9c9e2c4e75ffaec9fba668b1dd144e781a6f1
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -73,7 +87,7 @@ const routes = [
     name: 'IsaHomePage',
     component: IsaHomePage
     },
-  {
+    {
       path: '/login',
       name: 'login',
       component: Login
@@ -87,6 +101,51 @@ const routes = [
       path: '/patientProfile',
       name: 'PatientProfile',
       component: PatientProfile
+    },
+    {
+      path: '/pharmacistProfile',
+      name: 'PharmacistProfile',
+      component: PharmacistProfile
+    },
+    {
+      path: '/pharmacistUpdateProfile',
+      name: 'PharmacistUpdateProfile',
+      component: PharmacistUpdateProfile
+    },
+    {
+      path: '/dermatologistProfile',
+      name: 'DermatologistProfile',
+      component: DermatologistProfile
+    },
+    {
+      path: '/dermatologistUpdateProfile',
+      name: 'DermatologistUpdateProfile',
+      component: DermatologistUpdateProfile
+    },
+    {
+      path: '/pharmacistClients',
+      name: 'PharmacistClients',
+      component: PharmacistClients
+    },
+    {
+      path: '/noteConsultig',
+      name: 'NoteAboutConsulting',
+      component: NoteAboutConsulting
+    },
+    {
+      path: '/createRequestVacation',
+      name: 'CreateRequestVacation',
+      component: CreateRequestVacation
+    },
+    {
+      path: '/pharmacistHomePage',
+      name: 'PharmacistHomePage',
+      component: PharmacistHomePage
+    },
+    {
+      path: '/dermatologistHomePage',
+      name: 'DermatologistHomePage',
+      component: DermatologistHomePage
     },
     {
       path: '/pharmacyAdminProfile',
@@ -227,14 +286,25 @@ const routes = [
       component: AddPharmacist
     },
     {
+      path: '/complaints',
+      name: 'Complaints',
+      component: Complaints
+    },
+    {
       path: '/urgent',
       name: 'Urgent',
       component: Urgent
     },
     {
+<<<<<<< HEAD
       path: '/pharmacyMedications',
       name: 'PharmacyMedication',
       component: PharmacyMedication
+=======
+      path: '/supplierReviewsActiveTenders',
+      name: 'SupplierReviewsActiveTenders',
+      component: SupplierReviewsActiveTenders
+>>>>>>> 4fb9c9e2c4e75ffaec9fba668b1dd144e781a6f1
     },
   
 ]

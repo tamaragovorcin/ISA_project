@@ -48,7 +48,6 @@ public class MedicationController {
     ResponseEntity<List<Medication>> getAll()
     {
         List<Medication> medications = medicationService.findAll();
-        System.out.println(medications.size());
         return medications == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medications);

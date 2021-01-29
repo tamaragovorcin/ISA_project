@@ -31,6 +31,11 @@ public class PharmacyDTO {
         this.consultingPrice = consultingPrice;
         this.description = description;
     }
+    public PharmacyDTO(String pharmacyName, AddressDTO address, double consultingPrice) {
+        this.pharmacyName = pharmacyName;
+        this.address = address;
+        this.consultingPrice = consultingPrice;
+    }
 
     public String getDescription() {
         return description;

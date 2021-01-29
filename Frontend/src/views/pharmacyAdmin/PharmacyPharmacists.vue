@@ -1,3 +1,4 @@
+
 <template>
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
@@ -72,15 +73,13 @@
   </thead>
   <tbody>
     <tr v-for="pharmacist in pharmacists" :key="pharmacist.id">
-                                                    <td></td>
-                                                    <td>{{pharmacist.name}}</td>
-                                                    <td>{{pharmacist.surname}}</td>
-                                                    <td>{{pharmacist.email}}</td>
-                                                    <td>{{pharmacist.phoneNumber}}</td>
-                                                  	<td><button  v-on:click ="remove($event, pharmacist)" class="btn btn-info">Remove</button></td>
-
-                                                </tr>
-   
+      <td></td>
+      <td>{{pharmacist.name}}</td>
+      <td>{{pharmacist.surname}}</td>
+      <td>{{pharmacist.email}}</td>
+      <td>{{pharmacist.phoneNumber}}</td>
+      <td><button  v-on:click ="remove($event, pharmacist)" class="btn btn-info">Remove</button></td>
+    </tr>
   </tbody>
 </table>
 
@@ -128,9 +127,9 @@ export default {
             
       },
       remove : function(event,pharmacist){
-          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-        	this.axios.post('pharmacist/delete', pharmacist,{ 
-                    headers: {
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.post('pharmacist/delete', pharmacist,{ 
+                headers: {
                         'Authorization': 'Bearer ' + token,
                     }
                     }).then(response => {
@@ -195,4 +194,3 @@ export default {
 </style>
 
 
-  

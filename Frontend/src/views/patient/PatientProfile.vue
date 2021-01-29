@@ -51,20 +51,13 @@ ines (39 sloc)  1.61 KB
                                     <div class="modal-body">
                                         <div v-if = "showPharmacyComplaint">
                                                                     <div class="row">
-
-                                                                            <div class="col">
-                                                                                <label>Choose pharmacy:</label>
-                                                                            </div>
-                                                                            <div class="col">
-                                                                                  <select v-model="pharmacy">
-                                                                                        <option v-for="ph in pharmacies" :key="ph.id">
-                                                                                            {{ph.name}}
-                                                                                        </option>
-                                                                                   </select>
-                                                                            </div>
-
+                                                                        <div class="col">
+                                                                          <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose pharmacy" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+                                                                             <b-dropdown-item v-for="pharmacy in this.pharmacies"  v-on:click ="pharmacyIsSelected($event, pharmacy)" v-bind:key="pharmacy"> {{pharmacy }}</b-dropdown-item>
+                                                                         </b-dropdown> 
+                                                                         </div>
                                                                     </div>
-                                                                    
+                                                        
                                                                     <hr />
                                                                     <div class="row">
                                                                         <div class="col">
@@ -73,28 +66,21 @@ ines (39 sloc)  1.61 KB
                                                                         
                                                                     </div>
                                                                     <div class="row">
-                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" class="form-control">
+                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" v-model="complaintText" class="form-control">
                                                                        
                                                                     </div>
                                                                      <div class="modal-footer">
                                         <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" @click="sendComplaint">Send complaint</button>
+                                        <button class="btn btn-primary" @click="sendComplaintPharmacy">Send complaint</button>
                                     </div>
                                         </div>
                                         <div v-if = "showPharmacistComplaint">
                                                                     <div class="row">
-
-                                                                            <div class="col">
-                                                                                <label>Choose pharmacist:</label>
-                                                                            </div>
-                                                                            <div class="col">
-                                                                                  <select v-model="pharmacist">
-                                                                                        <option v-for="ph in pharmacists" :key="ph.id">
-                                                                                            {{ph.name}}
-                                                                                        </option>
-                                                                                   </select>
-                                                                            </div>
-
+                                                                        <div class="col">
+                                                                          <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose pharmacist" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+                                                                             <b-dropdown-item v-for="pharmacist in this.pharmacists"  v-on:click ="pharmacistIsSelected($event, pharmacist)" v-bind:key="pharmacist.email"> {{pharmacist.fullName }}</b-dropdown-item>
+                                                                         </b-dropdown> 
+                                                                         </div>
                                                                     </div>
                                                                     
                                                                     <hr />
@@ -104,28 +90,21 @@ ines (39 sloc)  1.61 KB
                                                                     </div> 
                                                                     </div>
                                                                     <div class="row">
-                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" class="form-control">
+                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" v-model="complaintText" class="form-control">
                                                                        
                                                                     </div>
                                                                      <div class="modal-footer">
                                         <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" @click="sendComplaint">Send complaint</button>
+                                        <button class="btn btn-primary" @click="sendComplaintPharmacist">Send complaint</button>
                                     </div>
                                         </div>
                                         <div v-if = "showDermatologistComplaint">
                                                                     <div class="row">
-
-                                                                            <div class="col">
-                                                                                <label>Choose dermatologist:</label>
-                                                                            </div>
-                                                                            <div class="col">
-                                                                                  <select v-model="dermatologist">
-                                                                                        <option v-for="ph in dermatologists" :key="ph.id">
-                                                                                            {{ph.name}}
-                                                                                        </option>
-                                                                                   </select>
-                                                                            </div>
-
+                                                                        <div class="col">
+                                                                          <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologists" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+                                                                             <b-dropdown-item v-for="derma in this.dermatologists"  v-on:click ="dermatologisttIsSelected($event, derma)" v-bind:key="derma.email"> {{derma.fullName }}</b-dropdown-item>
+                                                                         </b-dropdown> 
+                                                                         </div>
                                                                     </div>
                                                                     
                                                                     <hr />
@@ -135,12 +114,12 @@ ines (39 sloc)  1.61 KB
                                                                     </div> 
                                                                     </div>
                                                                     <div class="row">
-                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" class="form-control">
+                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" v-model="complaintText"  class="form-control">
                                                                        
                                                                     </div>
                                                                      <div class="modal-footer">
                                         <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" @click="sendComplaint">Send complaint</button>
+                                        <button class="btn btn-primary" @click="sendComplaintDermatologist">Send complaint</button>
                                     </div>
                                         </div>
                                        
@@ -165,6 +144,7 @@ export default {
 
   data() {
     return {
+        patientInfo : null,
        showComplaintForm : false,
        pharmacies : [],
        pharmacy : null,
@@ -175,10 +155,11 @@ export default {
        showPharmacyComplaint : false,
        showPharmacistComplaint : false,
        showDermatologistComplaint : false,
+       complaintText : ""
 
     }
   },
-
+  
   methods:{
      
       showMyProfile: function(){
@@ -213,14 +194,102 @@ export default {
           this.showPharmacistComplaint = false;
           this.showDermatologistComplaint = true;
       },
-      sendComplaint : function(){
+      sendComplaintPharmacy : function(){
+          const pharmacy = {
+              pharmacyName : this.pharmacy
+          }
+          const complaint= {
+            answered : false,
+            massage : this.complaintText,
+            answer : "",
+            pharmacyName : pharmacy,
+            patient : this.patientInfo,
+            dermatologist : null,
+            pharmacist : null,
+            subject : "PHARMACY"
+          }
+          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
 
+          this.axios.post('/complaint/add',complaint,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                }}).then(response => {
+                    alert("Complaint is successfully sent!.");
+
+                    console.log(response);                
+                }).catch(res => {
+                       alert("Please try later.");
+                        console.log(res);
+                });
+      },
+      sendComplaintDermatologist : function() {
+     
+          const complaint= {
+            answered : false,
+            massage : this.complaintText,
+            answer : "",
+            pharmacyName : null,
+            patient : this.patientInfo,
+            dermatologist : this.dermatologist,
+            pharmacist : null,
+            subject : "DERMATOLOGIST"
+          }
+          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+
+          this.axios.post('/complaint/add',complaint,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                }}).then(response => {
+                    alert("Complaint is successfully sent!.");
+
+                    console.log(response);                
+                }).catch(res => {
+                       alert("Please try later.");
+                        console.log(res);
+                });
+      },
+      sendComplaintPharmacist : function() {
+        const complaint= {
+            answered : false,
+            massage : this.complaintText,
+            answer : "",
+            pharmacyName : null,
+            patient : this.patientInfo,
+            dermatologist : null,
+            pharmacist : this.pharmacist,
+            subject : "PHARMACIST"
+          }
+          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+
+          this.axios.post('/complaint/add',complaint,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                }}).then(response => {
+                    alert("Complaint is successfully sent!.");
+
+                    console.log(response);                
+                }).catch(res => {
+                       alert("Please try later.");
+                        console.log(res);
+                });
       },
       showPharmacies : function(){
             window.location.href = "/showPharmaciesPatient";
       },
       showSubscriptions : function() {
             window.location.href = "/subscriptionsToPharmacies";
+      },
+      pharmacyIsSelected : function(event, pharmacy) {
+          this.complaintText ="";
+          this.pharmacy = pharmacy;
+      },
+      dermatologisttIsSelected : function(event, derm) {
+          this.complaintText ="";
+          this.dermatologist = derm;
+      },
+      pharmacistIsSelected : function(event, pharmacist){
+          this.complaintText ="";
+          this.pharmacist = pharmacist;
       }
 },
     mounted() {
@@ -228,14 +297,44 @@ export default {
         this.axios.get('/patient/account',{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
-
              }
          }).then(response => {
+                this.patientInfo = response.data;
                 console.log(response.data);
          }).catch(res => {
                        alert("NOT OK");
                         console.log(res);
                  });
+
+        this.axios.get('/pharmacy/allNames',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+            }).then(response => { 
+                this.pharmacies=response.data;
+            }).catch(res => {
+                        alert("Please try again later.");
+                        console.log(res);});
+
+        this.axios.get('/pharmacist/basicInfo',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+            }).then(response => { 
+                this.pharmacists=response.data;
+            }).catch(res => {
+                        alert("Please try again later.");
+                        console.log(res);});
+
+        this.axios.get('/dermatologist/basicInfo',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+            }).then(response => { 
+                this.dermatologists=response.data;
+            }).catch(res => {
+                        alert("Please try again later.");
+                        console.log(res);});
     }
 }
 </script>

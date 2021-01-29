@@ -131,6 +131,11 @@ public class Pharmacy implements Serializable{
         this.pharmacyName = pharmacyName;
     }
 
+
+    public Set<MedicationReservation> getMedicationReservations() {
+        return medicationReservations;
+    }
+
     public double getMark() {
         return mark;
     }
@@ -153,10 +158,6 @@ public class Pharmacy implements Serializable{
 
     public void setExaminationSchedules(Set<ExaminationSchedule> examinationSchedules) {
         this.examinationSchedules = examinationSchedules;
-    }
-
-    public Set<MedicationReservation> getMedicationReservations() {
-        return medicationReservations;
     }
 
     public void setMedicationReservations(Set<MedicationReservation> medicationReservations) {

@@ -24,6 +24,8 @@
                  <button class = "btn btn-link btn-lg" v-on:click = "medicationSearch">Medications</button>
                  <b class="tab"></b>  
                  <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
+                 <b class="tab"></b>  
+                 <button class = "btn btn-link btn-lg" v-on:click = "showComplaints">Complaints</button>
             </span>
               <span  style="float:right;margin:15px">
                      <b class="tab"></b>    
@@ -179,6 +181,9 @@ export default {
       },
       defineLoyaltyProgram : function(){
           window.location.href = "/loyaltyProgram";
+      },
+      showComplaints : function() {
+            window.location.href = "/complaints";
       }
 },
  mounted() {
