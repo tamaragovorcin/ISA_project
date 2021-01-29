@@ -1,12 +1,11 @@
 package com.isaproject.isaproject.Controller;
 
-import com.isaproject.isaproject.DTO.MedicationDTO;
-import com.isaproject.isaproject.DTO.MedicationSearchDTO;
-import com.isaproject.isaproject.DTO.PersonUserDTO;
-import com.isaproject.isaproject.DTO.SpecificationDTO;
+import com.isaproject.isaproject.DTO.*;
+import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Medicine.Specification;
 import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
 import com.isaproject.isaproject.Service.Implementations.MedicationService;
 import com.isaproject.isaproject.Service.Implementations.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,9 @@ public class MedicationController {
     @Autowired
     MedicationService medicationService;
 
+    @Autowired
+    MedicationPriceService medicationPriceService;
+
     @PostMapping("/add")
     ResponseEntity<Medication> register(@RequestBody MedicationDTO medicationDTO)
     {
@@ -32,6 +34,14 @@ public class MedicationController {
         return medication == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medication);
+    }
+    @PostMapping("/priceInPharmacy")
+    ResponseEntity<MedicationPrice> addToPharmacy(@RequestBody MedicationPriceDTO medicationPriceDTO)
+    {
+        MedicationPrice medicationPrice = medicationPriceService.save(medicationPriceDTO);
+        return medicationPrice == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(medicationPrice);
     }
 
     @GetMapping("")
