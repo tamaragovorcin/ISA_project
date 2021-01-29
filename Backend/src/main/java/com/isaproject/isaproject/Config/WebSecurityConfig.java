@@ -88,6 +88,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/order/add") .permitAll()
                 .antMatchers("/api/pharmacy/dermatologists/{id}") .permitAll()
                 .antMatchers("/api/pharmacy/pharmacists/{id}") .permitAll()
+                .antMatchers("/api/pharmacy/medication/{id}") .permitAll()
+                .antMatchers("/api/pharmacy/freeExaminationTerms/{id}") .permitAll()
+                .antMatchers("/api/medication/priceInPharmacy") .permitAll()
+               // .antMatchers("/api/pharmacyAdmin/medication") .permitAll()
 
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
@@ -122,6 +126,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.POST, "/api/order/add");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/pharmacists/{id}");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/dermatologists/{id}");
+        web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/medication/{id}");
+        web.ignoring().antMatchers(HttpMethod.POST, "/api/medication/priceInPharmacy");
+        web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacy/freeExaminationTerms/{id}");
+
+        //  web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacyAdmin/medication");
+
 
 
 

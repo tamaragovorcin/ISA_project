@@ -226,8 +226,7 @@ public class proba {
 
 
         //APOTEKA
-        pharmacy.setMedications(medications);
-        pharmacy2.setMedications(medications2);
+
 
         EPrescription eprescription = new EPrescription();
         eprescription.setPatient(patient);
