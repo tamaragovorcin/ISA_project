@@ -41,7 +41,7 @@ public class Medication  {
 
 
     @Column(name = "issuanceRegime", nullable = true)
-    private String issuanceRegime;//rezim upotrebe
+    private String issuanceRegime;
 
 
     @Column(name = "mark", nullable = true)

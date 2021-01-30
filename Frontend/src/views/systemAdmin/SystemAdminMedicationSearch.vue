@@ -295,7 +295,7 @@ export default {
       choosenType : "",
       choosenMark :0,
       medicationSeacrhList : [],
-      showMedicationListInfoDiv: false,
+      showMedicationListInfoDiv: true,
       concreteSpecification :{
                     contraIndications :"",
                     structure : "",
@@ -420,6 +420,16 @@ export default {
                     this.allowSystemAdminRegistration = false;
                     this.notallowSystemAdminRegistration = true;
                }
+         }).catch(res => {
+                       alert("NOT OK");
+                        console.log(res);
+                 });
+         this.axios.get('/medication/getAll',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+         }).then(response => {
+               this.medicationSeacrhList= response.data;
          }).catch(res => {
                        alert("NOT OK");
                         console.log(res);

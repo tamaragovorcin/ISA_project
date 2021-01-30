@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.OfferDTO;
+import com.isaproject.isaproject.DTO.OfferUpdateDTO;
 import com.isaproject.isaproject.Model.Orders.Offer;
 import com.isaproject.isaproject.Repository.MedicationInOrderRepository;
 import com.isaproject.isaproject.Repository.OfferRepository;
@@ -44,5 +45,12 @@ public class OfferService implements IOfferService {
     @Override
     public void delete(Offer order) {
 
+    }
+
+    public Offer update(OfferUpdateDTO offerUpdateDto) {
+        Offer offer = findById(offerUpdateDto.getOfferId());
+        offer.setDateOfDelivery(offerUpdateDto.getDateOfDelivery());
+        offer.setSummaryPrice(offerUpdateDto.getSummaryPrice());
+        return offerRepository.save(offer);
     }
 }
