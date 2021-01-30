@@ -11,10 +11,12 @@
                  <b class="tab"></b>    
                  <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
                  
-                <b class="tab"></b>    
-                <a  class = "btn btn-secondary" href = "/addPharmacist">Add pharmacist</a>    
                 <b class="tab"></b> 
-                 <a  class = "btn btn-secondary" href = "/pharmacyPharmacists">Our pharmacists</a> 
+                 <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
+                               class = "btn btn-link btn-lg">
+                    <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
+                    <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
+                </b-dropdown> 
                   <b class="tab"></b>  
                 <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
                 <b class="tab"></b> 

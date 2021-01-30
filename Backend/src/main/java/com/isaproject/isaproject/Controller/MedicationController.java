@@ -38,6 +38,8 @@ public class MedicationController {
     @PostMapping("/priceInPharmacy")
     ResponseEntity<MedicationPrice> addToPharmacy(@RequestBody MedicationPriceDTO medicationPriceDTO)
     {
+        System.out.println("-----------------------------------------------------");
+        System.out.println("DOSAO DO KONTROLERA");
         MedicationPrice medicationPrice = medicationPriceService.save(medicationPriceDTO);
         return medicationPrice == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

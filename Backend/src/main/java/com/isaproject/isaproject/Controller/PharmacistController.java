@@ -27,27 +27,16 @@ public class PharmacistController {
     PharmacistService pharmacistService;
 
     @PostMapping("/register")
-   //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
-    public ResponseEntity<String> addUser(@RequestBody PersonUserDTO userRequest) {
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    public ResponseEntity<String> addUser(@RequestBody PharmacistDTO userRequest) {
+        System.out.println(userRequest.getPharmacy().getPharmacyName());
 
         PersonUser existUser = pharmacistService.findByEmail(userRequest.getEmail());
         if (existUser != null) {
             throw new ResourceConflictException(userRequest.getEmail(), "Email already exists");
         }
-        PersonUser user = pharmacistService.save(userRequest);
-        return new ResponseEntity<>("Pharmacist is successfully registred!", HttpStatus.CREATED);
-    }
-
-    @GetMapping("/account")
-    @PreAuthorize("hasRole('PHARMACIST')")
-    ResponseEntity<Pharmacist> getMyAccount()
-    {
-        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        PersonUser user = (PersonUser)currentUser.getPrincipal();
-        Pharmacist pharmacist = pharmacistService.findById(user.getId());
-        return pharmacist == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacist);
+        Pharmacist user = pharmacistService.save(userRequest);
+        return new ResponseEntity<>("Supplier is successfully registred!", HttpStatus.CREATED);
     }
     @GetMapping("")
     ResponseEntity<List<Pharmacist>> getAll()
@@ -66,4 +55,24 @@ public class PharmacistController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 new ResponseEntity<>("Pharmacist is successfully updated!", HttpStatus.CREATED);
     }
+    @PostMapping("/delete")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    public ResponseEntity<String> addUser(@RequestBody Pharmacist pharmacist) {
+        System.out.println(pharmacist.getName());
+        pharmacistService.delete(pharmacist);
+        return new ResponseEntity<>("Pharmacist is successfully removed!", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/account")
+    @PreAuthorize("hasRole('PHARMACIST')")
+    ResponseEntity<Pharmacist> getMyAccount()
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        Pharmacist pharmacist = pharmacistService.findById(user.getId());
+        return pharmacist == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacist);
+    }
 }
+

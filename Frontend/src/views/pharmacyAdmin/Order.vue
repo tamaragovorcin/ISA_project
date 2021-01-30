@@ -33,7 +33,7 @@
         </div>
         <div>
       
-    <b-button class = "btn btn-warning btn-lg" @click="showModal">+ Make new order</b-button>
+    <b-button class = "btn btn-warning btn-lg" style ="margin-top:25px;" @click="showModal">+ Announce new tender</b-button>
     <b-modal ref="my-modal" hide-footer scrollable title="Fill order form" size="lg" modal-class="b-modal">
                     <div modal-class="modal-dialog" role="document">
                     <div class="modal-content" style="background-color:whitesmoke">
@@ -50,7 +50,7 @@
                                                     <label >Medication:</label>
                                                 </div>
                                                 <div class="col">
-                                                                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologist"
+                                                                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication"
                                         class = "btn btn-link btn-lg" style="float:left; width=200px;">
                                             <b-dropdown-item v-for="medicine in this.medications"  v-on:click = "dermatologistIsSelected($event, medicine)" v-bind:key="medicine.id"> 
                                             {{ medicine.name }}<div style="width:20px"></div>{{medicine.type }}
@@ -122,7 +122,133 @@
     </b-modal>
   </div>
        
+       <h3 style="margin:25px;color:#0D184F;font-weight:bold;">Active tenders in your pharmacy:</h3>
+        <div class="row" style = "background-color:whitesmoke; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+                        <div class=" form-group col"  v-for="order in orders" :key="order.id">
+                                   <h4 style="color: #0D184F;margin:20px">Choose tender:</h4>
 
+                            <button class="btn btn-secondary" v-on:click="showTender($event, order)">Tender {{order.id}}</button>
+                        </div>
+                    </div>
+ <div v-if="showConcreteTender" style = "background-color:white; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+                   
+                    <hr/>
+                                                       <h4 style="color: #0D184F;margin:20px">Tender {{choosenTender.id}}</h4>
+
+                    <hr/>
+                    <div >
+                        <div class="row">
+                            <div class=" form-group col">
+                                <label >Medication</label>
+                            </div>
+                            
+                            <div class=" form-group col">          
+                                <label >Code</label>
+                            </div>
+                            <div class=" form-group col">          
+                                <label >Required quantity</label>
+                            </div>
+                        </div>
+                        <div v-for="medication in choosenTender.medications"   v-bind:key="medication.id">
+                            <div class="row">
+                                    <div class=" form-group col">
+                                        <label >{{medication.name}}</label>
+                                    </div>
+                                    <div class=" form-group col">
+                                        <label >{{medication.code}}</label>
+                                    </div>
+                                     <div class=" form-group col">
+                                        <label >{{medication.quantity}}</label>
+                                    </div>
+                             </div>
+                         </div>
+                         <div class="row"></div>
+                         <div class="row"></div>
+                         <div class="row">
+                            <div class=" form-group col">
+                                <label >Active until     {{choosenTender.date}}</label>
+                            </div>
+                           
+                        </div>
+                        <hr/>
+                         <div class="row justify-content-center">
+                           <div class="modal-footer">
+                            <button class="btn btn-primary" @click="viewOffers">View offers</button>
+                        </div>
+                            
+                        </div>
+                        <hr/>
+                       
+
+                    </div>
+                        
+            </div>
+
+
+       <div v-if="showOffers" class="row" style = "background-color:whitesmoke; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+                        <div class=" form-group col"  v-for="offer in offers" :key="offer.id">
+                                   <h4 style="color: #0D184F;margin:20px">Choose offer:</h4>
+
+                            <button class="btn btn-secondary" v-on:click="viewConcreteOffer($event, offer)">Offer {{offer.id}}</button>
+                        </div>
+                    </div>
+
+    <div v-if="showConcreteOffer" style = "background-color:white; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+                   
+                    <hr/>
+                                                       <h4 style="color: #0D184F;margin:20px">Offer from {{supplierName}}&nbsp; {{supplierSurName}}</h4>
+
+                    <hr/>
+                    <div >
+                        <div class="row">
+                            <div class=" form-group col">
+                                <label >Supplier name</label>
+                            </div>
+                            <div class=" form-group col">
+                                <label >Supplier surname</label>
+                            </div>
+                            
+                            <div class=" form-group col">          
+                                <label >Summary price</label>
+                            </div>
+                            <div class=" form-group col">          
+                                <label >Date of delievery</label>
+                            </div>
+                        </div>
+                        
+                         <div class="row">
+                                    <div class=" form-group col">
+                                          <label >{{supplierName}}</label>
+
+                                    </div>
+                                    <div class=" form-group col">
+                                          <label >{{supplierSurName}}</label>
+
+                                    </div>
+                                    <div class=" form-group col">
+                                        <label >{{choosenOffer.summaryPrice}}</label>
+                                    </div>
+                                    <div class=" form-group col">
+                                        <label >{{choosenOffer.dateOfDelivery}}</label>
+                                    </div>
+                                     
+                             </div>
+                      
+                        <hr/>
+                         <div class="row justify-content-center">
+                           <div class="modal-footer">
+                            <button class="btn btn-primary" @click="acceptOffer">Accept offer</button>
+                        </div>
+                            
+                        </div>
+                        <hr/>
+                       
+
+                    </div>
+                        
+            </div>
+
+            
        
 
     </div>
@@ -140,10 +266,44 @@ export default {
        endDate : "",
        admin : {},
        pharmacy : {},
-       selectedMedication : {}
+       selectedMedication : {},
+       orders : [],
+       medicationInOrder : [],
+       choosenOffer :{
+         id : 0,
+         supplier: {},
+         dateOfDelivery : "",
+         summaryPrice : ""
+       },
+       choosenTender : {
+            id : 0,
+            date : null,
+            status : "",
+            medications : [],
+            pharmacyName : "" 
+        },
+         medicine :{
+              id : 0,
+              name : "",
+              code : 0,
+              type : "",
+              form : "",
+              quantity : 0
+          },
+        medicationsOrder : [],
+        showConcreteTender : false,
+        delieveryDate : null,
+        priceOffered :0,
+        supplierAccount : {},
+        offers : [],
+        showOffers : false,
+        showConcreteOffer : false,
+        supplierName : "",
+        supplierSurName : "",
+        offerData : ""
     }
-  },
-   mounted() {
+    },
+     mounted() {
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
         this.axios.get('/pharmacyAdmin/account',{ 
              headers: {
@@ -174,10 +334,19 @@ export default {
                             alert("NOT OK");
                             console.log(res);
                     });
+                    this.axios.get('/pharmacyAdmin/orders',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            this.orders = response.data;
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
                     
                 
          
-
          }).catch(res => {
                 alert("NOT OK");
                 console.log(res);
@@ -205,10 +374,32 @@ export default {
       },
      dermatologistIsSelected : function(event, medicine) {
             this.selectedMedication = medicine;
-
             console.log(event);
+      },
+       showTender :function (event, order) {
+            this.showConcreteTender = true;
+            this.choosenTender = order;
+           
+      },
+       viewConcreteOffer :function (event, offer) {
+            this.showConcreteOffer = true;
+            this.choosenOffer = offer;
+             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/offer/data/'+this.choosenOffer.id,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                }}).then(response => {
+                  this.offerData = response.data;
+                  this.supplierName = this.offerData.supplierName;
+                  this.supplierSurName = this.offerData.supplierSurName;
+                    console.log(response)
+                }).catch(res => {
+                       alert("Please try later.");
+                        console.log(res);
+                });
+                this.showOffers = true;
 
-
+           
       },
       addNewMedicine : function(){
                this.showTable = true;
@@ -223,27 +414,60 @@ export default {
                     medicationsInOrderDTO: this.medicationQuantityList,
                     date: this.endDate,
                     pharmacyAdmin : this.admin,
-                    status : "KREIRANA"
+                    status : "CREATED"
                 };
             console.log(order);
              let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-
             this.axios.post('/order/add',order,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                         }})
                 .then(response => {
                        alert("Order is successfully sent!");
+                       this.medicationQuantityList = [];
+                       this.selectedMedication = {};
                        console.log(response.data);
+                       this.$refs['my-modal'].hide()
+                       window.location.href = "/order";
                 })
                 .catch(response => {
                        alert("Please try later.");
                         console.log(response);
                  });    
-      }
+      },
+    
+      viewOffers : function(){
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/offer/'+this.choosenTender.id,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                }}).then(response => {
+                  this.offers = response.data;
+                    console.log(response)
+                }).catch(res => {
+                       alert("Please try later.");
+                        console.log(res);
+                });
+                this.showOffers = true;
+      },
+      acceptOffer : function(){
+          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/offer/accept/'+this.choosenOffer.id,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                }}).then(response => {
+                    alert("Offer successfully accepted! Tender is now closed.")
+                    window.location.href = "/order";
+                    console.log(response)
+                }).catch(res => {
+                       alert("Please try later.");
+                        console.log(res);
+                });
+      },
+      
    
    
-}
+  }
 }
 </script>
 

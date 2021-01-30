@@ -20,7 +20,7 @@ public class SupplierController {
     SupplierService supplierService;
 
     @PostMapping("/register")
-    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+  //  @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PersonUserDTO userRequest) {
 
         PersonUser existUser = supplierService.findByEmail(userRequest.getEmail());

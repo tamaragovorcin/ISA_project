@@ -80,7 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/pharmacy/actions/{id}").permitAll()
                 .antMatchers("/api/patient/confirm-account").permitAll()
                 .antMatchers("/api/systemAdmin/register") .permitAll()
-
+                .antMatchers("/api/supplier/register") .permitAll()
                 .antMatchers("/api/dermatologist/register") .permitAll()
                 .antMatchers("/api/medicationReservation/add") .permitAll()
                 .antMatchers("/api/pharmacyAdmin/register") .permitAll()
@@ -110,6 +110,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
         web.ignoring().antMatchers(HttpMethod.POST, "/api/login");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/patient/register");
+        web.ignoring().antMatchers(HttpMethod.POST, "/api/supplier/register");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/patient");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/patient/email/{id}");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/medication/add");
