@@ -158,7 +158,7 @@
 <div class="col md-2"></div>
 
 
-    <div class = "col md-4 align-top">
+    <div class = "col md-4 align-top container-fluid">
 
                 <div class="sidenav">
                 <hr/>

@@ -1,19 +1,17 @@
-
 package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.AddressDTO;
-import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.DTO.PharmacistDTO;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
 import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
-import com.isaproject.isaproject.Repository.DermatologistRepository;
 import com.isaproject.isaproject.Repository.PharmacistRepository;
 import com.isaproject.isaproject.Service.IServices.IPharmacistService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,17 +21,17 @@ public class PharmacistService implements IPharmacistService {
     @Autowired
     PharmacistRepository pharmacistRepository;
     @Autowired
-    private ConfirmationTokenRepository confirmationTokenRepository;
-    @Autowired
     private AuthorityService authService;
     @Autowired
     private AuthorityRepository authorityRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ConfirmationTokenRepository confirmationTokenRepository;
 
     @Override
     public Pharmacist findById(Integer id) {
-        return pharmacistRepository.findById(id).get();
+        return pharmacistRepository.getOne(id);
     }
 
     @Override
@@ -47,14 +45,13 @@ public class PharmacistService implements IPharmacistService {
     }
 
     @Override
-    public Pharmacist save(PersonUserDTO userRequest) {
+    public Pharmacist save(PharmacistDTO userRequest) {
         Pharmacist pharmacist =  new Pharmacist();
         pharmacist.setName(userRequest.getFirstname());
         pharmacist.setSurname(userRequest.getSurname());
         AddressDTO addressDTO = userRequest.getAddress();
         Address address = new Address(addressDTO.getTown(),addressDTO.getStreet(),addressDTO.getNumber(),addressDTO.getPostalCode(),addressDTO.getCountry());
         pharmacist.setAddress(address);
-        pharmacist.setMarkPharmacist(0);
         pharmacist.setEmail(userRequest.getEmail());
         pharmacist.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         pharmacist.setFirstLogged(true);
@@ -70,8 +67,11 @@ public class PharmacistService implements IPharmacistService {
         }
         pharmacist.setAuthorities(auth);
         pharmacist.setEnabled(true);
+        pharmacist.setPharmacy(userRequest.getPharmacy());
         return pharmacistRepository.save(pharmacist);
     }
+
+
     @Override
 
     public void delete(Pharmacist userRequest) {

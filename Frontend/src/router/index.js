@@ -44,6 +44,7 @@ import PhAdminProfileUpdate from '../views/pharmacyAdmin/PhAdminProfileUpdate.vu
 import PharmacyDermatologists from '../views/pharmacyAdmin/PharmacyDermatologists.vue'
 import PharmacyPharmacists from '../views/pharmacyAdmin/PharmacyPharmacists.vue'
 import AddPharmacist from '../views/pharmacyAdmin/AddPharmacist.vue'
+import NewOrderForm from '../views/pharmacyAdmin/NewOrderForm.vue'
 import Complaints from '../views/systemAdmin/Complaints.vue'
 import Urgent from '../views/pharmacyAdmin/Urgent.vue'
 import PharmacyMedication from '../views/pharmacyAdmin/PharmacyMedication.vue'
@@ -306,7 +307,12 @@ const routes = [
       component: SupplierReviewsActiveTenders
     },
     {
-      path: '/myOffers',
+      path: '/newOrderForm',
+      name: 'NewOrderForm',
+      component: NewOrderForm
+    },
+    {
+        path: '/myOffers',
       name: 'MyOffers',
       component: MyOffers
     },
@@ -320,9 +326,7 @@ const routes = [
       name: 'SupplierAddMedication',
       component: SupplierAddMedication
     },
-    
-
-  
+      
 ]
 const router = new VueRouter({
   mode: 'history',

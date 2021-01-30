@@ -71,6 +71,7 @@ public class Medication  {
     @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
 
+
     @JsonManagedReference(value="medication-medicationPrice")
     @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<MedicationPrice> medicationPrices = new HashSet<MedicationPrice>();
