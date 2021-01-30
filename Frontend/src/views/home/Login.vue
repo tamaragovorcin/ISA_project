@@ -90,7 +90,13 @@ export default {
                     }).then(response => {
                             this.authority = response.data.authorities[0].authority;
                             if(this.authority==="ROLE_PATIENT") 
-                                window.location.href = '/patientProfile';
+                             if(response.data.firstLogged) {
+                                    this.$refs['my-modal'].show();
+                                }
+                                else {
+                                    window.location.href = '/patientProfile';
+                                }
+                        
                             else if(this.authority==="ROLE_DERMATOLOGIST")
                                 if(response.data.firstLogged) {
                                     this.$refs['my-modal'].show();

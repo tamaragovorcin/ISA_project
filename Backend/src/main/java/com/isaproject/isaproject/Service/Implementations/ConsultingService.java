@@ -27,6 +27,8 @@ public class ConsultingService implements IConsultingService {
 
     @Override
     public Consulting save(ConsultingDTO consultingDTO) {
+        System.out.println("**************************************************************");
+
         Consulting consulting = new Consulting();
         consulting.setPharmacist(consultingDTO.getPharmacist());
         consulting.setPatient(consultingDTO.getPatient());
@@ -34,9 +36,9 @@ public class ConsultingService implements IConsultingService {
         consulting.setStartTime(consultingDTO.getStartTime());
         consulting.setDuration(consultingDTO.getDuration());
         consulting.setPrice(consultingDTO.getPrice());
-        consulting.setCancelled(consultingDTO.getCancelled());
-        consulting.setShowedUp(consultingDTO.getShowedUp());
-        consulting.setInformation(consultingDTO.getInformation());
+        consulting.setCancelled(false);
+        consulting.setShowedUp(false);
+        consulting.setInformation("");
         return this.consultingRepository.save(consulting);
     }
 

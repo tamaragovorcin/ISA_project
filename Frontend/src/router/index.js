@@ -13,10 +13,12 @@ import PharmacistProfile from '../views/pharmacist/PharmacistProfile.vue'
 import PharmacistClients from '../views/pharmacist/PharmacistClients.vue'
 import NoteAboutConsulting from '../views/pharmacist/NoteAboutConsulting.vue'
 import PharmacistHomePage from '../views/pharmacist/PharmacistHomePage.vue'
+import SchedulingConsulting from '../views/pharmacist/SchedulingConsulting.vue'
 import CreateRequestVacation from '../views/pharmacist/CreateRequestVacation.vue'
 import PharmacistUpdateProfile from '../views/pharmacist/PharmacistUpdateProfile.vue'
 import DermatologistHomePage from '../views/dermatologist/DermatologistHomePage.vue'
 import DermatologistProfile from '../views/dermatologist/DermatologistProfile.vue'
+import CreateRequestHoliday from '../views/dermatologist/CreateRequestHoliday.vue'
 import DermatologistUpdateProfile from '../views/dermatologist/DermatologistUpdateProfile.vue'
 import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vue'
 import Order from '../views/pharmacyAdmin/Order.vue'
@@ -118,6 +120,11 @@ const routes = [
       component: DermatologistUpdateProfile
     },
     {
+      path: '/dermatologistHoliday',
+      name: 'CreateRequestHoliday',
+      component: CreateRequestHoliday
+    },
+    {
       path: '/pharmacistClients',
       name: 'PharmacistClients',
       component: PharmacistClients
@@ -141,6 +148,11 @@ const routes = [
       path: '/dermatologistHomePage',
       name: 'DermatologistHomePage',
       component: DermatologistHomePage
+    },
+    {
+      path: '/schedulingConsulting',
+      name: 'SchedulingConsulting',
+      component: SchedulingConsulting
     },
     {
       path: '/pharmacyAdminProfile',

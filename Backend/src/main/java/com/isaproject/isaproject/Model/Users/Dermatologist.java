@@ -28,6 +28,7 @@ public class Dermatologist extends PersonUser{
     @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ExaminationSchedule> examinationSchedules = new HashSet<ExaminationSchedule>();
 
+    @JsonManagedReference(value="dermatologist-holiday")
     @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<HolidayScheduleDermatologist> holidayScheduleDermatologists = new HashSet<HolidayScheduleDermatologist>();
 

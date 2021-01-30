@@ -3,6 +3,7 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.DTO.PharmacistDTO;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
 import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
@@ -47,7 +48,7 @@ public class PharmacistService implements IPharmacistService {
     }
 
     @Override
-    public Pharmacist save(PersonUserDTO userRequest) {
+    public Pharmacist save(PharmacistDTO userRequest) {
         Pharmacist pharmacist =  new Pharmacist();
         pharmacist.setName(userRequest.getFirstname());
         pharmacist.setSurname(userRequest.getSurname());

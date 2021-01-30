@@ -149,7 +149,7 @@ export default {
            window.location.href = "/createRequestVacation";
       },
       scheduleConsulting : function(){
-
+             window.location.href = "/schedulingConsulting";
       },
       addMedicine : function(){
           this.$refs['my-modal1'].show()

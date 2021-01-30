@@ -28,7 +28,7 @@ public class PharmacistController {
 
     @PostMapping("/register")
    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
-    public ResponseEntity<String> addUser(@RequestBody PersonUserDTO userRequest) {
+    public ResponseEntity<String> addUser(@RequestBody PharmacistDTO userRequest) {
 
         PersonUser existUser = pharmacistService.findByEmail(userRequest.getEmail());
         if (existUser != null) {
@@ -59,11 +59,14 @@ public class PharmacistController {
     }
     @PostMapping("/update")
     @PreAuthorize("hasRole('PHARMACIST')")
-    public ResponseEntity<String> update(@RequestBody Pharmacist userRequest) {
-
-        Pharmacist user = pharmacistService.update(userRequest);
-        return user.getSurname() == null ?
+    ResponseEntity<Pharmacist> update(@RequestBody PharmacistDTO person)
+    {
+        Pharmacist per = pharmacistService.findByEmail(person.getEmail());
+        Integer id = per.getId();
+        pharmacistService.delete(per);
+        Pharmacist patient = pharmacistService.save(person);
+        return patient == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                new ResponseEntity<>("Pharmacist is successfully updated!", HttpStatus.CREATED);
+                ResponseEntity.ok(patient);
     }
 }

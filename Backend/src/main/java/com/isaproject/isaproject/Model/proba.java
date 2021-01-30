@@ -312,14 +312,14 @@ public class proba {
 
         HolidayScheduleDermatologist holidayScheduleDermatologist = new HolidayScheduleDermatologist();
         holidayScheduleDermatologist.setDermatologist(dermatologist);
-        holidayScheduleDermatologist.setApproved(false);
+        holidayScheduleDermatologist.setApproved("");
         holidayScheduleDermatologist.setMassage("porukica neka");
         holidayScheduleDermatologist.setEndDate(LocalDate.now());
 
         HolidaySchedulePharmacist holidaySchedulePharmacist = new HolidaySchedulePharmacist();
         holidaySchedulePharmacist.setPharmacist(pharmacist);
         holidaySchedulePharmacist.setMassage("neka poruka farmaceuta");
-        holidaySchedulePharmacist.setApproved(true);
+        holidaySchedulePharmacist.setApproved("true");
         holidaySchedulePharmacist.setEndDate(LocalDate.now());
 
         WorkingHoursPharmacist workingHoursPharmacist = new WorkingHoursPharmacist();

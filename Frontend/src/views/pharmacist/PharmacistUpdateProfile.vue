@@ -3,7 +3,8 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-              
+            
+             
               <span  style="float:right;margin:10px">
                     
 
@@ -15,59 +16,81 @@
       
 
         <div style="background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-              <h3 style="color: #0D184F">Edit profile information</h3>
-                   
+            <h3 style="color: #0D184F">Change My Profile</h3>
+                <form>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Name:</label>
-                        <input type="text" class="form-control" v-model="supplierInfo.name" placeholder="Enter name">
+                        <input type="text" id = "name" name = "name" class="form-control" v-model="pharmacist.name">
                         </div>
                         <div class="form-group col-md-6">
                         <label>Surname:</label>
-                        <input type="text" class="form-control" v-model = "supplierInfo.surname" placeholder="Enter surname">
+                        <input type="text" id = "surname" name = "surname" class="form-control" v-model = "pharmacist.surname" placeholder="Enter surname">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                        <label>Email: {{supplierInfo.email }} </label>
+                        <label>Email:</label>
+                        <p>{{pharmacist.email}}</p>
                         </div>
                         <div class="form-group col-md-6">
                         <label>Phone number:</label>
-                        <input type="text" class="form-control" v-model="supplierInfo.phoneNumber" placeholder="Enter phone number">
+                        <input type="text" id = "phone"  name = "phone" class="form-control" v-model="pharmacist.phoneNumber" placeholder="Enter phone number">
                         </div>
                     </div>
                       <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Country:</label>
-                        <input type="text" class="form-control" v-model="supplierInfo.address.country" placeholder="Enter country">
+                        <input type="text" id = "country" name = "country" class="form-control" v-model="pharmacist.address.country" placeholder="Enter country">
                         </div>
                         <div class="form-group col-md-6">
                         <label>Town:</label>
-                        <input type="text" class="form-control" v-model="supplierInfo.address.town" placeholder="Enter town">
+                        <input type="text" id = "town" name = "town" class="form-control" v-model="pharmacist.address.town" placeholder="Enter town">
                         </div>
                     </div>
                      <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Street:</label>
-                        <input type="text" class="form-control" v-model="supplierInfo.address.street" placeholder="Enter street">
+                        <input type="text" id = "street" name = "street" class="form-control" v-model="pharmacist.address.street" placeholder="Enter street">
                         </div>
                         <div class="form-group col-md-6">
                         <label>Number:</label>
-                        <input type="number" class="form-control" v-model="supplierInfo.address.number" placeholder="Enter number">
+                        <input type="number" id = "number" name = "number" class="form-control" v-model="pharmacist.address.number" placeholder="Enter number">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Postal code:</label>
-                        <input type="text" class="form-control" v-model="supplierInfo.address.postalCode" placeholder="Enter postal code">
+                        <input type="text" id = "postalCode" name = "postalCode" class="form-control" v-model="pharmacist.address.postalCode" placeholder="Enter postal code">
                         </div>
+
+                        
                        
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                        <label>Password:</label>
+                        <input type="password" id = "password" name = "password" class="form-control" v-model="password" placeholder="Enter new password">
+                        </div>
+                        <div class="form-group col-md-6">
+                        <label>Repeat password:</label>
+                        <input type="password" class="form-control" v-model="repeatPassword" placeholder="Repeat new password">
+                        </div>
                     </div>
                     
                    
-                    <button class="btn btn-primary btn-lg" v-on:click = "changeInformation">Confirm</button>
+                    <button class="btn btn-primary btn-lg" v-on:click = "update">Update</button>
                     <div style="height:30px;"></div>
+                </form>
+
+
+
+
+
+
         </div>
+
+
     </div>
 </template>
 
@@ -75,47 +98,20 @@
 export default {
   data() {
     return {
-      supplierInfo: {
-                email : "",
-                password : "",
-                firstname : "",
-                surname : "",
-                phonenumber : "",
-                address : {
-                    town : "",
-                    street : "",
-                    number : "",
-                    postalCode : "",
-                    country : ""
-                }
-                },
+        pharmacist: "",
+        name : "",
+        surname : "",
+        email : "",
+        password : "",
+        repeatPassword : "",
+        phoneNumber : "",
+        town : "",
+        street : "",
+        number : "",
+        postalCode : "",
+        country : ""
     }
   },
-  methods:{
-      logOut : function(){
-           localStorage.removeItem('token');
-           window.location.href = "/login";
-      },
-      showMyProfile : function() {
-          window.location.href = "/pharmacistProfile";
-      },
-      changeInformation : function() {
-            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-            this.axios.post('/pharmacist/update',this.supplierInfo,{ 
-                         headers: {
-                                'Authorization': 'Bearer ' + token,
-                        }})
-                .then(response => {
-                       alert("Profile is successfully changed!!");
-                        console.log(response.data);
-                })
-                .catch(response => {
-                       alert("Please try later.");
-                        console.log(response);
-                 });    
-      }
-      
-},
 mounted() {
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
         this.axios.get('/pharmacist/account',{ 
@@ -123,13 +119,57 @@ mounted() {
                  'Authorization': 'Bearer ' + token,
              }
          }).then(response => {
-                this.supplierInfo = response.data;
-                console.log(response.data);
+               this.pharmacist=response.data;
          }).catch(res => {
-                alert("NOT OK");
-                console.log(res);
-        });
-    }
+                       alert("NOT OK");
+                        console.log(res);
+                 });
+    
+                            
+                 
+},
+  methods:{
+      previousUpdateProfile : function(){
+      },
+    logOut : function(){
+          window.location.href = "/login";
+      },
+       update : function(){
+        alert(this.pharmacist.address.town);
+          const addressInfo ={
+              town : this.pharmacist.address.town,
+              street : this.pharmacist.address.street,
+              number : this.pharmacist.address.number,
+              postalcode : this.pharmacist.address.postalCode,
+              country : this.pharmacist.address.country
+          }
+            const userInfo ={
+                email : this.pharmacist.email,
+                password : this.pharmacist.password,
+                firstname : this.pharmacist.name,
+                surname : this.pharmacist.surname,
+                phonenumber : this.pharmacist.phoneNumber,
+                address : addressInfo,
+            }
+              let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+            this.axios.post('/pharmacist/update',userInfo,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+                .then(response => {
+                       alert("Your changes are successfully updated!");
+                        console.log(response.data);
+                })
+                .catch(response => {
+                       alert("Please try later.");
+                        console.log(response);
+                 });    
+               
+            window.location.href = "/dermatologistProfile"; 
+              
+               
+      }
+}
 }
 </script>
 
