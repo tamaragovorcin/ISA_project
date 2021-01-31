@@ -17,11 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +38,8 @@ public class MedicationReservationController {
     @Autowired
     PatientService patientService;
 
+    @Autowired
+    JavaMailSenderImpl mailSender;
 
     @Autowired
     private ConfirmationTokenRepository confirmationTokenRepository;
@@ -49,6 +54,20 @@ public class MedicationReservationController {
        
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAMEDICATIONS"+medicationReservationDTO.getPatient().getId());
         MedicationReservation medication = medicationReservationService.save(medicationReservationDTO);
+
+
+       // LocalDate ldt = medicationReservationDTO.getDateOfTakeOver().toLocalDate();
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(medicationReservationDTO.getPatient().getEmail());
+        mail.setSubject("Successfuly reserved medication!");
+        mail.setFrom(environment.getProperty("spring.mail.username"));
+        //mail.setFrom("pharmacyisa@gmail.com");
+        mail.setText("You have successfully reserved a medication : "
+                + medicationReservationDTO.getMedication().getName() +" until " + medicationReservationDTO.getDateOfTakeOver());
+
+        mailSender.send(mail);
+
         return medication == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medication);

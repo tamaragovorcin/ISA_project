@@ -31,6 +31,9 @@ public class ExaminationFrontDTO {
 
     private double price;
 
+    private Boolean finished;
+
+
 
 
 
@@ -39,6 +42,14 @@ public class ExaminationFrontDTO {
 
     public Integer getPatientId() {
         return patientId;
+    }
+
+    public Boolean getFinished() {
+        return finished;
+    }
+
+    public void setFinished(Boolean finished) {
+        this.finished = finished;
     }
 
     public void setPatientId(Integer patientId) {

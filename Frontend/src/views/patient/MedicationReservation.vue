@@ -54,7 +54,7 @@ ines (39 sloc)  1.61 KB
                      <div class="form-row">
          
                         <label>Enter a pick-up day:</label>
-                        <input type="text" name = "pickUpDay" class="form-control" v-model="pickUpDay" placeholder="Enter a pick-up date">
+                        <input type="date" name = "pickUpDay" class="form-control" v-model="pickUpDay" placeholder="Enter a pick-up date">
                  
                       
                     </div>
@@ -164,17 +164,18 @@ mounted() {
              }
          }).then(response => {
                 this.patient = response.data;
-         
+               this.axios.get('/medicationReservation/' + this.patient.id)
+          .then(response => {
+            alert(this.reservedMedications.length)
+                this.reservedMedications= response.data;
+               console.log(this.reservedMedications);
          }).catch(res => {
                        alert("NOT OK");
                         console.log(res);
                  });
 
-
-                  this.axios.get('/medicationReservation/' + this.patient.id)
-          .then(response => {
-                this.reservedMedications= response.data;
-               console.log(this.reservedMedications);
+   
+            
               
           })
           

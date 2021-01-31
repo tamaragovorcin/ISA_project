@@ -17,14 +17,18 @@ import com.isaproject.isaproject.Service.Implementations.ExaminationScheduleServ
 import com.isaproject.isaproject.Service.Implementations.ExaminationService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +43,10 @@ public class PharmacyController {
     ActionsService  actionsService;
     @Autowired
     ExaminationScheduleService examinationScheduleService;
+    @Autowired
+    private Environment environment;
+    @Autowired
+    JavaMailSenderImpl mailSender;
 
     @Autowired
     private TokenUtils tokenUtils;
@@ -154,7 +162,7 @@ public class PharmacyController {
         List<ExaminationScheduleFrontDTO> examinationScheduleFrontDTOS = new ArrayList<ExaminationScheduleFrontDTO>();
 
         for( ExaminationSchedule ex : examinationSchedule){
-
+            if(ex.getFinished()==false){
             ExaminationScheduleFrontDTO examinationScheduleFrontDTO = new ExaminationScheduleFrontDTO();
             examinationScheduleFrontDTO.setId(ex.getId());
             examinationScheduleFrontDTO.setPharmacy(ex.getPharmacy().getPharmacyName());
@@ -167,7 +175,7 @@ public class PharmacyController {
 
             examinationScheduleFrontDTOS.add(examinationScheduleFrontDTO);
 
-        }
+        }}
 
 
         return examinationScheduleFrontDTOS == null ?
@@ -179,8 +187,31 @@ public class PharmacyController {
     @PostMapping("/addExamination")
     //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<Examination> addExamination(@RequestBody ExaminationDTO dto) {
-        System.out.println(dto);
+
         Examination examination = examinationService.save(dto);
+        List<ExaminationSchedule> examinationSchedule = new ArrayList<ExaminationSchedule>();
+        examinationSchedule = examinationScheduleService.findAll();
+        ExaminationSchedule examinationSchedule1 = new ExaminationSchedule();
+
+        for(ExaminationSchedule es: examinationSchedule){
+            if(es.getId()==dto.getExaminationId()){
+                examinationSchedule1 = es;
+                examinationScheduleService.update(es, true);
+
+            }
+        }
+
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(dto.getPatient().getEmail());
+        mail.setSubject("Successfuly reserved dermatologist apointment!");
+        mail.setFrom(environment.getProperty("spring.mail.username"));
+        //mail.setFrom("pharmacyisa@gmail.com");
+        mail.setText("You have successfully reserved an appointment on : "
+                + examinationSchedule1.getDate() +" at " + examinationSchedule1.getStartTime()+ ". Your doctor is "+ examinationSchedule1.getDermatologist().getName() + " " + examinationSchedule1.getDermatologist().getSurname());
+
+        mailSender.send(mail);
+
         return examination == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(examination);
@@ -199,9 +230,9 @@ public class PharmacyController {
 
         for( Examination ex : examinationSchedule){
 
-                            if(id == ex.getPatient().getId()){
+                            if(id == ex.getPatient().getId()) {
 
-                            }
+
                                 ExaminationFrontDTO examinationScheduleFrontDTO = new ExaminationFrontDTO();
                                 examinationScheduleFrontDTO.setId(ex.getId());
                                 examinationScheduleFrontDTO.setPharmacy(ex.getExaminationSchedule().getPharmacy().getPharmacyName());
@@ -212,9 +243,15 @@ public class PharmacyController {
                                 examinationScheduleFrontDTO.setDermatologistFirst(ex.getExaminationSchedule().getDermatologist().getName());
                                 examinationScheduleFrontDTO.setDermatologistLast(ex.getExaminationSchedule().getDermatologist().getSurname());
                                 examinationScheduleFrontDTO.setStartTime(ex.getExaminationSchedule().getStartTime());
-
+                                LocalDate date5 = LocalDate.now();
+                                if((ex.getExaminationSchedule().getDate()).compareTo(date5)<0){
+                                    examinationScheduleFrontDTO.setFinished(true);
+                                }
+                                else{
+                                    examinationScheduleFrontDTO.setFinished(false);
+                                }
                                 examinationScheduleFrontDTOS.add(examinationScheduleFrontDTO);
-
+                            }
                             }
 
         return examinationScheduleFrontDTOS == null ?
@@ -227,13 +264,27 @@ public class PharmacyController {
     @GetMapping("/cancel/{id}")
     void cancel(@PathVariable Integer id)
     {
-
+        List<ExaminationSchedule> examinationSchedule1 = new ArrayList<ExaminationSchedule>();
+        examinationSchedule1 = examinationScheduleService.findAll();
         List<Examination> examinationSchedule = new ArrayList<Examination>();
         examinationSchedule = examinationService.findAll();
-
+        Examination examination = new Examination();
         for( Examination ex : examinationSchedule){
             if(ex.getId() == id){
+                examination = ex;
                 examinationService.delete(ex);
+            }
+        }
+
+
+
+
+        for(ExaminationSchedule es: examinationSchedule1){
+            if(es.getId()==examination.getExaminationSchedule().getId()){
+
+
+                examinationScheduleService.update(es, false);
+
             }
         }
 

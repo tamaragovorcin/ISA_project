@@ -71,48 +71,57 @@ ines (39 sloc)  1.61 KB
       <div style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px"  v-for="dermatologistAppointment in this.dermatologistAppointments"  v-bind:key="dermatologistAppointment.id">
 
 
-<table class="table">
+<table class="table table-dark">
  
  
     <tbody>
     <tr>
-      <th scope="row"></th>
-      <td>Ime dermatologa</td>
+    
+      <td>Ime dermatologa:</td>
+       <th scope="row"></th>
       <td>{{dermatologistAppointment.dermatologistFirst}} {{dermatologistAppointment.dermatologistLast}}</td>
     
     </tr>
     <tr>
-      <th scope="row"></th>
-      <td>Apoteka</td>
+     
+      <td>Apoteka:</td>
+       <th scope="row"></th>
       <td>{{dermatologistAppointment.pharmacy}} </td>
 
     </tr>
     <tr>
-      <th scope="row"></th>
-      <td>Datum</td>
+     
+      <td>Datum:</td>
+       <th scope="row"></th>
       <td>{{dermatologistAppointment.date}} </td>
      
     </tr>
         <tr>
-      <th scope="row"></th>
-      <td>Pocetak</td>
+   
+      <td>Pocetak:</td>
+       <th scope="row"></th>
       <td>{{dermatologistAppointment.startTime}} </td>
      
     </tr>
         <tr>
-      <th scope="row"></th>
-      <td>Trajanje</td>
+      
+      <td>Trajanje:</td>
+       <th scope="row"></th>
       <td>{{dermatologistAppointment.duration}} </td>
      
     </tr>
         <tr>
-      <th scope="row"></th>
-      <td>Cena</td>
+   
+      <td>Cena:</td>
+       <th scope="row"></th>
       <td>{{dermatologistAppointment.price}} </td>
      
     </tr>
-     <button class = "btn btn-link btn" style="color:black; " v-on:click = "reserve($event, dermatologistAppointment)">Make a reservation</button>
+     <tr>   <th scope="row"></th>
+     <td><button class = "btn btn-outline-primary" style="color:white; col-span =2 " v-on:click = "reserve($event, dermatologistAppointment)">Make a reservation</button></td></tr>
   </tbody>
+
+  
 </table>
        
       

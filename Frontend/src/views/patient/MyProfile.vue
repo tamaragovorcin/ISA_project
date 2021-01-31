@@ -19,8 +19,7 @@ ines (39 sloc)  1.61 KB
                     <b class="tab2"></b>    
 
 
-                     <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "penals">Penals</button>
-                    <b class="tab2"></b>   
+                
 
                         <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "changeMyProfile">Change my profile</button>
                     <b class="tab2"></b>   
@@ -37,15 +36,19 @@ ines (39 sloc)  1.61 KB
         <div style="background-color:lightgray;  width: 100%; margin-top:30px;">
         <div style="background-color:white;  margin: auto; width: 80%;padding: 30px;">
             <h4 style="color: #0D184F"><b>POINTS</b></h4>
-             <h5 style="color: #0D184F">150</h5>
+             <h5 style="color: #0D184F">{{this.patient.points}}</h5>
         </div>
         <div style="background-color:white; margin: auto; width: 80%;padding: 30px;margin-top:30px;">
             <b><h4 style="color: #0D184F"><b> CATEGORY</b></h4></b>
-             <h5 style="color: #0D184F">GOLD</h5>
+             <h5 style="color: #0D184F">{{this.patient.loyaltyCategory}}</h5>
         </div>
         <div style="background-color:white; margin: auto; width: 80%; padding:30px;margin-top:30px;">
             <b><h4 style="color: #0D184F"><b>BENEFITS</b></h4></b>
-             <h5 style="color: #0D184F">30% off</h5>
+             <h5 style="color: #0D184F">{{this.patient.discount}}</h5>
+        </div>
+         <div style="background-color:white; margin: auto; width: 80%; padding:30px;margin-top:30px;">
+            <b><h4 style="color: #0D184F"><b>PENALTIES</b></h4></b>
+             <h5 style="color: #0D184F">{{this.patient.penalties}}</h5>
         </div>
         </div>
 
@@ -70,10 +73,29 @@ export default {
        showPharmacyComplaint : false,
        showPharmacistComplaint : false,
        showDermatologistComplaint : false,
+       patient: null,
 
     }
   },
+mounted() {
 
+ let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+
+             }})
+             .then(response => {
+                this.patient = response.data;
+                console.log(response.data);
+                
+
+            
+         }).catch(res => {
+                       alert("NOT OK");
+                        console.log(res);
+                 });
+},
   methods:{
      
       appointmentsAndConsultings: function(){
