@@ -1,4 +1,4 @@
-dist: trusty
+dist: xenial
 sudo: false
 install: true
 
@@ -27,13 +27,11 @@ matrix:
         
     - language: node_js
       node_js: 
-        - "8.6.0"
-      install:
-        - npm install
-      before_install:
+        -"node"
+      cache: npm
+      before_script:
         - cd ./Frontend/
       script:
         - npm run build
-        - wget https://github.com/sormuras/bach/raw/master/install-jdk.sh && . ./install-jdk.sh -F 11 -L GPL
       after-success:
         - sonar-scanner -Dsonar.projectKey=tamaragovorcin_ISA_project
