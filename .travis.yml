@@ -26,10 +26,11 @@ matrix:
         - '$HOME/.sonar/cache'
         
     - language: node_js
-      node_js: 
-        -"node"
+      node_js: stable
       cache: npm
-      before_script:
+      install:
+        - npm install
+      before_install:
         - cd ./Frontend/
       script:
         - npm run build
