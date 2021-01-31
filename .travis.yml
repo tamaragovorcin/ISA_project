@@ -27,8 +27,7 @@ matrix:
       directories:
         - '$HOME/.m2/repository'
         - '$HOME/.sonar/cache'
-      before_script:
-        - cd ./Backend/
+        
     - language: node_js
       node_js: stable
       install:
