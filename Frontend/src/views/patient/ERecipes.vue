@@ -158,12 +158,7 @@ export default {
       handleFileUpload(){
         this.file = this.$refs.file.files[0];
       },
-      choosePharmacy($event,pharmacyid) {
-         const pharmacyMedications = {
-                      medications : this.medications,
-                      pharmacyId = pharmacyid
-                    }
-
+      choosePharmacy($event,pharmacyid) {        
           console.log(pharmacyid);
       }
      
