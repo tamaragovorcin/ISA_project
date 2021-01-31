@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Model.Users;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
@@ -17,6 +18,7 @@ import java.util.Set;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Pharmacist extends  PersonUser {
 
+    @JsonManagedReference(value="consulting-pharmacist")
     @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Consulting> consulting = new HashSet<Consulting>();
 

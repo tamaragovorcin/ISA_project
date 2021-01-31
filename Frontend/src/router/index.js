@@ -51,6 +51,8 @@ import SupplierReviewsActiveTenders from '../views/supplier/SupplierReviewsActiv
 import MyOffers from '../views/supplier/MyOffers.vue'
 import SupplierAddMedication from '../views/supplier/SupplierAddMedication.vue'
 import SupplierMyMedications from '../views/supplier/SupplierMyMedications.vue'
+import ERecipes from '../views/patient/ERecipes.vue'
+import PatientComplaint from '../views/patient/PatientComplaint.vue'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -319,6 +321,16 @@ const routes = [
       path: '/supplierAddMedication',
       name: 'SupplierAddMedication',
       component: SupplierAddMedication
+    },
+    {
+      path: '/eRecipes',
+      name: 'ERecipes',
+      component: ERecipes
+    },
+    {
+      path: '/patientComplaint',
+      name: 'PatientComplaint',
+      component: PatientComplaint
     },
     
 
