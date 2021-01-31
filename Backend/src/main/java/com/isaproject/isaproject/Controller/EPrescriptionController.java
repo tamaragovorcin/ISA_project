@@ -71,7 +71,7 @@ public class EPrescriptionController {
                             ResponseEntity.ok(pharmacyAvailability);
     }
 
-    @PostMapping("/availability")
+    @PostMapping("/choosePharmacy")
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<String> choosePharmacyForEReceipt(@RequestBody ChoosenPharmacyDTO choosenPharmacy) {
         return medicationPriceService.updateMedicineQuantityEreceipt(choosenPharmacy) == false ?

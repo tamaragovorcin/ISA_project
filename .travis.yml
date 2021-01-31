@@ -1,0 +1,42 @@
+dist: trusty
+sudo: false
+language: java
+jdk:
+- oraclejdk11
+install: true
+
+addons:
+  sonarcloud:
+    organization: "tamaragovorcin"
+    token: 
+       secure: "agUS3nkw2BixpZCHunrhCNKHgRD/EUL6yH6UsxE4bK1mtP0SR/FksfnQKaIXaQAa8+EmWxtElvmEXnrjVCQ+ETfV7r8C9wg9EA6+UvChNZXT3ar8RpiHwZEbsfp9XfosZd2o2Fu32BCi2SQ6I/A1Ky2K3GwD/WN+zGDIxlODSKLSym5nM7eiem+j/rYPnigs3LJ+5mryfL1Et7impiKLXKi9KfmVMc+O0bojgybgUFcCYEVvJxsde88KFKwSk4uh8KxUGTTeeZVvT6t3z8BO4PSB42XjNzhF2dqHVYaM4O9b64S225PcJZxS7xJSdJpKTENIdqSBCeJu2FdClAEeZPd3cEv6a4S0ZLsb9uGQFryK8wufTV/oHDTaboReSycBvWgWtPYSLWka0JalpLtkrT8RqhwDXYqK/wv5cB/sXJK/ZDqWHdsrF9lv9SXNvYtQ41E++lwPrbT3GlIWleZQyjfSbLf1LNwWhUC5lZspO8gDs/HsAWdOQ8ZBZioOzB61ReDG3DwduTa1hK2M0kvU7JivI8QThCfHZliYFkEMK866sH9KUzWdVHXjic/e0DRnDMeFZVcdOfOVezQivLp9dgbvCd8zVRNE7N54bpMsrfXwt7jyFM+ywvcaSQsC7RllGU4xsUcIKGs5mkNtijpT0G7VKfIUj/uKPV6rWevTZD8="
+
+branches:
+  only: develop
+
+matrix:
+  include:
+    - language: java
+      jdk:
+      - oraclejdk11
+      before_script:
+        - cd ./Backend/
+      script:
+        - mvn clean verify sonar:sonar -Pcoverage -Dsonar.projectKey=tamaragovorcin_ISA_project
+      cache:
+      directories:
+        - '$HOME/.m2/repository'
+        - '$HOME/.sonar/cache'
+      before_script:
+        - cd ./pharmacy/
+    - language: node_js
+      node_js: stable
+      install:
+        - npm install
+      before_install:
+        - cd ./Frontend/
+      script:
+        - npm run build
+        - wget https://github.com/sormuras/bach/raw/master/install-jdk.sh && . ./install-jdk.sh -F 11 -L GPL
+      after-success:
+        - sonar-scanner -Dsonar.projectKey=tamaragovorcin_ISA_project
