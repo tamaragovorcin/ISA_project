@@ -80,7 +80,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/pharmacy/actions/{id}").permitAll()
                 .antMatchers("/api/patient/confirm-account").permitAll()
                 .antMatchers("/api/systemAdmin/register") .permitAll()
+
                 .antMatchers("/api/supplier/register") .permitAll()
+
                 .antMatchers("/api/dermatologist/register") .permitAll()
                 .antMatchers("/api/medicationReservation/add") .permitAll()
                 .antMatchers("/api/pharmacyAdmin/register") .permitAll()
@@ -88,6 +90,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/order/add") .permitAll()
                 .antMatchers("/api/pharmacy/dermatologists/{id}") .permitAll()
                 .antMatchers("/api/pharmacy/pharmacists/{id}") .permitAll()
+
+                .antMatchers("/api/consulting/add") .permitAll()
+
                 .antMatchers("/api/pharmacy/medication/{id}") .permitAll()
                 .antMatchers("/api/pharmacy/freeExaminationTerms/{id}") .permitAll()
                 .antMatchers("/api/medication/priceInPharmacy") .permitAll()
@@ -127,12 +132,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.POST, "/api/order/add");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/pharmacists/{id}");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/dermatologists/{id}");
+
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/medication/{id}");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/medication/priceInPharmacy");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacy/freeExaminationTerms/{id}");
 
         //  web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacyAdmin/medication");
-
 
 
 

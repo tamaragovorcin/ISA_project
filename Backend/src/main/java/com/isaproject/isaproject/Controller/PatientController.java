@@ -4,10 +4,10 @@ package com.isaproject.isaproject.Controller;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
 
-import com.isaproject.isaproject.DTO.ActionsDTO;
+import com.isaproject.isaproject.DTO.*;
 
-import com.isaproject.isaproject.DTO.PersonUserDTO;
-import com.isaproject.isaproject.DTO.PharmacyNameDTO;
+import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Medicine.Specification;
 import com.isaproject.isaproject.Model.Pharmacy.Actions;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
@@ -66,7 +66,7 @@ public class PatientController {
         Patient existingUser = patientService.findByEmail(person.getEmail());
         if(existingUser != null)
         {
-           return ResponseEntity.ok("This email already exists!");
+            return ResponseEntity.ok("This email already exists!");
         }
         else
         {
@@ -110,7 +110,7 @@ public class PatientController {
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize("hasRole('PATIENT')")
+        //@PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<Patient> getById(@PathVariable Integer id)
     {
         Integer idd = 1;
@@ -213,6 +213,31 @@ public class PatientController {
         return patientService.unsubsribeToPharmacy(pharmacy) == false ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
+    }
+
+
+
+    @PreAuthorize("hasRole('PHARMACIST')")
+    @GetMapping("searchForm/{patientName}")
+    ResponseEntity<List<PatientSearchDTO>> getAllByForm(@PathVariable String patientName)
+    {
+        System.out.println("--------------------------------------------------------------------");
+        List<Patient> medications=  patientService.findAllByName(patientName);
+        List<PatientSearchDTO> medicationsForFront = new ArrayList<>();
+        for (Patient medication: medications) {
+            PatientSearchDTO medicationSearchDTO = getMedicationSearchDTO(medication);
+            medicationsForFront.add(medicationSearchDTO);
+        }
+        return medicationsForFront == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(medicationsForFront);
+    }
+
+    private PatientSearchDTO getMedicationSearchDTO(Patient medication) {
+        //Specification specification = medication.getSpecification();
+       // SpecificationDTO specificationDTO = new SpecificationDTO(specification.getContraIndications(),
+               // specification.getStructure(), specification.getRecommendedConsumption(), specification.getManufacturer());
+        return new PatientSearchDTO(medication.getName(), medication.getSurname());
     }
 
 

@@ -75,4 +75,3 @@ public class PharmacistController {
                 ResponseEntity.ok(pharmacist);
     }
 }
-

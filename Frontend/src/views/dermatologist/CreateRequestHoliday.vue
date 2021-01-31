@@ -48,9 +48,8 @@ export default {
         types: [
           { type: 'VACATION' },
           { type: 'ABSENCE' },
-      
+         
       ],
-         type : ""
      
     }
   },
@@ -64,7 +63,7 @@ export default {
       },
         sendRequest : function() {
             const holiday = {
-            pharmacist : this.pharmacist,
+            dermatologist : this.dermatologist,
             startDate : this.startDate,
             endDate  :this.endDate,
             type : this.type
@@ -72,7 +71,7 @@ export default {
           console.log(holiday)
           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
           console.log(token)
-           this.axios.post('/holidayPharmacist/add',holiday,{ 
+           this.axios.post('/holidayDermatologist/add',holiday,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                         }})
@@ -94,12 +93,12 @@ export default {
 },
 mounted() {
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-        this.axios.get('/pharmacist/account',{ 
+        this.axios.get('/dermatologist/account',{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
              }
          }).then(response => {
-                this.pharmacist = response.data;
+                this.dermatologist = response.data;
                 console.log(response.data);
          }).catch(res => {
                 alert("NOT OK");
