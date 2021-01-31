@@ -1,8 +1,5 @@
 package com.isaproject.isaproject.Service.Implementations;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.isaproject.isaproject.Model.Users.Authority;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
 import com.isaproject.isaproject.Service.IServices.IAuthorityService;

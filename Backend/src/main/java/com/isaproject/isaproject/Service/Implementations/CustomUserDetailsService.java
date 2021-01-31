@@ -1,8 +1,6 @@
 package com.isaproject.isaproject.Service.Implementations;
 
-import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
-import com.isaproject.isaproject.Model.Users.SystemAdmin;
 import com.isaproject.isaproject.Repository.PersonUserRepository;
 import com.isaproject.isaproject.Repository.SystemAdminRepository;
 import org.apache.commons.logging.Log;
