@@ -78,7 +78,7 @@ public class EPrescriptionController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok("Successfully updated!");
     }
-    
+
 
 
     private List<PharmacyMedicationAvailabilityDTO> getAvailabilityInPharmacies(List<QRcodeInformationDTO> medicationsInQRcode) {
