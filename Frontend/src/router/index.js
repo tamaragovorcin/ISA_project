@@ -46,9 +46,14 @@ import PhAdminProfileUpdate from '../views/pharmacyAdmin/PhAdminProfileUpdate.vu
 import PharmacyDermatologists from '../views/pharmacyAdmin/PharmacyDermatologists.vue'
 import PharmacyPharmacists from '../views/pharmacyAdmin/PharmacyPharmacists.vue'
 import AddPharmacist from '../views/pharmacyAdmin/AddPharmacist.vue'
+import NewOrderForm from '../views/pharmacyAdmin/NewOrderForm.vue'
 import Complaints from '../views/systemAdmin/Complaints.vue'
 import Urgent from '../views/pharmacyAdmin/Urgent.vue'
-
+import PharmacyMedication from '../views/pharmacyAdmin/PharmacyMedication.vue'
+import SupplierReviewsActiveTenders from '../views/supplier/SupplierReviewsActiveTenders.vue'
+import MyOffers from '../views/supplier/MyOffers.vue'
+import SupplierAddMedication from '../views/supplier/SupplierAddMedication.vue'
+import SupplierMyMedications from '../views/supplier/SupplierMyMedications.vue'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -302,7 +307,38 @@ const routes = [
       name: 'Urgent',
       component: Urgent
     },
-  
+    {
+
+      path: '/pharmacyMedications',
+      name: 'PharmacyMedication',
+      component: PharmacyMedication
+    },
+    {
+      path: '/supplierReviewsActiveTenders',
+      name: 'SupplierReviewsActiveTenders',
+      component: SupplierReviewsActiveTenders
+    },
+    {
+      path: '/newOrderForm',
+      name: 'NewOrderForm',
+      component: NewOrderForm
+    },
+    {
+        path: '/myOffers',
+      name: 'MyOffers',
+      component: MyOffers
+    },
+    {
+      path: '/supplierMyMedications',
+      name: 'SupplierMyMedications',
+      component: SupplierMyMedications
+    },
+    {
+      path: '/supplierAddMedication',
+      name: 'SupplierAddMedication',
+      component: SupplierAddMedication
+    },
+      
 ]
 const router = new VueRouter({
   mode: 'history',

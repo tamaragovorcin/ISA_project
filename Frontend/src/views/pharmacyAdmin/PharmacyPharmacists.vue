@@ -3,17 +3,21 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-              <span style="float: left; margin: 15px;">
+               <span style="float: left; margin: 15px;">
+                <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
+                <b class="tab"></b>    
                 <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
                 <b class="tab"></b>    
                 <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
                  <b class="tab"></b>    
                  <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
                  
-                <b class="tab"></b>    
-                <a  class = "btn btn-secondary" href = "/addPharmacist">Add pharmacist</a>    
                 <b class="tab"></b> 
-                 <a  class = "btn btn-secondary" href = "/pharmacyPharmacists">Our pharmacists</a> 
+                 <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
+                               class = "btn btn-link btn-lg">
+                    <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
+                    <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
+                </b-dropdown> 
                   <b class="tab"></b>  
                 <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
                 <b class="tab"></b> 
@@ -170,7 +174,6 @@ export default {
                     }
                     }).then(response => {
                             this.pharmacists = response.data;
-                            alert(this.pharmacists);
                     }).catch(res => {
                             alert("NOT OK");
                             console.log(res);

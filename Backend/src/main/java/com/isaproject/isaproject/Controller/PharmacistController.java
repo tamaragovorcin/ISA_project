@@ -27,15 +27,40 @@ public class PharmacistController {
     PharmacistService pharmacistService;
 
     @PostMapping("/register")
-   //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacistDTO userRequest) {
+        System.out.println(userRequest.getPharmacy().getPharmacyName());
 
         PersonUser existUser = pharmacistService.findByEmail(userRequest.getEmail());
         if (existUser != null) {
             throw new ResourceConflictException(userRequest.getEmail(), "Email already exists");
         }
-        PersonUser user = pharmacistService.save(userRequest);
-        return new ResponseEntity<>("Pharmacist is successfully registred!", HttpStatus.CREATED);
+        Pharmacist user = pharmacistService.save(userRequest);
+        return new ResponseEntity<>("Supplier is successfully registred!", HttpStatus.CREATED);
+    }
+    @GetMapping("")
+    ResponseEntity<List<Pharmacist>> getAll()
+    {
+        List<Pharmacist> pharmacists = pharmacistService.findAll();
+        return pharmacists == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacists);
+    }
+    @PostMapping("/update")
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<String> update(@RequestBody Pharmacist userRequest) {
+
+        Pharmacist user = pharmacistService.update(userRequest);
+        return user.getSurname() == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                new ResponseEntity<>("Pharmacist is successfully updated!", HttpStatus.CREATED);
+    }
+    @PostMapping("/delete")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    public ResponseEntity<String> addUser(@RequestBody Pharmacist pharmacist) {
+        System.out.println(pharmacist.getName());
+        pharmacistService.delete(pharmacist);
+        return new ResponseEntity<>("Pharmacist is successfully removed!", HttpStatus.CREATED);
     }
 
     @GetMapping("/account")
@@ -48,25 +73,5 @@ public class PharmacistController {
         return pharmacist == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacist);
-    }
-    @GetMapping("")
-    ResponseEntity<List<Pharmacist>> getAll()
-    {
-        List<Pharmacist> pharmacists = pharmacistService.findAll();
-        return pharmacists == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacists);
-    }
-    @PostMapping("/update")
-    @PreAuthorize("hasRole('PHARMACIST')")
-    ResponseEntity<Pharmacist> update(@RequestBody PharmacistDTO person)
-    {
-        Pharmacist per = pharmacistService.findByEmail(person.getEmail());
-        Integer id = per.getId();
-        pharmacistService.delete(per);
-        Pharmacist patient = pharmacistService.save(person);
-        return patient == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(patient);
     }
 }

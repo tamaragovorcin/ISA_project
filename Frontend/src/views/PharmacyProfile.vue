@@ -15,12 +15,19 @@
 
         </div>
   <div class = "col md-8">
-        <h1 style="color:#0D184F;font-suze:55px;font-weignt:bold;">{{pharmacy.pharmacyName}}</h1>
-      
-      
-        <div v-if="dermatologistsShow" class="container" id ="table">
+          <h1 style="color:#0D184F;font-suze:75px;font-weight:bold;"><u>{{pharmacy.pharmacyName}}</u></h1>
 
-                          <h3 style="color:white;">Dermatologists of our pharmacy</h3>
+        <div class = "container" v-if="welcomePageShow">
+                <h3 style="color:#0D184F;font-suze:55px;font-weight:bold;margin-top:30px;" align = "center">About us:</h3>
+
+            <div style="color:#0D184F;font-suze:40px;font-style:italic;font-weight:bold;">{{pharmacy.description}}</div>
+             <h3 style="color:green;font-suze:55px;font-weight:bold;margin-top:30px;" align = "center">Visit us at address:</h3>
+
+            <div style="color:green;font-suze:40px;font-style:italic;font-weight:bold;">{{pharmacy.address.street}}&nbsp; {{pharmacy.address.number}},&nbsp; {{pharmacy.address.town}}</div>
+      </div>
+        <div v-if="dermatologistsShow" class="container justify-content-center" id ="table">
+
+                          <h3 style="color:white;">Dermatologists of&nbsp; {{pharmacy.pharmacyName}}</h3>
 
                       <table class="table table-striped table-light">
                       <thead class="thead-light">
@@ -45,9 +52,9 @@
                     </table>
 
       </div>
-       <div v-if="pharmacistsShow" class="container" id ="table">
+       <div v-if="pharmacistsShow" class="container justify-content-center" id ="table" align="center">
 
-                          <h3 style="color:white;">Pharmacists of our pharmacy</h3>
+                          <h3 style="color:white;">Pharmacists of&nbsp; {{pharmacy.pharmacyName}}</h3>
 
                       <table class="table table-striped table-light">
                       <thead class="thead-light">
@@ -74,29 +81,102 @@
                     </table>
 
       </div>
+        <div v-if="termsShow" class="container justify-content-center" id ="table">
+
+                          <h3 style="color:white;">Available appointments with dermatologist  in&nbsp; {{pharmacy.pharmacyName}}</h3>
+
+                      <table class="table table-striped table-light">
+                      <thead class="thead-light">
+                        <tr>
+                          <th scope="col"></th>
+                          <th scope="col">Dermatologists name</th>
+                          <th scope="col">Dermatologists surname</th>
+                          <th scope="col">Dermatologists mark</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Time</th>
+                          <th scope="col">Duration</th>
+                          <th scope="col">Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="term in ourTerms" :key="term.id">
+                                                                        <td></td>
+                                                                        <td>{{term.dermatologistName}}</td>
+                                                                        <td>{{term.dermatologistSurname}}</td>
+                                                                        <td>{{term.dermatologisMark}}</td>
+                                                                        <td>{{term.date}}</td>
+                                                                        <td>{{term.startTime}}</td>
+                                                                        <td>{{term.duration}}</td>
+                                                                        <td>{{term.price}}</td>
+
+                                                                    </tr>
+                      
+                      </tbody>
+                    </table>
+
+      </div>
+
+       <div v-if="medicationShow" class="container" id ="table">
+
+                          <h3 style="color:white;">Medication in&nbsp; {{pharmacy.pharmacyName}}</h3>
+
+                      <table class="table table-striped table-light">
+                      <thead class="thead-light">
+                        <tr>
+                          <th scope="col"></th>
+                          <th scope="col">Medication name</th>
+                          <th scope="col">Manufacturer</th>
+                          <th scope="col">Form</th>
+                          <th scope="col">Type</th>
+                          <th scope="col">Issusance regime</th>
+                          <th scope="col">Mark</th>
+                          <th scope="col">Loyalty points</th>
+                          <th scope="col">Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="med in ourMedications" :key="med.id">
+                                                                        <td></td>
+                                                                        <td>{{med.name}}</td>
+                                                                        <td>{{med.manufacturer}}</td>
+                                                                        <td>{{med.form}}</td>
+                                                                        <td>{{med.type}}</td>
+                                                                        <td>{{med.issuanceRegime}}</td>
+                                                                        <td>{{med.loyaltyPoints}}</td>
+                                                                        <td>{{med.mark}}</td>
+                                                                        <td>{{med.price}}din</td>
+                                                                        
+                                                                    </tr>
+                      
+                      </tbody>
+                    </table>
+
+      </div>
 
 
 </div>
 <div class="col md-2"></div>
 
 
-    <div class = "col md-4">
+    <div class = "col md-4 align-top container-fluid">
 
-                <div class="sidenav" style="margin-right:25px;">
+                <div class="sidenav">
                 <hr/>
-                <a  v-on:click = "showDermatologists"> Our dermatologists</a>
+                <a  v-on:click = "showWelcomePage">Home</a>
                 <hr/>
-                <a @click = "showPharmacists">Our pharmacists</a>
+                <a  v-on:click = "showDermatologists"> Dermatologists</a>
                 <hr/>
-                <a href = "/pharmacyMedications">Medications</a>
+                <a @click = "showPharmacists">Pharmacists</a>
                 <hr/>
-                <a href = "/pharmacyMedications">Appointments with a dermatologists </a>
+                <a @click = "showMedication">Medications</a>
+                <hr/>
+                <a v-on:click = "showTerms">Appointments with a dermatologists </a>
                 <hr/>
                 <a href = "/actionsAndBenefits">Pricelist</a>
                 <hr/>
                 <a href="/order"></a>
                 </div>
-                </div>
+    </div>
     </div>
 </template>
 
@@ -105,10 +185,24 @@ export default {
   data() {
     return {
        id : this.$route.params.id,
-       pharmacy : {},
+       pharmacy : {
+         address:{
+           town : "",
+           street : "",
+           number : ""
+         }
+       },
        dermatologistsShow : false,
        pharmacistsShow : false,
+       termsShow : false,
+       medicationShow : false,
        ourDermatologists : [],
+       ourMedications : [],
+       ourTerms : [],
+       ourPharmacists : [],
+       welcomePageShow : true
+       
+       
 
     }
   },
@@ -140,6 +234,33 @@ export default {
                        alert("Please try again later.");
                         console.log(res);
                  });
+
+
+
+       this.axios.get('pharmacy/freeExaminationTerms/'+3,{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+         }).then(response => {
+               this.ourTerms=response.data;
+         }).catch(res => {
+                       alert("Please try again later.");
+                        console.log(res);
+                 });
+
+
+             this.axios.get('pharmacy/medication/'+3,{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+         }).then(response => {
+               this.ourMedications=response.data;
+         }).catch(res => {
+                       alert("Please try again later.");
+                        console.log(res);
+                 });
+        
+        
         
                
          }).catch(res => {
@@ -159,12 +280,43 @@ export default {
         this.$refs['my-modal'].hide()
       },
       showDermatologists : function(){
+        this.welcomePageShow = false;
             this.dermatologistsShow = true;
             this.pharmacistsShow = false;
+            this.termsShow = false;
+            this.medicationShow = false;
       },
       showPharmacists : function(){
+        this.welcomePageShow = false;
           this.dermatologistsShow = false;
           this.pharmacistsShow = true;
+          this.termsShow = false;
+          this.medicationShow = false;
+
+      },
+        showTerms : function(){
+          this.welcomePageShow = false;
+          this.dermatologistsShow = false;
+          this.pharmacistsShow = false;
+          this.termsShow = true;
+          this.medicationShow = false;
+
+      }
+      ,
+        showMedication : function(){
+          this.welcomePageShow = false;
+          this.dermatologistsShow = false;
+          this.pharmacistsShow = false;
+          this.termsShow = false;
+          this.medicationShow = true;
+          
+      },
+      showWelcomePage : function(){
+        this.dermatologistsShow = false;
+          this.pharmacistsShow = false;
+          this.termsShow = false;
+          this.medicationShow = false;
+          this.welcomePageShow = true;
       }
    
 }

@@ -18,7 +18,6 @@ import java.util.Set;
 @Entity
 @DiscriminatorValue("Dermatologist")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Dermatologist extends PersonUser{
 
     @Column(name = "markDermatologist", nullable = true)

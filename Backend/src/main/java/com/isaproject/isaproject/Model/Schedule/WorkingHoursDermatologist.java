@@ -1,5 +1,6 @@
 package com.isaproject.isaproject.Model.Schedule;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 
@@ -19,8 +20,9 @@ public class WorkingHoursDermatologist  {
     private LocalDate date;
 
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
+    @JsonBackReference(value = "pharmacy-dermatologist")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = true, unique = false)
     private Pharmacy pharmacy;
 
 

@@ -15,6 +15,7 @@ public class PharmacyDTO {
 
     private AddressDTO address;
     private double consultingPrice;
+    private String description;
 
     public PharmacyDTO(String pharmacyName, AddressDTO address) {
         this.pharmacyName = pharmacyName;
@@ -24,10 +25,24 @@ public class PharmacyDTO {
     public PharmacyDTO() {
     }
 
+    public PharmacyDTO(String pharmacyName, AddressDTO address, double consultingPrice, String description) {
+        this.pharmacyName = pharmacyName;
+        this.address = address;
+        this.consultingPrice = consultingPrice;
+        this.description = description;
+    }
     public PharmacyDTO(String pharmacyName, AddressDTO address, double consultingPrice) {
         this.pharmacyName = pharmacyName;
         this.address = address;
         this.consultingPrice = consultingPrice;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getConsultingPrice() {

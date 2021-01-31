@@ -39,6 +39,7 @@ public class PharmacyService implements IPharmacyService {
     public Pharmacy save(PharmacyDTO pharmacy) {
         Pharmacy pharmacy1 = new Pharmacy();
         pharmacy1.setPharmacyName(pharmacy.getPharmacyName());
+        pharmacy1.setDescription(pharmacy.getDescription());
         AddressDTO addressDTO = pharmacy.getAddress();
         Address address = new Address(addressDTO.getTown(),addressDTO.getStreet(),addressDTO.getNumber(),addressDTO.getPostalCode(),addressDTO.getCountry());
         pharmacy1.setAddress(address);

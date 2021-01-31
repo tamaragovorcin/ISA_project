@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
+import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
 import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
 import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
 import com.isaproject.isaproject.Model.Orders.Offer;
@@ -40,7 +41,7 @@ public class Medication  {
 
 
     @Column(name = "issuanceRegime", nullable = true)
-    private String issuanceRegime;//rezim upotrebe
+    private String issuanceRegime;
 
 
     @Column(name = "mark", nullable = true)
@@ -59,10 +60,6 @@ public class Medication  {
     private Set<EPrescription> ePrescriptions = new HashSet<EPrescription>();
 
     @ManyToMany
-    @JoinTable(name = "offer_medication", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "offer_id", referencedColumnName = "id"))
-    private Set<Offer> offer = new HashSet<Offer>();
-
-    @ManyToMany
     @JoinTable(name = "prescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
     private Set<Prescription> prescriptions = new HashSet<Prescription>();
 
@@ -75,21 +72,18 @@ public class Medication  {
     private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
 
 
-    @JsonManagedReference(value="medication-medicationInOrder")
+    @JsonManagedReference(value="medication-medicationPrice")
     @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<MedicationInOrder> medicationInOrder = new HashSet<MedicationInOrder>();
+    private Set<MedicationPrice> medicationPrices = new HashSet<MedicationPrice>();
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "specification_id", referencedColumnName = "id", nullable = true, unique = false)
     private Specification specification;
 
 
-    @ManyToMany(mappedBy = "medications")
-    private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
-
     public Medication() {}
 
-    public Medication(Integer id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints, String wayOfSelling) {
+    public Medication(Integer id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints, String wayOfSelling, Set<EPrescription> ePrescriptions, Set<Offer> offer, Set<Prescription> prescriptions, Set<Medication> medications, Set<PatientsMedicationAlergy> patientsMedicationAlergy, Set<MedicationInOrder> medicationInOrder, Set<MedicationPrice> medicationPrices, Specification specification) {
         this.id = id;
         this.name = name;
         this.code = code;
@@ -99,6 +93,8 @@ public class Medication  {
         this.mark = mark;
         this.loyaltyPoints = loyaltyPoints;
         this.wayOfSelling = wayOfSelling;
+        this.ePrescriptions = ePrescriptions;
+
     }
 
     public String getWayOfSelling() {
@@ -109,13 +105,6 @@ public class Medication  {
         this.wayOfSelling = wayOfSelling;
     }
 
-    public Set<Offer> getOffer() {
-        return offer;
-    }
-
-    public void setOffer(Set<Offer> offer) {
-        this.offer = offer;
-    }
 
     public Specification getSpecification() {
         return specification;
@@ -125,13 +114,6 @@ public class Medication  {
         this.specification = specification;
     }
 
-    public Set<Pharmacy> getPharmacies() {
-        return pharmacies;
-    }
-
-    public void setPharmacies(Set<Pharmacy> pharmacies) {
-        this.pharmacies = pharmacies;
-    }
 
     public Set<PatientsMedicationAlergy> getPatientsMedicationAlergy() {
         return patientsMedicationAlergy;
@@ -155,18 +137,14 @@ public class Medication  {
 
     public void setPrescriptions(Set<Prescription> prescriptions) {
         this.prescriptions = prescriptions;
+        this.medications = medications;
+        this.patientsMedicationAlergy = patientsMedicationAlergy;
+        this.medicationPrices = medicationPrices;
+        this.specification = specification;
     }
 
     public Integer getId() {
         return id;
-    }
-
-    public Set<EPrescription> getePrescriptions() {
-        return ePrescriptions;
-    }
-
-    public void setePrescriptions(Set<EPrescription> ePrescriptions) {
-        this.ePrescriptions = ePrescriptions;
     }
 
     public void setId(Integer id) {
@@ -227,5 +205,21 @@ public class Medication  {
 
     public void setLoyaltyPoints(double loyaltyPoints) {
         this.loyaltyPoints = loyaltyPoints;
+    }
+
+    public Set<EPrescription> getePrescriptions() {
+        return ePrescriptions;
+    }
+
+    public void setePrescriptions(Set<EPrescription> ePrescriptions) {
+        this.ePrescriptions = ePrescriptions;
+    }
+
+    public Set<MedicationPrice> getMedicationPrices() {
+        return medicationPrices;
+    }
+
+    public void setMedicationPrices(Set<MedicationPrice> medicationPrices) {
+        this.medicationPrices = medicationPrices;
     }
 }

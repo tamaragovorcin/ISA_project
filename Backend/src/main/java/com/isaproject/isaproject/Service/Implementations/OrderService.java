@@ -35,13 +35,10 @@ public class OrderService implements IOrderService {
     public Order save(OrderDTO orderDTO) {
         Order order =  new Order();
         order.setDate(orderDTO.getDate());
-        order.setStatus("CREATED");
+        order.setStatus("WAITING_OFFERS");
         order.setPharmacyAdmin(orderDTO.getPharmacyAdmin());
         MedicationInOrder medicationInOrder = new MedicationInOrder();
 
-       /* Set<MedicationInOrder> medicationInOrderSet = order.getMedicationInOrders();
-
-        order.setMedicationInOrders(medicationInOrderSet);*/
         Order order1 = orderRepository.save(order);
         for(MedicationsInOrderDTO medDto : orderDTO.getMedicationsInOrderDTO()){
             MedicationInOrder medicationInOrder1 = new MedicationInOrder(medDto.getMedicine(),medDto.getQuantity());
