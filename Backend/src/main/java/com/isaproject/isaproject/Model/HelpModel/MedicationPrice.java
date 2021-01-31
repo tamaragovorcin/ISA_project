@@ -26,6 +26,9 @@ public class MedicationPrice {
     @Column(name = "price", nullable = true)
     private double price;
 
+    @Column(name = "quantity", nullable = true)
+    private Integer quantity;
+
 
     @Column(name = "date", nullable = true)
     private LocalDate date;
@@ -39,10 +42,11 @@ public class MedicationPrice {
     public MedicationPrice() {
     }
 
-    public MedicationPrice(Integer id, Medication medication, double price, LocalDate date, Pharmacy pharmacy) {
+    public MedicationPrice(Integer id, Medication medication, double price, Integer quantity, LocalDate date, Pharmacy pharmacy) {
         this.id = id;
         this.medication = medication;
         this.price = price;
+        this.quantity = quantity;
         this.date = date;
         this.pharmacy = pharmacy;
     }
@@ -69,6 +73,14 @@ public class MedicationPrice {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public LocalDate getDate() {

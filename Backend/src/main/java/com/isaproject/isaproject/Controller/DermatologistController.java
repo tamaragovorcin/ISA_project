@@ -29,7 +29,7 @@ public class DermatologistController {
 
     @PostMapping("/register")
    // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
-    public ResponseEntity<String> addUser(@RequestBody PersonUserDTO userRequest) {
+    public ResponseEntity<String> addUser(@RequestBody DermatologistDTO userRequest) {
 
         PersonUser existUser = dermatologistService.findByEmail(userRequest.getEmail());
         if (existUser != null) {
@@ -54,7 +54,7 @@ public class DermatologistController {
 
     @PostMapping("/update")
     @PreAuthorize("hasRole('DERMATOLOGIST')")
-    ResponseEntity<Dermatologist> update(@RequestBody PersonUserDTO person)
+    ResponseEntity<Dermatologist> update(@RequestBody DermatologistDTO person)
     {
         Dermatologist per = dermatologistService.findByEmail(person.getEmail());
         Integer id = per.getId();

@@ -22,7 +22,7 @@ public class Pharmacist extends  PersonUser {
     @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Consulting> consulting = new HashSet<Consulting>();
 
-
+    @JsonManagedReference(value="holiday-pharmacist")
     @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<HolidaySchedulePharmacist> holidaySchedulePharmacists = new HashSet<HolidaySchedulePharmacist>();
 

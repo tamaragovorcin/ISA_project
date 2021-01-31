@@ -1,5 +1,7 @@
 package com.isaproject.isaproject.Model.Schedule;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
 
@@ -8,13 +10,15 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class HolidaySchedulePharmacist {
     @Id
     @GeneratedValue
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference(value="holiday-pharmacist")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "pharmacist_id", referencedColumnName = "id", nullable = false, unique = false)
     private Pharmacist pharmacist;
 
@@ -29,11 +33,34 @@ public class HolidaySchedulePharmacist {
 
 
     @Column(name = "approved", nullable = true)
-    private Boolean approved;
+    private String approved;//APPROVED or REFUSED or WAITING_FOR_RESPONSE
 
 
     @Column(name = "massage", nullable = true)
     private String massage;
+
+    @Column(name = "type", nullable = true)
+    private String type;//HOLIDAY or ABSENCE
+
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public HolidaySchedulePharmacist(Integer id, Pharmacist pharmacist, LocalDate startDate, LocalDate endDate, String approved, String massage, String type) {
+        this.id = id;
+        this.pharmacist = pharmacist;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.approved = approved;
+        this.massage = massage;
+        this.type = type;
+    }
+
 
     public HolidaySchedulePharmacist() {
         super();
@@ -72,11 +99,11 @@ public class HolidaySchedulePharmacist {
         this.endDate = endDate;
     }
 
-    public Boolean getApproved() {
+    public String getApproved() {
         return approved;
     }
 
-    public void setApproved(Boolean approved) {
+    public void setApproved(String approved) {
         this.approved = approved;
     }
 

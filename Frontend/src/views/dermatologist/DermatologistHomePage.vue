@@ -142,6 +142,7 @@ export default {
 
       },
       vacation: function(){
+          window.location.href = "/dermatologistHoliday";
 
       },
       scheduleConsulting : function(){

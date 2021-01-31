@@ -33,12 +33,58 @@ ines (39 sloc)  1.61 KB
                 </span>
 
         </div>
+        <div style = "background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+                       <h3 style="color: #0D184F;margin-bottom:20px">Upload QR code</h3>
+                <div class="form-group">
+                   <div class="row">
+                       
+                        <div class="col">
+                             <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+                        </div> 
+                          <div class="col">
+                              <button  class="btn btn-primary" v-on:click="submitFile()">Check availability in pharmacies</button>
+                        </div>
+                   </div>
+                </div>
+        </div>
 
-        <label>File
-        <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
-      </label>
-      <button v-on:click="submitFile()">Submit</button>
-       
+        <div v-for="pharmacy in pharmacyList"   v-bind:key="pharmacy.pharmacyId">
+
+            <div style = "background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+                        
+                  <div class="form-group">
+                      <div class="row">
+                          <div class="col">
+                              <label>Pharmacy {{pharmacy.pharmacyName}}</label>
+                          </div>
+
+                      </div>
+                      <div class="row">
+                          <div class="col">
+                              <label>Pharmacy average mark  {{pharmacy.mark}}</label>
+                          </div>
+                      </div>   
+                      <div class="row">
+                          <div class="col">
+                              <label>Price {{pharmacy.sumPrice}}</label>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col">
+                              <label>Address  {{pharmacy.address.country}}, {{pharmacy.address.town}}, {{pharmacy.address.street}} {{pharmacy.address.number}}</label>
+                          </div>
+                      </div>
+                      <div class="row d-flex align-items-end">
+                          <div class="col">
+                              <button  class="btn btn-primary" v-on:click="choosePharmacy($event,pharmacy.pharmacyId)">Choose this pharmacy</button>
+                          </div>
+                      </div>
+                  </div>
+            </div> 
+        </div>
+
+
+
      
   
 
@@ -49,20 +95,12 @@ export default {
 
   data() {
     return {
-       showComplaintForm : false,
-       pharmacies : [],
-       pharmacy : null,
-       pharmacists : [],
-       pharmacist : null,
-       dermatologists : [],
-       dermatologist : null,
-       showPharmacyComplaint : false,
-       showPharmacistComplaint : false,
-       showDermatologistComplaint : false,
+       pharmacyList : [],
        formData: null,
        urlImage: [],
        lista : [],
-        file: ''
+       file: '',
+       medications : []
 
     }
   },
@@ -85,31 +123,49 @@ export default {
 
       },
       penals : function(){},
-     submitFile(){
-        
+      submitFile(){
+            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+
             let formData = new FormData();
 
             formData.append('file', this.file);
 
-            this.axios.post( '/erecipes/file',
-                formData,
-                {
+            this.axios.post( '/erecipes/file', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                     'Authorization': 'Bearer ' + token
                 }
-              }
-            ).then(function(){
-          console.log('SUCCESS!!');
-        })
-        .catch(function(){
-          console.log('FAILURE!!');
-        });
+              }). then(response => {
+                    this.medications = response.data;
+                    this.axios.post( '/erecipes/availability', this.medications,{
+                          headers: {
+                              'Authorization': 'Bearer ' + token
+                          }
+                        }). then(response => {
+                            this.pharmacyList = response.data;
+                        }).catch(res => {
+                            alert("Please try again later!");
+                            console.log(res);
+                        });     
+
+                }).catch(res => {
+                     alert("Please upload correct QR code!");
+                    console.log(res);
+                });     
       },
 
       
       handleFileUpload(){
         this.file = this.$refs.file.files[0];
       },
+      choosePharmacy($event,pharmacyid) {
+         const pharmacyMedications = {
+                      medications : this.medications,
+                      pharmacyId = pharmacyid
+                    }
+
+          console.log(pharmacyid);
+      }
      
 }
 }

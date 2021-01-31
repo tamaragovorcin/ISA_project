@@ -22,6 +22,7 @@ public class ConsultingController {
     @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<String> addConsulting(@RequestBody ConsultingDTO consultingDTO) {
 
+        System.out.println("-+++++++++++++++++++++++++++++++++++++++");
         Consulting consulting = consultingService.save(consultingDTO);
         return consulting == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

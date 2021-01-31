@@ -52,6 +52,16 @@ public class PatientService implements IPatientService {
     }
 
     @Override
+    public List<Patient> findAllByName(String name) {
+        return patientRepository.findAllByName(name);
+    }
+
+    @Override
+    public Patient findByName(String name) {
+        return patientRepository.findByName(name);
+    }
+
+    @Override
     public Patient save(PersonUserDTO userRequest) {
         Patient patient =  new Patient();
         patient.setName(userRequest.getFirstname());

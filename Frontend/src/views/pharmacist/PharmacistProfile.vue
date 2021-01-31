@@ -103,12 +103,14 @@ export default {
        surname: "",
        email: "",
        phoneNumber: "",
-       country: "",
-       town: "", 
-       street: "",
-       postalCode: "",
-       number: "",
-       address: {}
+       address: {
+          country: "",
+           town: "", 
+            street: "",
+            postalCode: "",
+           number: ""
+           }
+     
        
 
       
