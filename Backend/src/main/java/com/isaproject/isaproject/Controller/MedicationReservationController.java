@@ -47,7 +47,7 @@ public class MedicationReservationController {
     ResponseEntity<MedicationReservation> register(@RequestBody MedicationReservationDTO medicationReservationDTO)
     {
        
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+medicationReservationDTO.getPatient().getId());
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAMEDICATIONS"+medicationReservationDTO.getPatient().getId());
         MedicationReservation medication = medicationReservationService.save(medicationReservationDTO);
         return medication == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

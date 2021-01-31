@@ -6,7 +6,10 @@ import ch.qos.logback.core.net.SyslogOutputStream;
 
 import com.isaproject.isaproject.DTO.ActionsDTO;
 
+import com.isaproject.isaproject.DTO.AlergiesDTO;
+import com.isaproject.isaproject.DTO.AlergiesFrontDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
 import com.isaproject.isaproject.Model.Pharmacy.Actions;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Service.Implementations.ActionsService;
@@ -14,6 +17,7 @@ import com.isaproject.isaproject.Service.Implementations.ActionsService;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
 import com.isaproject.isaproject.Repository.PatientRepository;
+import com.isaproject.isaproject.Service.Implementations.AlergiesService;
 import com.isaproject.isaproject.Service.Implementations.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,10 +37,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.swing.*;
 import javax.websocket.server.PathParam;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/patient")
@@ -45,6 +46,8 @@ public class PatientController {
     @Autowired
     PatientService patientService;
 
+    @Autowired
+    AlergiesService alergiesService;
 
     @Autowired
     PatientRepository patientRepository;
@@ -59,16 +62,12 @@ public class PatientController {
     JavaMailSenderImpl mailSender;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerPatient(@RequestBody PersonUserDTO person)
-    {
+    public ResponseEntity<String> registerPatient(@RequestBody PersonUserDTO person) {
 
         Patient existingUser = patientService.findByEmail(person.getEmail());
-        if(existingUser != null)
-        {
-           return ResponseEntity.ok("This email already exists!");
-        }
-        else
-        {
+        if (existingUser != null) {
+            return ResponseEntity.ok("This email already exists!");
+        } else {
             Patient patient = patientService.save(person);
 
             ConfirmationToken confirmationToken = new ConfirmationToken(patient);
@@ -81,7 +80,7 @@ public class PatientController {
             mail.setFrom(environment.getProperty("spring.mail.username"));
             //mail.setFrom("pharmacyisa@gmail.com");
             mail.setText("To confirm your account, please click here : "
-                    +"http://localhost:8082/api/patient/confirm-account/"+confirmationToken.getConfirmationToken());
+                    + "http://localhost:8082/api/patient/confirm-account/" + confirmationToken.getConfirmationToken());
 
             mailSender.send(mail);
             return ResponseEntity.ok("");
@@ -89,30 +88,25 @@ public class PatientController {
     }
 
     @GetMapping(path = "/confirm-account/{token}")
-    public Object confirmUserAccount(@PathVariable String token)
-    {
+    public Object confirmUserAccount(@PathVariable String token) {
         ConfirmationToken token2 = confirmationTokenRepository.findByConfirmationToken(token);
 
-        if(token != null)
-        {
+        if (token != null) {
             Patient user = patientService.findByEmail(token2.getPersonUser().getEmail());
             user.setEnabled(true);
             patientRepository.save(user);
             RedirectView redirect = new RedirectView();
             redirect.setUrl("http://localhost:8085/patientProfile");
             return redirect;
-        }
-        else
-        {
+        } else {
             return "The link is invalid or broken!!";
         }
 
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<Patient> getById(@PathVariable Integer id)
-    {
+        //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<Patient> getById(@PathVariable Integer id) {
         Integer idd = 1;
         Patient patient = patientService.findById(idd);
         return patient == null ?
@@ -122,10 +116,9 @@ public class PatientController {
 
     @GetMapping("/account")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<Patient> getMyAccount()
-    {
+    ResponseEntity<Patient> getMyAccount() {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PersonUser user = (PersonUser) currentUser.getPrincipal();
         Patient patient = patientService.findById(user.getId());
         return patient == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -135,10 +128,9 @@ public class PatientController {
 
     @GetMapping("/address")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<Address> getMyAddress()
-    {
+    ResponseEntity<Address> getMyAddress() {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PersonUser user = (PersonUser) currentUser.getPrincipal();
 
         Patient patient = patientService.findById(user.getId());
         return patient.getAddress() == null ?
@@ -147,16 +139,15 @@ public class PatientController {
     }
 
     @GetMapping("")
-    ResponseEntity<List<Patient>> getAll()
-    {
+    ResponseEntity<List<Patient>> getAll() {
         List<Patient> patients = patientService.findAll();
         return patients == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patients);
     }
+
     @GetMapping("/email/{id}")
-    ResponseEntity<String> getEmail(@PathVariable Integer id)
-    {
+    ResponseEntity<String> getEmail(@PathVariable Integer id) {
         String email = patientService.getEmail(id);
         return email == null || email.equals("") ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -165,16 +156,66 @@ public class PatientController {
 
 
     @PostMapping("/update")
-    ResponseEntity<Patient> update(@RequestBody PersonUserDTO person)
-    {
-        Patient per = patientService.findByEmail(person.getEmail());
-        Integer id = per.getId();
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+id);
-        patientService.delete(per);
-        Patient patient = patientService.update(person, id);
+    ResponseEntity<Patient> update(@RequestBody PersonUserDTO person) {
+        System.out.println("SKDJRHSKDRJHSKDRUHJSKRLHUJSDRKJHWSKSRHKSFJHKSHRSKH" + person);
+        Patient patient = patientService.update(person);
         return patient == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patient);
     }
+
+    @PostMapping("/addAlergies")
+    ResponseEntity<PatientsMedicationAlergy> addAlergies(@RequestBody AlergiesDTO al) {
+
+
+        List<PatientsMedicationAlergy> alergy = new ArrayList<PatientsMedicationAlergy>();
+        alergy = alergiesService.findAll();
+        for(PatientsMedicationAlergy pa : alergy){
+            if(pa.getPatient().getId()==al.getPatient().getId()){
+                alergiesService.delete(pa);
+            }
+        }
+        PatientsMedicationAlergy patientsMedicationAlergy = alergiesService.save(al);
+        return patientsMedicationAlergy == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(patientsMedicationAlergy);
+
+
+
+}
+    @GetMapping("/getAlergies/{id}")
+    ResponseEntity<List<AlergiesFrontDTO>> getAlergies(@PathVariable Integer id) {
+        List<PatientsMedicationAlergy> alergies = alergiesService.findAll();
+        Patient patient = patientService.findById(id);
+        List<AlergiesFrontDTO> patientsAlergies = new ArrayList<AlergiesFrontDTO>();
+        for(PatientsMedicationAlergy patientsMedicationAlergy: alergies){
+            if(patientsMedicationAlergy.getPatient().getId()==id){
+                AlergiesFrontDTO alergiesFrontDTO = new AlergiesFrontDTO();
+                alergiesFrontDTO.setId(patientsMedicationAlergy.getId());
+                alergiesFrontDTO.setPatient_id(patientsMedicationAlergy.getPatient().getId());
+                alergiesFrontDTO.setName(patientsMedicationAlergy.getMedication().getName());
+
+
+                patientsAlergies.add(alergiesFrontDTO);
+            }
+        }
+        return patientsAlergies == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(patientsAlergies);
+    }
+
+
+    @GetMapping("/deleteAlergies/{id}")
+    void deleteAlergies(@PathVariable Integer id) {
+        List<PatientsMedicationAlergy> alergies = alergiesService.findAll();
+       for(PatientsMedicationAlergy patientsMedicationAlergy : alergies){
+           if(id==patientsMedicationAlergy.getId()){
+               alergiesService.delete(patientsMedicationAlergy);
+           }
+       }
+
+
+    }
+
 
 }

@@ -46,6 +46,7 @@ public class Patient extends PersonUser{
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Subscription> subscriptions = new HashSet<Subscription>();
 
+    @JsonManagedReference(value="patient-alergy")
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
 

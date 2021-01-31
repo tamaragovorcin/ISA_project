@@ -68,6 +68,7 @@ public class Medication  {
     @JoinTable(name = "medications_alternatives", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "medication_alternative_id", referencedColumnName = "id"))
     private Set<Medication> medications = new HashSet<Medication>();
 
+    @JsonManagedReference(value="medicine-alergy")
     @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
 

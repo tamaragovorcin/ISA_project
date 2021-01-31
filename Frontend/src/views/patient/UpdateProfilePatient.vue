@@ -33,7 +33,8 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Email:</label>
-                        <p>patient@gmail.com</p>
+                        
+                        <p><input v-model = "patient.email" readonly></p>
                         </div>
                         <div class="form-group col-md-6">
                         <label>Phone number:</label>
@@ -82,13 +83,38 @@
                      <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Alergies:</label>
-                        <p>Choose medication:</p>
-                        <div class="col">
-                                                                              
+                          
+                    <div class="form-row">
+                          <div class="form-group col-md-6">
+                                    <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication"
+                                        class = "btn btn-secondary dropdown-toggle" style=" width: 680px; float:left;margin-left:20px;">
+                                            <b-dropdown-item v-for="medicine in this.medications"  v-on:click = "addNewAlergie(medicine)" v-bind:key="medicine.id"> {{ medicine.name }}</b-dropdown-item>
+                                    </b-dropdown> 
+
+                            
+                          </div>
+
+                        
+                    </div>
+                         
                         </div>
-                        </div>
+
+                        
                        
                     </div>
+
+                     <div>
+                <table id="tenderMedicine" class="table table-striped" v-if="showTable">
+                    <thead>
+                    <th>Alergy list</th>
+                  
+                    </thead>
+                    <tr v-for="med in medicationQuantityList" :key="med.id">
+                        <td>{{med.name}}</td><td><button class="btn btn-outline-secondary" v-on:click = "remove(med)">Remove</button></td>
+                     
+                    </tr>
+                </table>
+            </div>
                    
                     <button class="btn btn-primary btn-lg" v-on:click = "update">Update</button>
                     <div style="height:30px;"></div>
@@ -96,7 +122,7 @@
 
 
 
-
+     
 
 
         </div>
@@ -124,7 +150,15 @@ export default {
         street : "",
         number : "",
         postalCode : "",
-        country : ""
+        country : "",
+        medications: [],
+        medication: null,
+        alergy: null,
+        medicationQuantityList: [],
+        showTable: true,
+        medicine: null,
+        a: null,
+        alergies: []
     }
   },
 mounted() {
@@ -138,12 +172,26 @@ mounted() {
              .then(response => {
                 this.patient = response.data;
                 console.log(response.data);
+                  this.axios.get('/patient/getAlergies/' + this.patient.id)
+                        .then(response => {
+                                this.medicationQuantityList= response.data;
+                            console.log(this.medicationQuantityList);
+              
+          })
+
+            
          }).catch(res => {
                        alert("NOT OK");
                         console.log(res);
                  });
 
 
+  this.axios.get('/medication')
+          .then(response => {
+                this.medications= response.data;
+               console.log(this.medications);
+              
+          })
 
 
    
@@ -152,6 +200,7 @@ mounted() {
      
 },
   methods:{
+    
       previousUpdateProfile : function(){
 
       },
@@ -159,6 +208,37 @@ mounted() {
           window.location.href = "/login";
 
       },
+        remove : function(med){
+            alert(med)
+
+          this.axios.get('/patient/deleteAlergies/'+med.id)
+         
+
+      },
+
+      medicineIsSelected : function(){
+          window.location.href = "/login";
+
+      },
+
+       addNewAlergie: function (medicine) {
+                this.showTable = true;
+                this.medicine = medicine;
+            
+                 for(const a in this.medicationQuantityList){
+                     
+                     if(this.medicationQuantityList[a] == (this.medicine)){
+                            return;
+                           
+
+                     }
+                 }
+
+                   this.medicationQuantityList.push(this.medicine)
+
+              
+            },
+
        update : function(){
          
            const ad = {
@@ -180,8 +260,16 @@ mounted() {
                     password: this.patient.password
                 };
 
-              
-                this.axios.post('/update',p)
+        for(const a in this.medicationQuantityList){
+            
+            const alergies = {
+
+                patient: this.patient,
+                medication: this.medicationQuantityList[a]
+            }
+
+
+                this.axios.post('/patient/addAlergies',alergies)
                     .then(res => {
                        
                         console.log(res);
@@ -190,6 +278,23 @@ mounted() {
                      
                         console.log(res);
                     })
+
+
+
+
+            }
+              
+                this.axios.post('/patient/update',p)
+                    .then(res => {
+                       
+                        console.log(res);
+                    })
+                    .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+            
       }
 }
 }

@@ -12,7 +12,7 @@ public interface IPatientService {
     List<Patient> findAll ();
     Patient save(PersonUserDTO userRequest);
     void delete(Patient userRequest);
-    Patient update(PersonUserDTO userRequest, Integer id);
+    Patient update(PersonUserDTO userRequest);
 
 }
 

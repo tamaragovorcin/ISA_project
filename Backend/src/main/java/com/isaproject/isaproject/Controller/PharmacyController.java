@@ -305,9 +305,8 @@ public class PharmacyController {
 
 
     @GetMapping("searchMark/{MarkMin}/{MarkMax}")
-    ResponseEntity<List<PharmacyFrontDTO>> getAllByMark(@PathVariable int MarkMin,@PathVariable int MarkMax )
-    {
-        List<Pharmacy> pharmacies= pharmacyService.findByMark(MarkMin,MarkMax);
+    ResponseEntity<List<PharmacyFrontDTO>> getAllByMark(@PathVariable int MarkMin,@PathVariable int MarkMax ) {
+       /* List<Pharmacy> pharmacies= pharmacyService.findByMark(MarkMin,MarkMax);
         List<PharmacyFrontDTO> medicationsForFront = new ArrayList<>();
         for (Pharmacy ph: pharmacies) {
             PharmacyFrontDTO pharmacyFrontDTO = getMedicationSearchDTO(medication);
@@ -316,5 +315,7 @@ public class PharmacyController {
         return medicationsForFront == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medicationsForFront);
+    }*/
+        return null;
     }
 }
