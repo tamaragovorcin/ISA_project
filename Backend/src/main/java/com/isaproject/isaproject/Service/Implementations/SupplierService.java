@@ -87,7 +87,8 @@ public class SupplierService implements ISupplierService {
         else {
             auth.add(authoritySupplier);
         }
-        supplier.setAuthorities(auth);        supplier.setEmail(userRequest.getEmail());
+        supplier.setAuthorities(auth);
+        supplier.setEmail(userRequest.getEmail());
         supplier.setEnabled(true);
         supplier.setFirstLogged(userRequest.getFirstLogged());
         supplier.setName(userRequest.getName());

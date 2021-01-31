@@ -1,0 +1,38 @@
+dist: xenial
+sudo: false
+install: true
+
+addons:
+  sonarcloud:
+    organization: "tamaragovorcin"
+    token: 
+       secure: "nTER3pkmRRStiANLjzNYQtxQvb6vx1tHy8nseyYH1R9SRxv/4dbKYm2UCgmuk4YYIlg3vJdOL/pwFVTbzU7y1Bx0fDHHGVrqUwBlJONAPlczftcqfUoIt+ghyIn5HpSij6CPJAzpJPGLXxolqwFFthNQReeQy9dB5RvF2SlDOV5yPNtPGKjLclpS0zrCJuD5qeoQv9nrsfdxl0qf3vAQw36mxFxHdY5bYx0ZTfMgrVWi52wmD/TOBWTYMQP/OFMuGeGqGt7/AIe+h9sCqwAwDtR3EHBedPcIwE7BiHdoVI9UXt9oF1sIEoVXcLMxrOdJsvBY9Nj6mPdyoUfc9iMgLpyY52YUnyELov9ax6+vtXSPHNx/Nv5ZCmkNhgGez7aQfsh7C8MIzvrOGmvh7hm8mcq3UvJ/8LVgRchFa92kf3EACo3pxDFE/dyI+EbRLXLgUeiX9sJQiWcI6QEpXVI2YRo+ayGwI4Q/sypgo9JSR1Z6va0cEh6EOpI5pjdjREJQf9gxzbEb3PJOP/2J36ZeyLFbP0VUPJhxP4fqhwJ0eYnleMdF6QVa1AzwSNFQOouIHNGZL4zZGGYHG5nQyhhUb86EtGKiVlAcX6T2XXWk41yNuLRIa+5A/+oAElJ198/9szbBEC5nNy3C4+3+rm5tyWR0giFW8ci2yUC/sxbTwj0="
+
+branches:
+  only: develop
+
+matrix:
+  include:
+    - language: java
+      jdk:
+      - oraclejdk11
+      before_script:
+        - cd ./Backend/
+      script:
+        - mvn clean verify sonar:sonar -Pcoverage -Dsonar.projectKey=tamaragovorcin_ISA_project
+      cache:
+      directories:
+        - '$HOME/.m2/repository'
+        - '$HOME/.sonar/cache'
+        
+    - language: node_js
+      node_js: stable
+      cache: npm
+      install:
+        - npm install
+      before_install:
+        - cd ./Frontend/
+      script:
+        - npm run build
+      after-success:
+        - sonar-scanner -Dsonar.projectKey=tamaragovorcin_ISA_project

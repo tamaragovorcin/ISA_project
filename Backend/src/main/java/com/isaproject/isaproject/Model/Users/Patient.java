@@ -10,7 +10,6 @@ import com.isaproject.isaproject.Model.HelpModel.*;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
