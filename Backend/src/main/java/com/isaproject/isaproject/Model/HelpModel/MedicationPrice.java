@@ -1,6 +1,9 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
+import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Orders.Order;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 
 import javax.persistence.*;
@@ -14,30 +17,37 @@ public class MedicationPrice {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "medicineCode", nullable = true)
-    private long medicineCode;
+    @JsonBackReference(value = "medication-medicationPrice")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "medication_id", referencedColumnName = "id", nullable = true, unique = false)
+    private Medication medication;
 
 
     @Column(name = "price", nullable = true)
     private double price;
+
+    @Column(name = "quantity", nullable = true)
+    private Integer quantity;
 
 
     @Column(name = "date", nullable = true)
     private LocalDate date;
 
 
-    @OneToOne
+    @JsonBackReference(value="pharmacy-medicationPrice")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = true, unique = false)
     private Pharmacy pharmacy;
 
     public MedicationPrice() {
     }
 
-    public Pharmacy getPharmacy() {
-        return pharmacy;
-    }
-
-    public void setPharmacy(Pharmacy pharmacy) {
+    public MedicationPrice(Integer id, Medication medication, double price, Integer quantity, LocalDate date, Pharmacy pharmacy) {
+        this.id = id;
+        this.medication = medication;
+        this.price = price;
+        this.quantity = quantity;
+        this.date = date;
         this.pharmacy = pharmacy;
     }
 
@@ -49,12 +59,12 @@ public class MedicationPrice {
         this.id = id;
     }
 
-    public long getMedicineCode() {
-        return medicineCode;
+    public Medication getMedication() {
+        return medication;
     }
 
-    public void setMedicineCode(long medicineCode) {
-        this.medicineCode = medicineCode;
+    public void setMedication(Medication medication) {
+        this.medication = medication;
     }
 
     public double getPrice() {
@@ -65,6 +75,14 @@ public class MedicationPrice {
         this.price = price;
     }
 
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
     public LocalDate getDate() {
         return date;
     }
@@ -73,4 +91,11 @@ public class MedicationPrice {
         this.date = date;
     }
 
+    public Pharmacy getPharmacy() {
+        return pharmacy;
+    }
+
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
+    }
 }

@@ -106,8 +106,7 @@ public class proba {
         pharmacist.setEmail("lunci@gmail.com");
         pharmacist.setPhoneNumber("0652610775");
         pharmacist.setSurname("Zivkovic");
-        pharmacist.setMarkPharmacist(5);
-        pharmacist.setPharmacy(pharmacy);
+
 
 
         Consulting consulting = new Consulting();
@@ -157,7 +156,7 @@ public class proba {
         complaint.setPatient(patient);
         complaint.setMassage("Message");
         complaint.setSubject("pharmacist");
-        complaint.setSubjectId(1);
+       // complaint.setSubjectId(1);
         complaint.setAnswered(true);
 
         Specification specification = new Specification();
@@ -226,8 +225,7 @@ public class proba {
 
 
         //APOTEKA
-        pharmacy.setMedications(medications);
-        pharmacy2.setMedications(medications2);
+
 
         EPrescription eprescription = new EPrescription();
         eprescription.setPatient(patient);
@@ -245,15 +243,7 @@ public class proba {
         prescription.setInformation("Information");
         prescription.setPharmacy(pharmacy);
 
-        Subscription subscription = new Subscription();
-        subscription.setPatient(patient);
-        subscription.setPharmacy(pharmacy);
-        subscription.setSubscribed(true);
 
-        Subscription subscription2 = new Subscription();
-        subscription2.setPatient(patient);
-        subscription2.setPharmacy(pharmacy2);
-        subscription2.setSubscribed(false);
 
 
         PatientsMedicationAlergy patientsMedicationAlergy = new PatientsMedicationAlergy();
@@ -304,44 +294,29 @@ public class proba {
 
         Order order = new Order();
         order.setPharmacyAdmin(pharmacyAdmin);
-        order.setPharmacy(pharmacy);
+
         order.setDate(LocalDate.now());
         order.setStatus("closed");
         order.setOffer(offers);
 
-        Set<Supplier> suppliers = new HashSet<Supplier>();
-        Offer offer = new Offer();
-        offer.setMedications(medications);
-        offer.setDateOfDelivery(LocalDate.now());
-        offer.setSummaryPrice(555);
-        offer.setSuppliers(suppliers);
-        offer.setOrder(order);
-        offer.setConsulting(consultings);
+
 
         HolidayScheduleDermatologist holidayScheduleDermatologist = new HolidayScheduleDermatologist();
         holidayScheduleDermatologist.setDermatologist(dermatologist);
-        holidayScheduleDermatologist.setApproved(false);
+        holidayScheduleDermatologist.setApproved("");
         holidayScheduleDermatologist.setMassage("porukica neka");
         holidayScheduleDermatologist.setEndDate(LocalDate.now());
 
         HolidaySchedulePharmacist holidaySchedulePharmacist = new HolidaySchedulePharmacist();
         holidaySchedulePharmacist.setPharmacist(pharmacist);
         holidaySchedulePharmacist.setMassage("neka poruka farmaceuta");
-        holidaySchedulePharmacist.setApproved(true);
+        holidaySchedulePharmacist.setApproved("true");
         holidaySchedulePharmacist.setEndDate(LocalDate.now());
 
         WorkingHoursPharmacist workingHoursPharmacist = new WorkingHoursPharmacist();
-        workingHoursPharmacist.setPharmacist(pharmacist);
-        workingHoursPharmacist.setDate(LocalDate.now());
-        workingHoursPharmacist.setStartTime(LocalTime.now());
-        workingHoursPharmacist.setEndTime(LocalTime.now());
 
         WorkingHoursDermatologist workingHoursDermatologist = new WorkingHoursDermatologist();
-        workingHoursDermatologist.setDermatologist(dermatologist);
-        workingHoursDermatologist.setPharmacy(pharmacy);
-        workingHoursDermatologist.setDate(LocalDate.now());
-        workingHoursDermatologist.setStartTime(LocalTime.now());
-        workingHoursDermatologist.setEndTime(LocalTime.now());
+
 
 
 
@@ -372,8 +347,7 @@ public class proba {
         manager.persist(medication3);
         manager.persist(eprescription);
         manager.persist(prescription);
-        manager.persist(subscription);
-        manager.persist(subscription2);
+
 
         manager.persist(patientsMedicationAlergy);
         manager.persist(pharmacyAdmin);
@@ -381,7 +355,6 @@ public class proba {
         manager.persist(medicationPrice);
         manager.persist(medicationReservation);
         manager.persist(order);
-        manager.persist(offer);
         manager.persist(holidayScheduleDermatologist);
         manager.persist(holidaySchedulePharmacist);
         manager.persist(workingHoursPharmacist);

@@ -19,9 +19,13 @@
                     </div>                    
                  </b-dropdown> 
                  <b class="tab"></b>   
-                 <button class = "btn btn-link btn-lg" v-on:click = "addMedicine">Add medicine</button>
-                <b class="tab"></b>   
+                 <button class = "btn btn-link btn-lg" v-on:click = "addMedicine">Add medication</button>
+                 <b class="tab"></b>   
+                 <button class = "btn btn-link btn-lg" v-on:click = "medicationSearch">Medications</button>
+                 <b class="tab"></b>  
                  <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
+                 <b class="tab"></b>  
+                 <button class = "btn btn-link btn-lg" v-on:click = "showComplaints">Complaints</button>
             </span>
             <span  style="float:right;margin:15px">
                      <b class="tab"></b>    
@@ -233,16 +237,12 @@ export default {
       },
       typeIsSelected : function(event, type) { 
            this.choosenType = type;
-           console.log(this.choosenType);
       },
       formIsSelected : function(event, form) { 
            this.choosenForm = form;
-           console.log(this.choosenForm);
       },
        wayOfSellingIsSelected : function(event, way) { 
           this.wayOfSellingIsSelected = way;
-          console.log(this.wayOfSellingIsSelected);
-
       },
       showSpecificationModal : function() {
           this.$refs['specification-modal'].show();
@@ -261,6 +261,12 @@ export default {
       },
       defineLoyaltyProgram : function(){
           window.location.href = "/loyaltyProgram";
+      },
+      medicationSearch : function() {
+          window.location.href = "/systemAdminMedicationSearch";
+      },
+       showComplaints : function() {
+            window.location.href = "/complaints";
       }
 
       

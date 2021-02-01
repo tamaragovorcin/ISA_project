@@ -2,7 +2,7 @@
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-                <span style="float: left; margin: 15px;">
+               <span style="float: left; margin: 15px;">
                 <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
                 <b class="tab"></b>    
                 <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
@@ -11,10 +11,12 @@
                  <b class="tab"></b>    
                  <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
                  
-                <b class="tab"></b>    
-                <a  class = "btn btn-secondary" href = "/addPharmacist">Add pharmacist</a>    
                 <b class="tab"></b> 
-                 <a  class = "btn btn-secondary" href = "/pharmacyPharmacists">Our pharmacists</a> 
+                 <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
+                               class = "btn btn-link btn-lg">
+                    <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
+                    <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
+                </b-dropdown> 
                   <b class="tab"></b>  
                 <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
                 <b class="tab"></b> 
@@ -37,7 +39,7 @@
 
         <div class="container-fluid">
 
-         <b-button class = "btn btn-warning" @click="showModal">+ Add dermatologist</b-button>
+         <b-button class = "btn btn-warning" @click="showModal">+ Add examination terms</b-button>
         
         <b-modal ref="my-modal" hide-footer scrollable title="Add examination to schedule" size="lg" modal-class="b-modal">
                     <div modal-class="modal-dialog" role="document">
@@ -109,6 +111,54 @@
                     </div>
     
     </b-modal>
+
+
+<b-button class = "btn btn-warning" @click="showModal1">+ Add dermatologist</b-button>
+        
+        <b-modal ref="my-modal1" hide-footer scrollable title="Add dermatologist as employee" size="lg" modal-class="b-modal">
+                    <div modal-class="modal-dialog" role="document">
+                            <div class="modal-content" style="background-color:whitesmoke">
+                                    
+                                    <div class="modal-body">
+                                    
+                                    <label>Choose dermatologist:</label>
+                            <div class="form-row">
+                                 <div class="form-group col">
+                                        <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologist"
+                                        class = "btn btn-link btn-lg" style="float:left; width=200px;">
+                                            <b-dropdown-item v-for="dermatologist in this.allDermatologists"  v-on:click = "dermatologistIsSelected1($event, dermatologist)" v-bind:key="dermatologist.id"> 
+                                            {{ dermatologist.firstname }}<div style="width:20px"></div>{{dermatologist.surname }}
+                                            </b-dropdown-item>
+                                    </b-dropdown> 
+                                 </div>
+                                <div class="form-group col-md-6 ">
+                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist1.firstname}}</label>
+                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist1.surname}}</label>
+                                </div>
+                                    
+                            </div>
+                                          
+                                             
+                            
+
+                                     
+                                     
+                                    </div>
+                    <div class="modal-footer">
+                                        <button class="btn btn-secondary" block @click="hideModal1">Close</button>
+                                        <button class="btn btn-primary" v-on:click="addDermatologist">Add</button>
+                   </div>
+
+                            
+                                   
+                            </div>
+                    </div>
+    
+    </b-modal>
+
+
+
+    
     <div style="height:45px"></div>
       <h3>Dermatologists of our pharmacy</h3>
 
@@ -136,8 +186,7 @@
 
 
         </div>
-        
-  <button v-on:click="dodaj">dodaj</button>
+
        
 
        
@@ -147,7 +196,6 @@
 
 <script>
 export default {
-
   data() {
     return {
        showMed : false,
@@ -164,8 +212,8 @@ export default {
        pharmacy : {},
        admin : {},
        duration : 0,
-       price : 0
-
+       price : 0,
+       selectedDermatologist1 : {}
     }
   },
   mounted() {
@@ -192,7 +240,6 @@ export default {
                     
                 
          
-
          }).catch(res => {
                 alert("NOT OK");
                 console.log(res);
@@ -219,24 +266,20 @@ export default {
                         console.log(res);
                  });
         
-
         
     }
      ,
-
   methods:{
        showHomePage : function(){
           window.location.href = "/isaHomePage";
       },
       showMyProfile: function(){
-
       },
        showActionsAndBenefitsForm : function(){
               this.$refs['my-modal'].show()
       },
        showOrderForm : function(){
           window.location.href = "/order";
-
       },
        logOut : function(){
            window.location.href = "/login";
@@ -253,6 +296,12 @@ export default {
       hideModal() {
         this.$refs['my-modal'].hide()
       },
+      showModal1() {
+        this.$refs['my-modal1'].show()
+      },
+      hideModal1() {
+        this.$refs['my-modal1'].hide()
+      },
        add : function(){
             const data ={
               pharmacy : this.pharmacy,
@@ -264,13 +313,11 @@ export default {
           }
             
             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-
             this.axios.post('/pharmacy/addExaminationSchedule',data,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                         }})
                 .then(response => {
-
                         console.log(response.data);
                 })
                 .catch(response => {
@@ -283,27 +330,27 @@ export default {
             this.selectedDermatologist = dermatologist;
             this.dermatologistName = this.selectedDermatologist.name;
             this.dermatologistSurName = this.selectedDermatologist.surname;
-
             console.log(event);
-
-
       },
-      dodaj: function(){
+        dermatologistIsSelected1 : function(event, dermatologist) {
+            this.selectedDermatologist1 = dermatologist;
+            this.dermatologistName1 = this.selectedDermatologist1.name;
+            this.dermatologistSurName1 = this.selectedDermatologist1.surname;
+            console.log(event);
+      },
+      addDermatologist: function(){
          const data ={
               pharmacy : this.pharmacy,
-              dermatologist : this.selectedDermatologist,
-              date : this.date,
-              startTime : this.startTime,
-              endTime : this.startTime,
+              dermatologist : this.selectedDermatologist1,
+              
           }
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-
-            this.axios.post('/pharmacy/addDermatologist',data,{ 
+            this.axios.post('/dermatologist/addPharmacy',data,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                         }})
                 .then(response => {
-
+                        alert("Dermatologist successfully added as employee in your pharmacy");
                         console.log(response.data);
                 })
                 .catch(response => {
@@ -319,7 +366,6 @@ export default {
 body {
   font-family: "Lato", sans-serif;
 }
-
 .sidenav {
   height: 100%;
   width: 270px;
@@ -332,7 +378,6 @@ body {
   padding-top: 20px;
   margin-top : 90px;
 }
-
 .sidenav a {
   padding: 6px 6px 6px 2px;
   text-decoration: none;
@@ -341,18 +386,11 @@ body {
   text-align : left;
   font-color : white;
 }
-
 .sidenav a:hover {
   color: darkgray;
 }
-
-
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
-
 </style>
-
-
-  

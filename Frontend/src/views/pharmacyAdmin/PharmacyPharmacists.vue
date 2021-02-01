@@ -3,17 +3,21 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-              <span style="float: left; margin: 15px;">
+               <span style="float: left; margin: 15px;">
+                <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
+                <b class="tab"></b>    
                 <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
                 <b class="tab"></b>    
                 <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
                  <b class="tab"></b>    
                  <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
                  
-                <b class="tab"></b>    
-                <a  class = "btn btn-secondary" href = "/addPharmacist">Add pharmacist</a>    
                 <b class="tab"></b> 
-                 <a  class = "btn btn-secondary" href = "/pharmacyPharmacists">Our pharmacists</a> 
+                 <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
+                               class = "btn btn-link btn-lg">
+                    <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
+                    <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
+                </b-dropdown> 
                   <b class="tab"></b>  
                 <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
                 <b class="tab"></b> 
@@ -31,23 +35,125 @@
         </div>
         <div class="container-fluid">
 
-         <b-button class = "btn btn-warning" @click="showModal">+ New action or benefit</b-button>
         
         <b-modal ref="my-modal" hide-footer scrollable title="Define" size="lg" modal-class="b-modal">
                     <div modal-class="modal-dialog" role="document">
                             <div class="modal-content" style="background-color:whitesmoke">
                                     <div class="modal-header">
-                                        
-                                  <h3>Share actions and benefits</h3>
-                                         
+                                                                                 
                         
                                     </div>
                                     <div class="modal-body">
-                                        
+
+
+                                        <div class="form-row">
+                                                              <label align="center">Monday:</label>
+                                        </div>
+                                        <div class = "form-row">
+                                              <div class="form-group col-md-4">
+                                                  <label>Start time:</label>
+                                                  <input type="time" class="form-control" v-model="startTimeMonday">
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                  <label>End time:</label>
+                                                  <input type="time" class="form-control" v-model = "endTimeMonday">
+                                              </div>
+                                        </div>
+
+                                         <div class="form-row">
+                                                              <label align="center">Tuesday:</label>
+                                        </div>
+                                        <div class = "form-row">
+                                              <div class="form-group col-md-4">
+                                                  <label>Start time:</label>
+                                                  <input type="time" class="form-control" v-model="startTimeTuesday">
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                  <label>End time:</label>
+                                                  <input type="time" class="form-control" v-model = "endTimeTuesday">
+                                              </div>
+                                        </div>
+
+                                         <div class="form-row">
+                                                              <label align="center">Wednesday:</label>
+                                        </div>
+                                        <div class = "form-row">
+                                              <div class="form-group col-md-4">
+                                                  <label>Start time:</label>
+                                                  <input type="time" class="form-control" v-model="startTimeWednesday">
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                  <label>End time:</label>
+                                                  <input type="time" class="form-control" v-model = "endTimeWednesday">
+                                              </div>
+                                        </div>
+
+                                         <div class="form-row">
+                                                              <label align="center">Thursday:</label>
+                                        </div>
+                                        <div class = "form-row">
+                                              <div class="form-group col-md-4">
+                                                  <label>Start time:</label>
+                                                  <input type="time" class="form-control" v-model="startTimeThursday">
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                  <label>End time:</label>
+                                                  <input type="time" class="form-control" v-model = "endTimeThursday">
+                                              </div>
+                                        </div>
+
+
+                                        <div class="form-row">
+                                                              <label align="center">Friday:</label>
+                                        </div>
+                                        <div class = "form-row">
+                                              <div class="form-group col-md-4">
+                                                  <label>Start time:</label>
+                                                  <input type="time" class="form-control" v-model="startTimeFriday">
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                  <label>End time:</label>
+                                                  <input type="time" class="form-control" v-model = "endTimeFriday">
+                                              </div>
+                                        </div>
+
+
+                                        <div class="form-row">
+                                                              <label align="center">Saturday:</label>
+                                        </div>
+                                        <div class = "form-row">
+                                              <div class="form-group col-md-4">
+                                                  <label>Start time:</label>
+                                                  <input type="time" class="form-control" v-model="startTimeSaturday">
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                  <label>End time:</label>
+                                                  <input type="time" class="form-control" v-model = "endTimeSaturday">
+                                              </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                                              <label align="center">Sunday:</label>
+                                        </div>
+                                        <div class = "form-row">
+                                              <div class="form-group col-md-4">
+                                                  <label>Start time:</label>
+                                                  <input type="time" class="form-control" v-model="startTimeSunday">
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                  <label>End time:</label>
+                                                  <input type="time" class="form-control" v-model = "endTimeSunday">
+                                              </div>
+                                        </div>
+                                          
+                                          
+
                                           
                                      
                                     </div>
                     <div class="modal-footer">
+                                       <button class="btn btn-secondary" block @click="addSchedule">Add</button>
+
                                         <button class="btn btn-secondary" block @click="hideModal">Close</button>
                    </div>
 
@@ -72,13 +178,14 @@
   </thead>
   <tbody>
     <tr v-for="pharmacist in pharmacists" :key="pharmacist.id">
-                                                    <td></td>
-                                                    <td>{{pharmacist.name}}</td>
-                                                    <td>{{pharmacist.surname}}</td>
-                                                    <td>{{pharmacist.email}}</td>
-                                                    <td>{{pharmacist.phoneNumber}}</td>
-                                                </tr>
-   
+      <td></td>
+      <td>{{pharmacist.name}}</td>
+      <td>{{pharmacist.surname}}</td>
+      <td>{{pharmacist.email}}</td>
+      <td>{{pharmacist.phoneNumber}}</td>
+      <td><button  v-on:click ="remove($event, pharmacist)" class="btn btn-info">Remove</button></td>
+      <td><button  v-on:click ="defineSchedule($event, pharmacist)" class="btn btn-info">Define schedule</button></td>
+    </tr>
   </tbody>
 </table>
 
@@ -108,14 +215,26 @@ export default {
         postalCode : "",
         country : "",
         pharmacy : {},
-        pharmacists : []
+        pharmacists : [],
+        selectedPharmacist : {},
+        startTimeMonday : "",
+        startTimeTuesday : "",
+        startTimeWednesday : "",
+        startTimeThursday : "",
+        startTimeFriday : "",
+        startTimeSaturday : "",
+        startTimeSunday : "",
+        endTimeMonday : "",
+        endTimeTuesday : "",
+        endTimeWednesday : "",
+        endTimeThursday : "",
+        endTimeFriday : "",
+        endTimeSaturday : "",
+        endTimeSunday : ""
     }
   },
 
-  methods:{
-      showModal() {
-        this.$refs['my-modal'].show()
-      },
+  methods:{     
       hideModal() {
         this.$refs['my-modal'].hide()
       },
@@ -125,6 +244,61 @@ export default {
        logOut : function(){
             
       },
+      remove : function(event,pharmacist){
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.post('pharmacist/delete', pharmacist,{ 
+                headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            console.log(response);
+                          
+                             
+                    }).catch(response => {
+                            alert("NOT OK");
+                            console.log(response);
+                    });
+          window.location.href = "/pharmacyPharmacists";
+
+		},
+    defineSchedule : function(event, pharmacist){
+            this.selectedPharmacist = pharmacist;  
+            this.$refs['my-modal'].show()
+  
+    },
+    addSchedule : function(){
+      const data ={
+                    pharmacist : this.selectedPharmacist,
+                    startTimeMonday : this.startTimeMonday,
+                    startTimeTuesday : this.startTimeTuesday,
+                    startTimeWednesday : this.startTimeWednesday,
+                    startTimeThursday : this.startTimeWednesday,
+                    startTimeFriday : this.startTimeThursday,
+                    startTimeSaturday : this.startTimeFriday,
+                    startTimeSunday : this.startTimeSunday,
+                    endTimeMonday : this.endTimeMonday,
+                    endTimeTuesday : this.endTimeTuesday,
+                    endTimeWednesday : this.endTimeWednesday,
+                    endTimeThursday : this.endTimeThursday,
+                    endTimeFriday : this.endTimeFriday,
+                    endTimeSaturday : this.endTimeSunday,
+                    endTimeSunday : this.endTimeSaturday
+          }
+           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+
+            this.axios.post('/workingHours/pharmacist',data,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+                .then(response => {
+                       alert("Successfully updated medication price.");
+                        console.log(response.data);
+                })
+                .catch(response => {
+                       alert("Please try later.");
+                        console.log(response);
+                 });  
+    }
 },
   mounted() {
        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
@@ -153,7 +327,6 @@ export default {
                     }
                     }).then(response => {
                             this.pharmacists = response.data;
-                            alert(this.pharmacists);
                     }).catch(res => {
                             alert("NOT OK");
                             console.log(res);
@@ -176,4 +349,3 @@ export default {
 </style>
 
 
-  

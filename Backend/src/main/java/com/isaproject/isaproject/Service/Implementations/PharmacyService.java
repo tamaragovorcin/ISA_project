@@ -39,6 +39,7 @@ public class PharmacyService implements IPharmacyService {
     public Pharmacy save(PharmacyDTO pharmacy) {
         Pharmacy pharmacy1 = new Pharmacy();
         pharmacy1.setPharmacyName(pharmacy.getPharmacyName());
+        pharmacy1.setDescription(pharmacy.getDescription());
         AddressDTO addressDTO = pharmacy.getAddress();
         Address address = new Address(addressDTO.getTown(),addressDTO.getStreet(),addressDTO.getNumber(),addressDTO.getPostalCode(),addressDTO.getCountry());
         pharmacy1.setAddress(address);
@@ -48,7 +49,6 @@ public class PharmacyService implements IPharmacyService {
 
     @Override
     public Boolean savePharmacy(WorkingHoursDermatologistDTO dto) {
-        System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getPharmacy().getPharmacyName());
         Pharmacy ph = findById(dto.getPharmacy().getId());
         try{
             ph.getDermatologists().add(dto.getDermatologist());
@@ -64,5 +64,9 @@ public class PharmacyService implements IPharmacyService {
 
         return this.pharmacyRepository.save(pharmacy);
 
+    }
+
+    public List<Pharmacy> getAllPharmacyNames() {
+        return this.pharmacyRepository.getAllPharmacyNames();
     }
 }

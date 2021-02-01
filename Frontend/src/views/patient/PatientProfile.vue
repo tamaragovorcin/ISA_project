@@ -6,24 +6,24 @@ ines (39 sloc)  1.61 KB
         <div style="background: #0D184F; height: 90px;">
             
             <span style="float: left; margin: 15px;">
-                <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
-                     <b class="tab"></b>                
-
-                    <button class = "btn btn-link btn-lg" v-on:click = "showPharmacies">Pharmacies</button>
-
-                    <b class="tab"></b>     
-                   <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
-
+                    <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
                     <b class="tab"></b>                
-                   
-
-   
-
-                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "writeComplaint">Write complaint</button>
+                    <a  class = "btn btn-secondary" href= "/showPharmaciesPatient">Pharmacies</a>
+                    <b class="tab"></b>     
+                    <a  class = "btn btn-secondary" href= "/myProfilePatient">My profile</a>
+                    <b class="tab"></b>                
+                    <a  class = "btn btn-secondary" href= "/patientComplaint">Write complaint</a>
                     <b class="tab"></b>   
+                    <a  class = "btn btn-secondary" href= "/subscriptionsToPharmacies">My subscriptions</a>
+                    <b class="tab"></b>   
+
 
                        <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "leaveAMark">Leave a mark</button>
                     <b class="tab"></b>   
+
+                    <a  class = "btn btn-secondary" href= "/eRecipes">ERecipes</a>
+                    <b class="tab"></b> 
+
             </span>
               <span  style="float:right;margin:15px">
                     
@@ -466,24 +466,14 @@ export default {
          medication: null,
          medications: []
 
+     
     }
   },
-
+  
   methods:{
-     
-      showMyProfile: function(){
-        window.location.href = "/myProfilePatient";
-      },
-      showHomePage : function(){
-          window.location.href = "/isaHomePage";
-      },
       logOut : function(){
           localStorage.removeItem('token');
           window.location.href = "/login";
-
-      },
-      writeComplaint() {
-        this.$refs['my-modal'].show()
       },
 
        leaveAMark() {
@@ -672,9 +662,9 @@ export default {
         this.axios.get('/patient/account',{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
-
              }
          }).then(response => {
+                this.patientInfo = response.data;
                 console.log(response.data);
                 this.patient = response.data;
          }).catch(res => {

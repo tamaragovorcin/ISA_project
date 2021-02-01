@@ -1,8 +1,10 @@
+
 package com.isaproject.isaproject.Controller;
 
 import com.isaproject.isaproject.DTO.MarkDTO;
 import com.isaproject.isaproject.DTO.PharmacistDTO;
 import com.isaproject.isaproject.DTO.PharmacyAdminDTO;
+import com.isaproject.isaproject.DTO.UserBasicInfoDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Users.*;
@@ -18,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -42,6 +45,37 @@ public class PharmacistController {
         Pharmacist user = pharmacistService.save(userRequest);
         return new ResponseEntity<>("Supplier is successfully registred!", HttpStatus.CREATED);
     }
+    @GetMapping("")
+    ResponseEntity<List<Pharmacist>> getAll()
+    {
+        List<Pharmacist> pharmacists = pharmacistService.findAll();
+        return pharmacists == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacists);
+    }
+    @PostMapping("/update")
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<String> update(@RequestBody Pharmacist userRequest) {
+
+        Pharmacist user = pharmacistService.update(userRequest);
+        return user.getSurname() == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                new ResponseEntity<>("Pharmacist is successfully updated!", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/basicInfo")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<UserBasicInfoDTO>> getPharmacistsBasicInfo() {
+        List<UserBasicInfoDTO> basicInfos = new ArrayList<>();
+        List<Pharmacist> pharmacists = pharmacistService.findAll();
+        for (Pharmacist pharmacist : pharmacists) {
+            basicInfos.add(new UserBasicInfoDTO(pharmacist.getName() + " " + pharmacist.getSurname(), pharmacist.getEmail()));
+        }
+        return basicInfos == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(basicInfos);
+    }
+
     @PostMapping("/delete")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody Pharmacist pharmacist) {
@@ -61,8 +95,6 @@ public class PharmacistController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacist);
     }
-
-
     @PostMapping("/leaveAMark")
     //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<Pharmacist> leaveAMark(@RequestBody MarkDTO dto) {

@@ -1,5 +1,3 @@
-ines (39 sloc)  1.61 KB
-  
 <template>
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
@@ -190,7 +188,6 @@ ines (39 sloc)  1.61 KB
 
 <script>
 export default {
-
   data() {
     return {
        showComplaintForm : false,
@@ -268,7 +265,6 @@ mounted() {
       },
       allPharmacists : function(){
           window.location.href = "/login";
-
       },
       showMyProfile: function(){
         window.location.href = "/myProfilePatient";
@@ -278,12 +274,11 @@ mounted() {
       },
       logOut : function(){
           window.location.href = "/login";
-
       },
       writeComplaint() {
         this.$refs['my-modal'].show()
       },
-
+      
        hideModal() {
         this.$refs['my-modal'].hide()
       },
@@ -303,8 +298,6 @@ mounted() {
           this.showDermatologistComplaint = true;
       },
       sendComplaint : function(){
-
-
  
         },
        showPharmacies : function(){
@@ -321,8 +314,4 @@ mounted() {
 </script>
 
 <style>
-
 </style>
-
-
-  

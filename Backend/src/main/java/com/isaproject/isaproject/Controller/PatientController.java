@@ -4,13 +4,16 @@ package com.isaproject.isaproject.Controller;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
 
-import com.isaproject.isaproject.DTO.ActionsDTO;
+import com.isaproject.isaproject.DTO.*;
 
 import com.isaproject.isaproject.DTO.AlergiesDTO;
 import com.isaproject.isaproject.DTO.AlergiesFrontDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
+import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Medicine.Specification;
 import com.isaproject.isaproject.Model.Pharmacy.Actions;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Service.Implementations.ActionsService;
 
@@ -19,6 +22,7 @@ import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
 import com.isaproject.isaproject.Repository.PatientRepository;
 import com.isaproject.isaproject.Service.Implementations.AlergiesService;
 import com.isaproject.isaproject.Service.Implementations.PatientService;
+import com.isaproject.isaproject.Service.Implementations.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +52,8 @@ public class PatientController {
 
     @Autowired
     AlergiesService alergiesService;
+    @Autowired
+    PharmacyService pharmacyService;
 
     @Autowired
     PatientRepository patientRepository;
@@ -65,9 +71,13 @@ public class PatientController {
     public ResponseEntity<String> registerPatient(@RequestBody PersonUserDTO person) {
 
         Patient existingUser = patientService.findByEmail(person.getEmail());
-        if (existingUser != null) {
+
+        if(existingUser != null)
+        {
             return ResponseEntity.ok("This email already exists!");
-        } else {
+        }
+        else
+        {
             Patient patient = patientService.save(person);
 
             ConfirmationToken confirmationToken = new ConfirmationToken(patient);
@@ -78,7 +88,6 @@ public class PatientController {
             mail.setTo(person.getEmail());
             mail.setSubject("Complete Registration!");
             mail.setFrom(environment.getProperty("spring.mail.username"));
-            //mail.setFrom("pharmacyisa@gmail.com");
             mail.setText("To confirm your account, please click here : "
                     + "http://localhost:8082/api/patient/confirm-account/" + confirmationToken.getConfirmationToken());
 
@@ -159,6 +168,7 @@ public class PatientController {
     ResponseEntity<Patient> update(@RequestBody PersonUserDTO person) {
         System.out.println("SKDJRHSKDRJHSKDRUHJSKRLHUJSDRKJHWSKSRHKSFJHKSHRSKH" + person);
         Patient patient = patientService.update(person);
+
         return patient == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patient);
@@ -215,6 +225,72 @@ public class PatientController {
        }
 
 
+    }
+
+
+
+    @GetMapping("/mySubscriptions")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<String>> getMySubscriptions()
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+
+        Patient patient = patientService.findById(user.getId());
+        Set<Pharmacy> pharmacies = patient.getSubscribedToPharmacies();
+        List<String>pharmaciesNames =  new ArrayList<>();
+        for (Pharmacy pharmacy: pharmacies)
+            pharmaciesNames.add(pharmacy.getPharmacyName());{
+    }
+        return pharmaciesNames == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmaciesNames);
+    }
+
+    @PostMapping("/subscribeToPharmacy")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<String> subsribe(@RequestBody PharmacyNameDTO pharmacyName)
+    {
+        Pharmacy pharmacy =pharmacyService.findByPharmacyName(pharmacyName.getPharmacyName());
+        return patientService.subsribeToPharmacy(pharmacy) == false ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
+    }
+
+    @PostMapping("/unsubscribeToPharmacy")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<String> unsubsribe(@RequestBody PharmacyNameDTO pharmacyName)
+    {
+        Pharmacy pharmacy =pharmacyService.findByPharmacyName(pharmacyName.getPharmacyName());
+
+        return patientService.unsubsribeToPharmacy(pharmacy) == false ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
+    }
+
+
+
+    @PreAuthorize("hasRole('PHARMACIST')")
+    @GetMapping("searchForm/{patientName}")
+    ResponseEntity<List<PatientSearchDTO>> getAllByForm(@PathVariable String patientName)
+    {
+        System.out.println("--------------------------------------------------------------------");
+        List<Patient> medications=  patientService.findAllByName(patientName);
+        List<PatientSearchDTO> medicationsForFront = new ArrayList<>();
+        for (Patient medication: medications) {
+            PatientSearchDTO medicationSearchDTO = getMedicationSearchDTO(medication);
+            medicationsForFront.add(medicationSearchDTO);
+        }
+        return medicationsForFront == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(medicationsForFront);
+    }
+
+    private PatientSearchDTO getMedicationSearchDTO(Patient medication) {
+        //Specification specification = medication.getSpecification();
+       // SpecificationDTO specificationDTO = new SpecificationDTO(specification.getContraIndications(),
+               // specification.getStructure(), specification.getRecommendedConsumption(), specification.getManufacturer());
+        return new PatientSearchDTO(medication.getName(), medication.getSurname());
     }
 
 

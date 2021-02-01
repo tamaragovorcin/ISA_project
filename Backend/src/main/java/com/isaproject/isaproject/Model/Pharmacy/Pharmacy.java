@@ -1,19 +1,22 @@
 package com.isaproject.isaproject.Model.Pharmacy;
 
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
+import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
-import com.isaproject.isaproject.Model.HelpModel.Subscription;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.Order;
+import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
 import com.isaproject.isaproject.Model.Schedule.WorkingHoursDermatologist;
 import com.isaproject.isaproject.Model.Schedule.WorkingHoursPharmacist;
 import com.isaproject.isaproject.Model.Users.*;
 import net.minidev.json.annotate.JsonIgnore;
+import com.isaproject.isaproject.Model.Users.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -38,6 +41,9 @@ public class Pharmacy implements Serializable{
 
     @Column(name = "mark", nullable = true)
     private double mark;
+
+    @Column(name = "description", nullable = true)
+    private String description;
 
     @Column(name = "consultingPrice", nullable = true)
     private double consultingPrice;
@@ -69,66 +75,73 @@ public class Pharmacy implements Serializable{
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
 
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Subscription> subscriptions = new HashSet<Subscription>();
+    @ManyToMany(mappedBy = "subscribedToPharmacies")
+    private Set<Patient> subscribedPatients= new HashSet<Patient>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PharmacyAdmin> pharmacyAdmins = new HashSet<PharmacyAdmin>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Order> order = new HashSet<Order>();
+    private Set<Actions> actions = new HashSet<Actions>();
 
-
+    @JsonManagedReference(value = "pharmacy-dermatologist")
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<WorkingHoursDermatologist> workingHoursDermatologists = new HashSet<WorkingHoursDermatologist>();
 
-    @ManyToMany
-    @JoinTable(name = "medications_pharmacies", joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"))
-    private Set<Medication> medications = new HashSet<Medication>();
+    @JsonManagedReference(value="pharmacy-medicationPrice")
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MedicationPrice> medicationPrices = new HashSet<MedicationPrice>();
 
     public Pharmacy() {}
 
+    public Integer getId() {
+        return id;
+    }
 
-    public Pharmacy(Integer id, String pharmacyName, double mark, double consultingPrice, Set<ExaminationSchedule> examinationSchedules, Set<MedicationReservation> medicationReservations, Set<Prescription> prescriptions, Address address, Set<Dermatologist> dermatologists, Set<Pharmacist> pharmacists, Set<Subscription> subscriptions, Set<PharmacyAdmin> pharmacyAdmins, Set<Order> order, Set<WorkingHoursDermatologist> workingHoursDermatologists, Set<Medication> medications) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getPharmacyName() {
+        return pharmacyName;
+    }
+
+    public void setPharmacyName(String pharmacyName) {
         this.pharmacyName = pharmacyName;
+    }
+
+    public double getMark() {
+        return mark;
+    }
+
+    public void setMark(double mark) {
         this.mark = mark;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getConsultingPrice() {
+        return consultingPrice;
+    }
+
+    public void setConsultingPrice(double consultingPrice) {
         this.consultingPrice = consultingPrice;
+    }
+
+    public Set<ExaminationSchedule> getExaminationSchedules() {
+        return examinationSchedules;
+    }
+
+    public void setExaminationSchedules(Set<ExaminationSchedule> examinationSchedules) {
         this.examinationSchedules = examinationSchedules;
-        this.medicationReservations = medicationReservations;
-        this.prescriptions = prescriptions;
-        this.address = address;
-        this.dermatologists = dermatologists;
-        this.pharmacists = pharmacists;
-        this.subscriptions = subscriptions;
-        this.order = order;
-        this.workingHoursDermatologists = workingHoursDermatologists;
-        this.medications = medications;
-    }
-
-    public Set<Mark> getMarks() {
-        return marks;
-    }
-
-    public void setMarks(Set<Mark> marks) {
-        this.marks = marks;
-    }
-
-    public Set<WorkingHoursDermatologist> getWorkingHoursDermatologists() {
-        return workingHoursDermatologists;
-    }
-
-    public void setWorkingHoursDermatologists(Set<WorkingHoursDermatologist> workingHoursDermatologists) {
-        this.workingHoursDermatologists = workingHoursDermatologists;
-    }
-
-    public Set<Order> getOrder() {
-        return order;
-    }
-
-    public void setOrder(Set<Order> order) {
-        this.order = order;
     }
 
     public Set<MedicationReservation> getMedicationReservations() {
@@ -139,58 +152,12 @@ public class Pharmacy implements Serializable{
         this.medicationReservations = medicationReservations;
     }
 
-    //public Set<Actions> getActions() {  return actions; }
-
-   // public void setActions(Set<Actions> actions) {
-       // this.actions = actions;
-    //}
-
-    public Set<Medication> getMedications() {
-        return medications;
+    public Set<Mark> getMarks() {
+        return marks;
     }
 
-    public void setMedications(Set<Medication> medications) {
-        this.medications = medications;
-    }
-
-    public Set<Subscription> getSubscriptions() {
-        return subscriptions;
-    }
-
-    public void setSubscriptions(Set<Subscription> subscriptions) {
-        this.subscriptions = subscriptions;
-    }
-
-    public Set<PharmacyAdmin> getPharmacyAdmins() {
-        return pharmacyAdmins;
-    }
-
-    public void setPharmacyAdmins(Set<PharmacyAdmin> pharmacyAdmins) {
-        this.pharmacyAdmins = pharmacyAdmins;
-    }
-
-    public Set<Dermatologist> getDermatologists() {
-        return dermatologists;
-    }
-
-    public void setDermatologists(Set<Dermatologist> dermatologists) {
-        this.dermatologists = dermatologists;
-    }
-
-    public Set<Pharmacist> getPharmacists() {
-        return pharmacists;
-    }
-
-    public void setPharmacists(Set<Pharmacist> pharmacists) {
-        this.pharmacists = pharmacists;
-    }
-
-    public Set<ExaminationSchedule> getExaminationSchedules() {
-        return examinationSchedules;
-    }
-
-    public void setExaminationSchedules(Set<ExaminationSchedule> examinationSchedules) {
-        this.examinationSchedules = examinationSchedules;
+    public void setMarks(Set<Mark> marks) {
+        this.marks = marks;
     }
 
     public Set<Prescription> getPrescriptions() {
@@ -209,36 +176,59 @@ public class Pharmacy implements Serializable{
         this.address = address;
     }
 
-    public Integer getId() {
-        return id;
+    public Set<Dermatologist> getDermatologists() {
+        return dermatologists;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setDermatologists(Set<Dermatologist> dermatologists) {
+        this.dermatologists = dermatologists;
     }
 
-    public String getPharmacyName() {
-        return pharmacyName;
+    public Set<Pharmacist> getPharmacists() {
+        return pharmacists;
     }
 
-    public void setPharmacyName(String pharmacyName) {
-        this.pharmacyName = pharmacyName;
+    public void setPharmacists(Set<Pharmacist> pharmacists) {
+        this.pharmacists = pharmacists;
     }
 
-
-    public double getMark() {
-        return mark;
+    public Set<Patient> getSubscribedPatients() {
+        return subscribedPatients;
     }
 
-    public void setMark(double mark) {
-        this.mark = mark;
+    public void setSubscribedPatients(Set<Patient> subscribedPatients) {
+        this.subscribedPatients = subscribedPatients;
     }
 
-    public double getConsultingPrice() {
-        return consultingPrice;
+    public Set<PharmacyAdmin> getPharmacyAdmins() {
+        return pharmacyAdmins;
     }
 
-    public void setConsultingPrice(double consultingPrice) {
-        this.consultingPrice = consultingPrice;
+    public void setPharmacyAdmins(Set<PharmacyAdmin> pharmacyAdmins) {
+        this.pharmacyAdmins = pharmacyAdmins;
+    }
+
+    public Set<Actions> getActions() {
+        return actions;
+    }
+
+    public void setActions(Set<Actions> actions) {
+        this.actions = actions;
+    }
+
+    public Set<WorkingHoursDermatologist> getWorkingHoursDermatologists() {
+        return workingHoursDermatologists;
+    }
+
+    public void setWorkingHoursDermatologists(Set<WorkingHoursDermatologist> workingHoursDermatologists) {
+        this.workingHoursDermatologists = workingHoursDermatologists;
+    }
+
+    public Set<MedicationPrice> getMedicationPrices() {
+        return medicationPrices;
+    }
+
+    public void setMedicationPrices(Set<MedicationPrice> medicationPrices) {
+        this.medicationPrices = medicationPrices;
     }
 }

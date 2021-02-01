@@ -26,9 +26,6 @@ public class Authority implements GrantedAuthority, Serializable {
     @Column(name="name")
     String name;
 
-  /*  @ManyToMany(mappedBy = "authorities")
-    private Set<PersonUser> personUsers = new HashSet<PersonUser>();
-*/
     @Override
     public String getAuthority() {
         return name;
@@ -53,15 +50,7 @@ public class Authority implements GrantedAuthority, Serializable {
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
-/*
-    public Set<PersonUser> getPersonUsers() {
-        return personUsers;
-    }
 
-    public void setPersonUsers(Set<PersonUser> personUsers) {
-        this.personUsers = personUsers;
-    }
-*/
     @JsonIgnore
     public Integer getId() {
         return id;

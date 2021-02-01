@@ -2,6 +2,7 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.DTO.SupplierMedicationsDTO;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
 import com.isaproject.isaproject.Repository.SupplierRepository;
@@ -86,7 +87,8 @@ public class SupplierService implements ISupplierService {
         else {
             auth.add(authoritySupplier);
         }
-        supplier.setAuthorities(auth);        supplier.setEmail(userRequest.getEmail());
+        supplier.setAuthorities(auth);
+        supplier.setEmail(userRequest.getEmail());
         supplier.setEnabled(true);
         supplier.setFirstLogged(userRequest.getFirstLogged());
         supplier.setName(userRequest.getName());

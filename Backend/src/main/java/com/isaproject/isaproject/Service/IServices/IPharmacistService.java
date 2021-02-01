@@ -1,3 +1,4 @@
+
 package com.isaproject.isaproject.Service.IServices;
 
 import com.isaproject.isaproject.DTO.PharmacistDTO;
@@ -14,4 +15,6 @@ public interface IPharmacistService {
     Pharmacist save(PharmacistDTO userRequest);
     void delete(Pharmacist admin);
     Pharmacist update(Pharmacist pharmacist);
+    Pharmacist updateMark(Pharmacist pharmacist);
+
 }

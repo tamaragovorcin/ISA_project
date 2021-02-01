@@ -13,4 +13,8 @@ public interface IMedicationService {
     Medication save(MedicationDTO medicationDTO);
     void delete(Medication medication);
     Medication update(Medication medication);
+    Medication findByName(String name);
+    List<Medication> findByForm(String form);
+    List<Medication> findByType(String type);
+    List<Medication> findByMark(int markMin, int markMax);
 }

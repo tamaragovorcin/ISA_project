@@ -1,5 +1,8 @@
 package com.isaproject.isaproject.Model.Schedule;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
 
@@ -8,15 +11,18 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class HolidayScheduleDermatologist {
     @Id
     @GeneratedValue
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference(value="dermatologist-holiday")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "dermatologist_id", referencedColumnName = "id", nullable = false, unique = false)
     private Dermatologist dermatologist;
+
 
 
     @Column(name = "startDate", nullable = true)
@@ -28,11 +34,14 @@ public class HolidayScheduleDermatologist {
 
 
     @Column(name = "approved", nullable = true)
-    private Boolean approved;
+    private String approved;//APPROVED or REFUSED or WAITING_FOR_RESPONSE
 
 
     @Column(name = "massage", nullable = true)
     private String massage;
+
+    @Column(name = "type", nullable = true)
+    private String type;//HOLIDAY or ABSENCE
 
     public HolidayScheduleDermatologist() {
         super();
@@ -56,6 +65,24 @@ public class HolidayScheduleDermatologist {
 
 
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public HolidayScheduleDermatologist(Integer id, Dermatologist dermatologist, LocalDate startDate, LocalDate endDate, String approved, String massage, String type) {
+        this.id = id;
+        this.dermatologist = dermatologist;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.approved = approved;
+        this.massage = massage;
+        this.type = type;
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -72,11 +99,11 @@ public class HolidayScheduleDermatologist {
         this.endDate = endDate;
     }
 
-    public Boolean getApproved() {
+    public String getApproved() {
         return approved;
     }
 
-    public void setApproved(Boolean approved) {
+    public void setApproved(String approved) {
         this.approved = approved;
     }
 

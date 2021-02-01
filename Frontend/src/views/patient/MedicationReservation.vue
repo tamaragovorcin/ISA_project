@@ -1,5 +1,3 @@
-ines (39 sloc)  1.61 KB
-  
 <template>
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
@@ -111,7 +109,6 @@ ines (39 sloc)  1.61 KB
 </template>
 <script>
 export default {
-
   data() {
     return {
 
@@ -140,14 +137,14 @@ export default {
   },
 mounted() {
 
+
     this.axios.get('/medication')
           .then(response => {
                 this.medications= response.data;
                console.log(this.medications);
               
           })
-
-     
+          
           
 
       this.axios.get('/pharmacy/all')
@@ -155,12 +152,10 @@ mounted() {
                 this.pharmacies= response.data;
         
           })
-
             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
         this.axios.get('/patient/account',{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
-
              }
          }).then(response => {
                 this.patient = response.data;
@@ -186,17 +181,12 @@ mounted() {
             this.medication = medicine;
             this.medicationName = medicine.name;
             console.log(this.medication)
-
-
       },
-
       pharmacyIsSelected: function(event, pharmacy) {
           
             this.pharmacy = pharmacy;
             this.pharmacyName = pharmacy.name;
             console.log(this.pharmacy)
-
-
       },
       appointmentsAndConsultings: function(){
       },
@@ -204,14 +194,12 @@ mounted() {
       },
       logOut : function(){
           window.location.href = "/login";
-
       },
       medicationReservation : function(){
              window.location.href = "/medicationReservation";
       },
        changeMyProfile : function(){
              window.location.href = "/updateProfilePatient";
-
       },
       proba: function(){
         console.log(this.medications);
@@ -235,8 +223,8 @@ mounted() {
                
 
      
+          alert( med.medicineCode)
      
-
          this.axios.post('/medicationReservation/add',med)
         
                     .then(res => {
@@ -247,7 +235,6 @@ mounted() {
                      
                         console.log(res);
                     })
-
                  
       },
       previousPageReservations : function() {
@@ -262,8 +249,4 @@ mounted() {
 </script>
 
 <style>
-
 </style>
-
-
-  

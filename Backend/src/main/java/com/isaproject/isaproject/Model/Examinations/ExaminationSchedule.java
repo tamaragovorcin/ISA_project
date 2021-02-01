@@ -11,7 +11,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class ExaminationSchedule {
     @Id
     @GeneratedValue

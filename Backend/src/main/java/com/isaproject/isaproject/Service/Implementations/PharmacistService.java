@@ -1,17 +1,20 @@
+
 package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.AddressDTO;
+import com.isaproject.isaproject.DTO.PersonUserDTO;
+
 import com.isaproject.isaproject.DTO.PharmacistDTO;
-import com.isaproject.isaproject.Model.Users.Address;
-import com.isaproject.isaproject.Model.Users.Authority;
-import com.isaproject.isaproject.Model.Users.Pharmacist;
-import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
+import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
+import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
 import com.isaproject.isaproject.Repository.PharmacistRepository;
 import com.isaproject.isaproject.Service.IServices.IPharmacistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,8 @@ public class PharmacistService implements IPharmacistService {
     private AuthorityRepository authorityRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ConfirmationTokenRepository confirmationTokenRepository;
 
     @Override
     public Pharmacist findById(Integer id) {
@@ -69,13 +74,55 @@ public class PharmacistService implements IPharmacistService {
         return pharmacistRepository.save(pharmacist);
     }
 
+
     @Override
-    public void delete(Pharmacist pharmacist) {
-        pharmacistRepository.delete(pharmacist);
+
+    public void delete(Pharmacist userRequest) {
+        List<ConfirmationToken> confirmationTokens = confirmationTokenRepository.findAll();
+        ConfirmationToken confirmationToken = new ConfirmationToken();
+
+        for(ConfirmationToken confirmationToken1 : confirmationTokens){
+
+            if (confirmationToken1.getPersonUser().getId()==userRequest.getId()){
+                confirmationTokenRepository.delete(confirmationToken1);
+            }
+
+        }
+
+        pharmacistRepository.delete(userRequest);
+    }
+
+    public Pharmacist update(Pharmacist userRequest) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+
+        Pharmacist supplier= findById(user.getId());
+        supplier.setAddress(userRequest.getAddress());
+        List<Authority> auth = new ArrayList<Authority>();
+        Authority authoritySupplier = authService.findByname("ROLE_PHARMACIST");
+
+        if(authoritySupplier==null) {
+            authorityRepository.save(new Authority("ROLE_PHARMACIST"));
+            auth.add(authService.findByname("ROLE_PHARMACIST"));
+        }
+        else {
+            auth.add(authoritySupplier);
+        }
+        supplier.setAuthorities(auth);        supplier.setEmail(userRequest.getEmail());
+        supplier.setEnabled(true);
+        supplier.setFirstLogged(userRequest.getFirstLogged());
+        supplier.setName(userRequest.getName());
+        supplier.setSurname(userRequest.getSurname());
+        supplier.setPhoneNumber(userRequest.getPhoneNumber());
+        supplier.setPassword(supplier.getPassword());
+        supplier.setLastPasswordResetDate(userRequest.getLastPasswordResetDate());
+        return this.pharmacistRepository.save(supplier);
     }
 
     @Override
-    public Pharmacist update(Pharmacist pharmacist) {
+    public Pharmacist updateMark(Pharmacist pharmacist) {
         return pharmacistRepository.save(pharmacist);
     }
+
+
 }

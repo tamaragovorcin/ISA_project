@@ -132,10 +132,7 @@
 </template>
 
 <script>
-
-
 export default {
-
   data() {
     return {
         id : this.$route.params.id,
@@ -162,12 +159,10 @@ export default {
     }
   },
 mounted() {
-
  let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
         this.axios.get('/patient/account',{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
-
              }})
              .then(response => {
                 this.patient = response.data;
@@ -195,18 +190,15 @@ mounted() {
 
 
    
-
   
      
 },
   methods:{
     
       previousUpdateProfile : function(){
-
       },
     logOut : function(){
           window.location.href = "/login";
-
       },
         remove : function(med){
             alert(med)
@@ -248,7 +240,6 @@ mounted() {
                     street: this.patient.street,
                     number:this.patient.number,
                     postalCode: this.patient.postalCode,
-
                 };
             const p = {
                     id: this.patient.id,
@@ -301,8 +292,4 @@ mounted() {
 </script>
 
 <style>
-
 </style>
-
-
-  

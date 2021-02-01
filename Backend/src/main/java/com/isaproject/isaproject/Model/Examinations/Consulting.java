@@ -1,5 +1,7 @@
 package com.isaproject.isaproject.Model.Examinations;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
 
@@ -11,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Consulting implements Serializable {
 
 
@@ -20,18 +22,15 @@ public class Consulting implements Serializable {
     @Column(name="consulting_id", unique=true, nullable=false)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "pharmacist_id", referencedColumnName = "id", nullable = false, unique = false)
+    @JsonBackReference(value="consulting-pharmacist")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacist_id", referencedColumnName = "id", nullable = true, unique = false)
     private Pharmacist pharmacist;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = false)
+    @JsonBackReference(value="consulting-patient")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = true, unique = false)
     private Patient patient;
-
-
-    /*@ManyToMany(mappedBy = "consultings")
-    private Set<Patient> patients = new HashSet<Patient>();*/
-
 
     @Column(name = "date", nullable = true)
     private LocalDate date;

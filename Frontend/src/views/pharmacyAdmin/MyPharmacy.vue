@@ -2,8 +2,7 @@
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-            
-               <span style="float: left; margin: 15px;">
+              <span style="float: left; margin: 15px;">
                 <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
                 <b class="tab"></b>    
                 <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
@@ -12,10 +11,12 @@
                  <b class="tab"></b>    
                  <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
                  
-                <b class="tab"></b>    
-                <a  class = "btn btn-secondary" href = "/addPharmacist">Add pharmacist</a>    
                 <b class="tab"></b> 
-                 <a  class = "btn btn-secondary" href = "/pharmacyPharmacists">Our pharmacists</a> 
+                 <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
+                               class = "btn btn-link btn-lg">
+                    <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
+                    <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
+                </b-dropdown> 
                   <b class="tab"></b>  
                 <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
                 <b class="tab"></b> 
@@ -38,12 +39,6 @@
           
       <h3 style="color: #0D184F; font-size: 35px; font-weight:bold; margin-top:45px"></h3>
 
-            
-
-                
-          
-
-                <button class="btn btn-primary" v-on:click ="showMyProfile">Show</button>
         
 
           
@@ -70,44 +65,16 @@ export default {
   },
 
  mounted() {
-   let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-        this.axios.get('/pharmacyAdmin/account',{ 
-             headers: {
-                 'Authorization': 'Bearer ' + token,
-             }
-         }).then(response => {
-              this.admin=response.data;
-              alert(this.admin.id);
-         }).catch(res => {
-                       alert("NOT OK");
-                        console.log(res);
-                 });
+
 
      
 
 
  },
   methods:{
-    
-      showMyProfile: function(){
-           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-
-           var id = this.admin.id;
-      alert(id);
-      this.axios.get('/pharmacy/admin/'+this.admin.id,{ 
-             headers: {
-                 'Authorization': 'Bearer ' + token,
-             }
-          }).then(response => {
-            this.pharmacy = response.data;
-          });
-      },
        
        logOut : function(){
            window.location.href = "/login";
-      },
-      showMyPharmacy : function (){
-          window.location.href = "/myPharmacy"
       },
       showModal() {
         this.$refs['my-modal'].show()

@@ -10,6 +10,12 @@ import com.isaproject.isaproject.Model.Users.MarkMedication;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Service.Implementations.MarkMedicationService;
 import com.isaproject.isaproject.Service.Implementations.MarkService;
+import com.isaproject.isaproject.DTO.*;
+import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
+import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Medicine.Specification;
+import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
 import com.isaproject.isaproject.Service.Implementations.MedicationService;
 import com.isaproject.isaproject.Service.Implementations.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,6 +38,9 @@ public class MedicationController {
     @Autowired
     MedicationService medicationService;
 
+    @Autowired
+    MedicationPriceService medicationPriceService;
+
     @PostMapping("/add")
     ResponseEntity<Medication> register(@RequestBody MedicationDTO medicationDTO)
     {
@@ -39,12 +49,21 @@ public class MedicationController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medication);
     }
+    @PostMapping("/priceInPharmacy")
+    ResponseEntity<MedicationPrice> addToPharmacy(@RequestBody MedicationPriceDTO medicationPriceDTO)
+    {
+        System.out.println("-----------------------------------------------------");
+        System.out.println("DOSAO DO KONTROLERA");
+        MedicationPrice medicationPrice = medicationPriceService.updatePrice(medicationPriceDTO);
+        return medicationPrice == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(medicationPrice);
+    }
 
     @GetMapping("")
     ResponseEntity<List<Medication>> getAll()
     {
         List<Medication> medications = medicationService.findAll();
-        System.out.println(medications.size());
         return medications == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medications);
@@ -260,4 +279,76 @@ public class MedicationController {
                 ResponseEntity.ok(medication);
 
     }
+    @GetMapping("searchName/{medicationName}")
+    ResponseEntity<MedicationSearchDTO> getAll(@PathVariable String medicationName)
+    {
+        Medication medication= medicationService.findByName(medicationName);
+        MedicationSearchDTO medicationSearchDTO = getMedicationSearchDTO(medication);
+        return medicationSearchDTO == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(medicationSearchDTO);
+    }
+
+    @GetMapping("searchForm/{medicationForm}")
+    ResponseEntity<List<MedicationSearchDTO>> getAllByForm(@PathVariable String medicationForm)
+    {
+        List<Medication> medications= medicationService.findByForm(medicationForm);
+        List<MedicationSearchDTO> medicationsForFront = new ArrayList<>();
+        for (Medication medication: medications) {
+            MedicationSearchDTO medicationSearchDTO = getMedicationSearchDTO(medication);
+            medicationsForFront.add(medicationSearchDTO);
+        }
+        return medicationsForFront == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(medicationsForFront);
+    }
+    @GetMapping("searchType/{medicationType}")
+    ResponseEntity<List<MedicationSearchDTO>> getAllByType(@PathVariable String medicationType)
+    {
+        List<Medication> medications= medicationService.findByType(medicationType);
+        List<MedicationSearchDTO> medicationsForFront = new ArrayList<>();
+        for (Medication medication: medications) {
+            MedicationSearchDTO medicationSearchDTO = getMedicationSearchDTO(medication);
+            medicationsForFront.add(medicationSearchDTO);
+        }
+        return medicationsForFront == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(medicationsForFront);
+    }
+
+    @GetMapping("searchMark/{MarkMin}/{MarkMax}")
+    ResponseEntity<List<MedicationSearchDTO>> getAllByType(@PathVariable int MarkMin,@PathVariable int MarkMax )
+    {
+        List<Medication> medications= medicationService.findByMark(MarkMin,MarkMax);
+        List<MedicationSearchDTO> medicationsForFront = new ArrayList<>();
+        for (Medication medication: medications) {
+            MedicationSearchDTO medicationSearchDTO = getMedicationSearchDTO(medication);
+            medicationsForFront.add(medicationSearchDTO);
+        }
+        return medicationsForFront == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(medicationsForFront);
+    }
+    @GetMapping("getAll")
+    ResponseEntity<List<MedicationSearchDTO>> getAllMedications()
+    {
+        List<Medication> medications= medicationService.findAll();
+        List<MedicationSearchDTO> medicationsForFront = new ArrayList<>();
+        for (Medication medication: medications) {
+            MedicationSearchDTO medicationSearchDTO = getMedicationSearchDTO(medication);
+            medicationsForFront.add(medicationSearchDTO);
+        }
+        return medicationsForFront == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(medicationsForFront);
+    }
+
+    private MedicationSearchDTO getMedicationSearchDTO(Medication medication) {
+        Specification specification = medication.getSpecification();
+        SpecificationDTO specificationDTO = new SpecificationDTO(specification.getContraIndications(),
+                specification.getStructure(), specification.getRecommendedConsumption(), specification.getManufacturer());
+        return new MedicationSearchDTO(medication.getName(), medication.getForm(), medication.getType(),
+                medication.getIssuanceRegime(), medication.getMark(), specificationDTO);
+    }
+
 }
