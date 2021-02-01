@@ -55,9 +55,6 @@ public class Medication  {
     private String wayOfSelling;
 
 
-    @ManyToMany
-    @JoinTable(name = "eprescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "eprescription_id", referencedColumnName = "id"))
-    private Set<EPrescription> ePrescriptions = new HashSet<EPrescription>();
 
     @ManyToMany
     @JoinTable(name = "prescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
@@ -83,7 +80,7 @@ public class Medication  {
 
     public Medication() {}
 
-    public Medication(Integer id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints, String wayOfSelling, Set<EPrescription> ePrescriptions, Set<Offer> offer, Set<Prescription> prescriptions, Set<Medication> medications, Set<PatientsMedicationAlergy> patientsMedicationAlergy, Set<MedicationInOrder> medicationInOrder, Set<MedicationPrice> medicationPrices, Specification specification) {
+    public Medication(Integer id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints, String wayOfSelling, Set<Prescription> prescriptions, Set<Medication> medications, Set<PatientsMedicationAlergy> patientsMedicationAlergy, Set<MedicationPrice> medicationPrices, Specification specification) {
         this.id = id;
         this.name = name;
         this.code = code;
@@ -93,8 +90,11 @@ public class Medication  {
         this.mark = mark;
         this.loyaltyPoints = loyaltyPoints;
         this.wayOfSelling = wayOfSelling;
-        this.ePrescriptions = ePrescriptions;
-
+        this.prescriptions = prescriptions;
+        this.medications = medications;
+        this.patientsMedicationAlergy = patientsMedicationAlergy;
+        this.medicationPrices = medicationPrices;
+        this.specification = specification;
     }
 
     public String getWayOfSelling() {
@@ -137,10 +137,6 @@ public class Medication  {
 
     public void setPrescriptions(Set<Prescription> prescriptions) {
         this.prescriptions = prescriptions;
-        this.medications = medications;
-        this.patientsMedicationAlergy = patientsMedicationAlergy;
-        this.medicationPrices = medicationPrices;
-        this.specification = specification;
     }
 
     public Integer getId() {
@@ -207,13 +203,6 @@ public class Medication  {
         this.loyaltyPoints = loyaltyPoints;
     }
 
-    public Set<EPrescription> getePrescriptions() {
-        return ePrescriptions;
-    }
-
-    public void setePrescriptions(Set<EPrescription> ePrescriptions) {
-        this.ePrescriptions = ePrescriptions;
-    }
 
     public Set<MedicationPrice> getMedicationPrices() {
         return medicationPrices;

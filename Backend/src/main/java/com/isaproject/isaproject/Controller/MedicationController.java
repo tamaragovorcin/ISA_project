@@ -40,7 +40,7 @@ public class MedicationController {
     {
         System.out.println("-----------------------------------------------------");
         System.out.println("DOSAO DO KONTROLERA");
-        MedicationPrice medicationPrice = medicationPriceService.save(medicationPriceDTO);
+        MedicationPrice medicationPrice = medicationPriceService.updatePrice(medicationPriceDTO);
         return medicationPrice == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medicationPrice);

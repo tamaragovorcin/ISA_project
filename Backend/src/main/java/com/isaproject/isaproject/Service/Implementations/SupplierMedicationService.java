@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.SupplierMedicationReviewDTO;
+import com.isaproject.isaproject.DTO.SupplierMedicationUpdateDTO;
 import com.isaproject.isaproject.DTO.SupplierMedicationUpdateQuantityDTO;
 import com.isaproject.isaproject.DTO.SupplierMedicationsDTO;
 import com.isaproject.isaproject.Model.Medicine.Medication;
@@ -19,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -31,6 +33,7 @@ public class SupplierMedicationService implements ISupplierMedicationService {
 
     @Autowired
     SupplierRepository supplierRepository;
+
     @Autowired
     OrderRepository orderRepository;
 
@@ -102,51 +105,44 @@ public class SupplierMedicationService implements ISupplierMedicationService {
     }
 
     public void updateMedicineQuantityTenderWon(Set<SupplierMedications> supplierMedications, Set<MedicationInOrder> medicationInOrders) {
-        for(MedicationInOrder medication : medicationInOrders) {
-            Iterator<SupplierMedications> it = supplierMedications.iterator();
-            while (it.hasNext()) {
-                SupplierMedications supplierMedications1 = it.next();
+        List<SupplierMedicationUpdateDTO> updateDTOS = new ArrayList<>();
+        for (Iterator<SupplierMedications> it2 = supplierMedications.iterator(); it2.hasNext();) {
+            SupplierMedications supplierMedications1 = it2.next();
+            for (Iterator<MedicationInOrder> it = medicationInOrders.iterator(); it.hasNext();) {
+                MedicationInOrder medication = it.next();
                 if(medication.getMedicine().getName().equals(supplierMedications1.getName()) && medication.getMedicine().getCode()==supplierMedications1.getCode()) {
-                    if(updateQuantityForMedicationTenderWon(supplierMedications1, medication.getQuantity())) {}
+                    updateDTOS.add(new SupplierMedicationUpdateDTO(supplierMedications1.getId(), medication.getQuantity()));
                 }
             }
-         /*   for(SupplierMedications supplierMedications1 : supplierMedications) {
-                if(medication.getMedicine().getName().equals(supplierMedications1.getName()) && medication.getMedicine().getCode()==supplierMedications1.getCode()) {
-                    if(updateQuantityForMedicationTenderWon(supplierMedications1, medication.getQuantity())) {}
-                }
-
-            }*/
         }
-    }
+        for (SupplierMedicationUpdateDTO medicine:updateDTOS) {
+            SupplierMedications supplierMedications1 = supplierMedicaionRepository.findById(medicine.getMedicationId()).get();
+            supplierMedications1.setReservedQuantity(supplierMedications1.getReservedQuantity()-medicine.getQuantity());
+            this.supplierMedicaionRepository.save(supplierMedications1);
 
-    private boolean updateQuantityForMedicationTenderWon(SupplierMedications supplierMedications, int quantity) {
-       try {
-           supplierMedications.setReservedQuantity(supplierMedications.getReservedQuantity()-quantity);
-           this.supplierMedicaionRepository.save(supplierMedications);
-           return true;
-       }
-       catch(Exception e) {return false;}
+        }
 
     }
 
     public void updateMedicineQuantityTenderLost(Set<SupplierMedications> supplierMedications, Set<MedicationInOrder> medicationInOrders) {
-        for(MedicationInOrder medication : medicationInOrders) {
-            for(SupplierMedications supplierMedications1 : supplierMedications) {
-                if(medication.getMedicine().getName().equals(supplierMedications1.getName()) && medication.getMedicine().getCode()==supplierMedications1.getCode()) {
-                    if(updateQuantityForMedicationTenderLost(supplierMedications1, medication.getQuantity())) {}
-                }
 
+        List<SupplierMedicationUpdateDTO> updateDTOS = new ArrayList<>();
+        for (Iterator<SupplierMedications> it2 = supplierMedications.iterator(); it2.hasNext();) {
+            SupplierMedications supplierMedications1 = it2.next();
+            for (Iterator<MedicationInOrder> it = medicationInOrders.iterator(); it.hasNext();) {
+                MedicationInOrder medication = it.next();
+                if(medication.getMedicine().getName().equals(supplierMedications1.getName()) && medication.getMedicine().getCode()==supplierMedications1.getCode()) {
+                    updateDTOS.add(new SupplierMedicationUpdateDTO(supplierMedications1.getId(), medication.getQuantity()));
+                }
             }
         }
+        for (SupplierMedicationUpdateDTO medicine:updateDTOS) {
+            SupplierMedications supplierMedications1 = supplierMedicaionRepository.findById(medicine.getMedicationId()).get();
+            supplierMedications1.setReservedQuantity(supplierMedications1.getReservedQuantity()-medicine.getQuantity());
+            supplierMedications1.setQuantity(supplierMedications1.getQuantity()+ medicine.getQuantity());
+            this.supplierMedicaionRepository.save(supplierMedications1);
+
+        }
     }
 
-    private boolean updateQuantityForMedicationTenderLost(SupplierMedications supplierMedications, int quantity) {
-        try {
-            supplierMedications.setReservedQuantity(supplierMedications.getReservedQuantity()-quantity);
-            supplierMedications.setQuantity(supplierMedications.getQuantity()+quantity);
-            this.supplierMedicaionRepository.save(supplierMedications);
-            return true;
-        }
-        catch(Exception e) {return false;}
-    }
 }

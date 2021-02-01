@@ -2,6 +2,7 @@ package com.isaproject.isaproject.Service.Implementations;
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.DTO.QRcodeInformationDTO;
+import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Address;
 import com.isaproject.isaproject.Model.Users.Authority;
@@ -187,4 +188,6 @@ public class PatientService implements IPatientService {
             return false;
         }
     }
+
+
 }

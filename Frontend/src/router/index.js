@@ -172,7 +172,7 @@ const routes = [
       component: Order
     },
     {
-      path: '/pharmacyProfile',
+      path: '/pharmacyProfile/:id',
       name: 'PharmacyProfile',
       component: PharmacyProfile
     },

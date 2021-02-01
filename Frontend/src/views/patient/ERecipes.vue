@@ -297,7 +297,7 @@ export default {
                 }
             }
      },
-     showPharmaciesByCountry : function() {
+     showPharmaciesByCity : function() {
           this.pharmacyListFilter=[]
             var town = this.pharmacyTown;
             var i =0;
@@ -308,7 +308,7 @@ export default {
             }
 
      },
-     showPharmaciesByCity : function(){
+     showPharmaciesByCountry : function(){
           this.pharmacyListFilter=[]
             var country = this.pharmacyCountry;
             var i =0;
