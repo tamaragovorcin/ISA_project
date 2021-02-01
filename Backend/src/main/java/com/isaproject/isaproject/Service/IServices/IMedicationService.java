@@ -12,4 +12,5 @@ public interface IMedicationService {
     List<Medication> findAll ();
     Medication save(MedicationDTO medicationDTO);
     void delete(Medication medication);
+    Medication update(Medication medication);
 }

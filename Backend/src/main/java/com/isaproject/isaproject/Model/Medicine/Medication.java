@@ -1,5 +1,6 @@
 package com.isaproject.isaproject.Model.Medicine;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
@@ -7,6 +8,8 @@ import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
 import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
 import com.isaproject.isaproject.Model.Orders.Offer;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.Mark;
+import com.isaproject.isaproject.Model.Users.MarkMedication;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
 
 import javax.persistence.*;
@@ -14,6 +17,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Medication  {
     @Id
     @GeneratedValue
@@ -63,6 +67,9 @@ public class Medication  {
     @JoinTable(name = "prescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
     private Set<Prescription> prescriptions = new HashSet<Prescription>();
 
+    @JsonManagedReference(value="medication-mark")
+    @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private Set<MarkMedication> marks = new HashSet<MarkMedication>();
 
     @ManyToMany
     @JoinTable(name = "medications_alternatives", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "medication_alternative_id", referencedColumnName = "id"))
@@ -121,6 +128,14 @@ public class Medication  {
     public void setWayOfSelling(String wayOfSelling) {
         this.wayOfSelling = wayOfSelling;
 
+    }
+
+    public Set<MarkMedication> getMarks() {
+        return marks;
+    }
+
+    public void setMarks(Set<MarkMedication> marks) {
+        this.marks = marks;
     }
 
     public Set<Offer> getOffer() {

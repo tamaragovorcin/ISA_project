@@ -98,11 +98,11 @@ ines (39 sloc)  1.61 KB
                 
         
  <b class="tab"></b>
-                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'4')" checked>
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'4')" >
                  <label class="custom-control-label" for="defaultGroupExample4" >3-4</label>
                 
                 <b class="tab"></b>
-                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" checked>
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" >
                  <label class="custom-control-label" for="defaultGroupExample4" >4-5</label>
               </div> 
              </template>
@@ -208,7 +208,8 @@ export default {
        pharmacyName: null,
        dermatologistAppointmentsSearch: [],
        showTable: true,
-       showSecondTable : false
+       showSecondTable : false,
+       filter: null
 
     }
   },
@@ -313,7 +314,7 @@ mounted() {
       
 
         updateFiler : function(event, filter) {
-                console.log(filter)
+               this.filter = filter;
             },
 }
 }

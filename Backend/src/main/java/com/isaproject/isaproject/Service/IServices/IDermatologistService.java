@@ -10,4 +10,5 @@ public interface IDermatologistService {
     Dermatologist findByEmail(String email);
     List<Dermatologist> findAll ();
     Dermatologist save(PersonUserDTO userRequest);
+    Dermatologist update(Dermatologist dermatologist0);
 }

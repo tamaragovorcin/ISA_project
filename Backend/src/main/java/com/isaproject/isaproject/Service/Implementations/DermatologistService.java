@@ -67,4 +67,9 @@ public class DermatologistService implements IDermatologistService {
         dermatologist.setEnabled(true);
         return dermatologistRepository.save(dermatologist);
     }
+
+    @Override
+    public Dermatologist update(Dermatologist dermatologist0) {
+        return dermatologistRepository.save(dermatologist0);
+    }
 }

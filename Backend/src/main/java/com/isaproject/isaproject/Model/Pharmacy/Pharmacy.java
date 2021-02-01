@@ -12,10 +12,7 @@ import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.Order;
 import com.isaproject.isaproject.Model.Schedule.WorkingHoursDermatologist;
 import com.isaproject.isaproject.Model.Schedule.WorkingHoursPharmacist;
-import com.isaproject.isaproject.Model.Users.Address;
-import com.isaproject.isaproject.Model.Users.Dermatologist;
-import com.isaproject.isaproject.Model.Users.Pharmacist;
-import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
+import com.isaproject.isaproject.Model.Users.*;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
@@ -54,6 +51,10 @@ public class Pharmacy implements Serializable{
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<MedicationReservation> medicationReservations = new HashSet<MedicationReservation>();
 
+    @JsonManagedReference(value="pharmacy-mark")
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Mark> marks = new HashSet<Mark>();
+
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Prescription> prescriptions = new HashSet<Prescription>();
 
@@ -88,6 +89,7 @@ public class Pharmacy implements Serializable{
 
     public Pharmacy() {}
 
+
     public Pharmacy(Integer id, String pharmacyName, double mark, double consultingPrice, Set<ExaminationSchedule> examinationSchedules, Set<MedicationReservation> medicationReservations, Set<Prescription> prescriptions, Address address, Set<Dermatologist> dermatologists, Set<Pharmacist> pharmacists, Set<Subscription> subscriptions, Set<PharmacyAdmin> pharmacyAdmins, Set<Order> order, Set<WorkingHoursDermatologist> workingHoursDermatologists, Set<Medication> medications) {
         this.id = id;
         this.pharmacyName = pharmacyName;
@@ -103,6 +105,14 @@ public class Pharmacy implements Serializable{
         this.order = order;
         this.workingHoursDermatologists = workingHoursDermatologists;
         this.medications = medications;
+    }
+
+    public Set<Mark> getMarks() {
+        return marks;
+    }
+
+    public void setMarks(Set<Mark> marks) {
+        this.marks = marks;
     }
 
     public Set<WorkingHoursDermatologist> getWorkingHoursDermatologists() {

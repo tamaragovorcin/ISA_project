@@ -10,6 +10,7 @@ import com.isaproject.isaproject.Model.Users.Pharmacist;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -37,11 +38,11 @@ public class MedicationReservation {
 
 
     @Column(name = "dateOfReservation", nullable = true)
-    private LocalDateTime dateOfReservation;
+    private LocalDate dateOfReservation;
 
 
     @Column(name = "dateOfTakeOver", nullable = true)
-    private LocalDateTime dateOfTakeOver;
+    private LocalDate dateOfTakeOver;
 
 
     @Column(name = "collected", nullable = true)
@@ -90,20 +91,19 @@ public class MedicationReservation {
         this.id = id;
     }
 
-
-    public LocalDateTime getDateOfReservation() {
+    public LocalDate getDateOfReservation() {
         return dateOfReservation;
     }
 
-    public void setDateOfReservation(LocalDateTime dateOfReservation) {
+    public void setDateOfReservation(LocalDate dateOfReservation) {
         this.dateOfReservation = dateOfReservation;
     }
 
-    public LocalDateTime getDateOfTakeOver() {
+    public LocalDate getDateOfTakeOver() {
         return dateOfTakeOver;
     }
 
-    public void setDateOfTakeOver(LocalDateTime dateOfTakeOver) {
+    public void setDateOfTakeOver(LocalDate dateOfTakeOver) {
         this.dateOfTakeOver = dateOfTakeOver;
     }
 

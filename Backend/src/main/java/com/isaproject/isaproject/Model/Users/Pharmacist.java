@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Model.Users;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
@@ -33,6 +34,10 @@ public class Pharmacist extends  PersonUser {
     @Column(name = "markPharmacist", nullable = true)
     private double markPharmacist;
 
+    @JsonManagedReference(value="pharmacist-mark")
+    @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private Set<MarkPharmacist> marks = new HashSet<MarkPharmacist>();
+
 
     @JsonBackReference
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
@@ -52,6 +57,14 @@ public class Pharmacist extends  PersonUser {
     public Pharmacist(Set<Consulting> consulting,  double markPharmacist) {
         this.consulting = consulting;
         this.markPharmacist = markPharmacist;
+    }
+
+    public Set<MarkPharmacist> getMarks() {
+        return marks;
+    }
+
+    public void setMarks(Set<MarkPharmacist> marks) {
+        this.marks = marks;
     }
 
     public Pharmacist() { super();}

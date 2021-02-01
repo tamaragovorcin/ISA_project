@@ -41,6 +41,10 @@ public class Dermatologist extends PersonUser{
     @JoinTable(name = "dermatologists_pharmacies", joinColumns = @JoinColumn(name = "dermatologist_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
     private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
 
+    @JsonManagedReference(value="dermatologist-mark")
+    @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private Set<MarkDermatologist> marks = new HashSet<MarkDermatologist>();
+
     public Dermatologist() {}
 
     public Set<ExaminationSchedule> getExaminationSchedules() {

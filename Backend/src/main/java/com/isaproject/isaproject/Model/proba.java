@@ -290,12 +290,12 @@ public class proba {
 
         MedicationReservation medicationReservation =  new MedicationReservation();
         medicationReservation.setPatient(patient);
-        medicationReservation.setDateOfReservation(LocalDateTime.now());
+        medicationReservation.setDateOfReservation(LocalDate.now());
         medicationReservation.setCancelled(false);
         medicationReservation.setCollected(false);
         medicationReservation.setMedicine(medication);
         medicationReservation.setPharmacy(pharmacy);
-        medicationReservation.setDateOfTakeOver(LocalDateTime.now());
+        medicationReservation.setDateOfTakeOver(LocalDate.now());
 
         Set<Offer> offers = new HashSet<Offer>();
         Set<Order> orders = new HashSet<Order>();

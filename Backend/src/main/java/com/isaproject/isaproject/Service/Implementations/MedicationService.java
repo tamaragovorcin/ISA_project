@@ -55,4 +55,9 @@ public class MedicationService implements IMedicationService {
     public void delete(Medication medication) {
 
     }
+
+    @Override
+    public Medication update(Medication medication) {
+        return medicationRepository.save(medication);
+    }
 }

@@ -4,6 +4,7 @@ import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class MedicationReservationFrontDTO {
@@ -16,19 +17,13 @@ public class MedicationReservationFrontDTO {
 
    private String form;
 
-    private LocalDateTime dateOfTakeOver;
+    private LocalDate dateOfTakeOver;
 
     private String pharmacyName;
 
 
 
-    public MedicationReservationFrontDTO(String name, long code, String form, LocalDateTime dateOfTakeOver, String pharmacyName) {
-        this.name = name;
-        this.code = code;
-        this.form = form;
-        this.dateOfTakeOver = dateOfTakeOver;
-        this.pharmacyName = pharmacyName;
-    }
+
 
     public Integer getId() {
         return id;
@@ -65,11 +60,11 @@ public class MedicationReservationFrontDTO {
         this.form = form;
     }
 
-    public LocalDateTime getDateOfTakeOver() {
+    public LocalDate getDateOfTakeOver() {
         return dateOfTakeOver;
     }
 
-    public void setDateOfTakeOver(LocalDateTime dateOfTakeOver) {
+    public void setDateOfTakeOver(LocalDate dateOfTakeOver) {
         this.dateOfTakeOver = dateOfTakeOver;
     }
 
