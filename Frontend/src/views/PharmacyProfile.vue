@@ -208,13 +208,13 @@ export default {
   },
   mounted() {
        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-        this.axios.get('/pharmacy/'+3,{ 
+        this.axios.get('/pharmacy/'+this.id,{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
              }
          }).then(response => {
                 this.pharmacy = response.data;
-                 this.axios.get('pharmacy/dermatologists/'+3,{ 
+                 this.axios.get('pharmacy/dermatologists/'+this.id,{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
              }
@@ -224,7 +224,7 @@ export default {
                        alert("Please try again later.");
                         console.log(res);
                  });
-                  this.axios.get('pharmacy/pharmacists/'+3,{ 
+                  this.axios.get('pharmacy/pharmacists/'+this.id,{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
              }
@@ -237,7 +237,7 @@ export default {
 
 
 
-       this.axios.get('pharmacy/freeExaminationTerms/'+3,{ 
+       this.axios.get('pharmacy/freeExaminationTerms/'+this.id,{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
              }
@@ -249,7 +249,7 @@ export default {
                  });
 
 
-             this.axios.get('pharmacy/medication/'+3,{ 
+             this.axios.get('pharmacy/medication/'+this.id,{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
              }

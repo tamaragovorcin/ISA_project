@@ -1,8 +1,10 @@
 package com.isaproject.isaproject.Model.Schedule;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,45 +12,63 @@ import java.time.LocalTime;
 
 
 @Entity
+@DiscriminatorValue("WorkingHoursDermatologist")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class WorkingHoursDermatologist  {
     @Id
     @GeneratedValue
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "date", nullable = true)
-    private LocalDate date;
-
-
-    @JsonBackReference(value = "pharmacy-dermatologist")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = true, unique = false)
     private Pharmacy pharmacy;
 
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "dermatologist_id", referencedColumnName = "id", nullable = false, unique = false)
+    @OneToOne(cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "dermatologist_id", referencedColumnName = "id", nullable = true, unique = false)
     private Dermatologist dermatologist;
 
 
-    @Column(name = "startTime", nullable = true)
-    private LocalTime startTime;
+    @JsonBackReference(value="schedule-monday")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "mondaySchedule", referencedColumnName = "id", nullable = true, unique = false)
+    private MondaySchedule mondaySchedule;
+
+    @JsonBackReference(value="schedule-tuesday")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "tuesdaySchedule", referencedColumnName = "id", nullable = true, unique = false)
+    private TuesdaySchedule tuesdaySchedule;
+
+    @JsonBackReference(value="schedule-wednesday")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "wednesdaySchedule", referencedColumnName = "id", nullable = true, unique = false)
+    private WednesdaySchedule wednesdaySchedule;
+
+    @JsonBackReference(value="schedule-thursday")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "thursdaySchedule", referencedColumnName = "id", nullable = true, unique = false)
+    private ThursdaySchedule thursdaySchedule;
 
 
-    @Column(name = "endTime", nullable = true)
-    private LocalTime endTime;
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "fridaySchedule", referencedColumnName = "id", nullable = false, unique = false)
+    private FridaySchedule fridaySchedule;
+
+
+    @JsonBackReference(value="schedule-saturday")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "saturdaySchedule", referencedColumnName = "id", nullable = false, unique = false)
+    private SaturdaySchedule saturdaySchedule;
+
+
+    @JsonBackReference(value="schedule-sunday")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "sundaySchedule", referencedColumnName = "id", nullable = false, unique = false)
+    private SundaySchedule sundaySchedule;
 
     public WorkingHoursDermatologist() {
-        super();
-    }
 
-    public WorkingHoursDermatologist(Integer id, LocalDate date, Pharmacy pharmacy, Dermatologist dermatologist, LocalTime startTime, LocalTime endTime) {
-        this.id = id;
-        this.date = date;
-        this.pharmacy = pharmacy;
-        this.dermatologist = dermatologist;
-        this.startTime = startTime;
-        this.endTime = endTime;
     }
 
     public Integer getId() {
@@ -57,14 +77,6 @@ public class WorkingHoursDermatologist  {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 
     public Pharmacy getPharmacy() {
@@ -83,19 +95,59 @@ public class WorkingHoursDermatologist  {
         this.dermatologist = dermatologist;
     }
 
-    public LocalTime getStartTime() {
-        return startTime;
+    public MondaySchedule getMondaySchedule() {
+        return mondaySchedule;
     }
 
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
+    public void setMondaySchedule(MondaySchedule mondaySchedule) {
+        this.mondaySchedule = mondaySchedule;
     }
 
-    public LocalTime getEndTime() {
-        return endTime;
+    public TuesdaySchedule getTuesdaySchedule() {
+        return tuesdaySchedule;
     }
 
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
+    public void setTuesdaySchedule(TuesdaySchedule tuesdaySchedule) {
+        this.tuesdaySchedule = tuesdaySchedule;
+    }
+
+    public WednesdaySchedule getWednesdaySchedule() {
+        return wednesdaySchedule;
+    }
+
+    public void setWednesdaySchedule(WednesdaySchedule wednesdaySchedule) {
+        this.wednesdaySchedule = wednesdaySchedule;
+    }
+
+    public ThursdaySchedule getThursdaySchedule() {
+        return thursdaySchedule;
+    }
+
+    public void setThursdaySchedule(ThursdaySchedule thursdaySchedule) {
+        this.thursdaySchedule = thursdaySchedule;
+    }
+
+    public FridaySchedule getFridaySchedule() {
+        return fridaySchedule;
+    }
+
+    public void setFridaySchedule(FridaySchedule fridaySchedule) {
+        this.fridaySchedule = fridaySchedule;
+    }
+
+    public SaturdaySchedule getSaturdaySchedule() {
+        return saturdaySchedule;
+    }
+
+    public void setSaturdaySchedule(SaturdaySchedule saturdaySchedule) {
+        this.saturdaySchedule = saturdaySchedule;
+    }
+
+    public SundaySchedule getSundaySchedule() {
+        return sundaySchedule;
+    }
+
+    public void setSundaySchedule(SundaySchedule sundaySchedule) {
+        this.sundaySchedule = sundaySchedule;
     }
 }

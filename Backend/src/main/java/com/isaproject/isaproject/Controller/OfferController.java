@@ -58,6 +58,7 @@ public class OfferController {
     JavaMailSenderImpl mailSender;
     @Autowired
     MedicationPriceService medicationPriceService;
+    @Autowired
     SupplierService supplierService;
     @Autowired
     OrderService orderService;
@@ -166,6 +167,7 @@ public class OfferController {
             if (offer.getOrder().getPharmacyAdmin().getId() == pharmacyAdmin.getId()) {
                 if (offer.getOrder().getId() == offerService.findById(id).getOrder().getId()) {
                     if (offer.getId() == id) {
+                        medicationPriceService.updateMedicineQuantityTender(offer.getOrder());
                         offer.setStatus("ACCEPTED");
                         Order order = offer.getOrder();
                         order.setStatus("CLOSED");
@@ -175,10 +177,9 @@ public class OfferController {
                         mail.setTo(offer.getSupplier().getEmail());
                         mail.setSubject("Tender in " + offer.getOrder().getPharmacyAdmin().getPharmacy().getPharmacyName());
                         mail.setFrom(environment.getProperty("spring.mail.username"));
-                        mail.setText("Tender in" + offer.getOrder().getPharmacyAdmin().getPharmacy().getPharmacyName() + " is closed."
+                        mail.setText("Tender in " + offer.getOrder().getPharmacyAdmin().getPharmacy().getPharmacyName() + " is closed."
                                 + " Congratulations, you won tender.");
                         mailSender.send(mail);
-                        medicationPriceService.updateMedicineQuantityTender(offer.getOrder());
                     } else {
                         offer.setStatus("REFUSED");
                         SimpleMailMessage mail = new SimpleMailMessage();
