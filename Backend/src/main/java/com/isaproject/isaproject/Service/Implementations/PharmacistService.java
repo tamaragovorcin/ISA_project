@@ -73,4 +73,9 @@ public class PharmacistService implements IPharmacistService {
     public void delete(Pharmacist pharmacist) {
         pharmacistRepository.delete(pharmacist);
     }
+
+    @Override
+    public Pharmacist update(Pharmacist pharmacist) {
+        return pharmacistRepository.save(pharmacist);
+    }
 }

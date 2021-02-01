@@ -13,4 +13,5 @@ public interface IPharmacistService {
     List<Pharmacist> findAll ();
     Pharmacist save(PharmacistDTO userRequest);
     void delete(Pharmacist admin);
+    Pharmacist update(Pharmacist pharmacist);
 }
