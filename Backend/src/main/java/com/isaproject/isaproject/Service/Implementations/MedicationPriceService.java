@@ -1,20 +1,17 @@
 package com.isaproject.isaproject.Service.Implementations;
 
-import com.isaproject.isaproject.DTO.MedicationDTO;
+import com.isaproject.isaproject.DTO.ChoosenPharmacyDTO;
 import com.isaproject.isaproject.DTO.MedicationPriceDTO;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
-import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
 import com.isaproject.isaproject.Model.Orders.Order;
 import com.isaproject.isaproject.Repository.MedicationPriceRepository;
-import com.isaproject.isaproject.Repository.MedicationRepository;
 import com.isaproject.isaproject.Service.IServices.IMedicationPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class MedicationPriceService implements IMedicationPriceService {
@@ -138,5 +135,9 @@ public class MedicationPriceService implements IMedicationPriceService {
             }
         }
         return null;
+    }
+
+    public boolean updateMedicineQuantityEreceipt(ChoosenPharmacyDTO choosenPharmacy) {
+        return true;
     }
 }

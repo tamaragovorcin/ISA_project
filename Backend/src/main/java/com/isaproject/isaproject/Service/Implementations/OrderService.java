@@ -8,11 +8,9 @@ import com.isaproject.isaproject.Repository.MedicationInOrderRepository;
 import com.isaproject.isaproject.Repository.OrderRepository;
 import com.isaproject.isaproject.Service.IServices.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class OrderService implements IOrderService {

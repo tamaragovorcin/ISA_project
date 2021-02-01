@@ -82,7 +82,7 @@ public class OfferController {
     {
         Set<MedicationInOrder> medicationInOrder = orderService.findById(orderId).getMedicationInOrders();
         for(MedicationInOrder medication : medicationInOrder) {
-            if(doesSupplierHaveMedication(medication.getMedicine(), medication.getQuantity())) {}
+            if(doesSupplierHaveMedication(medication.getMedicine(), medication.getQuantity())) { System.out.println("JA SAM OVDE DOSLA 2222222222222222 ************");}
             else {
                 return ResponseEntity.ok(false);
             }
@@ -94,6 +94,7 @@ public class OfferController {
     private boolean doesSupplierHaveMedication(Medication medication, int quantity) {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
+
         Supplier supplier = supplierService.findById(user.getId());
         Set<SupplierMedications> medicationsSupplier =supplier.getSupplierMedications();
 

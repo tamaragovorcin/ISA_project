@@ -2,14 +2,13 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.HolidayScheduleDermatologistDTO;
 import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
-import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
 import com.isaproject.isaproject.Repository.HolidayScheduleDermatologistRepository;
-import com.isaproject.isaproject.Repository.HolidaySchedulePharmacistRepository;
 import com.isaproject.isaproject.Service.IServices.IHolidayScheduleDermatologistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 
 public class HolidayScheduleDermatologistService implements IHolidayScheduleDermatologistService {

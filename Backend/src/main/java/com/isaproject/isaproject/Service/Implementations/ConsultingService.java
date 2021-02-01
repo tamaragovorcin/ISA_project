@@ -1,6 +1,5 @@
 package com.isaproject.isaproject.Service.Implementations;
 
-
 import com.isaproject.isaproject.DTO.ConsultingDTO;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Repository.ConsultingRepository;
