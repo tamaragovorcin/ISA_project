@@ -12,7 +12,7 @@ import java.util.List;
 public interface IWorkingHoursDermatologistService {
     WorkingHoursDermatologist findById(Integer id);
     List<WorkingHoursDermatologist> findAll ();
-    WorkingHoursDermatologist save(WorkingHoursDermatologistDTO pharmacy);
+    WorkingHoursDermatologist save(WorkingHoursDermatologistDTO userRequest);
     void delete(WorkingHoursDermatologist workingHoursDermatologist);
 
 }

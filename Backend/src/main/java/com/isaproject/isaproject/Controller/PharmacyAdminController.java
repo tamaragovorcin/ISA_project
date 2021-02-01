@@ -3,6 +3,7 @@ package com.isaproject.isaproject.Controller;
 import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
+import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
 import com.isaproject.isaproject.Model.Orders.Order;
 import com.isaproject.isaproject.Model.Pharmacy.Actions;
@@ -118,8 +119,11 @@ public class PharmacyAdminController {
     }
     @GetMapping("/medication")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    ResponseEntity<List<MedicationPrice>> getMedication()
+    ResponseEntity<List<Medication>> getMedication()
     {
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("POGODIO");
+
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
 
@@ -127,60 +131,33 @@ public class PharmacyAdminController {
 
         return medicationPriceService.findByPharmacy(pharmacyAdmin.getPharmacy().getId()) == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(medicationPriceService.findByPharmacy(pharmacyAdmin.getPharmacy().getId()));
+                ResponseEntity.ok(medicationPriceService.findMedicationByPharmacy(pharmacyAdmin.getPharmacy().getId()));
     }
-    /*@GetMapping("/orders")
+    @GetMapping("/medicationFront")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    ResponseEntity<List<Order>> getOrders()
+    ResponseEntity<List<MedicationPriceFrontDTO>> getMedicationFront()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
 
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
-        List<Order> orders  = new ArrayList<Order>();
-        for(Order or : orderService.findAll()){
-            if(or.getPharmacyAdmin().getPharmacy().getId() == pharmacyAdmin.getPharmacy().getId()){
-                orders.add(or);
-            }
+        List<MedicationPriceFrontDTO> medicationPriceFrontDTOS = new ArrayList<MedicationPriceFrontDTO>();
+        for(MedicationPrice medicationPrice : medicationPriceService.findByPharmacy(pharmacyAdmin.getPharmacy().getId())){
+            MedicationPriceFrontDTO medicationPriceFrontDTO = new MedicationPriceFrontDTO();
+            medicationPriceFrontDTO.setName(medicationPrice.getMedication().getName());
+            medicationPriceFrontDTO.setPrice(medicationPrice.getPrice());
+            medicationPriceFrontDTO.setCode(medicationPrice.getMedication().getCode());
+            medicationPriceFrontDTO.setDate(medicationPrice.getDate());
+            medicationPriceFrontDTO.setForm(medicationPrice.getMedication().getForm());
+            medicationPriceFrontDTO.setManufacturer(medicationPrice.getMedication().getSpecification().getManufacturer());
+            medicationPriceFrontDTOS.add(medicationPriceFrontDTO);
         }
-        return orders == null ?
+        return medicationPriceFrontDTOS == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(orders);
+                ResponseEntity.ok(medicationPriceFrontDTOS);
     }
-    @GetMapping("/medicationInOrder")
-    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    ResponseEntity<List<MedicationsInOrderReviewDTO>> getMedicationInOrder()
-    {
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("------------------------------------------------------------------");
-        PersonUser user = (PersonUser)currentUser.getPrincipal();
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
-        System.out.println("-----------------------------------------------------------------------");
-        List<MedicationsInOrderReviewDTO> orders = new ArrayList<MedicationsInOrderReviewDTO>();
-        for(Order order : orderService.findAll()){
-            for(MedicationInOrder medicationInOrder : order.getMedicationInOrders())
-            if(order.getPharmacyAdmin().getPharmacy().getId() == pharmacyAdmin.getPharmacy().getId()){
-                MedicationsInOrderReviewDTO medicationsInOrderDTO = new MedicationsInOrderReviewDTO();
-                medicationsInOrderDTO.setName(medicationInOrder.getMedicine().getName());
-                medicationsInOrderDTO.setCode(medicationInOrder.getMedicine().getCode());
-                medicationsInOrderDTO.setForm(medicationInOrder.getMedicine().getForm());
-                medicationsInOrderDTO.setManufacturer(medicationInOrder.getMedicine().getSpecification().getManufacturer());
-                medicationsInOrderDTO.setQuantity(medicationInOrder.getQuantity());
-                medicationsInOrderDTO.setDate(order.getDate());
-                medicationsInOrderDTO.setQuantity(medicationInOrder.getQuantity());
-                medicationsInOrderDTO.setOrderId(medicationInOrder.getOrder().getId());
-                orders.add(medicationsInOrderDTO);
-                System.out.println("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
 
-                System.out.println(order.getPharmacyAdmin().getName());
-            }
-        }
-        return orders == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(orders);
-    }*/
+
     @GetMapping("orders")
     ResponseEntity<List<OrderReviewDTO>> getAllOrders()
     {

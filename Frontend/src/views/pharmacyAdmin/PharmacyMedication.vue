@@ -39,7 +39,7 @@
 
         <div class="container-fluid">
 
-         <b-button class = "btn btn-warning" @click="showModal">+ Add medication</b-button>
+         <b-button class = "btn btn-warning" @click="showModal">Define medication price</b-button>
         
         <b-modal ref="my-modal" hide-footer scrollable title="Add examination to schedule" size="lg" modal-class="b-modal">
                     <div modal-class="modal-dialog" role="document">
@@ -87,7 +87,7 @@
                                     </div>
                     <div class="modal-footer">
                                         <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" v-on:click="addMedication">Add medication</button>
+                                        <button class="btn btn-primary" v-on:click="addMedication">Save</button>
                    </div>
 
                             
@@ -107,17 +107,23 @@
   <table class="table table-striped table-dark">
   <thead class="thead-dark">
     <tr>
-      <th scope="col"></th>
       <th scope="col">Medication name</th>
       <th scope="col">Medication code</th>
-      <th scope="col">Mark</th>
-      <th scope="col">Type</th>
+      <th scope="col">Medication form</th>
+      <th scope="col">Manufacturer</th>
+      <th scope="col">Price</th>
+      <th scope="col">Price expiry date</th>
     </tr>
   </thead>
   <tbody>
     <tr v-for="med in ourMedications" :key="med.id">
-                                                    <td>med.medication.name</td>
-                                                    <td></td>
+                                                    <td>{{med.name}}</td>
+                                                    <td>{{med.code}}</td>
+                                                    <td>{{med.form}}</td>
+                                                    <td>{{med.manufacturer}}</td>
+                                                    <td>{{med.price}}</td>
+                                                    <td>{{med.date}}</td>
+                                                    
                                                   
                                                 </tr>
    
@@ -176,6 +182,17 @@ export default {
                         'Authorization': 'Bearer ' + token,
                     }
                     }).then(response => {
+                            this.allMedications = response.data;
+                    }).catch(response => {
+                            alert("Please try again later.");
+                            console.log(response);
+                    });
+                    
+                     this.axios.get('/pharmacyAdmin/medicationFront',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
                             this.ourMedications = response.data;
                     }).catch(response => {
                             alert("Please try again later.");
@@ -189,16 +206,7 @@ export default {
                 console.log(res);
         });
        
-        this.axios.get('/medication',{ 
-             headers: {
-                 'Authorization': 'Bearer ' + token,
-             }
-         }).then(response => {
-               this.allMedications=response.data;
-         }).catch(res => {
-                       alert("Please try again later.");
-                        console.log(res);
-                 });
+     
         
 
         
@@ -237,8 +245,8 @@ export default {
                                 'Authorization': 'Bearer ' + token,
                         }})
                 .then(response => {
-                       alert("Successfully added medication in pharmacy");
-                        window.location.href= "pharmacyMedications";
+                       alert("Successfully updated medication price.");
+                        window.location.href= "/pharmacyMedications";
                         console.log(response.data);
                 })
                 .catch(response => {

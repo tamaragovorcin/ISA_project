@@ -106,8 +106,7 @@ public class proba {
         pharmacist.setEmail("lunci@gmail.com");
         pharmacist.setPhoneNumber("0652610775");
         pharmacist.setSurname("Zivkovic");
-        pharmacist.setMarkPharmacist(5);
-        pharmacist.setPharmacy(pharmacy);
+
 
 
         Consulting consulting = new Consulting();
@@ -315,17 +314,9 @@ public class proba {
         holidaySchedulePharmacist.setEndDate(LocalDate.now());
 
         WorkingHoursPharmacist workingHoursPharmacist = new WorkingHoursPharmacist();
-        workingHoursPharmacist.setPharmacist(pharmacist);
-        workingHoursPharmacist.setDate(LocalDate.now());
-        workingHoursPharmacist.setStartTime(LocalTime.now());
-        workingHoursPharmacist.setEndTime(LocalTime.now());
 
         WorkingHoursDermatologist workingHoursDermatologist = new WorkingHoursDermatologist();
-        workingHoursDermatologist.setDermatologist(dermatologist);
-        workingHoursDermatologist.setPharmacy(pharmacy);
-        workingHoursDermatologist.setDate(LocalDate.now());
-        workingHoursDermatologist.setStartTime(LocalTime.now());
-        workingHoursDermatologist.setEndTime(LocalTime.now());
+
 
 
 
