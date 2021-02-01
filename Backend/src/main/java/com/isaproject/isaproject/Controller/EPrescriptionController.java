@@ -6,6 +6,7 @@ import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
+import com.isaproject.isaproject.Service.Implementations.PatientService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,9 @@ public class EPrescriptionController {
 
     @Autowired
     MedicationPriceService medicationPriceService;
+
+    @Autowired
+    PatientService patientService;
 
     @PostMapping("/file")
     @PreAuthorize("hasRole('PATIENT')")
@@ -74,7 +78,9 @@ public class EPrescriptionController {
     @PostMapping("/choosePharmacy")
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<String> choosePharmacyForEReceipt(@RequestBody ChoosenPharmacyDTO choosenPharmacy) {
-        return medicationPriceService.updateMedicineQuantityEreceipt(choosenPharmacy) == false ?
+        return medicationPriceService.updateMedicineQuantityEreceipt(choosenPharmacy) == false ||
+                patientService.informPatientAboutEreceipt(choosenPharmacy.getMedications())==false ?
+
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok("Successfully updated!");
     }

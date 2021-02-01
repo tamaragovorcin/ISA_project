@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -92,10 +93,60 @@ public class SupplierMedicationService implements ISupplierMedicationService {
                     supplierMedication.setQuantity(newQuantity);
                     int newReservedQuantity = supplierMedication.getReservedQuantity() + quantity;
                     supplierMedication.setReservedQuantity(newReservedQuantity);
+                    supplierMedicaionRepository.save(supplierMedication);
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    public void updateMedicineQuantityTenderWon(Set<SupplierMedications> supplierMedications, Set<MedicationInOrder> medicationInOrders) {
+        for(MedicationInOrder medication : medicationInOrders) {
+            Iterator<SupplierMedications> it = supplierMedications.iterator();
+            while (it.hasNext()) {
+                SupplierMedications supplierMedications1 = it.next();
+                if(medication.getMedicine().getName().equals(supplierMedications1.getName()) && medication.getMedicine().getCode()==supplierMedications1.getCode()) {
+                    if(updateQuantityForMedicationTenderWon(supplierMedications1, medication.getQuantity())) {}
+                }
+            }
+         /*   for(SupplierMedications supplierMedications1 : supplierMedications) {
+                if(medication.getMedicine().getName().equals(supplierMedications1.getName()) && medication.getMedicine().getCode()==supplierMedications1.getCode()) {
+                    if(updateQuantityForMedicationTenderWon(supplierMedications1, medication.getQuantity())) {}
+                }
+
+            }*/
+        }
+    }
+
+    private boolean updateQuantityForMedicationTenderWon(SupplierMedications supplierMedications, int quantity) {
+       try {
+           supplierMedications.setReservedQuantity(supplierMedications.getReservedQuantity()-quantity);
+           this.supplierMedicaionRepository.save(supplierMedications);
+           return true;
+       }
+       catch(Exception e) {return false;}
+
+    }
+
+    public void updateMedicineQuantityTenderLost(Set<SupplierMedications> supplierMedications, Set<MedicationInOrder> medicationInOrders) {
+        for(MedicationInOrder medication : medicationInOrders) {
+            for(SupplierMedications supplierMedications1 : supplierMedications) {
+                if(medication.getMedicine().getName().equals(supplierMedications1.getName()) && medication.getMedicine().getCode()==supplierMedications1.getCode()) {
+                    if(updateQuantityForMedicationTenderLost(supplierMedications1, medication.getQuantity())) {}
+                }
+
+            }
+        }
+    }
+
+    private boolean updateQuantityForMedicationTenderLost(SupplierMedications supplierMedications, int quantity) {
+        try {
+            supplierMedications.setReservedQuantity(supplierMedications.getReservedQuantity()-quantity);
+            supplierMedications.setQuantity(supplierMedications.getQuantity()+quantity);
+            this.supplierMedicaionRepository.save(supplierMedications);
+            return true;
+        }
+        catch(Exception e) {return false;}
     }
 }

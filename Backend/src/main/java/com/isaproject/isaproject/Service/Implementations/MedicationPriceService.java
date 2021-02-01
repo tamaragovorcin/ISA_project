@@ -2,6 +2,7 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.ChoosenPharmacyDTO;
 import com.isaproject.isaproject.DTO.MedicationPriceDTO;
+import com.isaproject.isaproject.DTO.QRcodeInformationDTO;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
 import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
 import com.isaproject.isaproject.Model.Orders.Order;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class MedicationPriceService implements IMedicationPriceService {
@@ -108,6 +110,19 @@ public class MedicationPriceService implements IMedicationPriceService {
     }
 
     public boolean updateMedicineQuantityEreceipt(ChoosenPharmacyDTO choosenPharmacy) {
-        return true;
+        try {
+            List<MedicationPrice> pharmacyMedications = findByPharmacy(choosenPharmacy.getPharmacyId());
+            for (QRcodeInformationDTO medication : choosenPharmacy.getMedications()) {
+                for (MedicationPrice medicationPrice : pharmacyMedications) {
+                    if(medicationPrice.getMedication().getCode()==medication.getMedicationCode() &&
+                            medicationPrice.getMedication().getName().equals(medication.getMedicationName())) {
+                        medicationPrice.setQuantity(medication.getQuantity()-medication.getQuantity());
+                        this.medicationPriceRepository.save(medicationPrice);
+                    }
+                }
+            }
+            return true;
+        }
+        catch(Exception e) {return false;}
     }
 }
