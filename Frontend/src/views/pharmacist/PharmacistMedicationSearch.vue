@@ -3,37 +3,44 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-            
             <span style="float: left; margin: 15px;">
+                    <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>
 
-                <b-dropdown id="ddCommodity" name="ddCommodity" text="New registration" 
-                               class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
-                    <b-dropdown-item v-on:click = "registerPharmacy">Pharmacy</b-dropdown-item>
-                    <b-dropdown-item v-on:click = "registerPharmacyAdmin">Pharmacy admin</b-dropdown-item>
-                    <b-dropdown-item v-on:click = "registerDermatologist">Dermatologist</b-dropdown-item> 
-                    <b-dropdown-item v-on:click = "registerSupplier">Supplier</b-dropdown-item>
-                    <div v-if = "allowSystemAdminRegistration">
-                         <b-dropdown-item v-on:click = "registerSystemAdmin">System admin</b-dropdown-item>
-                    </div>
-                     <div v-if = "notallowSystemAdminRegistration">
-                         <b-dropdown-item v-on:click = "registerSystemAdmin" disabled>System admin</b-dropdown-item>
-                    </div>                    
-                 </b-dropdown> 
-                  <strong class="tab"></strong>  
-                 <button class = "btn btn-link btn-lg" v-on:click = "addMedicine">Add medication</button>
-                  <strong class="tab"></strong>  
-                 <button class = "btn btn-link btn-lg" v-on:click = "medicationSearch">Medications</button>
-                  <strong class="tab"></strong>  
-                 <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
-                  <strong class="tab"></strong>  
-                 <button class = "btn btn-link btn-lg" v-on:click = "showComplaints">Complaints</button>
+                    <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
+
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>            
+                   
+
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showClients">My clients</button>
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>     
+
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "workCalendar">Work calendar</button>
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>
+
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "vacation">Create a vacation</button>
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>
+                    
+
+                
             </span>
-            <span  style="float:right;margin:15px">
-                  <strong class="tab"></strong>  
+              <span  style="float:right;margin:15px">
+                    
+
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
+
              </span>
+
         </div>
-       <div style="background: white; height: 60px; margin-top: 20px">
+         <div style="background: white; height: 60px; margin-top: 20px">
           <span  style="float:right;margin:15px">
             <div class="input-group mb-3">
               <input type="text" v-model="medicationName" class="form-control" placeholder="Enter name..." aria-label="Enter name..." aria-describedby="basic-addon2">
@@ -304,7 +311,7 @@
                </div>
           </b-modal>
        </div>
-    </div>
+</div>
 </template>
 
 <script>
@@ -312,10 +319,7 @@ export default {
 
   data() {
     return {
-      accountInformation :null,
-      allowSystemAdminRegistration : false,
-      notallowSystemAdminRegistration : false,
-     medicationName : "",
+       medicationName : "",
       specificationInfo : {
             contraIndications :"",
             structure : "",
@@ -378,42 +382,50 @@ export default {
         choosenMedicationForAvailability : 0
        
     }
-  },
+    
+    },
+   mounted(){
+     this.axios.get('/medication/getAll',).then(response => {
+               this.medicationSeacrhList= response.data;
+         }).catch(res => {
+                       alert("Please try again later.");
+                        console.log(res);
+                 });
+   },
+
 
   methods:{
-      registerPharmacy: function() {
-            window.location.href = "/registerPharmacy";
+      showClients : function(){
+        
+
       },
-      registerPharmacyAdmin: function() {
-            window.location.href = "/registerPharmacyAdmin";
+      showMyProfile: function(){
+         
       },
-      registerDermatologist: function() {
-           window.location.href = "/registerDermatologist";
+      changePersonal: function(){
+          window.location.href = "/pharmacistUpdateProfile";
       },
-      registerSupplier: function() {
-           window.location.href = "/registerSupplier";
-      },
-      registerSystemAdmin: function() {
-           window.location.href = "/registerSystemAdmin";
+      showHomePage : function(){
+          window.location.href = "/isaHomePage";
       },
       logOut : function(){
-          localStorage.removeItem('token');
+        localStorage.removeItem('token');
           window.location.href = "/login";
       },
-      addMedicine : function() {
-           window.location.href = "/addMedicine";
+      vacation : function(){
+
       },
-      defineLoyaltyProgram : function(){
-          window.location.href = "/loyaltyProgram";
+      workCalendar : function(){
+
       },
-      medicationSearch : function() {
-          window.location.href = "/systemAdminMedicationSearch";
-      }, 
-      
-      showComplaints : function() {
-            window.location.href = "/complaints";
+     
+      sendComplaint : function(){
+
       },
-       formIsSelected : function(event, form) { 
+      showMedications : function() {
+          window.location.href = "/pharmacistMedicationSearch";
+      },
+        formIsSelected : function(event, form) { 
            this.axios.get('/medication/searchForm/'+form).
             then(response => {
                     this.medicationSeacrhList= response.data;
@@ -475,8 +487,7 @@ export default {
       },
       
       showMedicationSpecificationList : function($event, name) {
-          let i =0;
-          for(i=0; i< this.medicationSeacrhList.length;i++) {
+          for(let i=0; i< this.medicationSeacrhList.length;i++) {
               if(this.medicationSeacrhList[i].name===name) {
                   this.concreteSpecification = this.medicationSeacrhList[i].specification;
               }
@@ -494,7 +505,7 @@ export default {
                           this.showMedicationPharmacyAvailabilityListDiv = false;
                           this.showMedicationPharmacyAvailabilityDiv = true;
                     }).catch(res => {
-                                  alert("NOT OK");
+                                    alert("Please try again later.");
                                     console.log(res);
                             });
       },
@@ -506,46 +517,10 @@ export default {
                           this.showMedicationPharmacyAvailabilityDiv = false;
                           this.showMedicationPharmacyAvailabilityListDiv = true;
                     }).catch(res => {
-                                  alert("NOT OK");
+                                alert("Please try again later.");
                                     console.log(res);
                             });
       },
-      
-},
- mounted() {
-        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-        this.axios.get('/systemAdmin/account',{ 
-             headers: {
-                 'Authorization': 'Bearer ' + token,
-             }
-         }).then(response => {
-               this.accountInformation=response.data;
-               if(this.accountInformation.mainAdmin) {
-                      this.allowSystemAdminRegistration = true;
-                      this.notallowSystemAdminRegistration = false;
-               }
-               else{
-                    this.allowSystemAdminRegistration = false;
-                    this.notallowSystemAdminRegistration = true;
-               }
-         }).catch(res => {
-                       alert("NOT OK");
-                        console.log(res);
-                 });
-
-         this.axios.get('/medication/getAll',).then(response => {
-               this.medicationSeacrhList= response.data;
-         }).catch(res => {
-                       alert("Please try again later.");
-                        console.log(res);
-                 });
-    }
+  }
 }
 </script>
-
-<style>
-
-</style>
-
-
-  

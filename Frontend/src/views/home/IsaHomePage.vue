@@ -21,39 +21,29 @@
 
         </div>
 
-            <div style="background: white; height: 60px; margin-top: 20px">
-            
-           <span  style="float:right;margin:15px">
-                    
-                   <div class="input-group mb-3">
-  <input type="text" v-model="pharmacyName" class="form-control" placeholder="Search by pharmacy name" aria-label="Search by pharmacy name" aria-describedby="basic-addon2">
-  <div class="input-group-append">
-    <button class="btn btn-outline-secondary" type="button"  v-on:click = "searchName(pharmacyName)" >Search</button>
-  </div>
-</div>
-
-            
-                </span>
-
-                  <span  style="float:right;margin:15px">
-                    
-                   <div class="input-group mb-3">
-  <input type="text" v-model="pharmacyName" class="form-control" placeholder="Search pharmacy by city" aria-label="Search pharmacy by city" aria-describedby="basic-addon2">
-  <div class="input-group-append">
-    <button class="btn btn-outline-secondary" type="button"  v-on:click = "searchCity(pharmacyName)" >Search</button>
-  </div>
-</div>
-
-            
-                </span>
-             
-            
+        <div style="background: white; height: 60px; margin-top: 20px">
+          <span  style="float:right;margin:15px">
+            <div class="input-group mb-3">
+              <input type="text" v-model="pharmacyName" class="form-control" placeholder="Search by pharmacy name" aria-label="Search by pharmacy name" aria-describedby="basic-addon2">
+                 <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button"  v-on:click = "searchName(pharmacyName)" >Search</button>
+                  </div>
+            </div>
+          </span>
+          <span  style="float:right;margin:15px">
+              <div class="input-group mb-3">
+                 <input type="text" v-model="pharmacyName" class="form-control" placeholder="Search pharmacy by city" aria-label="Search pharmacy by city" aria-describedby="basic-addon2">
+                   <div class="input-group-append">
+                       <button class="btn btn-outline-secondary" type="button"  v-on:click = "searchCity(pharmacyName)" >Search</button>
+                  </div>
+              </div>
+          </span>  
         </div>
 
 
-               <h4 style="color: #0D184F;margin:20px">Pharmacies:</h4>
+        <h4 style="color: #0D184F;margin:20px">Pharmacies:</h4>
 
-            <div class="row" style = "background-color:whitesmoke; margin: auto; width: 100%;height:5%;border: 3px solid #0D184F;padding: 10px;margin-top:15px;">
+      <div class="row" style = "background-color:whitesmoke; margin: auto; width: 100%;height:5%;border: 3px solid #0D184F;padding: 10px;margin-top:15px;">
          <div class=" form-group col"  v-for="pharmacy in pharmacies" :key="pharmacy.id">
 
                       <ul class="nav navbar-nav">

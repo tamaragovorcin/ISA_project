@@ -78,13 +78,7 @@ public class EPrescriptionController {
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<List<PharmacyMedicationAvailabilityDTO>> getAvailability(@RequestBody List<QRcodeInformationDTO> listMedications) {
 
-        for (QRcodeInformationDTO qr:listMedications
-             ) {
-            System.out.println(qr.getMedicationCode() + ",  " + qr.getMedicationName());
-        }
-
         List<PharmacyMedicationAvailabilityDTO> pharmacyAvailability = getAvailabilityInPharmacies(listMedications);
-
 
         return pharmacyAvailability == null ?
                             new ResponseEntity<>(HttpStatus.NOT_FOUND) :

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/medication")
@@ -52,8 +53,6 @@ public class MedicationController {
     @PostMapping("/priceInPharmacy")
     ResponseEntity<MedicationPrice> addToPharmacy(@RequestBody MedicationPriceDTO medicationPriceDTO)
     {
-        System.out.println("-----------------------------------------------------");
-        System.out.println("DOSAO DO KONTROLERA");
         MedicationPrice medicationPrice = medicationPriceService.updatePrice(medicationPriceDTO);
         return medicationPrice == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -347,8 +346,9 @@ public class MedicationController {
         Specification specification = medication.getSpecification();
         SpecificationDTO specificationDTO = new SpecificationDTO(specification.getContraIndications(),
                 specification.getStructure(), specification.getRecommendedConsumption(), specification.getManufacturer());
-        return new MedicationSearchDTO(medication.getName(), medication.getForm(), medication.getType(),
-                medication.getIssuanceRegime(), medication.getMark(), specificationDTO);
+
+        return new MedicationSearchDTO(medication.getId(), medication.getName(), medication.getForm(), medication.getType(),
+                medication.getIssuanceRegime(), medication.getMark(), medication.getCode(),specificationDTO);
     }
 
 }

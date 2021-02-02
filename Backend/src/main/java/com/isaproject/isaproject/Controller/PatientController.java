@@ -166,7 +166,6 @@ public class PatientController {
 
     @PostMapping("/update")
     ResponseEntity<Patient> update(@RequestBody PersonUserDTO person) {
-        System.out.println("SKDJRHSKDRJHSKDRUHJSKRLHUJSDRKJHWSKSRHKSFJHKSHRSKH" + person);
         Patient patient = patientService.update(person);
 
         return patient == null ?

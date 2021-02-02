@@ -3,6 +3,7 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
+            
             <span style="float: left; margin: 15px;">
 
                 <b-dropdown id="ddCommodity" name="ddCommodity" text="New registration" 
@@ -16,22 +17,21 @@
                     </div>
                      <div v-if = "notallowSystemAdminRegistration">
                          <b-dropdown-item v-on:click = "registerSystemAdmin" disabled>System admin</b-dropdown-item>
-                    </div>          
-                </b-dropdown> 
-                <b class="tab"></b>   
+                    </div>                    
+                 </b-dropdown> 
+                  <strong class="tab"></strong>  
                  <button class = "btn btn-link btn-lg" v-on:click = "addMedicine">Add medication</button>
-                 <b class="tab"></b>   
+                  <strong class="tab"></strong>  
                  <button class = "btn btn-link btn-lg" v-on:click = "medicationSearch">Medications</button>
-                 <b class="tab"></b>  
+                  <strong class="tab"></strong>  
                  <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
-                 <b class="tab"></b>  
+                  <strong class="tab"></strong>  
                  <button class = "btn btn-link btn-lg" v-on:click = "showComplaints">Complaints</button>
             </span>
-              <span  style="float:right;margin:15px">
-                     <b class="tab"></b>    
+            <span  style="float:right;margin:15px">
+                  <strong class="tab"></strong>  
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
-                
-                </span>
+             </span>
         </div>
         <div style="background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
             <h3 style="color: #0D184F">Register new supplier</h3>
