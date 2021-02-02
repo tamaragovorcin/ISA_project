@@ -20,6 +20,7 @@ public class WorkingHoursDermatologist  {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
+    @JsonBackReference(value = "pharmacy-dermatologist")
     @OneToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = true, unique = false)
     private Pharmacy pharmacy;
@@ -30,39 +31,39 @@ public class WorkingHoursDermatologist  {
     private Dermatologist dermatologist;
 
 
-    @JsonBackReference(value="schedule-monday")
+    @JsonBackReference(value="schedule-monday1")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "mondaySchedule", referencedColumnName = "id", nullable = true, unique = false)
     private MondaySchedule mondaySchedule;
 
-    @JsonBackReference(value="schedule-tuesday")
+    @JsonBackReference(value="schedule-tuesday1")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "tuesdaySchedule", referencedColumnName = "id", nullable = true, unique = false)
     private TuesdaySchedule tuesdaySchedule;
 
-    @JsonBackReference(value="schedule-wednesday")
+    @JsonBackReference(value="schedule-wednesday1")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "wednesdaySchedule", referencedColumnName = "id", nullable = true, unique = false)
     private WednesdaySchedule wednesdaySchedule;
 
-    @JsonBackReference(value="schedule-thursday")
+    @JsonBackReference(value="schedule-thursday1")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "thursdaySchedule", referencedColumnName = "id", nullable = true, unique = false)
     private ThursdaySchedule thursdaySchedule;
 
-
+    @JsonBackReference(value="schedule-friday1")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "fridaySchedule", referencedColumnName = "id", nullable = false, unique = false)
     private FridaySchedule fridaySchedule;
 
 
-    @JsonBackReference(value="schedule-saturday")
+    @JsonBackReference(value="schedule-saturday1")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "saturdaySchedule", referencedColumnName = "id", nullable = false, unique = false)
     private SaturdaySchedule saturdaySchedule;
 
 
-    @JsonBackReference(value="schedule-sunday")
+    @JsonBackReference(value="schedule-sunday1")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "sundaySchedule", referencedColumnName = "id", nullable = false, unique = false)
     private SundaySchedule sundaySchedule;

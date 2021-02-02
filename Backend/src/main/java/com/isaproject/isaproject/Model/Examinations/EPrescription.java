@@ -1,60 +1,55 @@
 package com.isaproject.isaproject.Model.Examinations;
-
-import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.isaproject.isaproject.Model.Medicine.MedicationEPrescription;
 import com.isaproject.isaproject.Model.Users.Patient;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
+@Table(name="eprescriptions")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class EPrescription {
-
 
     @Id
     @GeneratedValue
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
+
+    @Column(name = "code", nullable = false, unique = true)
+    private UUID code;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = false)
     private Patient patient;
 
-
-    @Column(name = "code", nullable = false)
-    private long code;
-
-
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
+    @JsonManagedReference(value="eprescription-medications")
+    @OneToMany(mappedBy = "ePrescription", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MedicationEPrescription> medications = new HashSet<MedicationEPrescription>();
 
-    @Column(name = "status", nullable = false)
-    private String status;
+    public EPrescription() {}
 
-    @ManyToMany(mappedBy = "ePrescriptions")
-    private Set<Medication> medications = new HashSet<Medication>();
-
-    public EPrescription() {
-
-    }
-
-    public EPrescription(Integer id, Patient patient, long code, LocalDate date, String status) {
+    public EPrescription(Integer id, UUID code, Patient patient, LocalDate date, Set<MedicationEPrescription> medications) {
         this.id = id;
-        this.patient = patient;
         this.code = code;
+        this.patient = patient;
         this.date = date;
-        this.status = status;
-    }
-
-    public Set<Medication> getMedications() {
-        return medications;
-    }
-
-    public void setMedications(Set<Medication> medications) {
         this.medications = medications;
+    }
+
+    public UUID getCode() {
+        return code;
+    }
+
+    public void setCode(UUID code) {
+        this.code = code;
     }
 
     public Integer getId() {
@@ -74,14 +69,6 @@ public class EPrescription {
         this.patient = patient;
     }
 
-    public long getCode() {
-        return code;
-    }
-
-    public void setCode(long code) {
-        this.code = code;
-    }
-
     public LocalDate getDate() {
         return date;
     }
@@ -90,11 +77,11 @@ public class EPrescription {
         this.date = date;
     }
 
-    public String getStatus() {
-        return status;
+    public Set<MedicationEPrescription> getMedications() {
+        return medications;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setMedications(Set<MedicationEPrescription> medications) {
+        this.medications = medications;
     }
 }
