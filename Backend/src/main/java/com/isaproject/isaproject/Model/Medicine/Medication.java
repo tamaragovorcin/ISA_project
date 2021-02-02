@@ -58,9 +58,6 @@ public class Medication  {
     private String wayOfSelling;
 
 
-    @ManyToMany
-    @JoinTable(name = "eprescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "eprescription_id", referencedColumnName = "id"))
-    private Set<EPrescription> ePrescriptions = new HashSet<EPrescription>();
 
     @ManyToMany
     @JoinTable(name = "prescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
@@ -163,14 +160,6 @@ public class Medication  {
 
     public void setWayOfSelling(String wayOfSelling) {
         this.wayOfSelling = wayOfSelling;
-    }
-
-    public Set<EPrescription> getePrescriptions() {
-        return ePrescriptions;
-    }
-
-    public void setePrescriptions(Set<EPrescription> ePrescriptions) {
-        this.ePrescriptions = ePrescriptions;
     }
 
     public Set<Prescription> getPrescriptions() {

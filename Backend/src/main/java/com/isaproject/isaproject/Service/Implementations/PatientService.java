@@ -1,7 +1,8 @@
 package com.isaproject.isaproject.Service.Implementations;
-
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.DTO.QRcodeInformationDTO;
+import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Address;
 import com.isaproject.isaproject.Model.Users.Authority;
@@ -11,6 +12,9 @@ import com.isaproject.isaproject.Repository.AuthorityRepository;
 import com.isaproject.isaproject.Repository.PatientRepository;
 import com.isaproject.isaproject.Service.IServices.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +34,11 @@ public class PatientService implements IPatientService {
     private AuthorityRepository authorityRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private Environment environment;
+
+    @Autowired
+    JavaMailSenderImpl mailSender;
 
     @Override
     public Patient findById(Integer id) {
@@ -169,4 +178,30 @@ public class PatientService implements IPatientService {
         }
         catch(Exception e) {return false;}
     }
+
+    public boolean informPatientAboutEreceipt(List<QRcodeInformationDTO> medications) {
+        try {
+            Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+            PersonUser user = (PersonUser)currentUser.getPrincipal();
+
+            Patient patient = patientRepository.getOne(user.getId());
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setTo(patient.getEmail());
+            mail.setSubject("EReceipt!");
+            mail.setFrom(environment.getProperty("spring.mail.username"));
+            StringBuilder text = new StringBuilder();
+            for (QRcodeInformationDTO medication:medications) {
+                text.append(medication.getMedicationName() + ", quantity: " + medication.getQuantity() + "\n");
+            }
+            mail.setText("Thank you for buying medications with eReceipt!\n\nList of medications:\n" +text.toString());
+
+            mailSender.send(mail);
+            return true;
+        }
+        catch(Exception e) {
+            return false;
+        }
+    }
+
+
 }

@@ -3,14 +3,21 @@ import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import com.isaproject.isaproject.DTO.*;
+import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Model.Users.PersonUser;
+import com.isaproject.isaproject.Service.Implementations.EPrescriptionService;
 import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
+import com.isaproject.isaproject.Service.Implementations.PatientService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.awt.image.BufferedImage;
@@ -34,6 +41,12 @@ public class EPrescriptionController {
     @Autowired
     MedicationPriceService medicationPriceService;
 
+    @Autowired
+    PatientService patientService;
+
+    @Autowired
+    EPrescriptionService ePrescriptionService;
+
     @PostMapping("/file")
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<List<QRcodeInformationDTO>> hello(@RequestParam("file") MultipartFile file) {
@@ -45,6 +58,7 @@ public class EPrescriptionController {
                 File destination = new File("src/main/resources/qr/" + file.getOriginalFilename());
                 ImageIO.write(src, "png", destination);
                 String decodedText = decodeQRCode(new File("src/main/resources/qr/" + file.getOriginalFilename()));
+                System.out.println(decodedText);
                 if (decodedText == null) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 } else {
@@ -64,7 +78,13 @@ public class EPrescriptionController {
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<List<PharmacyMedicationAvailabilityDTO>> getAvailability(@RequestBody List<QRcodeInformationDTO> listMedications) {
 
+        for (QRcodeInformationDTO qr:listMedications
+             ) {
+            System.out.println(qr.getMedicationCode() + ",  " + qr.getMedicationName());
+        }
+
         List<PharmacyMedicationAvailabilityDTO> pharmacyAvailability = getAvailabilityInPharmacies(listMedications);
+
 
         return pharmacyAvailability == null ?
                             new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -74,9 +94,34 @@ public class EPrescriptionController {
     @PostMapping("/choosePharmacy")
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<String> choosePharmacyForEReceipt(@RequestBody ChoosenPharmacyDTO choosenPharmacy) {
-        return medicationPriceService.updateMedicineQuantityEreceipt(choosenPharmacy) == false ?
+        return medicationPriceService.updateMedicineQuantityEreceipt(choosenPharmacy) == false ||
+                patientService.informPatientAboutEreceipt(choosenPharmacy.getMedications())==false ||
+                ePrescriptionService.save(choosenPharmacy.getMedications())==null ?
+
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok("Successfully updated!");
+    }
+
+    @GetMapping("/all")
+    ResponseEntity<List<EPrescription>> getall() {
+        List<EPrescription> ePrescriptions = ePrescriptionService.findAll();
+        return ePrescriptions == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(ePrescriptions);
+    }
+
+    @GetMapping("/myEprescriptions")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<Set<EPrescription>> getMyEPrescriptions() {
+
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        Patient patient = patientService.findById(user.getId());
+
+        Set<EPrescription> ePrescriptions = patient.getePrescriptions();
+        return ePrescriptions == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(ePrescriptions);
     }
 
 

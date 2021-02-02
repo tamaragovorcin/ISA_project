@@ -50,7 +50,7 @@ public class WorkingHoursPharmacist {
     @JoinColumn(name = "thursdaySchedule", referencedColumnName = "id", nullable = true, unique = false)
     private ThursdaySchedule thursdaySchedule;
 
-
+    @JsonBackReference(value="schedule-friday")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "fridaySchedule", referencedColumnName = "id", nullable = false, unique = false)
     private FridaySchedule fridaySchedule;

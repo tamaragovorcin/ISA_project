@@ -51,8 +51,7 @@ public class MedicationReservationController {
     //@PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<MedicationReservation> register(@RequestBody MedicationReservationDTO medicationReservationDTO)
     {
-       
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAMEDICATIONS"+medicationReservationDTO.getPatient().getId());
+
         MedicationReservation medication = medicationReservationService.save(medicationReservationDTO);
 
 

@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class SupplierMedications {
     @Id
     @GeneratedValue
-    @Column(name="id", unique=true, nullable=false)
+    @Column(name="id", nullable=false)
     private Integer id;
 
     @Column(name = "quantity", nullable = true)
@@ -23,7 +23,7 @@ public class SupplierMedications {
     private String name;
 
 
-    @Column(name = "code", unique=true, nullable = true)
+    @Column(name = "code", nullable = true)
     private long code;
 
 
