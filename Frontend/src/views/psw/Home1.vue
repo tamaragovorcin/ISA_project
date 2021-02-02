@@ -8,20 +8,26 @@
 
         <div style="background: #0D184F; height: 3cm;">
             
-            <span style="float: right; margin-top: 0.5cm; margin-right: 14.5cm;">
-                <router-link to="/pswregistration" v-slot="{href, navigate}">
+            <span style="float: right; margin-top: 0.5cm; margin-right: 10.5cm;">
+                <router-link to="/Login" v-slot="{href, navigate}">
 
-                    <button class = "button1" :href="href" @click="navigate"  elevation="1">Get your API key</button>
+                    <button class = "button1" :href="href" @click="navigate"  elevation="1">Log in</button>
 
                     </router-link>
                     <b class="tab"></b>                
-                    <router-link to="/pharmacyVue" v-slot="{href, navigate}">
+                    <router-link to="/Registration" v-slot="{href, navigate}">
 
-                    <button class = "button1" :href="href" @click="navigate"  elevation="1">Pharmacy</button>
+                    <button class = "button1" :href="href" @click="navigate"  elevation="1">Register</button>
 
                     </router-link>
-                    <button style="margin-left:15px" class="button1" v-on:click="prikazi">ISA project</button>
+                     <b class="tab"></b>   
+                     <router-link to="/IsaHomePage" v-slot="{href, navigate}">
+
+                    <button  style="width: 280px; " class = "button1" :href="href" @click="navigate"  elevation="1">Pharmacies and medications</button>
+
+                    </router-link>    
             </span>
+            
                                     
 
         </div>

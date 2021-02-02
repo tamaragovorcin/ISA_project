@@ -77,4 +77,16 @@ public class PersonUserDTO {
     public void setAddress(AddressDTO address) {
         this.address = address;
     }
+
+    @Override
+    public String toString() {
+        return "PersonUserDTO{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", surname='" + surname + '\'' +
+                ", phonenumber='" + phonenumber + '\'' +
+                ", address=" + address +
+                '}';
+    }
 }

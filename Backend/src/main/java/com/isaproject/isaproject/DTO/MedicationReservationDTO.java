@@ -1,8 +1,10 @@
 package com.isaproject.isaproject.DTO;
 
+import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class MedicationReservationDTO {
@@ -11,15 +13,23 @@ public class MedicationReservationDTO {
 
     private Pharmacy pharmacy;
 
-    private long medicineCode;
+    private Medication medication;
 
-    private LocalDateTime dateOfTakeOver;
+    private LocalDate dateOfTakeOver;
 
-    public MedicationReservationDTO(Patient patient, Pharmacy pharmacy, long medicineCode, LocalDateTime dateOfTakeOver) {
+    public MedicationReservationDTO(Patient patient, Pharmacy pharmacy, Medication medication, LocalDateTime dateOfTakeOver) {
         this.patient = patient;
         this.pharmacy = pharmacy;
-        this.medicineCode = medicineCode;
-        this.dateOfTakeOver = dateOfTakeOver;
+        this.medication = medication;
+
+    }
+
+    public Medication getMedication() {
+        return medication;
+    }
+
+    public void setMedication(Medication medication) {
+        this.medication = medication;
     }
 
     public MedicationReservationDTO() {
@@ -41,19 +51,11 @@ public class MedicationReservationDTO {
         this.pharmacy = pharmacy;
     }
 
-    public long getMedicineCode() {
-        return medicineCode;
-    }
-
-    public void setMedicineCode(long medicineCode) {
-        this.medicineCode = medicineCode;
-    }
-
-    public LocalDateTime getDateOfTakeOver() {
+    public LocalDate getDateOfTakeOver() {
         return dateOfTakeOver;
     }
 
-    public void setDateOfTakeOver(LocalDateTime dateOfTakeOver) {
+    public void setDateOfTakeOver(LocalDate dateOfTakeOver) {
         this.dateOfTakeOver = dateOfTakeOver;
     }
 }

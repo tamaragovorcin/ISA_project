@@ -82,6 +82,7 @@ public class PatientService implements IPatientService {
         patient.setEmail(userRequest.getEmail());
         patient.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         patient.setFirstLogged(true);
+        patient.setEnabled(true);
         patient.setPhoneNumber(userRequest.getPhonenumber());
         Authority authorityPatient = authService.findByname("ROLE_PATIENT");
         List<Authority> auth = new ArrayList<Authority>();
@@ -93,37 +94,50 @@ public class PatientService implements IPatientService {
             auth.add(authorityPatient);
         }
         patient.setAuthorities(auth);
-        patient.setEnabled(false);
+
         return patientRepository.save(patient);
     }
 
     @Override
-    public Patient update(PersonUserDTO userRequest, Integer id) {
-        Patient patient =  new Patient();
-        patient.setId(id);
-        patient.setName(userRequest.getFirstname());
-        patient.setSurname(userRequest.getSurname());
-        AddressDTO addressDTO = userRequest.getAddress();
-        Address address = new Address(addressDTO.getTown(),addressDTO.getStreet(),addressDTO.getNumber(),addressDTO.getPostalCode(),addressDTO.getCountry());
-        patient.setAddress(address);
-        patient.setPenalties(0);
-        patient.setPoints(0);
-        patient.setLoyaltyCategory("REGULAR");
-        patient.setEmail(userRequest.getEmail());
-        patient.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        patient.setFirstLogged(true);
+    public Patient update(PersonUserDTO userRequest) {
 
-        Authority authorityPatient = authService.findByname("ROLE_PATIENT");
+
+
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"+ user.getId());
+        Patient patient= findById(user.getId());
+
         List<Authority> auth = new ArrayList<Authority>();
-        if(authorityPatient==null) {
+        Authority authoritySupplier = authService.findByname("ROLE_PATIENT");
+
+        if(authoritySupplier==null) {
             authorityRepository.save(new Authority("ROLE_PATIENT"));
             auth.add(authService.findByname("ROLE_PATIENT"));
         }
         else {
-            auth.add(authorityPatient);
+            auth.add(authoritySupplier);
         }
+
+
         patient.setAuthorities(auth);
+
         patient.setEnabled(true);
+        patient.setName(userRequest.getFirstname());
+        patient.setSurname(userRequest.getSurname());
+        AddressDTO addressDTO = userRequest.getAddress();
+
+        Address address = new Address(addressDTO.getTown(),addressDTO.getStreet(),addressDTO.getNumber(),addressDTO.getPostalCode(),addressDTO.getCountry());
+        patient.setAddress(address);
+        patient.setPhoneNumber(userRequest.getPhonenumber());
+        patient.setPenalties(0);
+        patient.setPoints(0);
+        patient.setLoyaltyCategory("REGULAR");
+        patient.setEmail(userRequest.getEmail());
+        patient.setPassword(patient.getPassword());
+        patient.setFirstLogged(false);
+
+
         return patientRepository.save(patient);
     }
 

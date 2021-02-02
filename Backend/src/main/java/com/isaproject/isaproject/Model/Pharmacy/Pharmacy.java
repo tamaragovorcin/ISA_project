@@ -13,6 +13,9 @@ import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.Order;
 import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
 import com.isaproject.isaproject.Model.Schedule.WorkingHoursDermatologist;
+import com.isaproject.isaproject.Model.Schedule.WorkingHoursPharmacist;
+import com.isaproject.isaproject.Model.Users.*;
+import net.minidev.json.annotate.JsonIgnore;
 import com.isaproject.isaproject.Model.Users.*;
 
 import javax.persistence.*;
@@ -54,6 +57,10 @@ public class Pharmacy implements Serializable{
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<MedicationReservation> medicationReservations = new HashSet<MedicationReservation>();
 
+    @JsonManagedReference(value="pharmacy-mark")
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Mark> marks = new HashSet<Mark>();
+
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Prescription> prescriptions = new HashSet<Prescription>();
 
@@ -89,33 +96,6 @@ public class Pharmacy implements Serializable{
 
     public Pharmacy() {}
 
-    public Pharmacy(Integer id, String pharmacyName, double mark, String description, double consultingPrice, Set<ExaminationSchedule> examinationSchedules, Set<MedicationReservation> medicationReservations, Set<Prescription> prescriptions, Address address, Set<Dermatologist> dermatologists, Set<Pharmacist> pharmacists, Set<Patient> subscribedPatients, Set<PharmacyAdmin> pharmacyAdmins, Set<Actions> actions, Set<WorkingHoursDermatologist> workingHoursDermatologists, Set<MedicationPrice> medicationPrices) {
-        this.id = id;
-        this.pharmacyName = pharmacyName;
-        this.mark = mark;
-        this.description = description;
-        this.consultingPrice = consultingPrice;
-        this.examinationSchedules = examinationSchedules;
-        this.medicationReservations = medicationReservations;
-        this.prescriptions = prescriptions;
-        this.address = address;
-        this.dermatologists = dermatologists;
-        this.pharmacists = pharmacists;
-        this.subscribedPatients = subscribedPatients;
-        this.pharmacyAdmins = pharmacyAdmins;
-        this.actions = actions;
-        this.workingHoursDermatologists = workingHoursDermatologists;
-        this.medicationPrices = medicationPrices;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -132,17 +112,20 @@ public class Pharmacy implements Serializable{
         this.pharmacyName = pharmacyName;
     }
 
-
-    public Set<MedicationReservation> getMedicationReservations() {
-        return medicationReservations;
-    }
-
     public double getMark() {
         return mark;
     }
 
     public void setMark(double mark) {
         this.mark = mark;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getConsultingPrice() {
@@ -161,8 +144,20 @@ public class Pharmacy implements Serializable{
         this.examinationSchedules = examinationSchedules;
     }
 
+    public Set<MedicationReservation> getMedicationReservations() {
+        return medicationReservations;
+    }
+
     public void setMedicationReservations(Set<MedicationReservation> medicationReservations) {
         this.medicationReservations = medicationReservations;
+    }
+
+    public Set<Mark> getMarks() {
+        return marks;
+    }
+
+    public void setMarks(Set<Mark> marks) {
+        this.marks = marks;
     }
 
     public Set<Prescription> getPrescriptions() {

@@ -38,6 +38,9 @@ import ActionsAndBenefits from '../views/pharmacyAdmin/ActionsAndBenefits.vue'
 import SupplierProfile from '../views/supplier/SupplierProfile.vue'
 import SupplierProfileInfo from '../views/supplier/SupplierProfileInfo.vue'
 import dermatologistAppointments from '../views/patient/dermatologistAppointments.vue'
+import PharmacistConsultation from '../views/patient/PharmacistConsultation.vue'
+import showReservationPharmacies from '../views/patient/showReservationPharmacies.vue'
+import choosenPharmacy from '../views/patient/choosenPharmacy.vue'
 import AddMedicine from '../views/systemAdmin/AddMedicine.vue'
 import LoyaltyProgram from '../views/systemAdmin/LoyaltyProgram.vue'
 import SubscriptionsToPharmacies from '../views/patient/SubscriptionsToPharmacies.vue'
@@ -46,9 +49,9 @@ import PhAdminProfileUpdate from '../views/pharmacyAdmin/PhAdminProfileUpdate.vu
 import PharmacyDermatologists from '../views/pharmacyAdmin/PharmacyDermatologists.vue'
 import PharmacyPharmacists from '../views/pharmacyAdmin/PharmacyPharmacists.vue'
 import AddPharmacist from '../views/pharmacyAdmin/AddPharmacist.vue'
+import myDermatologistAppointments from '../views/patient/myDermatologistAppointments.vue'
 import NewOrderForm from '../views/pharmacyAdmin/NewOrderForm.vue'
 import Complaints from '../views/systemAdmin/Complaints.vue'
-import Urgent from '../views/pharmacyAdmin/Urgent.vue'
 import PharmacyMedication from '../views/pharmacyAdmin/PharmacyMedication.vue'
 import SupplierReviewsActiveTenders from '../views/supplier/SupplierReviewsActiveTenders.vue'
 import MyOffers from '../views/supplier/MyOffers.vue'
@@ -56,6 +59,7 @@ import SupplierAddMedication from '../views/supplier/SupplierAddMedication.vue'
 import SupplierMyMedications from '../views/supplier/SupplierMyMedications.vue'
 import ERecipes from '../views/patient/ERecipes.vue'
 import PatientComplaint from '../views/patient/PatientComplaint.vue'
+import showMedicationsHome from '../views/home/showMedicationsHome.vue'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -257,6 +261,23 @@ const routes = [
       path: '/dermatologistAppointments',
       name: 'dermatologistAppointments',
       component: dermatologistAppointments
+    },
+    {
+      path: '/pharmacistConsultation',
+      name: 'pharmacistConsultation',
+      component: PharmacistConsultation
+    },
+    {
+      path: '/showReservationPharmacies',
+      name: 'showReservationPharmacies',
+      component: showReservationPharmacies
+    },
+    {
+      path: '/choosenPharmacy',
+      name: 'choosenPharmacy',
+      component: choosenPharmacy
+    
+
     }, 
     {
       path: '/addMedicine',
@@ -300,15 +321,16 @@ const routes = [
       component: AddPharmacist
     },
     {
+      path: '/myDermatologistAppointments',
+      name: 'myDermatologistAppointments',
+      component: myDermatologistAppointments
+    },
+  
+{
       path: '/complaints',
       name: 'Complaints',
       component: Complaints
-    },
-    {
-      path: '/urgent',
-      name: 'Urgent',
-      component: Urgent
-    },
+},
     {
 
       path: '/pharmacyMedications',
@@ -350,9 +372,14 @@ const routes = [
       name: 'PatientComplaint',
       component: PatientComplaint
     },
+    {
+      path: '/showMedicationsHome',
+      name: 'showMedicationsHome',
+      component: showMedicationsHome
+    },
     
 
-]
+  ]
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,

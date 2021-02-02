@@ -15,5 +15,6 @@ public interface IDermatologistService {
     Dermatologist save(DermatologistDTO userRequest);
     void delete(Pharmacist userRequest);
     Dermatologist update(Dermatologist userRequest);
+    Dermatologist updateMark(Dermatologist dermatologist);
 }
 

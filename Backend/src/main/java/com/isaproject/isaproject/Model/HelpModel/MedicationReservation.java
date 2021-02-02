@@ -2,6 +2,7 @@ package com.isaproject.isaproject.Model.HelpModel;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
@@ -9,6 +10,7 @@ import com.isaproject.isaproject.Model.Users.Pharmacist;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -24,8 +26,10 @@ public class MedicationReservation {
     @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = true)
     private Patient patient;
 
-    @Column(name = "medicineCode", nullable = true)
-    private long medicineCode;
+    @JsonBackReference(value="medicine-medicationReservations")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "medicine", referencedColumnName = "id", nullable = true, unique = false)
+    private Medication medicine;
 
     @JsonBackReference(value="pharmacy-medication")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
@@ -34,11 +38,11 @@ public class MedicationReservation {
 
 
     @Column(name = "dateOfReservation", nullable = true)
-    private LocalDateTime dateOfReservation;
+    private LocalDate dateOfReservation;
 
 
     @Column(name = "dateOfTakeOver", nullable = true)
-    private LocalDateTime dateOfTakeOver;
+    private LocalDate dateOfTakeOver;
 
 
     @Column(name = "collected", nullable = true)
@@ -53,6 +57,14 @@ public class MedicationReservation {
     private Boolean cancelled;
 
     public MedicationReservation() {
+    }
+
+    public Medication getMedicine() {
+        return medicine;
+    }
+
+    public void setMedicine(Medication medicine) {
+        this.medicine = medicine;
     }
 
     public Pharmacy getPharmacy() {
@@ -79,29 +91,19 @@ public class MedicationReservation {
         this.id = id;
     }
 
-
-    public long getMedicineCode() {
-        return medicineCode;
-    }
-
-    public void setMedicineCode(long medicineCode) {
-        this.medicineCode = medicineCode;
-    }
-
-
-    public LocalDateTime getDateOfReservation() {
+    public LocalDate getDateOfReservation() {
         return dateOfReservation;
     }
 
-    public void setDateOfReservation(LocalDateTime dateOfReservation) {
+    public void setDateOfReservation(LocalDate dateOfReservation) {
         this.dateOfReservation = dateOfReservation;
     }
 
-    public LocalDateTime getDateOfTakeOver() {
+    public LocalDate getDateOfTakeOver() {
         return dateOfTakeOver;
     }
 
-    public void setDateOfTakeOver(LocalDateTime dateOfTakeOver) {
+    public void setDateOfTakeOver(LocalDate dateOfTakeOver) {
         this.dateOfTakeOver = dateOfTakeOver;
     }
 

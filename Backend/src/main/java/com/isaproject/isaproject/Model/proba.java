@@ -7,15 +7,15 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class proba {
-    public static void main(String[] args) throws Exception {
-        Logger.getLogger("").setLevel(Level.OFF);
-        final EntityManagerFactory factory =
-                Persistence.createEntityManagerFactory("isadatabase");
+        public static void main(String[] args) throws Exception {
+                Logger.getLogger("").setLevel(Level.OFF);
+                final EntityManagerFactory factory =
+                        Persistence.createEntityManagerFactory("isadatabase");
 
-        EntityManager manager = factory.createEntityManager();
-        manager.getTransaction().commit();
-        manager.close();
-    }
+                EntityManager manager = factory.createEntityManager();
+                manager.getTransaction().commit();
+                manager.close();
+        }
 
 
 }

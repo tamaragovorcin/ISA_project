@@ -1,3 +1,4 @@
+
 package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.AddressDTO;
@@ -118,6 +119,10 @@ public class PharmacistService implements IPharmacistService {
         return this.pharmacistRepository.save(supplier);
     }
 
+    @Override
+    public Pharmacist updateMark(Pharmacist pharmacist) {
+        return pharmacistRepository.save(pharmacist);
+    }
 
 
 }

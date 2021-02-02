@@ -71,6 +71,12 @@ public class DermatologistService implements IDermatologistService {
     }
 
     @Override
+
+    public Dermatologist updateMark(Dermatologist dermatologist0) {
+        return dermatologistRepository.save(dermatologist0);
+    }
+
+    @Override
     public void delete(Pharmacist userRequest) {
 
     }

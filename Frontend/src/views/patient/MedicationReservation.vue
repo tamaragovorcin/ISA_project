@@ -28,7 +28,7 @@
                     <div class="form-row">
                           <div class="form-group col-md-6">
                                     <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication"
-                                        class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+                                        class = "btn btn-secondary dropdown-toggle" style=" width: 680px; float:left;margin-left:20px;">
                                             <b-dropdown-item v-for="medicine in this.medications"  v-on:click = "medicineIsSelected($event, medicine)" v-bind:key="medicine.id"> {{ medicine.name }}</b-dropdown-item>
                                     </b-dropdown> 
                           </div>
@@ -41,7 +41,7 @@
                         <div class="form-row">
                           <div class="form-group col-md-6">
                                     <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose pharmacy"
-                                        class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+                                        class = "btn btn-secondary dropdown-toggle" style="width: 680px; float:left;margin-left:20px;">
                                             <b-dropdown-item v-for="pharmacy in this.pharmacies"  v-on:click = "pharmacyIsSelected($event, pharmacy)" v-bind:key="pharmacy.id"> {{ pharmacy.pharmacyName }}</b-dropdown-item>
                                     </b-dropdown> 
                           </div>
@@ -52,12 +52,12 @@
                      <div class="form-row">
          
                         <label>Enter a pick-up day:</label>
-                        <input type="text" name = "pickUpDay" class="form-control" v-model="pickUpDay" placeholder="Enter a pick-up date">
+                        <input type="date" name = "pickUpDay" class="form-control" v-model="pickUpDay" placeholder="Enter a pick-up date">
                  
                       
                     </div>
-                  
-                    <button class="btn btn-primary btn-lg" v-on:click = "reserve">Reserve a medication</button>
+                    <p class="tab2"></p>     
+                    <p><button class="btn btn-primary btn-lg" v-on:click = "reserve">Reserve a medication</button></p>
                     <div style="height:30px;"></div>
                 
 
@@ -72,27 +72,30 @@
                 <table class="table table-striped table-dark">
                   <thead>
                     <tr>
-                      <th scope="col">#</th>
+                      
                       <th scope="col">Name</th>
                       <th scope="col">Code</th>
                       <th scope="col">Type</th>
+                      <th scope="col">Date of takeover</th>
+                       <th scope="col">Pharmacy</th>
+                       <th scope="col"></th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr v-for="reservedMedication in this.medications"  v-bind:key="reservedMedication.id">  <th scope="row">1</th> {{ reservedMedication.medicineCode }}></tr>
+                  <tbody v-for="reservedMedication in this.reservedMedications"  v-bind:key="reservedMedication.id">
+                    <tr> <td>   {{reservedMedication.name }}</td> 
                     
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Jacob</td>
-                      <td>Thornton</td>
-                      <td>@fat</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Larry</td>
-                      <td>the Bird</td>
-                      <td>@twitter</td>
-                    </tr>
+                  <td>    {{reservedMedication.code }}</td> 
+
+                    <td> {{reservedMedication.form }}</td>
+
+                     
+                 <td>  {{reservedMedication.dateOfTakeOver }}</td>
+
+                 <td>  {{reservedMedication.pharmacyName }}</td>
+                 
+                 <td><button class="btn btn-primary btn" v-on:click = "cancelReservation($event, reservedMedication)">Cancel reservation</button></td>
+                 
+                 </tr>
                   </tbody>
                 </table>
 
@@ -102,17 +105,13 @@
 
 
 
-
-       
-     
-  
-
 </div>
 </template>
 <script>
 export default {
   data() {
     return {
+
       medications: [],
       reservedMedications: [],
       reservedMedication: null,
@@ -130,23 +129,28 @@ export default {
       showPharmacistComplaint : false,
       showDermatologistComplaint : false,
       pickUpDay : null,
-      patient : null
+      patient : null,
+      helpMedication: [],
+      help: null
+      
     }
   },
 mounted() {
-  
-      this.axios.get('/medication')
+
+
+    this.axios.get('/medication')
           .then(response => {
                 this.medications= response.data;
-                alert(this.medications.length)
+               console.log(this.medications);
+              
           })
           
           
- 
+
       this.axios.get('/pharmacy/all')
           .then(response => {
                 this.pharmacies= response.data;
-                alert(this.pharmacies.length)
+        
           })
             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
         this.axios.get('/patient/account',{ 
@@ -155,11 +159,20 @@ mounted() {
              }
          }).then(response => {
                 this.patient = response.data;
-                console.log(response.data);
+               this.axios.get('/medicationReservation/' + this.patient.id)
+          .then(response => {
+            alert(this.reservedMedications.length)
+                this.reservedMedications= response.data;
+               console.log(this.reservedMedications);
          }).catch(res => {
                        alert("NOT OK");
                         console.log(res);
                  });
+
+   
+            
+              
+          })
           
 },
   methods:{
@@ -191,15 +204,25 @@ mounted() {
       proba: function(){
         console.log(this.medications);
       },
+
+      cancelReservation: function(event, reservedMedication){
+        alert(reservedMedication.id)
+          this.axios.get('/medicationReservation/cancel/'+ reservedMedication.id)
+        
+                   
+      },
       reserve : function(){
-        alert(this.patient)
-        console.log("Reserved!");
+    
               const med = {
                   patient: this.patient,
                   pharmacy: this.pharmacy,
-                  medicineCode: this.medication.code,
+                  medication: this.medication,
                   dateOfTakeOver: this.pickUpDay 
                 };
+
+               
+
+     
           alert( med.medicineCode)
      
          this.axios.post('/medicationReservation/add',med)
