@@ -56,7 +56,7 @@
                  
                       
                     </div>
-                    <b class="tab2"></b>     
+                    <p class="tab2"></p>     
                     <p><button class="btn btn-primary btn-lg" v-on:click = "reserve">Reserve a medication</button></p>
                     <div style="height:30px;"></div>
                 
@@ -78,7 +78,7 @@
                       <th scope="col">Type</th>
                       <th scope="col">Date of takeover</th>
                        <th scope="col">Pharmacy</th>
-                       <th></th>
+                       <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody v-for="reservedMedication in this.reservedMedications"  v-bind:key="reservedMedication.id">

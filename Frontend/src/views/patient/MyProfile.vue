@@ -46,7 +46,7 @@
              <h5 style="color: #0D184F">{{this.patient.discount}}</h5>
         </div>
          <div style="background-color:white; margin: auto; width: 80%; padding:30px;margin-top:30px;">
-            <b><h4 style="color: #0D184F"><b>PENALTIES</b></h4></b>
+            <strong><h4 style="color: #0D184F"><strong>PENALTIES</strong></h4></strong>
              <h5 style="color: #0D184F">{{this.patient.penalties}}</h5>
         </div>
         </div>

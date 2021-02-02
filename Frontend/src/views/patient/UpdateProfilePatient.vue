@@ -104,9 +104,9 @@
                     </div>
 
                      <div>
-                <table id="tenderMedicine" class="table table-striped" v-if="showTable">
+                <table style="" id="tenderMedicine" class="table table-striped" v-if="showTable">
                     <thead>
-                    <th>Alergy list</th>
+                    <th id="alergyList">Alergy list</th>
                   
                     </thead>
                     <tr v-for="med in medicationQuantityList" :key="med.id">

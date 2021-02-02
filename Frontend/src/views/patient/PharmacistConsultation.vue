@@ -7,20 +7,20 @@ ines (39 sloc)  1.61 KB
             
             <span style="float: left; margin: 15px;">
                 <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
-                     <b class="tab"></b>                
+                     <p class="tab"></p>                
 
                     <button class = "btn btn-link btn-lg" v-on:click = "showPharmacies">Pharmacies</button>
 
-                    <b class="tab"></b>     
+                    <p class="tab"></p>     
                    <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
 
-                    <b class="tab"></b>                
+                    <p class="tab"></p>                
                    
 
    
 
                     <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "writeComplaint">Write complaint</button>
-                    <b class="tab"></b>   
+                    <p class="tab"></p>   
             </span>
               <span  style="float:right;margin:15px">
                     
@@ -35,18 +35,17 @@ ines (39 sloc)  1.61 KB
         <div style="background: lightgray; height: 60px;">
             
             <span style="float: left; margin: 15px;">
-                <b><button class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" v-on:click = "allPharmacies">Show all pharmacies</button></b>
-                     <b class="tab"></b>                
+                <strong><button class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" v-on:click = "allPharmacies">Show all pharmacies</button></strong>
+                     <p class="tab"></p>                
 
                     <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">Make a new dermatologist appointment</button>
 
-                    <b class="tab"></b>    
+                     <p class="tab"></p>        
                      <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">My dermatologist appointments</button>
 
-                    <b class="tab"></b>  
+                       <p class="tab"></p>     
                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allPharmacists">Pharmacist consultation</button>
-
-                    <b class="tab"></b>                
+    <p class="tab"></p>                 
                    
             </span>
              
@@ -92,7 +91,7 @@ ines (39 sloc)  1.61 KB
 
         <div id="customers" v-if="showTable" style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
 
-    <table>
+    <table id="table1">
                     <thead>
                         <tr style="font-weight: bold; ">
                             <th style="width: 200px;" scope="col">Name of pharmacy</th>
@@ -123,7 +122,7 @@ ines (39 sloc)  1.61 KB
 
          <div id="customers" v-if="showSecondTable" style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
 
-    <table>
+    <table id="table2">
                     <thead>
                         <tr style="font-weight: bold; ">
                             <th style="width: 200px;" scope="col">Pharmacist first name</th>

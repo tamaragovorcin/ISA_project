@@ -84,22 +84,22 @@
 
                   <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
                    <label class="custom-control-label" for="defaultGroupExample1">0-1</label>
-                <b class="tab"></b>
+                   <p class="tab"></p>     
         
 
                   <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
                    <label class="custom-control-label" for="defaultGroupExample2">1-2</label>
                 
-              <b class="tab"></b>
+                 <p class="tab"></p>     
                   <input type="radio" class="custom-control-input" id="defaultGroupExample3" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'3')">
                  <label class="custom-control-label" for="defaultGroupExample3">2-3</label>
                 
         
- <b class="tab"></b>
+             <p class="tab"></p>     
                   <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'4')" >
                  <label class="custom-control-label" for="defaultGroupExample4" >3-4</label>
                 
-                <b class="tab"></b>
+                  <p class="tab"></p>     
                   <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" >
                  <label class="custom-control-label" for="defaultGroupExample4" >4-5</label>
               </div> 
@@ -111,7 +111,7 @@
        <div id="customers" v-if="showTable"  style="background: whitesmoke; border: 3px solid #0D184F; height: 200px; width:1000px; margin-left:300px; margin-top: 20px">
           
 
-<table class="table">
+<table id="table1" class="table">
  
  
     <tbody>
@@ -149,7 +149,7 @@
            <div id="customers" v-if="showSecondTable"  style="background: whitesmoke; border: 3px solid #0D184F; height: 200px; width:1000px; margin-left:300px; margin-top: 20px">
           
 
-<table class="table">
+<table id="table2" class="table">
  
  
     <tbody>

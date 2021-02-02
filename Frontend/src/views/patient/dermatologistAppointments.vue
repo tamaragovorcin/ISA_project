@@ -34,17 +34,17 @@
             
             <span style="float: left; margin: 15px;">
                 <b><button class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" v-on:click = "allPharmacies">Show all pharmacies</button></b>
-                     <b class="tab"></b>                
+                      <p class="tab"></p>              
 
                     <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">Make a new dermatologist appointment</button>
 
-                    <b class="tab"></b>    
+                      <p class="tab"></p>    
                      <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "myDermatologistAppointments">My dermatologist appointments</button>
 
-                    <b class="tab"></b>  
+                <p class="tab"></p>    
                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allPharmacists">Pharmacist consultation</button>
 
-                    <b class="tab"></b>                
+                    <p class="tab"></p>                  
                    
             </span>
              
@@ -69,7 +69,7 @@
       <div style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px"  v-for="dermatologistAppointment in this.dermatologistAppointments"  v-bind:key="dermatologistAppointment.id">
 
 
-<table class="table table-dark">
+<table style="" class="table table-dark">
  
  
     <tbody>

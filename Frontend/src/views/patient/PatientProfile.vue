@@ -19,7 +19,7 @@ ines (39 sloc)  1.61 KB
 
 
                        <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "leaveAMark">Leave a mark</button>
-                    <b class="tab"></b>   
+                    <strong class="tab"></strong>   
 
                     <a  class = "btn btn-secondary" href= "/eRecipes">ERecipes</a>
                     <b class="tab"></b> 
@@ -214,11 +214,11 @@ ines (39 sloc)  1.61 KB
        
             <template>
               <div class="custom-control custom-radio form-group col "  style = "background-color:lightgray; margin: auto; width: 750px; height: 80px; border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <b class="tab"></b>  <b class="tab"></b>
+            <strong class="tab"></strong>  <strong class="tab"></strong>
                   <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
                    <label class="custom-control-label" for="defaultGroupExample1">1</label>
                 
-              </div>   <b class="tab"></b>
+              </div>   <p class="tab"></p>
               <div class="custom-control custom-radio form-group col ">
 
                   <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
@@ -275,11 +275,11 @@ ines (39 sloc)  1.61 KB
                                                                     <hr />
                                                                  <template>
               <div class="custom-control custom-radio form-group col "  style = "background-color:lightgray; margin: auto; width: 750px; height: 80px; border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <b class="tab"></b>  <b class="tab"></b>
+            <strong class="tab"></strong>  <strong class="tab"></strong>
                   <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
                    <label class="custom-control-label" for="defaultGroupExample1">1</label>
                 
-              </div>   <b class="tab"></b>
+              </div>   <p class="tab"></p>
               <div class="custom-control custom-radio form-group col ">
 
                   <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
@@ -332,11 +332,11 @@ ines (39 sloc)  1.61 KB
                                                                    
             <template>
               <div class="custom-control custom-radio form-group col "  style = "background-color:lightgray; margin: auto; width: 750px; height: 80px; border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <b class="tab"></b>  <b class="tab"></b>
+            <strong class="tab"></strong>  <strong class="tab"></strong>
                   <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
                    <label class="custom-control-label" for="defaultGroupExample1">1</label>
                 
-              </div>   <b class="tab"></b>
+              </div>   <p class="tab"></p>
               <div class="custom-control custom-radio form-group col ">
 
                   <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
@@ -390,11 +390,11 @@ ines (39 sloc)  1.61 KB
                                                                     
                                                                    <template>
               <div class="custom-control custom-radio form-group col "  style = "background-color:lightgray; margin: auto; width: 750px; height: 80px; border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <b class="tab"></b>  <b class="tab"></b>
+            <strong class="tab"></strong>  <strong class="tab"></strong>
                   <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
                    <label class="custom-control-label" for="defaultGroupExample1">1</label>
                 
-              </div>   <b class="tab"></b>
+              </div>   <p class="tab"></p>
               <div class="custom-control custom-radio form-group col ">
 
                   <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
