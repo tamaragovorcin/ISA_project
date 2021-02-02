@@ -5,27 +5,27 @@
             
             <span style="float: left; margin: 15px;">
                     <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
-                    <b class="tab"></b>  
-                    <b class="tab"></b>  
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>  
 
                     <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
 
-                    <b class="tab"></b>     
-                    <b class="tab"></b>             
+                    <strong class="tab"></strong>     
+                    <strong class="tab"></strong>             
                    
 
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showClients">My patients</button>
-                    <b class="tab"></b>  
-                    <b class="tab"></b>      
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>      
 
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "workCalendar">Work calendar</button>
-                    <b class="tab"></b>
-                    <b class="tab"></b>  
+                    <strong class="tab"></strong>
+                    <strong class="tab"></strong>  
 
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "vacation">Create a vacation</button>
-                    <b class="tab"></b>
+                    <strong class="tab"></strong>
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
-                    <b class="tab"></b>
+                    <strong class="tab"></strong>
                     
 
                 
@@ -488,8 +488,7 @@ export default {
       },
       
       showMedicationSpecificationList : function($event, name) {
-          let i =0;
-          for(i=0; i< this.medicationSeacrhList.length;i++) {
+          for(let i=0; i< this.medicationSeacrhList.length;i++) {
               if(this.medicationSeacrhList[i].name===name) {
                   this.concreteSpecification = this.medicationSeacrhList[i].specification;
               }
@@ -528,7 +527,6 @@ export default {
       },
 },
  mounted() {
-
          this.axios.get('/medication/getAll',).then(response => {
                this.medicationSeacrhList= response.data;
          }).catch(res => {
@@ -537,12 +535,4 @@ export default {
                  });
     }
 }
-
 </script>
-
-<style>
-
-</style>
-
-
-  

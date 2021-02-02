@@ -4,12 +4,12 @@
         <div style="background: #0D184F; height: 90px;">
             <span style="float: left; margin: 15px;">
                   <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
-                  <b class="tab"></b>     
+                  <strong class="tab"></strong>     
                   <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
-                    <b class="tab"></b>          
+                    <strong class="tab"></strong>          
             </span>
             <span  style="float:right;margin:15px">
-                     <b class="tab"></b>    
+                     <strong class="tab"></strong>    
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
                 
             </span>

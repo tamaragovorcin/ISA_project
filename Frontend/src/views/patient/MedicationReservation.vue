@@ -583,8 +583,7 @@ mounted() {
       },
       
       showMedicationSpecificationList : function($event, name) {
-          let i =0;
-          for(i=0; i< this.medicationSeacrhList.length;i++) {
+          for(let i=0; i< this.medicationSeacrhList.length;i++) {
               if(this.medicationSeacrhList[i].name===name) {
                   this.concreteSpecification = this.medicationSeacrhList[i].specification;
               }
@@ -630,6 +629,3 @@ mounted() {
 }
 }
 </script>
-
-<style>
-</style>

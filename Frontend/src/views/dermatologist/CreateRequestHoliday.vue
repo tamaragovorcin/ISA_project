@@ -6,7 +6,7 @@
                   <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
                   <b class="tab"></b>              
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
-                    <b class="tab"></b>  
+                    <strong class="tab"></strong>  
             </span>
             <span  style="float:right;margin:15px">
                      <b class="tab"></b>    
