@@ -130,31 +130,6 @@ public class PharmacyController {
                 ResponseEntity.ok(pharmacies);
     }
 
-    @GetMapping("/allPharmacistPharmacies")
-    ResponseEntity<List<PharmacyFrontDTO>> getAllPharmaciesPharmacies()
-    {
-        List<Pharmacy> pharmacies = pharmacyService.findAll();
-        List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
-
-        for (Pharmacy ph : pharmacies){
-
-            PharmacyFrontDTO pf = new PharmacyFrontDTO();
-            pf.setId(ph.getId());
-            pf.setCountry(ph.getAddress().getCountry());
-            pf.setNumber(ph.getAddress().getNumber());
-            pf.setPostalCode(ph.getAddress().getPostalCode());
-            pf.setStreet(ph.getAddress().getStreet());
-            pf.setPharmacyName(ph.getPharmacyName());
-            pf.setMark(ph.getMark());
-            pf.setCity(ph.getAddress().getTown());
-
-            pharmacyFrontDTOS.add(pf);
-
-        }
-        return pharmacyFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacyFrontDTOS);
-    }
 
 
     @GetMapping("/{id}")

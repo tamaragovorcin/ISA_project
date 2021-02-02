@@ -34,7 +34,7 @@ public class PharmacistController {
     MarkPharmacistService markService;
 
     @PostMapping("/register")
-    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    //@PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacistDTO userRequest) {
         System.out.println(userRequest.getPharmacy().getPharmacyName());
 

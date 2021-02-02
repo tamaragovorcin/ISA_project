@@ -65,9 +65,9 @@
                   <span  style="float:right;margin:15px">
                     
                    <div class="input-group mb-3">
-  <input type="text" v-model="pharmacyName" class="form-control" placeholder="Search pharmacy by city" aria-label="Search pharmacy by city" aria-describedby="basic-addon2">
+  <input type="text" v-model="pharmacyCity" class="form-control" placeholder="Search pharmacy by city" aria-label="Search pharmacy by city" aria-describedby="basic-addon2">
   <div class="input-group-append">
-    <button class="btn btn-outline-secondary" type="button"  v-on:click = "searchCity(pharmacyName)" >Search</button>
+    <button class="btn btn-outline-secondary" type="button"  v-on:click = "searchCity(pharmacyCity)" >Search</button>
   </div>
 </div>
 
@@ -205,6 +205,7 @@ export default {
        pharmacyName: null,
        dermatologistAppointmentsSearch: [],
        showTable: true,
+       pharmacyCity: null,
        showSecondTable : false,
        filter: null
 
@@ -240,11 +241,11 @@ mounted() {
           })
       },
 
-      searchCity: function(pharmacyName){
+      searchCity: function(pharmacyCity){
            
-             this.pharmacyName = pharmacyName
-               alert(this.pharmacyName)
-      this.axios.get('/pharmacy/searchCity/'+ this.pharmacyName)
+             this.pharmacyCity = pharmacyCity
+               alert(this.pharmacyCity)
+      this.axios.get('/pharmacy/searchCity/'+ this.pharmacyCity)
           .then(response => {
               this.showTable = false;
               this.showSecondTable = true;

@@ -7,20 +7,20 @@ ines (39 sloc)  1.61 KB
             
             <span style="float: left; margin: 15px;">
                 <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
-                     <p class="tab"></p>                
+                   <strong class="tab"></strong>               
 
                     <button class = "btn btn-link btn-lg" v-on:click = "showPharmacies">Pharmacies</button>
 
-                    <p class="tab"></p>     
+                  <strong class="tab"></strong>     
                    <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
 
-                    <p class="tab"></p>                
+                  <strong class="tab"></strong>                   
                    
 
    
 
                     <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "writeComplaint">Write complaint</button>
-                    <p class="tab"></p>   
+                    <strong class="tab"></strong>    
             </span>
               <span  style="float:right;margin:15px">
                     
@@ -36,16 +36,16 @@ ines (39 sloc)  1.61 KB
             
             <span style="float: left; margin: 15px;">
                 <strong><button class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" v-on:click = "allPharmacies">Show all pharmacies</button></strong>
-                     <p class="tab"></p>                
+                             <strong class="tab"></strong>     
 
                     <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">Make a new dermatologist appointment</button>
 
-                     <p class="tab"></p>        
+                           <strong class="tab"></strong>  
                      <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">My dermatologist appointments</button>
 
-                       <p class="tab"></p>     
+                              <strong class="tab"></strong>    
                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allPharmacists">Pharmacist consultation</button>
-    <p class="tab"></p>                 
+            <strong class="tab"></strong>             
                    
             </span>
              
@@ -83,7 +83,7 @@ ines (39 sloc)  1.61 KB
 
        
         
-<button class="button3" v-on:click="showAvailability">Show pharmacies</button>
+<button class="button3" v-on:click="showAvailability(date,startTime)">Show pharmacies</button>
 
       
 
@@ -91,14 +91,14 @@ ines (39 sloc)  1.61 KB
 
         <div id="customers" v-if="showTable" style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
 
-    <table id="table1">
-                    <thead>
+    <table id="table1" class="table">
+                    <thead  class="thead-dark">
                         <tr style="font-weight: bold; ">
-                            <th style="width: 200px;" scope="col">Name of pharmacy</th>
-                            <th style="width: 200px;" scope="col">Location</th>
+                            <th style="width: 200px; height: 80px;" scope="col">Name of pharmacy</th>
+                            <th style="width: 200px; height: 80px;" scope="col">Location</th>
 
-                            <th style="width: 200px;" scope="col">Pharmacy Mark</th>
-                            <th style="width: 200px;" scope="col">Consultation mark</th>
+                            <th style="width: 200px; height: 80px;" scope="col">Pharmacy Mark</th>
+                            <th style="width: 200px; height: 80px;" scope="col">Consultation mark</th>
                        
 
                         </tr>
@@ -122,8 +122,8 @@ ines (39 sloc)  1.61 KB
 
          <div id="customers" v-if="showSecondTable" style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
 
-    <table id="table2">
-                    <thead>
+    <table id="table2"  class="table">
+                    <thead  class="thead-dark">
                         <tr style="font-weight: bold; ">
                             <th style="width: 200px;" scope="col">Pharmacist first name</th>
                             <th style="width: 200px;" scope="col">Pharmacist last name</th>
@@ -136,10 +136,10 @@ ines (39 sloc)  1.61 KB
                     </thead>
                     <tbody>
                       
-                        <tr  v-for="pharmacy in pharmacies" :key="pharmacy.id" v-on:click="goToBlabla(pharmacy)">
-                            <td>{{pharmacy.pharmacyName}}</td>
-                            <td>{{pharmacy.city}}</td>
-                            <td>{{pharmacy.mark}}</td>
+                        <tr  v-for="pharmacist in pharmacists" :key="pharmacist.id" v-on:click="goToBlabla(pharmacist)">
+                            <td>{{pharmacist.firstname}}</td>
+                            <td>{{pharmacist.surname}}</td>
+                            <td>{{pharmacist.mark}}</td>
                       
                         </tr>
                       
@@ -174,17 +174,7 @@ export default {
 
     }
   },
-mounted() {
 
-    this.axios.get('/pharmacy/allPharmacistPharmacies')
-          .then(response => {
-                this.pharmacies= response.data;
-               console.log(this.pharmacies);
-              
-          })
-          
-          
-          },
 
   methods:{
      
@@ -244,18 +234,56 @@ mounted() {
  
         },
        showPharmacies : function(){
+
+         
             window.location.href = "/showPharmaciesPatient";
 
       },
 
-      showAvailability: function () {
-                this.showTable = true;
+      showAvailability: function (date, startTime) {
+          this.date = date;
+          this.startTime = startTime;
+
+            const datum = {
+                date : this.date,
+                time : this.startTime
+
+           }
+            console.log(datum)
+            this.axios.post('/consulting/getPharmacies',datum
+                ).then(response => {
+                    alert("Complaint is successfully sent!.");
+                    this.pharmacies= response.data;
+                    console.log(response);                
+                }).catch(res => {
+                       alert("Please try later.");
+                        console.log(res);
+                });
+
+        this.showTable = true;
           
               
             }, 
 
     goToBlabla: function (pharmacy) {
                 alert("Evo mee" + pharmacy)
+         const datum = {
+                date : this.date,
+                time : this.startTime,
+                pharmacyId: pharmacy.id
+
+           }
+   this.axios.post('/consulting/getPharmacists',datum
+                ).then(response => {
+                    alert("Complaint is successfully sent!.");
+                    this.pharmacists= response.data;
+                    console.log(response);                
+                }).catch(res => {
+                       alert("Please try later.");
+                        console.log(res);
+                });
+
+
                  this.showTable = false;
            this.showSecondTable = true;
               
