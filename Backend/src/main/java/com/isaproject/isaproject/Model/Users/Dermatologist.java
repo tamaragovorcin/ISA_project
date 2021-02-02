@@ -30,8 +30,6 @@ public class Dermatologist extends PersonUser{
     @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<HolidayScheduleDermatologist> holidayScheduleDermatologists = new HashSet<HolidayScheduleDermatologist>();
 
-    @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<WorkingHoursDermatologist> workingHoursDermatologists = new HashSet<WorkingHoursDermatologist>();
 
     @ManyToMany
     @JoinTable(name = "dermatologists_pharmacies", joinColumns = @JoinColumn(name = "dermatologist_id", referencedColumnName = "id"),
@@ -72,11 +70,4 @@ public class Dermatologist extends PersonUser{
         this.holidayScheduleDermatologists = holidayScheduleDermatologists;
     }
 
-    public Set<WorkingHoursDermatologist> getWorkingHoursDermatologists() {
-        return workingHoursDermatologists;
-    }
-
-    public void setWorkingHoursDermatologists(Set<WorkingHoursDermatologist> workingHoursDermatologists) {
-        this.workingHoursDermatologists = workingHoursDermatologists;
-    }
 }

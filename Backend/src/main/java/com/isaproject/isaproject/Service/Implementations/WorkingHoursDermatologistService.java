@@ -45,7 +45,7 @@ public class WorkingHoursDermatologistService implements IWorkingHoursDermatolog
         WorkingHoursDermatologist workingHoursDermatologist = new WorkingHoursDermatologist();
 
         workingHoursDermatologist.setDermatologist(userRequest.getDermatologist());
-        workingHoursDermatologist.setPharmacy(userRequest.getPharmacy());
+        workingHoursDermatologist.setPharmacy_id(userRequest.getPharmacyId());
 
         MondaySchedule mondaySchedule = new MondaySchedule();
         mondaySchedule.setStartTime(userRequest.getStartTimeMonday());

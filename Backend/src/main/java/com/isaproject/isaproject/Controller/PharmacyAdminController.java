@@ -95,6 +95,17 @@ public class PharmacyAdminController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacyAdmin.getPharmacy().getDermatologists());
     }
+
+    @PostMapping("/dermatologist/remove")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<String> removeDermatologistFromPharmacy(@RequestBody Dermatologist dermatologist)
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
+        pharmacyAdminService.removeDermatologistFromPharmacy(pharmacyAdmin.getPharmacy().getId(),dermatologist);
+        return new ResponseEntity<>("Dermatologist successfully removed from pharmacy!", HttpStatus.ACCEPTED);    }
+
     @GetMapping("/actions")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<Set<Actions>> getActions()

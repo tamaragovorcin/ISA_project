@@ -27,6 +27,8 @@ public class DermatologistService implements IDermatologistService {
     private AuthorityRepository authorityRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PharmacyService pharmacyService;
 
     @Override
     public Dermatologist findById(Integer id) {
@@ -104,11 +106,10 @@ public class DermatologistService implements IDermatologistService {
     }
 
     public Boolean addPharmacy(WorkingHoursDermatologistDTO dto) {
-        System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getPharmacy().getPharmacyName());
         Dermatologist ph = findById(dto.getDermatologist().getId());
         try{
-            ph.getPharmacies().add(dto.getPharmacy());
-            dermatologistRepository.save(ph);
+            ph.getPharmacies().add(pharmacyService.findById(dto.getPharmacyId()));
+            this.dermatologistRepository.save(ph);
             return true;
         }catch (Exception e){
             return false;

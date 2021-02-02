@@ -79,9 +79,6 @@ public class Pharmacy implements Serializable{
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Actions> actions = new HashSet<Actions>();
 
-    @JsonManagedReference(value = "pharmacy-dermatologist")
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<WorkingHoursDermatologist> workingHoursDermatologists = new HashSet<WorkingHoursDermatologist>();
 
     @JsonManagedReference(value="pharmacy-medicationPrice")
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -104,7 +101,6 @@ public class Pharmacy implements Serializable{
         this.subscribedPatients = subscribedPatients;
         this.pharmacyAdmins = pharmacyAdmins;
         this.actions = actions;
-        this.workingHoursDermatologists = workingHoursDermatologists;
         this.medicationPrices = medicationPrices;
     }
 
@@ -219,14 +215,6 @@ public class Pharmacy implements Serializable{
 
     public void setActions(Set<Actions> actions) {
         this.actions = actions;
-    }
-
-    public Set<WorkingHoursDermatologist> getWorkingHoursDermatologists() {
-        return workingHoursDermatologists;
-    }
-
-    public void setWorkingHoursDermatologists(Set<WorkingHoursDermatologist> workingHoursDermatologists) {
-        this.workingHoursDermatologists = workingHoursDermatologists;
     }
 
     public Set<MedicationPrice> getMedicationPrices() {
