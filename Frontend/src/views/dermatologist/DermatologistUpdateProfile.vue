@@ -167,7 +167,10 @@ mounted() {
            
             window.location.href = "/dermatologistProfile";  
                
-      }
+      },
+       showMedications : function() {
+          window.location.href = "/dermatologistMedicationSearch";
+      },
 }
 }
 </script>

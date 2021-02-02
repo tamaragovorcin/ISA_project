@@ -4,38 +4,42 @@
         <div style="background: #0D184F; height: 90px;">
             
             <span style="float: left; margin: 15px;">
+                    <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
+                    <b class="tab"></b>  
+                    <b class="tab"></b>  
 
-                <b-dropdown id="ddCommodity" name="ddCommodity" text="New registration" 
-                               class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
-                    <b-dropdown-item v-on:click = "registerPharmacy">Pharmacy</b-dropdown-item>
-                    <b-dropdown-item v-on:click = "registerPharmacyAdmin">Pharmacy admin</b-dropdown-item>
-                    <b-dropdown-item v-on:click = "registerDermatologist">Dermatologist</b-dropdown-item> 
-                    <b-dropdown-item v-on:click = "registerSupplier">Supplier</b-dropdown-item>
-                    <div v-if = "allowSystemAdminRegistration">
-                         <b-dropdown-item v-on:click = "registerSystemAdmin">System admin</b-dropdown-item>
-                    </div>
-                     <div v-if = "notallowSystemAdminRegistration">
-                         <b-dropdown-item v-on:click = "registerSystemAdmin" disabled>System admin</b-dropdown-item>
-                    </div>                    
-                 </b-dropdown> 
-                 <b class="tab"></b>   
-                 <button class = "btn btn-link btn-lg" v-on:click = "addMedicine">Add medication</button>
-                 <b class="tab"></b>   
-                 <button class = "btn btn-link btn-lg" v-on:click = "medicationSearch">Medications</button>
-                 <b class="tab"></b>  
-                 <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
-                 <b class="tab"></b>  
-                 <button class = "btn btn-link btn-lg" v-on:click = "showComplaints">Complaints</button>
-                 
+                    <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
 
+                    <b class="tab"></b>     
+                    <b class="tab"></b>             
+                   
+
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showClients">My patients</button>
+                    <b class="tab"></b>  
+                    <b class="tab"></b>      
+
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "workCalendar">Work calendar</button>
+                    <b class="tab"></b>
+                    <b class="tab"></b>  
+
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "vacation">Create a vacation</button>
+                    <b class="tab"></b>
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
+                    <b class="tab"></b>
+                    
+
+                
             </span>
               <span  style="float:right;margin:15px">
-                     <b class="tab"></b>    
+                    
+
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
-                
+
                 </span>
+
         </div>
-       <div style="background: white; height: 60px; margin-top: 20px">
+
+  <div style="background: white; height: 60px; margin-top: 20px">
           <span  style="float:right;margin:15px">
             <div class="input-group mb-3">
               <input type="text" v-model="medicationName" class="form-control" placeholder="Enter name..." aria-label="Enter name..." aria-describedby="basic-addon2">
@@ -306,7 +310,8 @@
                </div>
           </b-modal>
        </div>
-    </div>
+
+</div>
 </template>
 
 <script>
@@ -314,10 +319,8 @@ export default {
 
   data() {
     return {
-      accountInformation :null,
-      allowSystemAdminRegistration : false,
-      notallowSystemAdminRegistration : false,
-     medicationName : "",
+      
+         medicationName : "",
       specificationInfo : {
             contraIndications :"",
             structure : "",
@@ -378,42 +381,50 @@ export default {
         showMedicationPharmacyAvailabilityDiv : false,
         showMedicationPharmacyAvailabilityListDiv : false,
         choosenMedicationForAvailability : 0
-       
+      
+
     }
   },
 
   methods:{
-      registerPharmacy: function() {
-            window.location.href = "/registerPharmacy";
+      showClients : function(){
+
       },
-      registerPharmacyAdmin: function() {
-            window.location.href = "/registerPharmacyAdmin";
+      showMyProfile: function(){
+           window.location.href = "/dermatologistProfile";
       },
-      registerDermatologist: function() {
-           window.location.href = "/registerDermatologist";
-      },
-      registerSupplier: function() {
-           window.location.href = "/registerSupplier";
-      },
-      registerSystemAdmin: function() {
-           window.location.href = "/registerSystemAdmin";
+      showHomePage : function(){
+          window.location.href = "/isaHomePage";
       },
       logOut : function(){
-          localStorage.removeItem('token');
           window.location.href = "/login";
+
       },
-      addMedicine : function() {
-           window.location.href = "/addMedicine";
+      writeConsulting() {
+        this.$refs['my-modal'].show()
       },
-      defineLoyaltyProgram : function(){
-          window.location.href = "/loyaltyProgram";
+       hideModal() {
+        this.$refs['my-modal'].hide()
       },
-      medicationSearch : function() {
-          window.location.href = "/systemAdminMedicationSearch";
-      }, 
-      
-      showComplaints : function() {
-            window.location.href = "/complaints";
+       hideModal1() {
+        this.$refs['my-modal1'].hide()
+      },
+      workCalendar : function(){
+
+      },
+      vacation: function(){
+          window.location.href = "/dermatologistHoliday";
+
+      },
+      scheduleConsulting : function(){
+
+      },
+      addMedicine : function(){
+          this.$refs['my-modal1'].show()
+
+      },
+      sendComplaint : function(){
+
       },
        formIsSelected : function(event, form) { 
            this.axios.get('/medication/searchForm/'+form).
@@ -512,28 +523,11 @@ export default {
                                     console.log(res);
                             });
       },
-      
+       showMedications : function() {
+          window.location.href = "/dermatologistMedicationSearch";
+      },
 },
  mounted() {
-        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-        this.axios.get('/systemAdmin/account',{ 
-             headers: {
-                 'Authorization': 'Bearer ' + token,
-             }
-         }).then(response => {
-               this.accountInformation=response.data;
-               if(this.accountInformation.mainAdmin) {
-                      this.allowSystemAdminRegistration = true;
-                      this.notallowSystemAdminRegistration = false;
-               }
-               else{
-                    this.allowSystemAdminRegistration = false;
-                    this.notallowSystemAdminRegistration = true;
-               }
-         }).catch(res => {
-                       alert("NOT OK");
-                        console.log(res);
-                 });
 
          this.axios.get('/medication/getAll',).then(response => {
                this.medicationSeacrhList= response.data;
@@ -543,6 +537,7 @@ export default {
                  });
     }
 }
+
 </script>
 
 <style>

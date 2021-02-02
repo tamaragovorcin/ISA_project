@@ -2,40 +2,40 @@
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-            
-            <span style="float: left; margin: 15px;">
-
-                <b-dropdown id="ddCommodity" name="ddCommodity" text="New registration" 
-                               class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
-                    <b-dropdown-item v-on:click = "registerPharmacy">Pharmacy</b-dropdown-item>
-                    <b-dropdown-item v-on:click = "registerPharmacyAdmin">Pharmacy admin</b-dropdown-item>
-                    <b-dropdown-item v-on:click = "registerDermatologist">Dermatologist</b-dropdown-item> 
-                    <b-dropdown-item v-on:click = "registerSupplier">Supplier</b-dropdown-item>
-                    <div v-if = "allowSystemAdminRegistration">
-                         <b-dropdown-item v-on:click = "registerSystemAdmin">System admin</b-dropdown-item>
-                    </div>
-                     <div v-if = "notallowSystemAdminRegistration">
-                         <b-dropdown-item v-on:click = "registerSystemAdmin" disabled>System admin</b-dropdown-item>
-                    </div>                    
-                 </b-dropdown> 
-                 <b class="tab"></b>   
-                 <button class = "btn btn-link btn-lg" v-on:click = "addMedicine">Add medication</button>
-                 <b class="tab"></b>   
-                 <button class = "btn btn-link btn-lg" v-on:click = "medicationSearch">Medications</button>
-                 <b class="tab"></b>  
-                 <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
-                 <b class="tab"></b>  
-                 <button class = "btn btn-link btn-lg" v-on:click = "showComplaints">Complaints</button>
+             <span style="float: left; margin: 15px;">
+                <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
+                <b class="tab"></b>    
+                <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
+                <b class="tab"></b>    
+                <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
+                 <b class="tab"></b>    
+                 <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
                  
-
+                <b class="tab"></b> 
+                 <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
+                               class = "btn btn-link btn-lg">
+                    <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
+                    <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
+                </b-dropdown> 
+                  <b class="tab"></b>  
+                <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
+                <b class="tab"></b> 
+                <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
+                        <b class="tab"></b>    
+                 <a   class = "btn btn-secondary" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
+                        <b class="tab"></b>  
+                <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
+                        <b class="tab"></b>    
+                <a   class = "btn btn-secondary" href="/order">Orders</a>
             </span>
+            
               <span  style="float:right;margin:15px">
-                     <b class="tab"></b>    
+                   
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
                 
                 </span>
         </div>
-       <div style="background: white; height: 60px; margin-top: 20px">
+ <div style="background: white; height: 60px; margin-top: 20px">
           <span  style="float:right;margin:15px">
             <div class="input-group mb-3">
               <input type="text" v-model="medicationName" class="form-control" placeholder="Enter name..." aria-label="Enter name..." aria-describedby="basic-addon2">
@@ -307,6 +307,7 @@
           </b-modal>
        </div>
     </div>
+
 </template>
 
 <script>
@@ -314,10 +315,7 @@ export default {
 
   data() {
     return {
-      accountInformation :null,
-      allowSystemAdminRegistration : false,
-      notallowSystemAdminRegistration : false,
-     medicationName : "",
+         medicationName : "",
       specificationInfo : {
             contraIndications :"",
             structure : "",
@@ -378,44 +376,47 @@ export default {
         showMedicationPharmacyAvailabilityDiv : false,
         showMedicationPharmacyAvailabilityListDiv : false,
         choosenMedicationForAvailability : 0
-       
     }
   },
-
+  mounted() {
+       
+    
+  this.axios.get('/medication/getAll',).then(response => {
+               this.medicationSeacrhList= response.data;
+         }).catch(res => {
+                       alert("Please try again later.");
+                        console.log(res);
+                 });
+                            
+                 
+},
   methods:{
-      registerPharmacy: function() {
-            window.location.href = "/registerPharmacy";
+       showHomePage : function(){
+          window.location.href = "/isaHomePage";
       },
-      registerPharmacyAdmin: function() {
-            window.location.href = "/registerPharmacyAdmin";
+      showMyProfile: function(){
+
       },
-      registerDermatologist: function() {
-           window.location.href = "/registerDermatologist";
+       hideModal() {
+        this.$refs['my-modal'].hide()
       },
-      registerSupplier: function() {
-           window.location.href = "/registerSupplier";
+       showOrderForm : function(){
+          window.location.href = "/order";
+
       },
-      registerSystemAdmin: function() {
-           window.location.href = "/registerSystemAdmin";
+       logOut : function(){
+           window.location.href = "/login";
       },
-      logOut : function(){
-          localStorage.removeItem('token');
-          window.location.href = "/login";
+      sendComplaint : function(){
+
       },
-      addMedicine : function() {
-           window.location.href = "/addMedicine";
+      showMyPharmacy : function (){
+          window.location.href = "/myPharmacy"
       },
-      defineLoyaltyProgram : function(){
-          window.location.href = "/loyaltyProgram";
+      addNewPharmacist : function(){
+        window.location.href = "/addNewPharmacist";
       },
-      medicationSearch : function() {
-          window.location.href = "/systemAdminMedicationSearch";
-      }, 
-      
-      showComplaints : function() {
-            window.location.href = "/complaints";
-      },
-       formIsSelected : function(event, form) { 
+        formIsSelected : function(event, form) { 
            this.axios.get('/medication/searchForm/'+form).
             then(response => {
                     this.medicationSeacrhList= response.data;
@@ -512,36 +513,7 @@ export default {
                                     console.log(res);
                             });
       },
-      
-},
- mounted() {
-        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-        this.axios.get('/systemAdmin/account',{ 
-             headers: {
-                 'Authorization': 'Bearer ' + token,
-             }
-         }).then(response => {
-               this.accountInformation=response.data;
-               if(this.accountInformation.mainAdmin) {
-                      this.allowSystemAdminRegistration = true;
-                      this.notallowSystemAdminRegistration = false;
-               }
-               else{
-                    this.allowSystemAdminRegistration = false;
-                    this.notallowSystemAdminRegistration = true;
-               }
-         }).catch(res => {
-                       alert("NOT OK");
-                        console.log(res);
-                 });
-
-         this.axios.get('/medication/getAll',).then(response => {
-               this.medicationSeacrhList= response.data;
-         }).catch(res => {
-                       alert("Please try again later.");
-                        console.log(res);
-                 });
-    }
+}
 }
 </script>
 

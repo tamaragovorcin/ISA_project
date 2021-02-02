@@ -25,6 +25,8 @@
 
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "vacation">Create a vacation</button>
                     <b class="tab"></b>
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
+                    <b class="tab"></b>
                     
 
                 
@@ -239,7 +241,10 @@ export default {
       },
       sendComplaint : function(){
 
-      }
+      },
+      showMedications : function() {
+          window.location.href = "/pharmacistMedicationSearch";
+      },
   }
 }
 

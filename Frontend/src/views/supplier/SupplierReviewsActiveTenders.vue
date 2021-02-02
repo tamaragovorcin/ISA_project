@@ -168,7 +168,6 @@ export default {
              }}).then(response => {
                         if(response.data==true) {
 
-                                console.log("okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
                                 this.axios.post('/offer/add',offer,{ 
                                                 headers: {
                                                         'Authorization': 'Bearer ' + token,
@@ -181,7 +180,6 @@ export default {
                                         });
                         }
                       else {
-                           console.log("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
                             alert("Sorry. You cant make offer for this tender. You dont have enough medications.");
                       }
 

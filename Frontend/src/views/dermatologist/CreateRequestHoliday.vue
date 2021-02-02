@@ -4,7 +4,9 @@
         <div style="background: #0D184F; height: 90px;">
             <span style="float: left; margin: 15px;">
                   <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
-                  <b class="tab"></b>                
+                  <b class="tab"></b>              
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
+                    <b class="tab"></b>  
             </span>
             <span  style="float:right;margin:15px">
                      <b class="tab"></b>    
@@ -87,7 +89,10 @@ export default {
       },
       typeIsSelected : function(event, type) {
         this.type = type;
-      }
+      },
+        showMedications : function() {
+          window.location.href = "/dermatologistMedicationSearch";
+      },
      
       
 },

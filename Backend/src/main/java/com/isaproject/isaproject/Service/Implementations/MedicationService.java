@@ -17,7 +17,7 @@ public class MedicationService implements IMedicationService {
 
     @Override
     public Medication findById(Integer id) {
-        return null;
+        return medicationRepository.findById(id).get();
     }
 
     @Override

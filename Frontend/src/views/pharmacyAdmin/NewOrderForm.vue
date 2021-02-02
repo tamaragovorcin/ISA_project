@@ -20,6 +20,8 @@
                 <b class="tab"></b> 
                 <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
                         <b class="tab"></b>    
+                 <a   class = "btn btn-secondary" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
+                        <b class="tab"></b>  
                 <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
                         <b class="tab"></b>    
                 <a   class = "btn btn-secondary" href="/order">Orders</a>
@@ -252,18 +254,7 @@ export default {
 </script>
 
 <style>
-@media (min-width: 992px)
- .modal-lg {
-    max-width: auto !important;
-   }
-@media (min-width: 992px)
- .modal-dialog {
-    margin: 100px !important;
-   }
-@media (min-width: 800px)
-  .modal-dialog {
-    max-width: auto !important;
-  }
+
 body {
   font-family: "Lato", sans-serif;
 }
@@ -283,7 +274,7 @@ body {
   padding: 6px 6px 6px 0px;
   text-decoration: none;
   font-size: 25px;
-  color: #white;
+  color: white;
   display: block;
 }
 .sidenav a:hover {

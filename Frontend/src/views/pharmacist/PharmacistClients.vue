@@ -26,7 +26,8 @@
 
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "vacation">Create a vacation</button>
                     <b class="tab"></b>
-                    
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
+                    <b class="tab"></b>
 
                 
             </span>
@@ -200,7 +201,10 @@ export default {
       },
       logOut : function(){
           window.location.href = "/login";
-      }
+      },
+      showMedications : function() {
+          window.location.href = "/pharmacistMedicationSearch";
+      },
   }
 }
 </script>

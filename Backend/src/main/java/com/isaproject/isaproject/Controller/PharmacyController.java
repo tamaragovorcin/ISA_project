@@ -20,6 +20,7 @@ import com.isaproject.isaproject.Service.Implementations.ActionsService;
 import com.isaproject.isaproject.Service.Implementations.ExaminationScheduleService;
 import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyService;
+import org.hibernate.annotations.GeneratorType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -702,5 +703,35 @@ public class PharmacyController {
                     ResponseEntity.ok(pharmacy);
 
         }
+
+
+
+
+    @GetMapping("/medicationAvailability/{code}")
+    public ResponseEntity<List<PharmacyMedicationAvailabilityDTO>> getAvailability(@PathVariable long code) {
+
+        List<PharmacyMedicationAvailabilityDTO> pharmacyAvailability = getAvailabilityInPharmacies(code);
+
+        return pharmacyAvailability == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacyAvailability);
+    }
+
+    private List<PharmacyMedicationAvailabilityDTO> getAvailabilityInPharmacies(long code) {
+        List<PharmacyMedicationAvailabilityDTO> pharmacyList = new ArrayList<>();
+        List<Pharmacy> pharmacies = pharmacyService.findAll();
+        for(Pharmacy pharmacy : pharmacies) {
+            for(MedicationPrice medicationPrice : pharmacy.getMedicationPrices()) {
+                if(medicationPrice.getMedication().getCode()==code) {
+                    pharmacyList.add(new PharmacyMedicationAvailabilityDTO(pharmacy.getId(), medicationPrice.getPrice(), pharmacy.getMark(),
+                            new AddressDTO(pharmacy.getAddress().getTown(), pharmacy.getAddress().getStreet(), pharmacy.getAddress().getNumber(),
+                                    pharmacy.getAddress().getPostalCode(), pharmacy.getAddress().getCountry()), pharmacy.getPharmacyName()));
+                }
+                else {}
+            }
+
+        }
+        return pharmacyList;
+    }
 
 }

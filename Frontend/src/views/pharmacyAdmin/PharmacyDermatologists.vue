@@ -22,6 +22,8 @@
                 <b class="tab"></b> 
                 <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
                         <b class="tab"></b>    
+                 <a   class = "btn btn-secondary" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
+                        <b class="tab"></b>  
                 <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
                         <b class="tab"></b>    
                 <a   class = "btn btn-secondary" href="/order">Orders</a>
