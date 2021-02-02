@@ -58,6 +58,7 @@ public class EPrescriptionController {
                 File destination = new File("src/main/resources/qr/" + file.getOriginalFilename());
                 ImageIO.write(src, "png", destination);
                 String decodedText = decodeQRCode(new File("src/main/resources/qr/" + file.getOriginalFilename()));
+                System.out.println(decodedText);
                 if (decodedText == null) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 } else {
@@ -77,7 +78,13 @@ public class EPrescriptionController {
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<List<PharmacyMedicationAvailabilityDTO>> getAvailability(@RequestBody List<QRcodeInformationDTO> listMedications) {
 
+        for (QRcodeInformationDTO qr:listMedications
+             ) {
+            System.out.println(qr.getMedicationCode() + ",  " + qr.getMedicationName());
+        }
+
         List<PharmacyMedicationAvailabilityDTO> pharmacyAvailability = getAvailabilityInPharmacies(listMedications);
+
 
         return pharmacyAvailability == null ?
                             new ResponseEntity<>(HttpStatus.NOT_FOUND) :

@@ -3,8 +3,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isaproject.isaproject.Model.Medicine.MedicationEPrescription;
 import com.isaproject.isaproject.Model.Users.Patient;
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
