@@ -3,6 +3,7 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.DermatologistDTO;
+import com.isaproject.isaproject.DTO.PharmacyDermatologistsDTO;
 import com.isaproject.isaproject.DTO.WorkingHoursDermatologistDTO;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
@@ -105,11 +106,12 @@ public class DermatologistService implements IDermatologistService {
         return this.dermatologistRepository.save(supplier);
     }
 
-    public Boolean addPharmacy(WorkingHoursDermatologistDTO dto) {
+    public Boolean addPharmacy(PharmacyDermatologistsDTO dto) {
+        System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getPharmacy().getPharmacyName());
         Dermatologist ph = findById(dto.getDermatologist().getId());
         try{
-            ph.getPharmacies().add(pharmacyService.findById(dto.getPharmacyId()));
-            this.dermatologistRepository.save(ph);
+            ph.getPharmacies().add(dto.getPharmacy());
+            dermatologistRepository.save(ph);
             return true;
         }catch (Exception e){
             return false;

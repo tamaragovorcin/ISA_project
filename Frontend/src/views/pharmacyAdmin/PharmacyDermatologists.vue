@@ -53,13 +53,12 @@
                                     <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologist"
                                         class = "btn btn-link btn-lg" style="float:left; width=200px;">
                                             <b-dropdown-item v-for="dermatologist in this.allDermatologists"  v-on:click = "dermatologistIsSelected($event, dermatologist)" v-bind:key="dermatologist.id"> 
-                                            {{ dermatologist.firstname }}<div style="width:20px"></div>{{dermatologist.surName }}
+                                            {{ dermatologist.name }}&nbsp; {{dermatologist.surname }}
                                             </b-dropdown-item>
                                     </b-dropdown> 
                                  </div>
                                 <div class="form-group col-md-6 ">
-                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist.firstname}}</label>
-                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist.surName}}</label>
+                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist.name}}&nbsp; {{this.selectedDermatologist.surname}} </label>
                                 </div>
                                     
                             </div>
@@ -129,13 +128,12 @@
                                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologist"
                                         class = "btn btn-link btn-lg" style="float:left; width=200px;">
                                             <b-dropdown-item v-for="dermatologist in this.allDermatologists"  v-on:click = "dermatologistIsSelected1($event, dermatologist)" v-bind:key="dermatologist.id"> 
-                                            {{ dermatologist.firstname }}&nbsp; {{dermatologist.surname }}
+                                            {{ dermatologist.name }}&nbsp; {{dermatologist.surname }}
                                             </b-dropdown-item>
                                     </b-dropdown> 
                                  </div>
                                 <div class="form-group col-md-6 ">
-                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist1.firstname}}</label>
-                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist1.surname}}</label>
+                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist1.name}}&nbsp; {{this.selectedDermatologist1.surname}}</label>
                                 </div>
                                     
                             </div>
@@ -304,7 +302,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr v-for="dermatologist in ourDermatologists" :key="dermatologist.id">
+    <tr v-for="dermatologist in allDermatologists" :key="dermatologist.id">
                                                     <td></td>
                                                     <td>{{dermatologist.name}}</td>
                                                     <td>{{dermatologist.surname}}</td>

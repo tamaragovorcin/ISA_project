@@ -91,6 +91,10 @@ public class PharmacyAdminController {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        for(Dermatologist derm : pharmacyAdmin.getPharmacy().getDermatologists()){
+            System.out.println(derm.getName()+" "+derm.getSurname());
+        }
         return pharmacyAdmin.getPharmacy().getDermatologists() == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacyAdmin.getPharmacy().getDermatologists());
@@ -169,7 +173,7 @@ public class PharmacyAdminController {
     }
 
 
-    @GetMapping("orders")
+    @GetMapping("/orders")
     ResponseEntity<List<OrderReviewDTO>> getAllOrders()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
@@ -178,7 +182,7 @@ public class PharmacyAdminController {
         List<Order> orders = orderService.findAll();
         List<OrderReviewDTO> ordersDto = new ArrayList<>();
         for (Order order: orders) {
-            if((order.getPharmacyAdmin().getPharmacy().getId() == pharmacyAdmin.getPharmacy().getId())&& !order.getStatus().equals("CLOSED")) {
+            if((order.getPharmacyAdmin().getPharmacy().getId() == pharmacyAdmin.getPharmacy().getId())) {
                 ordersDto.add(new OrderReviewDTO(order.getId(), order.getDate(), order.getStatus(), getMedicationsInOrder(order.getMedicationInOrders()),
                         order.getPharmacyAdmin().getPharmacy().getPharmacyName()));
             }

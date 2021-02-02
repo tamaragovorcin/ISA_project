@@ -179,7 +179,6 @@ export default {
                     }
                     }).then(response => {
                             this.pharmacy = response.data;
-                            alert(this.pharmacy);
                             console.log(this.pharmacy);
                              
                     }).catch(res => {

@@ -28,6 +28,8 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
 
     @Override
     public ExaminationSchedule save(ExaminationScheduleDTO examinationScheduleDTO) {
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println(examinationScheduleDTO.getPharmacy().getPharmacyName());
         ExaminationSchedule examinationSchedule = new ExaminationSchedule();
         examinationSchedule.setPharmacy(examinationScheduleDTO.getPharmacy());
         examinationSchedule.setDate(examinationScheduleDTO.getDate());
@@ -37,7 +39,7 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
         examinationSchedule.setStartTime(examinationScheduleDTO.getStartTime());
         examinationSchedule.setFinished(false);
 
-        return examinationScheduleRepository.save(examinationSchedule);
+        return this.examinationScheduleRepository.save(examinationSchedule);
     }
 
     @Override

@@ -456,8 +456,8 @@ export default {
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                 }}).then(response => {
-                    alert("Offer successfully accepted! Tender is now closed.")
-                    window.location.href = "/order";
+                    alert(response.data)
+                    window.location.href= "/order";
                     console.log(response)
                 }).catch(res => {
                        alert("Please try later.");
