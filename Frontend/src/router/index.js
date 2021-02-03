@@ -60,6 +60,7 @@ import SupplierMyMedications from '../views/supplier/SupplierMyMedications.vue'
 import ERecipes from '../views/patient/ERecipes.vue'
 import PatientComplaint from '../views/patient/PatientComplaint.vue'
 import showMedicationsHome from '../views/home/showMedicationsHome.vue'
+import myPharmacistsConsultation from '../views/patient/myPharmacistsConsultation.vue'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -376,6 +377,11 @@ const routes = [
       path: '/showMedicationsHome',
       name: 'showMedicationsHome',
       component: showMedicationsHome
+    },
+    {
+      path: '/myPharmacistsConsultation',
+      name: 'myPharmacistsConsultation',
+      component: myPharmacistsConsultation
     },
     
 

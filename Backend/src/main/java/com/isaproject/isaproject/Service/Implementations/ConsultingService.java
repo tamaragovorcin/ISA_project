@@ -45,4 +45,9 @@ public class ConsultingService implements IConsultingService {
     public Consulting update(Consulting loyaltyProgram) {
         return this.consultingRepository.save(loyaltyProgram);
     }
+
+    @Override
+    public void delete(Consulting consulting) {
+        consultingRepository.delete(consulting);
+    }
 }

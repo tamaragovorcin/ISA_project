@@ -4,15 +4,16 @@ import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Schedule.*;
+import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
 import com.isaproject.isaproject.Repository.*;
-import com.isaproject.isaproject.Service.Implementations.ConsultingService;
-import com.isaproject.isaproject.Service.Implementations.PharmacistService;
-import com.isaproject.isaproject.Service.Implementations.PharmacyService;
-import com.isaproject.isaproject.Service.Implementations.WorkingHoursPharmacistService;
+import com.isaproject.isaproject.Service.Implementations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,11 +61,18 @@ public class ConsultingController {
     @Autowired
     SundayScheduleRepository sundayScheduleRepository;
 
+    @Autowired
+    PatientService patientService;
+
+    @Autowired
+    JavaMailSenderImpl mailSender;
 
 
+    @Autowired
+    Environment environment;
 
     @PostMapping("/add")
-   // @PreAuthorize("hasRole('PHARMACIST')")
+    // @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<String> addConsulting(@RequestBody ConsultingDTO consultingDTO) {
 
         System.out.println("-+++++++++++++++++++++++++++++++++++++++");
@@ -94,6 +102,63 @@ public class ConsultingController {
                 ResponseEntity.ok(programs.get(0));
     }
 
+    @GetMapping("/cancel/{id}")
+    //@PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<String>  cancel(@PathVariable Integer id) {
+        Consulting consulting = consultingService.findById(id);
+        LocalDate date = LocalDate.now().plusDays(1);
+
+        Boolean able = false;
+        LocalTime time = consulting.getStartTime();
+
+        if(consulting.getDate().isBefore(date) && LocalTime.now().isBefore(time)) {
+            able = true;
+            consultingService.delete(consulting);
+        }
+
+        return able == true ?
+                new ResponseEntity<>("You have successfully cancelled an appointment!", HttpStatus.CREATED) :
+                new ResponseEntity<>("You are not able to cancel the appointment because it is in the next 24 hours!", HttpStatus.CREATED);
+
+
+    }
+
+    @GetMapping("/getAll")
+    //@PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<ConsultingsFrontDTO>> getAllConsultings() {
+
+        List<Consulting> programs = consultingService.findAll();
+        List<ConsultingsFrontDTO> consultingsFrontDTOS = new ArrayList<ConsultingsFrontDTO>();
+
+        for(Consulting consulting: programs){
+
+            ConsultingsFrontDTO consultingsFrontDTO = new ConsultingsFrontDTO();
+            consultingsFrontDTO.setId(consulting.getId());
+            consultingsFrontDTO.setDate(consulting.getDate());
+            consultingsFrontDTO.setDuration(consulting.getDuration());
+            consultingsFrontDTO.setName(consulting.getPharmacist().getName());
+            consultingsFrontDTO.setSurname(consulting.getPharmacist().getSurname());
+            consultingsFrontDTO.setTime(consulting.getStartTime());
+
+            LocalDate d = LocalDate.now();
+            if(consulting.getDate().isBefore(d)){
+                consultingsFrontDTO.setFinished(true);
+            }
+            else{
+                consultingsFrontDTO.setFinished(false);
+            }
+
+            consultingsFrontDTOS.add(consultingsFrontDTO);
+
+
+
+        }
+        return consultingsFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(consultingsFrontDTOS);
+    }
+
+
     @PostMapping("/getPharmacies")
     public ResponseEntity<List<PharmacyFrontDTO>> getPharmacies(@RequestBody PharmacistConsultationTimeDTO dto) {
 
@@ -119,143 +184,193 @@ public class ConsultingController {
 
 
         DayOfWeek day = date.getDayOfWeek();
-            if(day==DayOfWeek.MONDAY) {
-                for (WorkingHoursPharmacist workingHoursPharmacist: workingHoursPharmacists){
-                    for(MondaySchedule mondaySchedule: mondaySchedules){
-                        if(mondaySchedule.getId()==workingHoursPharmacist.getMondaySchedule().getId()){
+        if (day == DayOfWeek.MONDAY) {
+            for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
+                for (MondaySchedule mondaySchedule : mondaySchedules) {
+                    if (mondaySchedule.getId() == workingHoursPharmacist.getMondaySchedule().getId()) {
 
-                            start = mondaySchedule.getStartTime();
-                            end = mondaySchedule.getEndTime();
-                            start.plusSeconds(0);
-                            end.plusSeconds(0);
+                        start = mondaySchedule.getStartTime();
+                        end = mondaySchedule.getEndTime();
+                        start.plusSeconds(0);
+                        end.plusSeconds(0);
 
-                            if(start.isBefore(time) && end.isAfter(time)){
-                                found = true;
+                        if (start.isBefore(time) && end.isAfter(time)) {
+                            found = true;
+                            if (pharmacies.size() == 0) {
                                 pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                            } else {
+                                for (Pharmacy pharmacy : pharmacies) {
+                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                        pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                                    }
+                                }
                             }
+                        }
 
+                    }
+                }
+            }
+        } else if (day == DayOfWeek.TUESDAY) {
+
+            for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
+                for (TuesdaySchedule mondaySchedule : tuesdaySchedules) {
+                    if (mondaySchedule.getId() == workingHoursPharmacist.getTuesdaySchedule().getId()) {
+
+                        start = mondaySchedule.getStartTime();
+                        end = mondaySchedule.getEndTime();
+                        start.plusSeconds(0);
+                        end.plusSeconds(0);
+                        if (start.isBefore(time) && end.isAfter(time)) {
+                            found = true;
+                            if (pharmacies.size() == 0) {
+                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                            } else {
+                                for (Pharmacy pharmacy : pharmacies) {
+                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                        pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
-        else if(day==DayOfWeek.TUESDAY) {
 
-                for (WorkingHoursPharmacist workingHoursPharmacist: workingHoursPharmacists){
-                    for(TuesdaySchedule mondaySchedule: tuesdaySchedules){
-                        if(mondaySchedule.getId()==workingHoursPharmacist.getTuesdaySchedule().getId()){
+        } else if (day == DayOfWeek.WEDNESDAY) {
+            for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
+                for (WednesdaySchedule mondaySchedule : wednesdaySchedules) {
+                    if (mondaySchedule.getId() == workingHoursPharmacist.getWednesdaySchedule().getId()) {
 
-                            start = mondaySchedule.getStartTime();
-                            end = mondaySchedule.getEndTime();
-                            start.plusSeconds(0);
-                            end.plusSeconds(0);
-                            if(start.isBefore(time) && end.isAfter(time)){
-                                found = true;
+                        start = mondaySchedule.getStartTime();
+                        end = mondaySchedule.getEndTime();
+                        start.plusSeconds(0);
+                        end.plusSeconds(0);
+
+                        if (start.isBefore(time) && end.isAfter(time)) {
+                            found = true;
+                            if (pharmacies.size() == 0) {
                                 pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                            } else {
+                                for (Pharmacy pharmacy : pharmacies) {
+                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                        pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                                    }
+                                }
                             }
-
                         }
                     }
                 }
-
-        } else if(day==DayOfWeek.WEDNESDAY) {
-                for (WorkingHoursPharmacist workingHoursPharmacist: workingHoursPharmacists){
-                    for(WednesdaySchedule mondaySchedule: wednesdaySchedules){
-                        if(mondaySchedule.getId()==workingHoursPharmacist.getWednesdaySchedule().getId()){
-
-                            start = mondaySchedule.getStartTime();
-                            end = mondaySchedule.getEndTime();
-                            start.plusSeconds(0);
-                            end.plusSeconds(0);
-
-                            if(start.isBefore(time) && end.isAfter(time)){
-                                found = true;
-                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
-                            }
-
-                        }
-                    }
-                }
-
-            } else if(day==DayOfWeek.THURSDAY) {
-                for (WorkingHoursPharmacist workingHoursPharmacist: workingHoursPharmacists){
-                    for(ThursdaySchedule mondaySchedule: thursdaySchedules){
-                        if(mondaySchedule.getId()==workingHoursPharmacist.getThursdaySchedule().getId()){
-
-                            start = mondaySchedule.getStartTime();
-                            end = mondaySchedule.getEndTime();
-                            start.plusSeconds(0);
-                            end.plusSeconds(0);
-                            if(start.isBefore(time) && end.isAfter(time)){
-                                found = true;
-                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
-                            }
-
-                        }
-                    }
-                }
-
-            } else if(day==DayOfWeek.FRIDAY) {
-                for (WorkingHoursPharmacist workingHoursPharmacist: workingHoursPharmacists){
-                    for(FridaySchedule mondaySchedule: fridaySchedules){
-                        if(mondaySchedule.getId()==workingHoursPharmacist.getFridaySchedule().getId()){
-
-                            start = mondaySchedule.getStartTime();
-                            end = mondaySchedule.getEndTime();
-                            start.plusSeconds(0);
-                            end.plusSeconds(0);
-                            if(start.isBefore(time) && end.isAfter(time)){
-                                found = true;
-                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
-                            }
-
-                        }
-                    }
-                }
-
-            } else if(day==DayOfWeek.SATURDAY) {
-                for (WorkingHoursPharmacist workingHoursPharmacist: workingHoursPharmacists){
-                    for(SaturdaySchedule mondaySchedule: saturdaySchedules){
-                        if(mondaySchedule.getId()==workingHoursPharmacist.getSaturdaySchedule().getId()){
-
-                            start = mondaySchedule.getStartTime();
-                            end = mondaySchedule.getEndTime();
-                            start.plusSeconds(0);
-                            end.plusSeconds(0);
-                            if(start.isBefore(time) && end.isAfter(time)){
-                                found = true;
-                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
-                            }
-
-                        }
-                    }
-                }
-
-            } else if(day==DayOfWeek.SUNDAY) {
-                for (WorkingHoursPharmacist workingHoursPharmacist: workingHoursPharmacists){
-                    for(SundaySchedule mondaySchedule: sundaySchedules){
-                        if(mondaySchedule.getId()==workingHoursPharmacist.getSundaySchedule().getId()){
-
-                            start = mondaySchedule.getStartTime();
-                            end = mondaySchedule.getEndTime();
-                            start.plusSeconds(0);
-                            end.plusSeconds(0);
-                            if(start.isBefore(time) && end.isAfter(time)){
-                                found = true;
-                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
-                            }
-
-                        }
-                    }
-                }
-
             }
 
+        } else if (day == DayOfWeek.THURSDAY) {
+            for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
+                for (ThursdaySchedule mondaySchedule : thursdaySchedules) {
+                    if (mondaySchedule.getId() == workingHoursPharmacist.getThursdaySchedule().getId()) {
 
-        if(found == false){
+                        start = mondaySchedule.getStartTime();
+                        end = mondaySchedule.getEndTime();
+                        start.plusSeconds(0);
+                        end.plusSeconds(0);
+                        if (start.isBefore(time) && end.isAfter(time)) {
+                            found = true;
+                            if (pharmacies.size() == 0) {
+                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                            } else {
+                                for (Pharmacy pharmacy : pharmacies) {
+                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                        pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        } else if (day == DayOfWeek.FRIDAY) {
+            for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
+                for (FridaySchedule mondaySchedule : fridaySchedules) {
+                    if (mondaySchedule.getId() == workingHoursPharmacist.getFridaySchedule().getId()) {
+
+                        start = mondaySchedule.getStartTime();
+                        end = mondaySchedule.getEndTime();
+                        start.plusSeconds(0);
+                        end.plusSeconds(0);
+                        if (start.isBefore(time) && end.isAfter(time)) {
+                            found = true;
+                            if (pharmacies.size() == 0) {
+                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                            } else {
+                                for (Pharmacy pharmacy : pharmacies) {
+                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                        pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        } else if (day == DayOfWeek.SATURDAY) {
+            for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
+                for (SaturdaySchedule mondaySchedule : saturdaySchedules) {
+                    if (mondaySchedule.getId() == workingHoursPharmacist.getSaturdaySchedule().getId()) {
+
+                        start = mondaySchedule.getStartTime();
+                        end = mondaySchedule.getEndTime();
+                        start.plusSeconds(0);
+                        end.plusSeconds(0);
+                        if (start.isBefore(time) && end.isAfter(time)) {
+                            found = true;
+                            if (pharmacies.size() == 0) {
+                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                            } else {
+                                for (Pharmacy pharmacy : pharmacies) {
+                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                        pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        } else if (day == DayOfWeek.SUNDAY) {
+            for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
+                for (SundaySchedule mondaySchedule : sundaySchedules) {
+                    if (mondaySchedule.getId() == workingHoursPharmacist.getSundaySchedule().getId()) {
+
+                        start = mondaySchedule.getStartTime();
+                        end = mondaySchedule.getEndTime();
+                        start.plusSeconds(0);
+                        end.plusSeconds(0);
+                        if (start.isBefore(time) && end.isAfter(time)) {
+                            found = true;
+                            if (pharmacies.size() == 0) {
+                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                            } else {
+                                for (Pharmacy pharmacy : pharmacies) {
+                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                        pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+
+        if (found == false) {
             return null;
         }
 
-        for (Pharmacy ph : pharmacies){
+
+        for (Pharmacy ph : pharmacies) {
 
             PharmacyFrontDTO pf = new PharmacyFrontDTO();
             pf.setId(ph.getId());
@@ -276,8 +391,6 @@ public class ConsultingController {
     }
 
 
-
-
     @PostMapping("/getPharmacists")
     public ResponseEntity<List<PharmacistDTO>> getPharmacists(@RequestBody PharmacistsConsultationDTO dto) {
 
@@ -288,13 +401,9 @@ public class ConsultingController {
         List<PharmacistDTO> pharmacistDTOS = new ArrayList<PharmacistDTO>();
         List<Pharmacist> pharmacistsMAIN = new ArrayList<Pharmacist>();
         List<Pharmacy> pharmacies = new ArrayList<Pharmacy>();
-        Pharmacy pharmacy = new Pharmacy();
+        Pharmacy pharmacy1 = pharmacyService.findById(dto.getPharmacyId());
 
-        for(Pharmacy p : pharmacies){
-            if(dto.getPharmacyId() == p.getId()){
-                pharmacy = p;
-            }
-        }
+
 
 
         List<Pharmacist> pharmacists = pharmacistService.findAll();
@@ -314,183 +423,270 @@ public class ConsultingController {
 
         DayOfWeek day = date.getDayOfWeek();
 
-        if(day==DayOfWeek.MONDAY) {
-            for (WorkingHoursPharmacist workingHoursPharmacist: workingHoursPharmacists){
-                for(MondaySchedule mondaySchedule: mondaySchedules){
-                    if(mondaySchedule.getId()==workingHoursPharmacist.getMondaySchedule().getId()){
+        if (day == DayOfWeek.MONDAY) {
+            for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
+                for (MondaySchedule mondaySchedule : mondaySchedules) {
+                    if (mondaySchedule.getId() == workingHoursPharmacist.getMondaySchedule().getId()) {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
                         start.plusSeconds(0);
                         end.plusSeconds(0);
 
-                        if(start.isBefore(time) && end.isAfter(time)){
+                        if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
-                            pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                            if (pharmacies.size() == 0) {
+                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                            } else {
+                                for (Pharmacy pharmacy : pharmacies) {
+                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                        pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                                    }
+                                }
+                            }
                         }
 
                     }
                 }
             }
+        } else if (day == DayOfWeek.TUESDAY) {
+
+            for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
+                for (TuesdaySchedule mondaySchedule : tuesdaySchedules) {
+                    if (mondaySchedule.getId() == workingHoursPharmacist.getTuesdaySchedule().getId()) {
+
+                        start = mondaySchedule.getStartTime();
+                        end = mondaySchedule.getEndTime();
+                        start.plusSeconds(0);
+                        end.plusSeconds(0);
+                        if (start.isBefore(time) && end.isAfter(time)) {
+                            found = true;
+                            if (pharmacies.size() == 0) {
+                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                            } else {
+                                for (Pharmacy pharmacy : pharmacies) {
+                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                        pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        } else if (day == DayOfWeek.WEDNESDAY) {
+            for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
+                for (WednesdaySchedule mondaySchedule : wednesdaySchedules) {
+                    if (mondaySchedule.getId() == workingHoursPharmacist.getWednesdaySchedule().getId()) {
+
+                        start = mondaySchedule.getStartTime();
+                        end = mondaySchedule.getEndTime();
+                        start.plusSeconds(0);
+                        end.plusSeconds(0);
+
+                        if (start.isBefore(time) && end.isAfter(time)) {
+                            found = true;
+                            if (pharmacies.size() == 0) {
+                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                            } else {
+                                for (Pharmacy pharmacy : pharmacies) {
+                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                        pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        } else if (day == DayOfWeek.THURSDAY) {
+            for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
+                for (ThursdaySchedule mondaySchedule : thursdaySchedules) {
+                    if (mondaySchedule.getId() == workingHoursPharmacist.getThursdaySchedule().getId()) {
+
+                        start = mondaySchedule.getStartTime();
+                        end = mondaySchedule.getEndTime();
+                        start.plusSeconds(0);
+                        end.plusSeconds(0);
+                        if (start.isBefore(time) && end.isAfter(time)) {
+                            found = true;
+                            if (pharmacies.size() == 0) {
+                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                            } else {
+                                for (Pharmacy pharmacy : pharmacies) {
+                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                        pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        } else if (day == DayOfWeek.FRIDAY) {
+            for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
+                for (FridaySchedule mondaySchedule : fridaySchedules) {
+                    if (mondaySchedule.getId() == workingHoursPharmacist.getFridaySchedule().getId()) {
+
+                        start = mondaySchedule.getStartTime();
+                        end = mondaySchedule.getEndTime();
+                        start.plusSeconds(0);
+                        end.plusSeconds(0);
+                        if (start.isBefore(time) && end.isAfter(time)) {
+                            found = true;
+                            if (pharmacies.size() == 0) {
+                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                            } else {
+                                for (Pharmacy pharmacy : pharmacies) {
+                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                        pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        } else if (day == DayOfWeek.SATURDAY) {
+            for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
+                for (SaturdaySchedule mondaySchedule : saturdaySchedules) {
+                    if (mondaySchedule.getId() == workingHoursPharmacist.getSaturdaySchedule().getId()) {
+
+                        start = mondaySchedule.getStartTime();
+                        end = mondaySchedule.getEndTime();
+                        start.plusSeconds(0);
+                        end.plusSeconds(0);
+                        if (start.isBefore(time) && end.isAfter(time)) {
+                            found = true;
+                            if (pharmacies.size() == 0) {
+                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                            } else {
+                                for (Pharmacy pharmacy : pharmacies) {
+                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                        pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        } else if (day == DayOfWeek.SUNDAY) {
+            for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
+                for (SundaySchedule mondaySchedule : sundaySchedules) {
+                    if (mondaySchedule.getId() == workingHoursPharmacist.getSundaySchedule().getId()) {
+
+                        start = mondaySchedule.getStartTime();
+                        end = mondaySchedule.getEndTime();
+                        start.plusSeconds(0);
+                        end.plusSeconds(0);
+                        if (start.isBefore(time) && end.isAfter(time)) {
+                            found = true;
+                            if (pharmacies.size() == 0) {
+                                pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                            } else {
+                                for (Pharmacy pharmacy : pharmacies) {
+                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                        pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
         }
-        else if(day==DayOfWeek.TUESDAY) {
-
-            for (WorkingHoursPharmacist workingHoursPharmacist: workingHoursPharmacists){
-                for(TuesdaySchedule mondaySchedule: tuesdaySchedules){
-                    if(mondaySchedule.getId()==workingHoursPharmacist.getTuesdaySchedule().getId()){
-
-                        start = mondaySchedule.getStartTime();
-                        end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
-                        if(start.isBefore(time) && end.isAfter(time)){
-                            found = true;
-                            pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
-                        }
-
-                    }
-                }
-            }
-
-        } else if(day==DayOfWeek.WEDNESDAY) {
-            for (WorkingHoursPharmacist workingHoursPharmacist: workingHoursPharmacists){
-                for(WednesdaySchedule mondaySchedule: wednesdaySchedules){
-                    if(mondaySchedule.getId()==workingHoursPharmacist.getWednesdaySchedule().getId()){
-
-                        start = mondaySchedule.getStartTime();
-                        end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
-
-                        if(start.isBefore(time) && end.isAfter(time)){
-                            found = true;
-                            pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
-                        }
-
-                    }
-                }
-            }
-
-        } else if(day==DayOfWeek.THURSDAY) {
-            for (WorkingHoursPharmacist workingHoursPharmacist: workingHoursPharmacists){
-                for(ThursdaySchedule mondaySchedule: thursdaySchedules){
-                    if(mondaySchedule.getId()==workingHoursPharmacist.getThursdaySchedule().getId()){
-
-                        start = mondaySchedule.getStartTime();
-                        end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
-                        if(start.isBefore(time) && end.isAfter(time)){
-                            found = true;
-                            pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
-                        }
-
-                    }
-                }
-            }
-
-        } else if(day==DayOfWeek.FRIDAY) {
-            for (WorkingHoursPharmacist workingHoursPharmacist: workingHoursPharmacists){
-                for(FridaySchedule mondaySchedule: fridaySchedules){
-                    if(mondaySchedule.getId()==workingHoursPharmacist.getFridaySchedule().getId()){
-
-                        start = mondaySchedule.getStartTime();
-                        end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
-                        if(start.isBefore(time) && end.isAfter(time)){
-                            found = true;
-                            pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
-                        }
-
-                    }
-                }
-            }
-
-        } else if(day==DayOfWeek.SATURDAY) {
-            for (WorkingHoursPharmacist workingHoursPharmacist: workingHoursPharmacists){
-                for(SaturdaySchedule mondaySchedule: saturdaySchedules){
-                    if(mondaySchedule.getId()==workingHoursPharmacist.getSaturdaySchedule().getId()){
-
-                        start = mondaySchedule.getStartTime();
-                        end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
-                        if(start.isBefore(time) && end.isAfter(time)){
-                            found = true;
-                            pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
-                        }
-
-                    }
-                }
-            }
-
-        } else if(day==DayOfWeek.SUNDAY) {
-            for (WorkingHoursPharmacist workingHoursPharmacist: workingHoursPharmacists){
-                for(SundaySchedule mondaySchedule: sundaySchedules){
-                    if(mondaySchedule.getId()==workingHoursPharmacist.getSundaySchedule().getId()){
-
-                        start = mondaySchedule.getStartTime();
-                        end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
-                        if(start.isBefore(time) && end.isAfter(time)){
-                            found = true;
-                            pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
-                        }
-
-                    }
-                }
-            }
-
-        }
 
 
-        if(found == false){
+        if (found == false) {
             return null;
         }
 
 
         Boolean available = false;
 
-        for(Pharmacy pharmacy1 : pharmacies){
-           if(pharmacy.getId() == pharmacy1.getId()){
-               available = true;
-           }
+        for (Pharmacy pha : pharmacies) {
+            if (pha.getId() == pharmacy1.getId()) {
+                available = true;
+            }
         }
 
-        if(available){
+        if (available) {
 
-            for(Pharmacist pharmacist: pharmacists){
+            for (Pharmacist pharmacist : pharmacists) {
 
-                if(pharmacist.getPharmacy().getId() == pharmacy.getId()){
+                if (pharmacist.getPharmacy().getId() == pharmacy1.getId()) {
 
                     pharmacistsMAIN.add(pharmacist);
                 }
 
             }
-        }
-        else{
+
+
+            for (Pharmacist ph : pharmacistsMAIN) {
+
+                PharmacistDTO pf = new PharmacistDTO();
+                pf.setId(ph.getId());
+                pf.setFirstname(ph.getName());
+                pf.setSurname(ph.getSurname());
+                pf.setMark(ph.getMarkPharmacist());
+
+                pharmacistDTOS.add(pf);
+
+            }
+            return pharmacistDTOS == null ?
+                    new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                    ResponseEntity.ok(pharmacistDTOS);
+
+        } else {
             return null;
         }
 
 
-        for (Pharmacist ph : pharmacistsMAIN){
-
-            PharmacistDTO pf = new PharmacistDTO();
-            pf.setId(ph.getId());
-            pf.setFirstname(ph.getName());
-            pf.setSurname(ph.getSurname());
-            pf.setMark(ph.getMarkPharmacist());
-
-            pharmacistDTOS.add(pf);
-
-        }
-        return pharmacistDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacistDTOS);
     }
 
+    @PostMapping("/reserveConsultation")
+    public ResponseEntity<String> reserveConsultation(@RequestBody PharmacistsConsultationDTO dto) {
+
+        Patient patient = patientService.findById(dto.getPatient().getId());
+        Boolean able = true;
+        if(patient.getPenalties() > 3){
+            able = false;
+        }
+        ConsultingDTO consulting = new ConsultingDTO();
+        Pharmacy pharmacy = pharmacyService.findById(dto.getPharmacyId());
 
 
+        consulting.setCancelled(false);
+        consulting.setCancelled(false);
+        consulting.setDate(dto.getDate());
+        consulting.setStartTime(dto.getTime());
+        consulting.setPharmacist(dto.getPharmacist());
+        consulting.setPatient(dto.getPatient());
+        consulting.setDuration(20.0);
+        consulting.setPrice(pharmacy.getConsultingPrice());
+
+        Consulting consulting1 = consultingService.save(consulting);
+
+        if(able) {
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setTo(dto.getPatient().getEmail());
+            mail.setSubject("Successfuly reserved pharmacist consultation!");
+            mail.setFrom(environment.getProperty("spring.mail.username"));
+            //mail.setFrom("pharmacyisa@gmail.com");
+            mail.setText("You have successfully reserved an appointment on : "
+                    + consulting1.getDate() + " at " + consulting1.getStartTime() + ". Your doctor is " + consulting1.getPharmacist().getName() + " " + consulting1.getPharmacist().getSurname());
+
+            mailSender.send(mail);
+        }
+        return able == true ?
+                new ResponseEntity<>("Consulting is successfully reserved!", HttpStatus.CREATED) :
+                new ResponseEntity<>("You are not able to reserve a medication because you have 3 or more penalties!", HttpStatus.CREATED);
+    }
 }

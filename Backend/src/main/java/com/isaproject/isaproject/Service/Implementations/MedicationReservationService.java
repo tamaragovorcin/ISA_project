@@ -7,6 +7,7 @@ import com.isaproject.isaproject.Service.IServices.IMedicationReservationService
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -17,7 +18,7 @@ public class MedicationReservationService implements IMedicationReservationServi
 
     @Override
     public MedicationReservation findById(Integer id) {
-        return null;
+        return medicationRepository.findById(id).get();
     }
 
     @Override
@@ -35,6 +36,7 @@ public class MedicationReservationService implements IMedicationReservationServi
         medication.setPharmacy(medicationDTO.getPharmacy());
         medication.setMedicine(medicationDTO.getMedication());
         medication.setPatient(medicationDTO.getPatient());
+        medication.setDateOfReservation(LocalDate.now());
 
 
         return medicationRepository.save(medication);
