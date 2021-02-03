@@ -11,7 +11,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class ExaminationSchedule {
     @Id
     @GeneratedValue
@@ -20,13 +20,13 @@ public class ExaminationSchedule {
 
 
     @JsonBackReference(value="dermatologist-schedule")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "dermatologist_id", referencedColumnName = "id", nullable = false, unique = false)
     private Dermatologist dermatologist;
 
     @JsonBackReference(value="pharmacy-schedule")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = false, unique = false)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = true, unique = false)
     private Pharmacy pharmacy;
 
 

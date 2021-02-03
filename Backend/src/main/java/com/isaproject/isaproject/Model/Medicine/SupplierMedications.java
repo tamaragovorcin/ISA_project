@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class SupplierMedications {
     @Id
     @GeneratedValue
-    @Column(name="id", unique=true, nullable=false)
+    @Column(name="id", nullable=false)
     private Integer id;
 
     @Column(name = "quantity", nullable = true)
@@ -23,16 +23,8 @@ public class SupplierMedications {
     private String name;
 
 
-    @Column(name = "code", unique=true, nullable = true)
+    @Column(name = "code", nullable = true)
     private long code;
-
-
-    @Column(name = "form", nullable = true)
-    private String form;
-
-
-    @Column(name = "type", nullable = true)
-    private String type;
 
     @JsonBackReference(value="medications-supplier")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
@@ -43,14 +35,12 @@ public class SupplierMedications {
     public SupplierMedications() {
     }
 
-    public SupplierMedications(Integer id, int quantity, int reservedQuantity, String name, long code, String form, String type, Supplier supplier) {
+    public SupplierMedications(Integer id, int quantity, int reservedQuantity, String name, long code, Supplier supplier) {
         this.id = id;
         this.quantity = quantity;
         this.reservedQuantity = reservedQuantity;
         this.name = name;
         this.code = code;
-        this.form = form;
-        this.type = type;
         this.supplier = supplier;
     }
 
@@ -101,22 +91,4 @@ public class SupplierMedications {
     public void setCode(long code) {
         this.code = code;
     }
-
-    public String getForm() {
-        return form;
-    }
-
-    public void setForm(String form) {
-        this.form = form;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-
 }

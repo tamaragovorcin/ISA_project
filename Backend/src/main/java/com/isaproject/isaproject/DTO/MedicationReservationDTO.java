@@ -1,28 +1,33 @@
 package com.isaproject.isaproject.DTO;
 
+import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class MedicationReservationDTO {
 
     private Patient patient;
 
-    private Pharmacy pharmacy;
+    private int pharmacyId;
 
-    private long medicineCode;
+    private int medicationId;
 
-    private LocalDateTime dateOfTakeOver;
+    private LocalDate dateOfTakeOver;
 
-    public MedicationReservationDTO(Patient patient, Pharmacy pharmacy, long medicineCode, LocalDateTime dateOfTakeOver) {
-        this.patient = patient;
-        this.pharmacy = pharmacy;
-        this.medicineCode = medicineCode;
-        this.dateOfTakeOver = dateOfTakeOver;
-    }
+
+
 
     public MedicationReservationDTO() {
+    }
+
+    public MedicationReservationDTO(Patient patient, int pharmacyId, int medicationId, LocalDate dateOfTakeOver) {
+        this.patient = patient;
+        this.pharmacyId = pharmacyId;
+        this.medicationId = medicationId;
+        this.dateOfTakeOver = dateOfTakeOver;
     }
 
     public Patient getPatient() {
@@ -33,27 +38,27 @@ public class MedicationReservationDTO {
         this.patient = patient;
     }
 
-    public Pharmacy getPharmacy() {
-        return pharmacy;
+    public int getPharmacyId() {
+        return pharmacyId;
     }
 
-    public void setPharmacy(Pharmacy pharmacy) {
-        this.pharmacy = pharmacy;
+    public void setPharmacyId(int pharmacyId) {
+        this.pharmacyId = pharmacyId;
     }
 
-    public long getMedicineCode() {
-        return medicineCode;
+    public int getMedicationId() {
+        return medicationId;
     }
 
-    public void setMedicineCode(long medicineCode) {
-        this.medicineCode = medicineCode;
+    public void setMedicationId(int medicationId) {
+        this.medicationId = medicationId;
     }
 
-    public LocalDateTime getDateOfTakeOver() {
+    public LocalDate getDateOfTakeOver() {
         return dateOfTakeOver;
     }
 
-    public void setDateOfTakeOver(LocalDateTime dateOfTakeOver) {
+    public void setDateOfTakeOver(LocalDate dateOfTakeOver) {
         this.dateOfTakeOver = dateOfTakeOver;
     }
 }

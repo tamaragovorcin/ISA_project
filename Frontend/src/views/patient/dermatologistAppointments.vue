@@ -1,5 +1,3 @@
-ines (39 sloc)  1.61 KB
-  
 <template>
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
@@ -36,14 +34,17 @@ ines (39 sloc)  1.61 KB
             
             <span style="float: left; margin: 15px;">
                 <b><button class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" v-on:click = "allPharmacies">Show all pharmacies</button></b>
-                     <b class="tab"></b>                
+                      <p class="tab"></p>              
 
-                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">Dermatologist appointments</button>
+                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">Make a new dermatologist appointment</button>
 
-                    <b class="tab"></b>     
+                      <p class="tab"></p>    
+                     <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "myDermatologistAppointments">My dermatologist appointments</button>
+
+                <p class="tab"></p>    
                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allPharmacists">Pharmacist consultation</button>
 
-                    <b class="tab"></b>                
+                    <p class="tab"></p>                  
                    
             </span>
              
@@ -64,41 +65,75 @@ ines (39 sloc)  1.61 KB
             
         </div>
 
-<div style="background: white; height: 60px; width: 1000px; margin-top: 50px">
-                      
 
-                                                                            <div class="col">
-                                                                                <label>Add new appointment:</label>
-                                                                            </div>
-                                                                            <div class="col">
-                                                                                  <select v-model="pharmacy">
-                                                                                        <option v-for="ph in pharmacies" :key="ph.id">
-                                                                                            {{ph.name}}
-                                                                                        </option>
-                                                                                   </select>
-                                                                            </div>
+      <div style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px"  v-for="dermatologistAppointment in this.dermatologistAppointments"  v-bind:key="dermatologistAppointment.id">
 
-                                                                  
-                                                                   
-                                                                    <div class="row">
-                                                                        <div class="col">
-                                                                        <label for="name">Enter your complaint:</label>
-                                                                    </div> 
-                                                                        
-                                                                    </div>
-                                                                    <div class="row">
-                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" class="form-control">
-                                                                       
-                                                                    </div>
-</div>
-                                                                     
+
+<table style="" class="table table-dark">
+ 
+ 
+    <tbody>
+    <tr>
+    
+      <td>Ime dermatologa:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.dermatologistFirst}} {{dermatologistAppointment.dermatologistLast}}</td>
+    
+    </tr>
+    <tr>
+     
+      <td>Apoteka:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.pharmacy}} </td>
+
+    </tr>
+    <tr>
+     
+      <td>Datum:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.date}} </td>
+     
+    </tr>
+        <tr>
+   
+      <td>Pocetak:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.startTime}} </td>
+     
+    </tr>
+        <tr>
+      
+      <td>Trajanje:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.duration}} </td>
+     
+    </tr>
+        <tr>
+   
+      <td>Cena:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.price}} </td>
+     
+    </tr>
+     <tr>   <th scope="row"></th>
+     <td><button class = "btn btn-outline-primary" style="color:white; col-span =2 " v-on:click = "reserve($event, dermatologistAppointment)">Make a reservation</button></td></tr>
+  </tbody>
+
+  
+</table>
+       
+      
+
+
+      
+
+      </div>                                                                
 
 </div>
 </template>
 
 <script>
 export default {
-
   data() {
     return {
        showComplaintForm : false,
@@ -111,12 +146,43 @@ export default {
        showPharmacyComplaint : false,
        showPharmacistComplaint : false,
        showDermatologistComplaint : false,
+       dermatologistAppointment: null,
+       dermatologistAppointments : [],
+       patient: null
 
     }
   },
+mounted() {
 
+    this.axios.get('/pharmacy/ExaminationSchedule')
+          .then(response => {
+                this.dermatologistAppointments= response.data;
+               console.log(this.dermatologistAppointments);
+              
+          })
+
+          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+
+             }
+         }).then(response => {
+                this.patient = response.data;
+         
+         }).catch(res => {
+                       alert("NOT OK");
+                        console.log(res);
+                 });
+
+
+    
+  },
   methods:{
-     
+       myDermatologistAppointments: function(){
+            window.location.href = "/myDermatologistAppointments";
+
+      },
          allPharmacies: function(){
         window.location.href = "/myProfilePatient";
       },
@@ -124,8 +190,9 @@ export default {
            window.location.href = "/dermatologistAppointments";
       },
       allPharmacists : function(){
-          window.location.href = "/login";
+          window.location.href = "/PharmacistConsultation";
 
+        
       },
       showMyProfile: function(){
         window.location.href = "/myProfilePatient";
@@ -135,12 +202,10 @@ export default {
       },
       logOut : function(){
           window.location.href = "/login";
-
       },
       writeComplaint() {
         this.$refs['my-modal'].show()
       },
-
         searchName() {
         this.$refs['my-modal'].show()
       },
@@ -163,21 +228,35 @@ export default {
           this.showDermatologistComplaint = true;
       },
       sendComplaint : function(){
-
-
  
         },
        showPharmacies : function(){
             window.location.href = "/showPharmaciesPatient";
 
+      },
+    
+
+         reserve : function(event, dermatologistAppointment) {
+          this.dermatologistAppointment = dermatologistAppointment
+          alert(this.patient.id)
+          const examination = {
+              patient: this.patient,
+              cancelled : false,
+              showedUp: false,
+              examinationId: this.dermatologistAppointment.id,
+              information: null
+
+
+
+          }
+            this.axios.post('/pharmacy/addExamination', examination)
+
+
+      },
       }
-}
+
 }
 </script>
 
 <style>
-
 </style>
-
-
-  

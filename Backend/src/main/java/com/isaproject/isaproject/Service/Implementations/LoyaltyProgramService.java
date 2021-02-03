@@ -3,7 +3,6 @@ package com.isaproject.isaproject.Service.Implementations;
 import com.isaproject.isaproject.DTO.LoyaltyProgramDTO;
 import com.isaproject.isaproject.Model.HelpModel.LoyaltyProgram;
 import com.isaproject.isaproject.Repository.LoyaltyProgramRepository;
-import com.isaproject.isaproject.Repository.MedicationReservationRepository;
 import com.isaproject.isaproject.Service.IServices.ILoyaltyProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -5,170 +5,65 @@ ines (39 sloc)  1.61 KB
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-            <span style="float: left; margin: 15px;">
-                <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
-                     <b class="tab"></b>                
-
-                    <button class = "btn btn-link btn-lg" v-on:click = "showPharmacies">Pharmacies</button>
-
-                    <b class="tab"></b>     
-                   <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
-
-                    <b class="tab"></b>                
-                   
-                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "writeComplaint">Write complaint</button>
-                    <b class="tab"></b>   
-                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "showSubscriptions">My subscriptions</button>
-                    <b class="tab"></b>  
+             <span style="float: left; margin: 15px;">
+                    <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
+                    <strong class="tab"></strong>          
+                    <a  class = "btn btn-secondary" href= "/showPharmaciesPatient">Pharmacies</a>
+                    <strong class="tab"></strong>          
+                    <a  class = "btn btn-secondary" href= "/myProfilePatient">My profile</a>
+                    <strong class="tab"></strong>          
+                    <a  class = "btn btn-secondary" href= "/patientComplaint">Write complaint</a>
+                    <strong class="tab"></strong>          
+                    <a  class = "btn btn-secondary" href= "/subscriptionsToPharmacies">My subscriptions</a>
+                    <strong class="tab"></strong>          
+                    <a  class = "btn btn-secondary" href= "/eRecipes">ERecipes</a>
+                    <strong class="tab"></strong>          
             </span>
-              <span  style="float:right;margin:15px">
-                    
-
-                    <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
-
-                </span>
-
+            <span  style="float:right;margin:15px">
+                <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
+           </span>
         </div>
 
+    <div v-for="item in this.completeDictionary" v-bind:key="item.pharmacy.id">
+                        <div style = "background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
 
-       <div>
-     <b-modal ref="my-modal" hide-footer scrollable title="Write complaint" size="lg" modal-class="b-modal">
-                    <div modal-class="modal-dialog" role="document">
-                            <div class="modal-content" style="background-color:whitesmoke">
-                                    <div class="modal-header">
-                                        
+                            <table id="table2" class="table">
+                            
+                            
+                                <tbody>
+                                    <tr>
+                                    <th scope="row"></th>
+                                    <td>Pharmacy name</td>
+                                    <td>{{item.pharmacy.pharmacyName}}</td>
+                                    
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"></th>
+                                    <td>Address</td>
+                                    <td>{{item.pharmacy.postalCode}} {{item.pharmacy.country}}, {{item.pharmacy.street}} {{item.pharmacy.number}}</td>
 
-                                         <div class="row">
-                                                    <div class = "tab"></div><div class = "tab"></div>
-                                                  <button class = "btn btn-primary" v-on:click = "complainAboutPharmacy">Pharmacy</button>
-                                                  <div class = "tab"></div>
-                                                  <button class = "btn btn-primary" v-on:click = "complainAboutPharmacist">Pharmacist</button>
-                                                  <div class = "tab"></div>
-                                                   <button class = "btn btn-primary" v-on:click = "complainAboutDermatologist">Dermatologist</button>
-                                        </div>
-                        
-                                    </div>
-                                    <div class="modal-body">
-                                        <div v-if = "showPharmacyComplaint">
-                                                                    <div class="row">
-
-                                                                            <div class="col">
-                                                                                <label>Choose pharmacy:</label>
-                                                                            </div>
-                                                                            <div class="col">
-                                                                                  <select v-model="pharmacy">
-                                                                                        <option v-for="ph in pharmacies" :key="ph.id">
-                                                                                            {{ph.name}}
-                                                                                        </option>
-                                                                                   </select>
-                                                                            </div>
-
-                                                                    </div>
-                                                                    
-                                                                    <hr />
-                                                                    <div class="row">
-                                                                        <div class="col">
-                                                                        <label for="name">Enter your complaint:</label>
-                                                                    </div> 
-                                                                        
-                                                                    </div>
-                                                                    <div class="row">
-                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" class="form-control">
-                                                                       
-                                                                    </div>
-                                                                     <div class="modal-footer">
-                                        <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" @click="sendComplaint">Send complaint</button>
-                                    </div>
-                                        </div>
-                                        <div v-if = "showPharmacistComplaint">
-                                                                    <div class="row">
-
-                                                                            <div class="col">
-                                                                                <label>Choose pharmacist:</label>
-                                                                            </div>
-                                                                            <div class="col">
-                                                                                  <select v-model="pharmacist">
-                                                                                        <option v-for="ph in pharmacists" :key="ph.id">
-                                                                                            {{ph.name}}
-                                                                                        </option>
-                                                                                   </select>
-                                                                            </div>
-
-                                                                    </div>
-                                                                    
-                                                                    <hr />
-                                                                    <div class="row">
-                                                                        <div class="col">
-                                                                        <label for="name">Enter your complaint:</label>
-                                                                    </div> 
-                                                                    </div>
-                                                                    <div class="row">
-                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" class="form-control">
-                                                                       
-                                                                    </div>
-                                                                     <div class="modal-footer">
-                                        <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" @click="sendComplaint">Send complaint</button>
-                                    </div>
-                                        </div>
-                                        <div v-if = "showDermatologistComplaint">
-                                                                    <div class="row">
-
-                                                                            <div class="col">
-                                                                                <label>Choose dermatologist:</label>
-                                                                            </div>
-                                                                            <div class="col">
-                                                                                  <select v-model="dermatologist">
-                                                                                        <option v-for="ph in dermatologists" :key="ph.id">
-                                                                                            {{ph.name}}
-                                                                                        </option>
-                                                                                   </select>
-                                                                            </div>
-
-                                                                    </div>
-                                                                    
-                                                                    <hr />
-                                                                    <div class="row">
-                                                                    <div class="col">
-                                                                        <label for="name">Enter your complaint:</label>
-                                                                    </div> 
-                                                                    </div>
-                                                                    <div class="row">
-                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" class="form-control">
-                                                                       
-                                                                    </div>
-                                                                     <div class="modal-footer">
-                                        <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" @click="sendComplaint">Send complaint</button>
-                                    </div>
-                                        </div>
-                                       
-                                    </div>
-                            </div>
-                    </div>
-    </b-modal>
-  </div>
-
-    <div style = "background-color:lightgray; margin: auto; width: 13%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-
-                <table class="form-group">
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
-
-                    <tr v-for="item in this.completeDictionary" v-bind:key="item.pharmacy.pharmacyName">
-                        <td>{{item.pharmacy.pharmacyName}}</td>
-                        <td v-if = "item.subscribed==='NO'">
-                            <button class = "btn btn-link btn-lg" v-on:click = "subrsribe($event,item.pharmacy)">Subscribe</button>
-                        </td>
-                        <td v-if = "item.subscribed==='YES'">
-                            <button class = "btn btn-link btn-lg" v-on:click = "unsubrsribe($event,item.pharmacy)">Unsubscribe</button>
-                        </td>   
-                    </tr>
-
-                </table>     
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"></th>
+                                    <td>Mark</td>
+                                    <td>{{item.pharmacy.mark}} </td>
+                                    
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"></th>
+                                    <td v-if = "item.subscribed==='NO'" colspan="2">
+                                        <button class="btn btn-primary" v-on:click = "subrsribe($event,item.pharmacy.id)">Subscribe</button>
+                                    </td>
+                                    <td v-if = "item.subscribed==='YES'" colspan="2">
+                                        <button class="btn btn-primary" v-on:click = "unsubrsribe($event,item.pharmacy.id)">Unsubscribe</button>
+                                    </td>  
+                                    </tr>
+                                    
+                                
+                                </tbody>
+                            </table>
+                         
+                         </div>
                   
     </div>
 
@@ -180,16 +75,6 @@ export default {
 
   data() {
     return {
-       showComplaintForm : false,
-       pharmacies : [],
-       pharmacy : null,
-       pharmacists : [],
-       pharmacist : null,
-       dermatologists : [],
-       dermatologist : null,
-       showPharmacyComplaint : false,
-       showPharmacistComplaint : false,
-       showDermatologistComplaint : false,
        pharmaciesSubscriptions : null,
        patientsSubscriptions : null,
        completeDictionary : [],
@@ -199,50 +84,19 @@ export default {
 
   methods:{
      
-      showMyProfile: function(){
-        window.location.href = "/myProfilePatient";
-      },
-      showHomePage : function(){
-          window.location.href = "/isaHomePage";
-      },
+     
       logOut : function(){
           localStorage.removeItem('token');
           window.location.href = "/login";
 
       },
-      writeComplaint() {
-        this.$refs['my-modal'].show()
-      },
-       hideModal() {
-        this.$refs['my-modal'].hide()
-      },
-      complainAboutPharmacy : function(){
-          this.showPharmacyComplaint = true;
-          this.showPharmacistComplaint = false;
-          this.showDermatologistComplaint = false;
-      },
-      complainAboutPharmacist : function(){
-          this.showPharmacyComplaint = false;
-          this.showPharmacistComplaint = true;
-          this.showDermatologistComplaint = false;
-      },
-       complainAboutDermatologist : function(){
-          this.showPharmacyComplaint = false;
-          this.showPharmacistComplaint = false;
-          this.showDermatologistComplaint = true;
-      },
-      sendComplaint : function(){
-
-      },
-      showPharmacies : function(){
-            window.location.href = "/showPharmaciesPatient";
-      },
-      showSubscriptions : function() {
-            window.location.href = "/subscriptionsToPharmacies";
-      },
+      
       unsubrsribe : function(event, pharmacy) {
          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-            this.axios.post('/patient/unsubscribeToPharmacy',pharmacy,{ 
+           const pharmacyInfo = {
+                pharmacyId : pharmacy
+            }
+            this.axios.post('/patient/unsubscribeToPharmacy',pharmacyInfo,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                 }}).then(response => {
@@ -255,7 +109,10 @@ export default {
       },
       subrsribe : function(event, pharmacy){
             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-            this.axios.post('/patient/subscribeToPharmacy',pharmacy,{ 
+            const pharmacyInfo = {
+                pharmacyId : pharmacy
+            }
+            this.axios.post('/patient/subscribeToPharmacy',pharmacyInfo,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                 }}).then(response => {
@@ -278,22 +135,23 @@ export default {
                         this.patientsSubscriptions=response.data;
                         var i = 0;
                         for (i = 0; i < this.pharmaciesSubscriptions.length; i++) {
-                            if(this.patientsSubscriptions.includes(this.pharmaciesSubscriptions[i])) {
+                            if(this.patientsSubscriptions.includes(this.pharmaciesSubscriptions[i].id)) {
                                 const dict = {
-                                        pharmacy : {pharmacyName : this.pharmaciesSubscriptions[i] },
+                                        pharmacy :  this.pharmaciesSubscriptions[i] ,
                                         subscribed : "YES"
                                     }
                                     this.completeDictionary.push(dict)
                             }
                             else {
                                 const dict = {
-                                        pharmacy : { pharmacyName: this.pharmaciesSubscriptions[i] },
+                                        pharmacy : this.pharmaciesSubscriptions[i],
                                         subscribed : "NO"
                                     }
                                 this.completeDictionary.push(dict)
                                 
                             }   
                         }
+                        console.log(this.completeDictionary)
                         
                     }).catch(res => {
                                 alert("Please try again later.");
@@ -319,10 +177,3 @@ export default {
     }
 }
 </script>
-
-<style>
-
-</style>
-
-
-  

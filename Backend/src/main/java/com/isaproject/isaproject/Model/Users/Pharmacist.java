@@ -10,7 +10,9 @@ import com.isaproject.isaproject.Model.Schedule.WorkingHoursPharmacist;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,17 +28,22 @@ public class Pharmacist extends  PersonUser {
     @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<HolidaySchedulePharmacist> holidaySchedulePharmacists = new HashSet<HolidaySchedulePharmacist>();
 
-    @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<WorkingHoursPharmacist> workingHoursPharmacists = new HashSet<WorkingHoursPharmacist>();
 
     @Column(name = "markPharmacist", nullable = true)
     private double markPharmacist;
+
+    @JsonManagedReference(value="pharmacist-mark")
+    @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private Set<MarkPharmacist> marks = new HashSet<MarkPharmacist>();
 
 
     @JsonBackReference
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "pharmacy_Pharmacist", referencedColumnName = "id", nullable = true, unique = false)
     private Pharmacy pharmacy;
+
+
+    public Pharmacist() { super();}
 
 
     public Set<Consulting> getConsulting() {
@@ -47,22 +54,6 @@ public class Pharmacist extends  PersonUser {
         this.consulting = consulting;
     }
 
-
-    public Pharmacist(Set<Consulting> consulting,  double markPharmacist) {
-        this.consulting = consulting;
-        this.markPharmacist = markPharmacist;
-    }
-
-    public Pharmacist() { super();}
-
-    public Set<WorkingHoursPharmacist> getWorkingHoursPharmacists() {
-        return workingHoursPharmacists;
-    }
-
-    public void setWorkingHoursPharmacists(Set<WorkingHoursPharmacist> workingHoursPharmacists) {
-        this.workingHoursPharmacists = workingHoursPharmacists;
-    }
-
     public Set<HolidaySchedulePharmacist> getHolidaySchedulePharmacists() {
         return holidaySchedulePharmacists;
     }
@@ -71,20 +62,28 @@ public class Pharmacist extends  PersonUser {
         this.holidaySchedulePharmacists = holidaySchedulePharmacists;
     }
 
+    public double getMarkPharmacist() {
+        return markPharmacist;
+    }
+
+    public void setMarkPharmacist(double markPharmacist) {
+        this.markPharmacist = markPharmacist;
+    }
+
+    public Set<MarkPharmacist> getMarks() {
+        return marks;
+    }
+
+    public void setMarks(Set<MarkPharmacist> marks) {
+        this.marks = marks;
+    }
+
     public Pharmacy getPharmacy() {
         return pharmacy;
     }
 
     public void setPharmacy(Pharmacy pharmacy) {
         this.pharmacy = pharmacy;
-    }
-
-    public double getMarkPharmacist() {
-        return markPharmacist;
-    }
-
-    public void setMarkPharmacist(double mark) {
-        this.markPharmacist = mark;
     }
 }
 

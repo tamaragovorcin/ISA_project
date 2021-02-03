@@ -1,8 +1,0 @@
-api1
- Precription for medicine
-
-Patients name: Marko
-Patients surname: Lazarevic
-Patients medical ID number: 2112313
-Medication: Brufen Quantity: 3
-Usage: 

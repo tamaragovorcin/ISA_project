@@ -2,7 +2,6 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.HolidaySchedulePharmacistDTO;
 import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
-import com.isaproject.isaproject.Repository.DermatologistRepository;
 import com.isaproject.isaproject.Repository.HolidaySchedulePharmacistRepository;
 import com.isaproject.isaproject.Service.IServices.IHolidaySchedulePharmacistsService;
 import org.springframework.beans.factory.annotation.Autowired;

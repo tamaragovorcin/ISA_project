@@ -4,11 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
+import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
 import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
 import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
 import com.isaproject.isaproject.Model.Orders.Offer;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.Mark;
+import com.isaproject.isaproject.Model.Users.MarkMedication;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
 
 import javax.persistence.*;
@@ -55,22 +58,26 @@ public class Medication  {
     private String wayOfSelling;
 
 
-    @ManyToMany
-    @JoinTable(name = "eprescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "eprescription_id", referencedColumnName = "id"))
-    private Set<EPrescription> ePrescriptions = new HashSet<EPrescription>();
 
     @ManyToMany
     @JoinTable(name = "prescription_medications", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
     private Set<Prescription> prescriptions = new HashSet<Prescription>();
 
+    @JsonManagedReference(value="medication-mark")
+    @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private Set<MarkMedication> marks = new HashSet<MarkMedication>();
 
     @ManyToMany
     @JoinTable(name = "medications_alternatives", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "medication_alternative_id", referencedColumnName = "id"))
     private Set<Medication> medications = new HashSet<Medication>();
 
+    @JsonManagedReference(value="medicine-alergy")
     @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
 
+    @JsonManagedReference(value="medicine-medicationReservations")
+    @OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MedicationReservation> medicationReservations = new HashSet<MedicationReservation>();
 
     @JsonManagedReference(value="medication-medicationPrice")
     @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -82,66 +89,6 @@ public class Medication  {
 
 
     public Medication() {}
-
-    public Medication(Integer id, String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints, String wayOfSelling, Set<EPrescription> ePrescriptions, Set<Offer> offer, Set<Prescription> prescriptions, Set<Medication> medications, Set<PatientsMedicationAlergy> patientsMedicationAlergy, Set<MedicationInOrder> medicationInOrder, Set<MedicationPrice> medicationPrices, Specification specification) {
-        this.id = id;
-        this.name = name;
-        this.code = code;
-        this.form = form;
-        this.type = type;
-        this.issuanceRegime = issuanceRegime;
-        this.mark = mark;
-        this.loyaltyPoints = loyaltyPoints;
-        this.wayOfSelling = wayOfSelling;
-        this.ePrescriptions = ePrescriptions;
-
-    }
-
-    public String getWayOfSelling() {
-        return wayOfSelling;
-    }
-
-    public void setWayOfSelling(String wayOfSelling) {
-        this.wayOfSelling = wayOfSelling;
-    }
-
-
-    public Specification getSpecification() {
-        return specification;
-    }
-
-    public void setSpecification(Specification specification) {
-        this.specification = specification;
-    }
-
-
-    public Set<PatientsMedicationAlergy> getPatientsMedicationAlergy() {
-        return patientsMedicationAlergy;
-    }
-
-    public void setPatientsMedicationAlergy(Set<PatientsMedicationAlergy> patientsMedicationAlergy) {
-        this.patientsMedicationAlergy = patientsMedicationAlergy;
-    }
-
-    public Set<Medication> getMedications() {
-        return medications;
-    }
-
-    public void setMedications(Set<Medication> medications) {
-        this.medications = medications;
-    }
-
-    public Set<Prescription> getPrescriptions() {
-        return prescriptions;
-    }
-
-    public void setPrescriptions(Set<Prescription> prescriptions) {
-        this.prescriptions = prescriptions;
-        this.medications = medications;
-        this.patientsMedicationAlergy = patientsMedicationAlergy;
-        this.medicationPrices = medicationPrices;
-        this.specification = specification;
-    }
 
     public Integer getId() {
         return id;
@@ -207,12 +154,52 @@ public class Medication  {
         this.loyaltyPoints = loyaltyPoints;
     }
 
-    public Set<EPrescription> getePrescriptions() {
-        return ePrescriptions;
+    public String getWayOfSelling() {
+        return wayOfSelling;
     }
 
-    public void setePrescriptions(Set<EPrescription> ePrescriptions) {
-        this.ePrescriptions = ePrescriptions;
+    public void setWayOfSelling(String wayOfSelling) {
+        this.wayOfSelling = wayOfSelling;
+    }
+
+    public Set<Prescription> getPrescriptions() {
+        return prescriptions;
+    }
+
+    public void setPrescriptions(Set<Prescription> prescriptions) {
+        this.prescriptions = prescriptions;
+    }
+
+    public Set<MarkMedication> getMarks() {
+        return marks;
+    }
+
+    public void setMarks(Set<MarkMedication> marks) {
+        this.marks = marks;
+    }
+
+    public Set<Medication> getMedications() {
+        return medications;
+    }
+
+    public void setMedications(Set<Medication> medications) {
+        this.medications = medications;
+    }
+
+    public Set<PatientsMedicationAlergy> getPatientsMedicationAlergy() {
+        return patientsMedicationAlergy;
+    }
+
+    public void setPatientsMedicationAlergy(Set<PatientsMedicationAlergy> patientsMedicationAlergy) {
+        this.patientsMedicationAlergy = patientsMedicationAlergy;
+    }
+
+    public Set<MedicationReservation> getMedicationReservations() {
+        return medicationReservations;
+    }
+
+    public void setMedicationReservations(Set<MedicationReservation> medicationReservations) {
+        this.medicationReservations = medicationReservations;
     }
 
     public Set<MedicationPrice> getMedicationPrices() {
@@ -221,5 +208,13 @@ public class Medication  {
 
     public void setMedicationPrices(Set<MedicationPrice> medicationPrices) {
         this.medicationPrices = medicationPrices;
+    }
+
+    public Specification getSpecification() {
+        return specification;
+    }
+
+    public void setSpecification(Specification specification) {
+        this.specification = specification;
     }
 }

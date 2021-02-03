@@ -18,17 +18,17 @@
                          <b-dropdown-item v-on:click = "registerSystemAdmin" disabled>System admin</b-dropdown-item>
                     </div>                    
                  </b-dropdown> 
-                 <b class="tab"></b>   
+                  <strong class="tab"></strong>  
                  <button class = "btn btn-link btn-lg" v-on:click = "addMedicine">Add medication</button>
-                 <b class="tab"></b>   
+                  <strong class="tab"></strong>  
                  <button class = "btn btn-link btn-lg" v-on:click = "medicationSearch">Medications</button>
-                 <b class="tab"></b>  
+                  <strong class="tab"></strong>  
                  <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
-                 <b class="tab"></b>  
+                  <strong class="tab"></strong>  
                  <button class = "btn btn-link btn-lg" v-on:click = "showComplaints">Complaints</button>
             </span>
             <span  style="float:right;margin:15px">
-                     <b class="tab"></b>    
+                  <strong class="tab"></strong>  
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
              </span>
         </div>

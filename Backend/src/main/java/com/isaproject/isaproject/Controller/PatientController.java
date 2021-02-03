@@ -6,6 +6,10 @@ import ch.qos.logback.core.net.SyslogOutputStream;
 
 import com.isaproject.isaproject.DTO.*;
 
+import com.isaproject.isaproject.DTO.AlergiesDTO;
+import com.isaproject.isaproject.DTO.AlergiesFrontDTO;
+import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Medicine.Specification;
 import com.isaproject.isaproject.Model.Pharmacy.Actions;
@@ -16,6 +20,7 @@ import com.isaproject.isaproject.Service.Implementations.ActionsService;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
 import com.isaproject.isaproject.Repository.PatientRepository;
+import com.isaproject.isaproject.Service.Implementations.AlergiesService;
 import com.isaproject.isaproject.Service.Implementations.PatientService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +49,9 @@ import java.util.*;
 public class PatientController {
     @Autowired
     PatientService patientService;
+
+    @Autowired
+    AlergiesService alergiesService;
     @Autowired
     PharmacyService pharmacyService;
 
@@ -89,21 +97,17 @@ public class PatientController {
     }
 
     @GetMapping(path = "/confirm-account/{token}")
-    public Object confirmUserAccount(@PathVariable String token)
-    {
+    public Object confirmUserAccount(@PathVariable String token) {
         ConfirmationToken token2 = confirmationTokenRepository.findByConfirmationToken(token);
 
-        if(token != null)
-        {
+        if (token != null) {
             Patient user = patientService.findByEmail(token2.getPersonUser().getEmail());
             user.setEnabled(true);
             patientRepository.save(user);
             RedirectView redirect = new RedirectView();
             redirect.setUrl("http://localhost:8085/patientProfile");
             return redirect;
-        }
-        else
-        {
+        } else {
             return "The link is invalid or broken!!";
         }
 
@@ -111,8 +115,7 @@ public class PatientController {
 
     @GetMapping("/{id}")
         //@PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<Patient> getById(@PathVariable Integer id)
-    {
+    ResponseEntity<Patient> getById(@PathVariable Integer id) {
         Integer idd = 1;
         Patient patient = patientService.findById(idd);
         return patient == null ?
@@ -122,10 +125,9 @@ public class PatientController {
 
     @GetMapping("/account")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<Patient> getMyAccount()
-    {
+    ResponseEntity<Patient> getMyAccount() {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PersonUser user = (PersonUser) currentUser.getPrincipal();
         Patient patient = patientService.findById(user.getId());
         return patient == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -135,10 +137,9 @@ public class PatientController {
 
     @GetMapping("/address")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<Address> getMyAddress()
-    {
+    ResponseEntity<Address> getMyAddress() {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PersonUser user = (PersonUser) currentUser.getPrincipal();
 
         Patient patient = patientService.findById(user.getId());
         return patient.getAddress() == null ?
@@ -147,16 +148,15 @@ public class PatientController {
     }
 
     @GetMapping("")
-    ResponseEntity<List<Patient>> getAll()
-    {
+    ResponseEntity<List<Patient>> getAll() {
         List<Patient> patients = patientService.findAll();
         return patients == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patients);
     }
+
     @GetMapping("/email/{id}")
-    ResponseEntity<String> getEmail(@PathVariable Integer id)
-    {
+    ResponseEntity<String> getEmail(@PathVariable Integer id) {
         String email = patientService.getEmail(id);
         return email == null || email.equals("") ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -177,30 +177,82 @@ public class PatientController {
     }
 
     @PostMapping("/update")
+    ResponseEntity<Patient> update(@RequestBody PersonUserDTO person) {
+        Patient patient = patientService.update(person);
 
-    ResponseEntity<Patient> update(@RequestBody PersonUserDTO person)
-    {
-        Patient per = patientService.findByEmail(person.getEmail());
-        Integer id = per.getId();
-        patientService.delete(per);
-        Patient patient = patientService.update(person, id);
         return patient == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patient);
     }
 
+
+            @PostMapping("/addAlergies")
+    ResponseEntity<PatientsMedicationAlergy> addAlergies(@RequestBody AlergiesDTO al) {
+
+
+        List<PatientsMedicationAlergy> alergy = new ArrayList<PatientsMedicationAlergy>();
+        alergy = alergiesService.findAll();
+        for(PatientsMedicationAlergy pa : alergy){
+            if(pa.getPatient().getId()==al.getPatient().getId()){
+                alergiesService.delete(pa);
+            }
+        }
+        PatientsMedicationAlergy patientsMedicationAlergy = alergiesService.save(al);
+        return patientsMedicationAlergy == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(patientsMedicationAlergy);
+
+
+
+}
+    @GetMapping("/getAlergies/{id}")
+    ResponseEntity<List<AlergiesFrontDTO>> getAlergies(@PathVariable Integer id) {
+        List<PatientsMedicationAlergy> alergies = alergiesService.findAll();
+        Patient patient = patientService.findById(id);
+        List<AlergiesFrontDTO> patientsAlergies = new ArrayList<AlergiesFrontDTO>();
+        for(PatientsMedicationAlergy patientsMedicationAlergy: alergies){
+            if(patientsMedicationAlergy.getPatient().getId()==id){
+                AlergiesFrontDTO alergiesFrontDTO = new AlergiesFrontDTO();
+                alergiesFrontDTO.setId(patientsMedicationAlergy.getId());
+                alergiesFrontDTO.setPatient_id(patientsMedicationAlergy.getPatient().getId());
+                alergiesFrontDTO.setName(patientsMedicationAlergy.getMedication().getName());
+
+
+                patientsAlergies.add(alergiesFrontDTO);
+            }
+        }
+        return patientsAlergies == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(patientsAlergies);
+    }
+
+
+    @GetMapping("/deleteAlergies/{id}")
+    void deleteAlergies(@PathVariable Integer id) {
+        List<PatientsMedicationAlergy> alergies = alergiesService.findAll();
+       for(PatientsMedicationAlergy patientsMedicationAlergy : alergies){
+           if(id==patientsMedicationAlergy.getId()){
+               alergiesService.delete(patientsMedicationAlergy);
+           }
+       }
+
+
+    }
+
+
+
     @GetMapping("/mySubscriptions")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<List<String>> getMySubscriptions()
+    ResponseEntity<List<Integer>> getMySubscriptions()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
 
         Patient patient = patientService.findById(user.getId());
         Set<Pharmacy> pharmacies = patient.getSubscribedToPharmacies();
-        List<String>pharmaciesNames =  new ArrayList<>();
+        List<Integer>pharmaciesNames =  new ArrayList<>();
         for (Pharmacy pharmacy: pharmacies)
-            pharmaciesNames.add(pharmacy.getPharmacyName());{
+            pharmaciesNames.add(pharmacy.getId());{
     }
         return pharmaciesNames == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -209,9 +261,9 @@ public class PatientController {
 
     @PostMapping("/subscribeToPharmacy")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<String> subsribe(@RequestBody PharmacyNameDTO pharmacyName)
+    ResponseEntity<String> subsribe(@RequestBody PharmacyIdDTO pharmacyId)
     {
-        Pharmacy pharmacy =pharmacyService.findByPharmacyName(pharmacyName.getPharmacyName());
+        Pharmacy pharmacy =pharmacyService.findById(pharmacyId.getPharmacyId());
         return patientService.subsribeToPharmacy(pharmacy) == false ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
@@ -219,9 +271,9 @@ public class PatientController {
 
     @PostMapping("/unsubscribeToPharmacy")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<String> unsubsribe(@RequestBody PharmacyNameDTO pharmacyName)
+    ResponseEntity<String> unsubsribe(@RequestBody PharmacyIdDTO pharmacyId)
     {
-        Pharmacy pharmacy =pharmacyService.findByPharmacyName(pharmacyName.getPharmacyName());
+        Pharmacy pharmacy =pharmacyService.findById(pharmacyId.getPharmacyId());
 
         return patientService.unsubsribeToPharmacy(pharmacy) == false ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

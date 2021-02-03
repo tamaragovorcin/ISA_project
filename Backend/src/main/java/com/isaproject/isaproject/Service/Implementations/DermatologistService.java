@@ -3,7 +3,6 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.DermatologistDTO;
-import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.DTO.WorkingHoursDermatologistDTO;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
@@ -69,6 +68,12 @@ public class DermatologistService implements IDermatologistService {
         dermatologist.setAuthorities(auth);
         dermatologist.setEnabled(true);
         return dermatologistRepository.save(dermatologist);
+    }
+
+    @Override
+
+    public Dermatologist updateMark(Dermatologist dermatologist0) {
+        return dermatologistRepository.save(dermatologist0);
     }
 
     @Override

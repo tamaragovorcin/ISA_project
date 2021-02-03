@@ -1,0 +1,277 @@
+ines (39 sloc)  1.61 KB
+  
+<template>
+  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+     background-size: 175% 100%;  height: 1500px">
+        <div style="background: #0D184F; height: 90px;">
+            
+            <span style="float: left; margin: 15px;">
+                <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
+                     <p class="tab"></p>                 
+
+                    <button class = "btn btn-link btn-lg" v-on:click = "showPharmacies">Pharmacies</button>
+
+                    <p class="tab"></p>     
+                   <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
+
+                      <p class="tab"></p>                  
+                   
+
+   
+
+                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "writeComplaint">Write complaint</button>
+                     <p class="tab"></p>     
+            </span>
+              <span  style="float:right;margin:15px">
+                    
+
+                    <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
+
+                </span>
+
+        </div>
+
+        
+        <div style="background: lightgray; height: 60px;">
+            
+            <span style="float: left; margin: 15px;">
+                <strong><button class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" v-on:click = "allPharmacies">Show all pharmacies</button></strong>
+                      <p class="tab"></p>                 
+
+                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">Make a new dermatologist appointment</button>
+
+                   <p class="tab"></p>     
+                     <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "myDermatologistAppointments">My dermatologist appointments</button>
+
+                      <p class="tab"></p>   
+                   <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allPharmacists">Pharmacist consultation</button>
+
+                     <p class="tab"></p>                  
+                   
+            </span>
+             
+
+        </div>
+
+        <div style="background: white; height: 60px; margin-top: 20px">
+            
+           <span  style="float:right;margin:15px">
+                    
+                    <input type="textarea" style="height:20;width:150;background-color:white;" placeholder="Search pharmacy by name">
+                     
+                   <button class = "btn btn-link btn" style="color:black; " v-on:click = "searchName">Search</button>
+
+            
+                </span>
+             
+            
+        </div>
+
+
+      <div style="background: whitesmoke; border: 3px solid #0D184F; height: 400px; width:1000px; margin-left:300px; margin-top: 20px"  v-for="dermatologistAppointment in this.dermatologistAppointments"  v-bind:key="dermatologistAppointment.id">
+       
+
+<table style = "" class="table table-dark">
+ 
+ 
+    <tbody>
+      <tr>
+       <div v-if="dermatologistAppointment.finished" >
+          <th scope="row" style="col-span =2; color:red"> FINISHED </th>
+        </div>
+
+         <div v-else >
+          <th scope="row" style="col-span =2; color:green"> UPCOMING </th>
+        </div>
+      </tr>
+
+    <tr>
+    
+      <td>Ime dermatologa:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.dermatologistFirst}} {{dermatologistAppointment.dermatologistLast}}</td>
+    
+    </tr>
+    <tr>
+     
+      <td>Apoteka:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.pharmacy}} </td>
+
+    </tr>
+    <tr>
+     
+      <td>Datum:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.date}} </td>
+     
+    </tr>
+        <tr>
+   
+      <td>Pocetak:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.startTime}} </td>
+     
+    </tr>
+        <tr>
+      
+      <td>Trajanje:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.duration}} </td>
+     
+    </tr>
+        <tr>
+   
+      <td>Cena:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.price}} </td>
+     
+  
+    </tr>
+     <tr>   <th scope="row"></th>
+     <td>
+        <div v-if="dermatologistAppointment.finished" >
+     
+     </div>
+      <div v-else>
+         <button class = "btn btn-outline-primary" style="color:white; col-span =2 " v-on:click = "reserve($event, dermatologistAppointment)">Cancel this reservation</button>
+      </div>
+      </td></tr>
+  </tbody>
+</table>
+       
+      
+
+
+      
+
+      </div>                                                                
+
+</div>
+</template>
+
+<script>
+export default {
+
+  data() {
+    return {
+       showComplaintForm : false,
+       pharmacies : [],
+       pharmacy : null,
+       pharmacists : [],
+       pharmacist : null,
+       dermatologists : [],
+       dermatologist : null,
+       showPharmacyComplaint : false,
+       showPharmacistComplaint : false,
+       showDermatologistComplaint : false,
+       dermatologistAppointment: null,
+       dermatologistAppointments : [],
+       patient: null
+
+    }
+  },
+mounted() {
+
+  
+
+          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+
+             }
+         }).then(response => {
+                this.patient = response.data;
+           console.log( this.patient);
+                 this.axios.get('/pharmacy/cancelExamination/'+this.patient.id)
+                    .then(response => {
+                this.dermatologistAppointments= response.data;
+               console.log(this.dermatologistAppointments);
+              
+          })
+
+         })
+
+
+      
+
+},
+  methods:{
+     
+         allPharmacies: function(){
+        window.location.href = "/myProfilePatient";
+      },
+      allDermatologists : function(){
+           window.location.href = "/dermatologistAppointments";
+      },
+      allPharmacists : function(){
+          window.location.href = "/PharmacistConsultation";
+
+      },
+      showMyProfile: function(){
+        window.location.href = "/myProfilePatient";
+      },
+      showHomePage : function(){
+          window.location.href = "/isaHomePage";
+      },
+      logOut : function(){
+          window.location.href = "/login";
+
+      },
+      writeComplaint() {
+        this.$refs['my-modal'].show()
+      },
+
+        searchName() {
+        this.$refs['my-modal'].show()
+      },
+       hideModal() {
+        this.$refs['my-modal'].hide()
+      },
+      complainAboutPharmacy : function(){
+          this.showPharmacyComplaint = true;
+          this.showPharmacistComplaint = false;
+          this.showDermatologistComplaint = false;
+      },
+      complainAboutPharmacist : function(){
+          this.showPharmacyComplaint = false;
+          this.showPharmacistComplaint = true;
+          this.showDermatologistComplaint = false;
+      },
+       complainAboutDermatologist : function(){
+          this.showPharmacyComplaint = false;
+          this.showPharmacistComplaint = false;
+          this.showDermatologistComplaint = true;
+      },
+      sendComplaint : function(){
+
+
+ 
+        },
+       showPharmacies : function(){
+            window.location.href = "/showPharmaciesPatient";
+
+      },
+      myDermatologistAppointments: function(){
+            window.location.href = "/myDermatologistAppointments";
+
+      },
+
+         reserve : function(event, dermatologistAppointment) {
+          this.dermatologistAppointment = dermatologistAppointment
+        
+            this.axios.get('/pharmacy/cancel/'+dermatologistAppointment.id)
+
+
+      },
+}
+}
+</script>
+
+<style>
+
+</style>
+
+
+  

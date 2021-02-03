@@ -2,28 +2,30 @@
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-                <span style="float: left; margin: 15px;">
+              <span style="float: left; margin: 15px;">
                 <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
-                <b class="tab"></b>    
+                <strong class="tab"></strong>  
                 <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
-                <b class="tab"></b>    
+                <strong class="tab"></strong>  
                 <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
-                 <b class="tab"></b>    
+                <strong class="tab"></strong>  
                  <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
                  
-                <b class="tab"></b> 
+                <strong class="tab"></strong>  
                  <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
                                class = "btn btn-link btn-lg">
                     <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
                     <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
                 </b-dropdown> 
-                  <b class="tab"></b>  
+                <strong class="tab"></strong>  
                 <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
-                <b class="tab"></b> 
+                <strong class="tab"></strong>  
                 <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
-                        <b class="tab"></b>    
+                <strong class="tab"></strong>  
+                 <a   class = "btn btn-secondary" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
+                <strong class="tab"></strong>  
                 <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
-                        <b class="tab"></b>    
+                <strong class="tab"></strong>  
                 <a   class = "btn btn-secondary" href="/order">Orders</a>
             </span>
               <span  style="float:right;margin:15px">
@@ -39,7 +41,7 @@
 
         <div class="container-fluid">
 
-         <b-button class = "btn btn-warning" @click="showModal">+ Add medication</b-button>
+         <b-button class = "btn btn-warning" @click="showModal">Define medication price</b-button>
         
         <b-modal ref="my-modal" hide-footer scrollable title="Add examination to schedule" size="lg" modal-class="b-modal">
                     <div modal-class="modal-dialog" role="document">
@@ -87,7 +89,7 @@
                                     </div>
                     <div class="modal-footer">
                                         <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" v-on:click="addMedication">Add medication</button>
+                                        <button class="btn btn-primary" v-on:click="addMedication">Save</button>
                    </div>
 
                             
@@ -107,17 +109,23 @@
   <table class="table table-striped table-dark">
   <thead class="thead-dark">
     <tr>
-      <th scope="col"></th>
       <th scope="col">Medication name</th>
       <th scope="col">Medication code</th>
-      <th scope="col">Mark</th>
-      <th scope="col">Type</th>
+      <th scope="col">Medication form</th>
+      <th scope="col">Manufacturer</th>
+      <th scope="col">Price</th>
+      <th scope="col">Price expiry date</th>
     </tr>
   </thead>
   <tbody>
     <tr v-for="med in ourMedications" :key="med.id">
-                                                    <td>med.medication.name</td>
-                                                    <td></td>
+                                                    <td>{{med.name}}</td>
+                                                    <td>{{med.code}}</td>
+                                                    <td>{{med.form}}</td>
+                                                    <td>{{med.manufacturer}}</td>
+                                                    <td>{{med.price}}</td>
+                                                    <td>{{med.date}}</td>
+                                                    
                                                   
                                                 </tr>
    
@@ -176,6 +184,17 @@ export default {
                         'Authorization': 'Bearer ' + token,
                     }
                     }).then(response => {
+                            this.allMedications = response.data;
+                    }).catch(response => {
+                            alert("Please try again later.");
+                            console.log(response);
+                    });
+                    
+                     this.axios.get('/pharmacyAdmin/medicationFront',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
                             this.ourMedications = response.data;
                     }).catch(response => {
                             alert("Please try again later.");
@@ -189,16 +208,7 @@ export default {
                 console.log(res);
         });
        
-        this.axios.get('/medication',{ 
-             headers: {
-                 'Authorization': 'Bearer ' + token,
-             }
-         }).then(response => {
-               this.allMedications=response.data;
-         }).catch(res => {
-                       alert("Please try again later.");
-                        console.log(res);
-                 });
+     
         
 
         
@@ -237,8 +247,8 @@ export default {
                                 'Authorization': 'Bearer ' + token,
                         }})
                 .then(response => {
-                       alert("Successfully added medication in pharmacy");
-                        window.location.href= "pharmacyMedications";
+                       alert("Successfully updated medication price.");
+                        window.location.href= "/pharmacyMedications";
                         console.log(response.data);
                 })
                 .catch(response => {

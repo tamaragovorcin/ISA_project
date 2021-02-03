@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.isaproject.isaproject.Model.Examinations.Consulting;
-import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
@@ -18,6 +16,7 @@ import java.util.Set;
 @Entity
 @DiscriminatorValue("Dermatologist")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Dermatologist extends PersonUser{
 
     @Column(name = "markDermatologist", nullable = true)
@@ -38,6 +37,10 @@ public class Dermatologist extends PersonUser{
     @JoinTable(name = "dermatologists_pharmacies", joinColumns = @JoinColumn(name = "dermatologist_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
     private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
+
+    @JsonManagedReference(value="dermatologist-mark")
+    @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private Set<MarkDermatologist> marks = new HashSet<MarkDermatologist>();
 
     public Dermatologist() {}
 

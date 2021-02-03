@@ -67,7 +67,7 @@ public class OrderController {
         List<Order> orders = orderService.findAll();
         List<OrderReviewDTO> ordersDto = new ArrayList<>();
         for (Order order: orders) {
-            if(order.getDate().isAfter(LocalDate.now()))
+            if(order.getDate().isAfter(LocalDate.now()) && !order.getStatus().equals("CLOSED"))
             {
                 if(supplierHasMadeOffer(order)) {
                     ordersDto.add(new OrderReviewDTO(order.getId(), order.getDate(), order.getStatus(), getMedicationsInOrder(order.getMedicationInOrders()),
