@@ -167,16 +167,29 @@ public class PharmacyController {
     }
 
     @GetMapping("/allNames")
-    ResponseEntity<List<String>> getAllPharmaciesNames()
+    ResponseEntity<List<PharmacyFrontDTO>> getAllPharmaciesNames()
     {
         List<Pharmacy> pharmacies = pharmacyService.findAll();
-        List<String>pharmaciesNames = new ArrayList<>();
-        for (Pharmacy pharmacy: pharmacies)
-            pharmaciesNames.add(pharmacy.getPharmacyName());{
+        List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
+
+        for (Pharmacy ph : pharmacies){
+
+            PharmacyFrontDTO pf = new PharmacyFrontDTO();
+            pf.setId(ph.getId());
+            pf.setCountry(ph.getAddress().getCountry());
+            pf.setNumber(ph.getAddress().getNumber());
+            pf.setPostalCode(ph.getAddress().getPostalCode());
+            pf.setStreet(ph.getAddress().getStreet());
+            pf.setPharmacyName(ph.getPharmacyName());
+            pf.setMark(ph.getMark());
+            pf.setCity(ph.getAddress().getTown());
+
+            pharmacyFrontDTOS.add(pf);
+
         }
-        return pharmaciesNames == null ?
+        return pharmacyFrontDTOS == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmaciesNames);
+                ResponseEntity.ok(pharmacyFrontDTOS);
     }
 
     @GetMapping("/dermatologists/{id}")
@@ -228,8 +241,6 @@ public class PharmacyController {
         Set<ExaminationSchedule> examinationTerms = pharmacyService.findById(id).getExaminationSchedules();
         List<FreeExaminationTermsDTO> freeExaminationTerms = new ArrayList<FreeExaminationTermsDTO>();
         for(ExaminationSchedule ex :  examinationTerms){
-                System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-                System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                 System.out.println(ex.getDermatologist().getName());
 
                 FreeExaminationTermsDTO term = new FreeExaminationTermsDTO();

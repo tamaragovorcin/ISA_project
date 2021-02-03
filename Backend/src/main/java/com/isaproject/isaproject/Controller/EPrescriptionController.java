@@ -90,7 +90,7 @@ public class EPrescriptionController {
     ResponseEntity<String> choosePharmacyForEReceipt(@RequestBody ChoosenPharmacyDTO choosenPharmacy) {
         return medicationPriceService.updateMedicineQuantityEreceipt(choosenPharmacy) == false ||
                 patientService.informPatientAboutEreceipt(choosenPharmacy.getMedications())==false ||
-                ePrescriptionService.save(choosenPharmacy.getMedications())==null ?
+                ePrescriptionService.save(choosenPharmacy)==null ?
 
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok("Successfully updated!");

@@ -4,18 +4,13 @@ public class SupplierMedicationsDTO {
     private int quantity;
     private String name;
     private long code;
-    private String form;
-    private String type;
 
-    public SupplierMedicationsDTO() {
-    }
+    public SupplierMedicationsDTO() { }
 
-    public SupplierMedicationsDTO(int quantity, String name, long code, String form, String type) {
+    public SupplierMedicationsDTO(int quantity, String name, long code) {
         this.quantity = quantity;
         this.name = name;
         this.code = code;
-        this.form = form;
-        this.type = type;
     }
 
     public int getQuantity() {
@@ -40,21 +35,5 @@ public class SupplierMedicationsDTO {
 
     public void setCode(long code) {
         this.code = code;
-    }
-
-    public String getForm() {
-        return form;
-    }
-
-    public void setForm(String form) {
-        this.form = form;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 }

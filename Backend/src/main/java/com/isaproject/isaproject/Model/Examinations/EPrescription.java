@@ -34,14 +34,27 @@ public class EPrescription {
     @OneToMany(mappedBy = "ePrescription", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<MedicationEPrescription> medications = new HashSet<MedicationEPrescription>();
 
+
+    @Column(name = "pharmacyId", nullable = false)
+    private Integer pharmacyId;
+
     public EPrescription() {}
 
-    public EPrescription(Integer id, UUID code, Patient patient, LocalDate date, Set<MedicationEPrescription> medications) {
+    public EPrescription(Integer id, UUID code, Patient patient, LocalDate date, Set<MedicationEPrescription> medications, Integer pharmacyId) {
         this.id = id;
         this.code = code;
         this.patient = patient;
         this.date = date;
         this.medications = medications;
+        this.pharmacyId = pharmacyId;
+    }
+
+    public Integer getPharmacyId() {
+        return pharmacyId;
+    }
+
+    public void setPharmacyId(Integer pharmacyId) {
+        this.pharmacyId = pharmacyId;
     }
 
     public UUID getCode() {

@@ -1,4 +1,5 @@
 package com.isaproject.isaproject.Service.Implementations;
+import com.isaproject.isaproject.DTO.ChoosenPharmacyDTO;
 import com.isaproject.isaproject.DTO.QRcodeInformationDTO;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Medicine.MedicationEPrescription;
@@ -38,7 +39,7 @@ public class EPrescriptionService implements IEPrescriptionService {
     }
 
     @Override
-    public EPrescription save(List<QRcodeInformationDTO> qRcodeInformationDTOS) {
+    public EPrescription save(ChoosenPharmacyDTO choosenPharmacy) {
         try {
             Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
             PersonUser user = (PersonUser) currentUser.getPrincipal();
@@ -47,8 +48,9 @@ public class EPrescriptionService implements IEPrescriptionService {
             ePrescription.setPatient(patient);
             ePrescription.setDate(LocalDate.now());
             ePrescription.setCode(UUID.randomUUID());
+            ePrescription.setPharmacyId(choosenPharmacy.getPharmacyId());
             EPrescription ePrescription1= ePrescriptionRepository.save(ePrescription);
-
+            List<QRcodeInformationDTO> qRcodeInformationDTOS = choosenPharmacy.getMedications();
             for (QRcodeInformationDTO medication : qRcodeInformationDTOS) {
                 MedicationEPrescription medicationEPrescription = new MedicationEPrescription();
                 medicationEPrescription.setCode(medication.getMedicationCode());
