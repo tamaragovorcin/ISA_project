@@ -163,6 +163,18 @@ public class PatientController {
                 ResponseEntity.ok(email);
     }
 
+    @GetMapping("penals/{id}")
+    //@PreAuthorize("hasRole('PHARMACIST')")
+    ResponseEntity<Patient> getByPatientId(@PathVariable Integer id)
+    {
+        Patient patient = patientService.findById(id);
+        patient.setPenalties(patient.getPenalties()+1);
+        this.patientRepository.save(patient);
+
+        return patient == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(patient);
+    }
 
     @PostMapping("/update")
     ResponseEntity<Patient> update(@RequestBody PersonUserDTO person) {
@@ -173,7 +185,8 @@ public class PatientController {
                 ResponseEntity.ok(patient);
     }
 
-    @PostMapping("/addAlergies")
+
+            @PostMapping("/addAlergies")
     ResponseEntity<PatientsMedicationAlergy> addAlergies(@RequestBody AlergiesDTO al) {
 
 

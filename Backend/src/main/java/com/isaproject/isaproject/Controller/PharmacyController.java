@@ -66,7 +66,12 @@ public class PharmacyController {
     private IPersonUserService userService;
 
     @Autowired
+    ConsultingService consultingService;
+
+    @Autowired
     ExaminationService examinationService;
+    @Autowired
+    EPrescriptionService ePrescriptionService;
 
     @PostMapping("/add")
     ResponseEntity<Pharmacy> add(@RequestBody PharmacyDTO ph)
@@ -732,5 +737,19 @@ public class PharmacyController {
         }
         return pharmacyList;
     }
+
+    @GetMapping("checkForPharmacy/{pharmacyId}")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<String> checkPossibilityPharmacy(@PathVariable Integer pharmacyId)
+    {
+        Boolean hasEreceipt = ePrescriptionService.checkEReceiptInPharmacy(pharmacyId);
+        Boolean hasConsulting = consultingService.checkIfPatientHasConsulting(pharmacyId);
+        Boolean hasExamination = examinationService.checkIfPatientHasExamination(pharmacyId);
+
+        return (hasEreceipt == false && hasConsulting==false)?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok("Successfully");
+    }
+
 
 }

@@ -24,9 +24,6 @@ public class ComplaintController {
     @Autowired
     ComplaintService complaintService;
 
-    @Autowired
-    EPrescriptionService ePrescriptionService;
-
     @PostMapping("/add")
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<Complaint> add(@RequestBody ComplaintDTO complaintDTO)
@@ -79,18 +76,6 @@ public class ComplaintController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(complaintReviewDTOS);
     }
-
-
-    @GetMapping("checkForPharmacy/{pharmacyId}")
-    @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<String> checkPossibilityPharmacy(@PathVariable Integer pharmacyId)
-    {
-        Boolean hasEreceipt = ePrescriptionService.checkEReceiptInPharmacy(pharmacyId);
-        return hasEreceipt == false ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok("Successfully");
-    }
-
 
     private PharmacyDTO getPharmacyDto(Pharmacy pharmacy) {
         Address address = pharmacy.getAddress();

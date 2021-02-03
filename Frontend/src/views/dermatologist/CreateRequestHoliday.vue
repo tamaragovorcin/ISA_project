@@ -43,15 +43,16 @@
 export default {
   data() {
     return {
-        pharmacist : {},
+        dermatologist : {},
     
         startDate: null,
         endDate : null,
         types: [
           { type: 'VACATION' },
           { type: 'ABSENCE' },
-         
+      
       ],
+         type : ""
      
     }
   },

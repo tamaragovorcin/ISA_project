@@ -165,7 +165,7 @@ export default {
             subject : "PHARMACY"
           }
           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-            this.axios.get('/complaint/checkForPharmacy/'+this.pharmacy.pharmacyId,{ 
+            this.axios.get('/pharmacy/checkForPharmacy/'+this.pharmacy.pharmacyId,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                 }}).then(response =>  {

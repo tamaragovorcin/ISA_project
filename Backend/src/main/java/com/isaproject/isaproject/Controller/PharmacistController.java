@@ -1,17 +1,11 @@
-
 package com.isaproject.isaproject.Controller;
 
-import com.isaproject.isaproject.DTO.MarkDTO;
-import com.isaproject.isaproject.DTO.PharmacistDTO;
-import com.isaproject.isaproject.DTO.PharmacyAdminDTO;
-import com.isaproject.isaproject.DTO.UserBasicInfoDTO;
+import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
-import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Users.*;
-import com.isaproject.isaproject.Repository.MarkPharmacistRepository;
 import com.isaproject.isaproject.Service.Implementations.MarkPharmacistService;
 import com.isaproject.isaproject.Service.Implementations.PharmacistService;
-import com.isaproject.isaproject.Service.Implementations.PharmacyAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +14,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/pharmacist")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PharmacistController {
+
     @Autowired
     PharmacistService pharmacistService;
 
@@ -34,9 +32,9 @@ public class PharmacistController {
     MarkPharmacistService markService;
 
     @PostMapping("/register")
-    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    //@PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacistDTO userRequest) {
-        System.out.println(userRequest.getPharmacy().getPharmacyName());
+        //System.out.println(userRequest.getPharmacy().getPharmacyName());
 
         PersonUser existUser = pharmacistService.findByEmail(userRequest.getEmail());
         if (existUser != null) {
@@ -62,19 +60,24 @@ public class PharmacistController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 new ResponseEntity<>("Pharmacist is successfully updated!", HttpStatus.CREATED);
     }
+    @GetMapping("/consultings")
+    @PreAuthorize("hasRole('PHARMACIST')")
+    ResponseEntity<Set<ConsultingNoteDTO>> getOurConsultings() {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser) currentUser.getPrincipal();
+        Pharmacist pharmacyAdmin = pharmacistService.findById(user.getId());
+        HashSet<ConsultingNoteDTO> cons = new HashSet<>();
 
-    @GetMapping("/basicInfo")
-    @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<List<UserBasicInfoDTO>> getPharmacistsBasicInfo() {
-        List<UserBasicInfoDTO> basicInfos = new ArrayList<>();
-        List<Pharmacist> pharmacists = pharmacistService.findAll();
-        for (Pharmacist pharmacist : pharmacists) {
-            basicInfos.add(new UserBasicInfoDTO(pharmacist.getName() + " " + pharmacist.getSurname(), pharmacist.getEmail(), pharmacist.getId()));
+        for (Consulting c : pharmacyAdmin.getConsulting()) {
+            if(c.getDate().isAfter(LocalDate.now()))
+                cons.add(new ConsultingNoteDTO(c.getId(), c.getPatient().getId(), c.getPatient().getName(), c.getPatient().getSurname(), c.getDate(), c.getStartTime()));
         }
-        return basicInfos == null ?
+        return pharmacyAdmin.getConsulting() == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(basicInfos);
+                ResponseEntity.ok(cons);
     }
+
+
 
     @PostMapping("/delete")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
@@ -95,6 +98,27 @@ public class PharmacistController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacist);
     }
+
+
+
+
+
+
+    @GetMapping("/basicInfo")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<UserBasicInfoDTO>> getPharmacistsBasicInfo() {
+        List<UserBasicInfoDTO> basicInfos = new ArrayList<>();
+        List<Pharmacist> pharmacists = pharmacistService.findAll();
+        for (Pharmacist pharmacist : pharmacists) {
+            basicInfos.add(new UserBasicInfoDTO(pharmacist.getName() + " " + pharmacist.getSurname(), pharmacist.getEmail(), pharmacist.getId()));
+        }
+        return basicInfos == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(basicInfos);
+    }
+
+
+
     @PostMapping("/leaveAMark")
     //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<Pharmacist> leaveAMark(@RequestBody MarkDTO dto) {

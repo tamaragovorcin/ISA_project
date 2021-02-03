@@ -91,7 +91,6 @@
 
 <script>
 export default {
-
   data() {
     return {
         name : "",
@@ -107,7 +106,6 @@ export default {
         country : ""
     }
   },
-
   methods:{
        
       register : function(){
@@ -138,7 +136,6 @@ export default {
       },
       showRegistrationForm : function(){
              window.location.href = "/registration";
-
       },
       showLoginForm: function(){
           window.location.href = "/login";
@@ -151,8 +148,4 @@ export default {
 </script>
 
 <style>
-
 </style>
-
-
-  

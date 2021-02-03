@@ -40,59 +40,52 @@
 
              </span>
     </div>
-    <div>
-    <section class = "border">
-        <h3 align="center"><b>Search your patients</b></h3>
-			<form accept-charset="UTF-8">
-                <table align="center">
-                    <tr>
-                        <b class="tab"></b> 
-                        <td align="left">Patient's name::</td>
-                        <td>&nbsp;</td>
-                            <input style="width: 200px;" class="form-control" placeholder="Enter patient's name" name="name" type="text" id="name" >              
-                        <td>&nbsp;</td>  
-                         
-                         
-                        <b class="tab"></b>     
-                        <b class="tab"></b>  
-
-                        <td align="left">Patient's secondname:</td>
-                        <td>&nbsp;</td>
-                            <input style="width: 200px;" class="form-control" placeholder="Enter patient's secondname" name="secondname" type="text" id="secondname">              
-                        <td>&nbsp;</td>  
-                        <b class="tab"></b>     
-                        <b class="tab"></b>  
-
-
-                        <td align="right" ><button  class = "btn btn-success" v-on:click="search">Search</button></td>
-                        <b class="tab"></b>  
-                       
-                    </tr>
-
-                    
-                </table>   
-		</form>
-    </section>    
-    </div>
+    
 
     <div class="container-fluid">
                     <b class="tab"></b>     
                     <b class="tab"></b>  
-                    <h3 align = "center"><b>Your patients</b></h3>
-                    <div v-for="patient in patients" :key="patient.id" class="col-md-12 border ">
-                        <div class="blog-box" >
-                            <div class="blog-desc" style="font-size:25">
-                                <p>Name: {{patient.name}} </p>
-                                <p>Surname: {{patient.surname}} </p>
-                                <button class ="btn btn-primary" v-on:click = "note($event, patient.id)">Note consulting</button>
-                                <b class="tab"></b> 
-                                <button class ="btn btn-danger" v-on:click = "ignored">Patient ignored consulting</button>
-                            </div>
-                        </div>
-                    </div>
+                     <div style="height:45px"></div>
+                         <h3>Consulting of pharmacist</h3>
+
+                                        <table class="table table-striped table-dark">
+                                        <thead class="thead-dark">
+                                          <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Name patient</th>
+                                            <th scope="col">Surname patient</th>
+                                            <th scope="col">Date of consulting</th>
+                                            <th scope="col">Time:</th>
+                                            <th scope="col">Note:</th>
+                                            <th scope="col">Prescription:</th>
+                                            <th scope="col">Ignored:</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr v-for="consulting in ourConsultings" :key="consulting.id">
+                                                    <td></td>
+                                                    <td>{{consulting.namePatient}}</td>
+                                                    <td>{{consulting.surnamePatient}}</td>
+                                                    <td>{{consulting.date}}</td>
+                                                    <td>{{consulting.startTime}}</td>
+                                                    <td><button class="btn btn-primary btn-lg" v-on:click="Belezi ($event, consulting)">Note Consulting</button></td>
+                                                   <td><button class="btn btn-success btn-lg" v-on:click="Recept ($event, consulting)">Add prescription</button></td>
+                                                    <td> <button class="btn btn-danger  btn-lg" v-on:click="ignored($event, consulting.patientId)">Ignored, add penal</button></td>
+
+                                                </tr>
+   
+  </tbody>
+</table>
+
+
+
+                                                   
+                                        
+                    
     </div>
 <div>
-     <b-modal ref="my-modal" hide-footer scrollable title="Write complaint" size="lg" modal-class="b-modal">
+     
+    <b-modal ref="my-modal" hide-footer scrollable title="Write complaint" size="lg" modal-class="b-modal">
                     <div modal-class="modal-dialog" role="document">
                             <div class="modal-content" style="background-color:whitesmoke">
                                       <div class="modal-header">
@@ -101,57 +94,80 @@
                                       </div>
                                       <div class="modal-body">
                                       
-                                      <div class="row justify-content-md-end">
-                                          <label style="font-size:17">Date:</label>
-                                          <input type="date" name="date" v-model="date">
-                                      </div>
-                                        
-                                        <div class="row justify-content-md-center">
+                                      
+                                        <div class="row justify-content-md-center md-4 p-2">
 
                                           <div class="col-25">
                                           <label style="font-size: 20px;">Your comment about consulting:</label>
                                           </div>
                                           <b class="tab"></b> 
                                           <div class="col-75">
-                                          <input type="text" style="font-size: 20px; background:white; height:80px" size="80" placeholder="Enter consulting.." v-model="information">
+                                          <input type="text" style="font-size: 20px; background:white; height:80px" size="80" placeholder="Enter consulting.." v-model="consulting.information">
                                           </div>
                                            <b class="tab"></b> 
                                         <b class="tab"></b> 
                                         <b class="tab"></b> 
                                          </div>
-                                         <b class="tab"></b> 
+                                        <b class="tab"></b> 
                                         <b class="tab"></b> 
                                         <b class="tab"></b> 
                                         
+                                     
                                         <div class="row justify-content-md-center">
 
                                           <div class="col-25">
-                                          <label style="font-size: 20px;">Start time:</label>
+                                              <label style="font-size: 20px;">Duration of consulting:</label>
                                           </div>
-                                          <b class="tab"></b> 
+                                            <b class="tab"></b> 
                                           <div class="col-75">
-                                          <input type="time" style="font-size: 20px;" size="80" placeholder="Enter time.." v-model="startTime">
+                                            <input type="number" style="font-size: 20px;" size="80" placeholder="Enter duration of consulting.." v-model="consulting.duration">
                                           </div>
 
                                          </div>
-                                        
-
-                                        <div class="row justify-content-md-center">
-
-                                          <div class="col-25">
-                                          <label style="font-size: 20px;">Duration of consulting:</label>
+                                         
+                                      </div>
+                                      <div class="modal-footer">
+                                         <button class="btn btn-secondary" v:on:click="hideModal">Close</button>
+                                        <button class="btn btn-primary" v-on:click="salji">Confirm consulting</button>
+                                      </div>
+                              </div>
+                      </div>
+    </b-modal>
+</div>
+<div>
+    <b-modal ref="my-modal1" hide-footer scrollable title="Write complaint" size="lg" modal-class="b-modal">
+                    <div modal-class="modal-dialog" role="document">
+                            <div class="modal-content" style="background-color:whitesmoke">
+                                      <div class="modal-header">
+                                      
+                                      <h3>Add prescription</h3>
+                                      </div>
+                                      <div class="modal-body">
+                                      
+                                        <div class="container">
+                                          <div class="col">
+                                            <label style="font-size:20px">Choose medication for patient</label>
                                           </div>
-                                          <b class="tab"></b> 
-                                          <div class="col-75">
-                                          <input type="number" style="font-size: 20px;" size="80" placeholder="Enter duration of consulting.." v-model="duration">
+                                          <div class="col">
+                                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication" class = "btn btn-danger btn-lg" style="float:left;margin-left:20px;">
+                                            <b-dropdown-item v-for="medication in this.medications"  v-on:click ="patientIsSelected($event, medication)" v-bind:key="medication.id"> {{medication.name}} </b-dropdown-item>
+                                            </b-dropdown> 
                                           </div>
-
-                                         </div>
+                                          <div class="col">
+                                            <label> </label>
+                                          
+                                          </div>
+                                           <div class="col">
+                                            <input type="text" style= "background-color: lightgrey; height:50px; width:250px" v-model="durationOfTherapy" placeholder="Duration of therapy in days">
+                                          
+                                          </div>
+                                          
+                                        </div>
                                         
                                       </div>
                                       <div class="modal-footer">
-                                         <button class="btn btn-secondary" click="hideModal">Close</button>
-                                        <button class="btn btn-primary" click="sendConfirm">Confirm consulting</button>
+                                         <button class="btn btn-secondary">Close</button>
+                                        <button class="btn btn-primary" v-on:click="praviRecept">Create prescription</button>
                                       </div>
                               </div>
                       </div>
@@ -167,9 +183,13 @@ export default {
   data() {
     return {
       
-       patients : [],
-       pharmacist: "", 
-       patient: "",
+      consultingId : "",
+       consulting: {
+       patient : {
+         name : "",
+         surname : ""
+       },
+       pharmacist : "", 
        date: "",
        startTime: "",
        duration: "", 
@@ -177,6 +197,14 @@ export default {
        canceled: false,
        showedUp: false,
        information: ""
+       },
+      ourConsultings: "",
+      selectedConsulting : {},
+      medications : [],
+      durationOfTherapy : "",
+      medicationList : [],
+     
+      medication : ""
 
       
 
@@ -196,12 +224,26 @@ export default {
                  });
       
 
-		this.axios.get('/patient')
+	
+
+            this.axios.get('/pharmacist/consultings',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            this.ourConsultings = response.data;
+                            alert(this.ourConsultings);
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
+    this.axios.get('/medication')
       .then(response => {
-          this.patients = response.data;
+          this.medications = response.data;
           console.log(response);
 
       })
+
    },
      
      methods:{
@@ -220,19 +262,60 @@ export default {
        search: function(){
          
       },
-      
-      note: function(){
-         this.$refs['my-modal'].show()
+      praviRecept: function(){
+         this.medicationList.push(this.medication)
+         const pres ={
+              
+               consultingId : this.selectedConsulting.consultingId,
+               medicationList : this.medicationList,
+               durationOfTherapy : this.durationOfTherapy,
+              
+            }
+            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+            this.axios.post('/prescription/add',pres,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+                .then(response => {
+                       alert("Your prescription are successfully updated!");
+                        console.log(response.data);
+                })
+                .catch(response => {
+                       alert("Please try later.");
+                        console.log(response);
+                 });    
       },
+      Recept: function(event, consulting) {
+            this.selectedConsulting = consulting;  
+            this.$refs['my-modal1'].show()
+
+      },
+     
        hideModal() {
         this.$refs['my-modal'].hide()
       },
-      sendConfirm: function() {
-    
-
+      Belezi: function(event, consulting) {
+            this.selectedConsulting = consulting;  
+            this.$refs['my-modal'].show()
+          
       },
-      ignored: function(){
-         
+     ignored: function(event, id) {
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        
+        
+       this.axios.get('/patient/penals/'+ id,{ 
+
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then((response) => {
+                          console.log(response)
+                    alert("Success added penal");
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
+
       },
       showHomePage : function(){
           window.location.href = "/isaHomePage";
@@ -241,13 +324,39 @@ export default {
           window.location.href = "/login";
 
       },
-      sendComplaint : function(){
+      salji : function(){
+       
+        const consult ={
+              
+               consultingId : this.selectedConsulting.consultingId,
+              information : this.consulting.information,
+               duration : this.consulting.duration,
+              
+            }
+            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+            this.axios.post('/consulting/update',consult,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+                .then(response => {
+                       alert("Your changes are successfully updated!");
+                        console.log(response.data);
+                })
+                .catch(response => {
+                       alert("Please try later.");
+                        console.log(response);
+                 });    
 
       },
+       patientIsSelected : function(event, medication) {
+        this.medication = medication;
+      },
+
       showMedications : function() {
           window.location.href = "/pharmacistMedicationSearch";
       },
-  }
+
+     }
 }
 
 </script>

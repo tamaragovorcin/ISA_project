@@ -119,7 +119,7 @@ export default {
   },
 
   methods:{
-      showclients : function(){
+      showClients : function(){
 
       },
       showMyProfile: function(){
@@ -132,7 +132,7 @@ export default {
           window.location.href = "/login";
 
       },
-      writeConsulting() {
+      writeExamination() {
         this.$refs['my-modal'].show()
       },
        hideModal() {
@@ -158,9 +158,14 @@ export default {
       sendComplaint : function(){
 
       },
+       schedule : function(){
+
+      },
+
        showMedications : function() {
           window.location.href = "/dermatologistMedicationSearch";
       },
+
 }
 }
 </script>
