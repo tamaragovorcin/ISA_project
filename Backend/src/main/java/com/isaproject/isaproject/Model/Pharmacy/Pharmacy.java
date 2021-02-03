@@ -61,14 +61,15 @@ public class Pharmacy implements Serializable{
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Mark> marks = new HashSet<Mark>();
 
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference(value="prescription-pharmacy")
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<Prescription> prescriptions = new HashSet<Prescription>();
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = false, unique = false)
     private Address address;
 
-   @ManyToMany(mappedBy = "pharmacies")
+    @ManyToMany(mappedBy = "pharmacies")
     private Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
 
     @JsonManagedReference

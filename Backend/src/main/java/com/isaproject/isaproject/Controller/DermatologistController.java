@@ -58,15 +58,12 @@ public class DermatologistController {
 
     @PostMapping("/update")
     @PreAuthorize("hasRole('DERMATOLOGIST')")
-    ResponseEntity<Dermatologist> update(@RequestBody DermatologistDTO person)
-    {
-        Dermatologist per = dermatologistService.findByEmail(person.getEmail());
-        Integer id = per.getId();
-        //dermatologistService.delete(per);
-        Dermatologist patient = dermatologistService.save(person);
-        return patient == null ?
+    public ResponseEntity<String> update(@RequestBody Dermatologist userRequest) {
+
+        Dermatologist user = dermatologistService.update(userRequest);
+        return user.getSurname() == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(patient);
+                new ResponseEntity<>("Dermatologist is successfully updated!", HttpStatus.CREATED);
     }
 
     @GetMapping("")

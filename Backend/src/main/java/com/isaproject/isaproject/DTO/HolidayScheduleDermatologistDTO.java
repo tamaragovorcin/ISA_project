@@ -20,6 +20,9 @@ public class HolidayScheduleDermatologistDTO {
         this.type = type;
         this.approved = approved;
     }
+    public HolidayScheduleDermatologistDTO() {
+
+    }
 
     public String getApproved() {
         return approved;
