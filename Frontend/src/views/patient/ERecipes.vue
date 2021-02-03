@@ -7,31 +7,20 @@ ines (39 sloc)  1.61 KB
             
             <span style="float: left; margin: 15px;">
                 <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "appointmentsAndConsultings">My appointments and consultings</button>
-                     <b class="tab2"></b>                
-
-                       
+                    <strong class="tab"></strong>          
                    <button class = "btn btn-link btn-lg" v-on:click = "eRecipes">eRecipes</button>
-
-                    <b class="tab2"></b>                
-                   
-
+                    <strong class="tab"></strong>          
                     <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "medicationReservation">Medication reservation</button>
-                    <b class="tab2"></b>    
+                    <strong class="tab"></strong>          
+                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "penals">Penals</button>
+                    <strong class="tab"></strong>          
 
-
-                     <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "penals">Penals</button>
-                    <b class="tab2"></b>   
-
-                        <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "changeMyProfile">Change my profile</button>
-                    <b class="tab2"></b>   
+                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "changeMyProfile">Change my profile</button>
+                    <strong class="tab"></strong>          
             </span>
-              <span  style="float:right;margin:10px">
-                    
-
+            <span  style="float:right;margin:10px">
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
-
-                </span>
-
+            </span>
         </div>
     <div class="container">
          <div class="row">
@@ -306,7 +295,6 @@ export default {
                     this.pharmacyListFilter.push(this.pharmacyList[i])
                 }
             }
-
      },
      showPharmaciesByCountry : function(){
           this.pharmacyListFilter=[]
@@ -317,17 +305,7 @@ export default {
                     this.pharmacyListFilter.push(this.pharmacyList[i])
                 }
             }
-
      }
-
-     
 }
 }
 </script>
-
-<style>
-
-</style>
-
-
-  

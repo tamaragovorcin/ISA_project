@@ -7,24 +7,21 @@ ines (39 sloc)  1.61 KB
             
              <span style="float: left; margin: 15px;">
                     <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
-                    <b class="tab"></b>                
+                    <strong class="tab"></strong>          
                     <a  class = "btn btn-secondary" href= "/showPharmaciesPatient">Pharmacies</a>
-                    <b class="tab"></b>     
+                    <strong class="tab"></strong>          
                     <a  class = "btn btn-secondary" href= "/myProfilePatient">My profile</a>
-                    <b class="tab"></b>                
+                    <strong class="tab"></strong>          
                     <a  class = "btn btn-secondary" href= "/patientComplaint">Write complaint</a>
-                    <b class="tab"></b>   
+                    <strong class="tab"></strong>          
                     <a  class = "btn btn-secondary" href= "/subscriptionsToPharmacies">My subscriptions</a>
-                    <b class="tab"></b>   
+                    <strong class="tab"></strong>          
                     <a  class = "btn btn-secondary" href= "/eRecipes">ERecipes</a>
-                    <b class="tab"></b> 
+                    <strong class="tab"></strong>          
             </span>
-              <span  style="float:right;margin:15px">
-                    
-
-                    <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
-
-                </span>
+            <span  style="float:right;margin:15px">
+                <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
+           </span>
         </div>
 
     <div v-for="item in this.completeDictionary" v-bind:key="item.pharmacy.id">

@@ -6,28 +6,22 @@ ines (39 sloc)  1.61 KB
         <div style="background: #0D184F; height: 90px;">
           <span style="float: left; margin: 15px;">
                     <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
-                    <b class="tab"></b>                
+                    <strong class="tab"></strong>          
                     <a  class = "btn btn-secondary" href= "/showPharmaciesPatient">Pharmacies</a>
-                    <b class="tab"></b>     
+                    <strong class="tab"></strong>          
                     <a  class = "btn btn-secondary" href= "/myProfilePatient">My profile</a>
-                    <b class="tab"></b>                
+                    <strong class="tab"></strong>          
                     <a  class = "btn btn-secondary" v-on:click=" writeComplaint()">Write complaint</a>
-                    <b class="tab"></b>   
+                    <strong class="tab"></strong>          
                     <a  class = "btn btn-secondary" href= "/subscriptionsToPharmacies">My subscriptions</a>
-                    <b class="tab"></b>   
+                    <strong class="tab"></strong>          
                     <a  class = "btn btn-secondary" href= "/eRecipes">ERecipes</a>
-                    <b class="tab"></b> 
+                    <strong class="tab"></strong>          
             </span>
             <span  style="float:right;margin:15px">
-                    
-
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
-
-                </span>
-
+            </span>
         </div>
-
-
        <div>
      <b-modal ref="my-modal" hide-footer scrollable title="Write complaint" size="lg" modal-class="b-modal">
                     <div modal-class="modal-dialog" role="document">
@@ -326,10 +320,3 @@ export default {
     }
 }
 </script>
-
-<style>
-
-</style>
-
-
-  
