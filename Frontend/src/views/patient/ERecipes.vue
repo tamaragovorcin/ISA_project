@@ -43,7 +43,7 @@ ines (39 sloc)  1.61 KB
                             <label>Average mark around:</label> 
                         </div>
                         <div class="form-group col-md-8">
-                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication mark" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose pharmacy mark" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
                                 <b-dropdown-item v-for="item in this.marks"  v-on:click ="markIsSelected($event, item.mark)" v-bind:key="item.mark"> {{item.mark }}</b-dropdown-item>
                             </b-dropdown> 
                         </div>

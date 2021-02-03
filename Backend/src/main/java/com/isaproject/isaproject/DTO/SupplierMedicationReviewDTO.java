@@ -6,20 +6,15 @@ public class SupplierMedicationReviewDTO {
     private int reservedQuantity;
     private String name;
     private long code;
-    private String form;
-    private String type;
 
-    public SupplierMedicationReviewDTO() {
-    }
+    public SupplierMedicationReviewDTO() {}
 
-    public SupplierMedicationReviewDTO(Integer id, int quantity, int reservedQuantity, String name, long code, String form, String type) {
+    public SupplierMedicationReviewDTO(Integer id, int quantity, int reservedQuantity, String name, long code) {
         this.id = id;
         this.quantity = quantity;
         this.reservedQuantity = reservedQuantity;
         this.name = name;
         this.code = code;
-        this.form = form;
-        this.type = type;
     }
 
     public int getReservedQuantity() {
@@ -60,21 +55,5 @@ public class SupplierMedicationReviewDTO {
 
     public void setCode(long code) {
         this.code = code;
-    }
-
-    public String getForm() {
-        return form;
-    }
-
-    public void setForm(String form) {
-        this.form = form;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 }
