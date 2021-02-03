@@ -69,7 +69,7 @@ public class PharmacistController {
         List<UserBasicInfoDTO> basicInfos = new ArrayList<>();
         List<Pharmacist> pharmacists = pharmacistService.findAll();
         for (Pharmacist pharmacist : pharmacists) {
-            basicInfos.add(new UserBasicInfoDTO(pharmacist.getName() + " " + pharmacist.getSurname(), pharmacist.getEmail()));
+            basicInfos.add(new UserBasicInfoDTO(pharmacist.getName() + " " + pharmacist.getSurname(), pharmacist.getEmail(), pharmacist.getId()));
         }
         return basicInfos == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

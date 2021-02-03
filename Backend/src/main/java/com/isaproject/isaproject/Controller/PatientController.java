@@ -273,7 +273,6 @@ public class PatientController {
     @GetMapping("searchForm/{patientName}")
     ResponseEntity<List<PatientSearchDTO>> getAllByForm(@PathVariable String patientName)
     {
-        System.out.println("--------------------------------------------------------------------");
         List<Patient> medications=  patientService.findAllByName(patientName);
         List<PatientSearchDTO> medicationsForFront = new ArrayList<>();
         for (Patient medication: medications) {

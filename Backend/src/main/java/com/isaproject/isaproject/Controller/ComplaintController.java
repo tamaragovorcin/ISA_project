@@ -7,6 +7,7 @@ import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
 import com.isaproject.isaproject.Service.Implementations.ComplaintService;
+import com.isaproject.isaproject.Service.Implementations.EPrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,9 @@ import java.util.List;
 public class ComplaintController {
     @Autowired
     ComplaintService complaintService;
+
+    @Autowired
+    EPrescriptionService ePrescriptionService;
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('PATIENT')")
@@ -44,6 +48,7 @@ public class ComplaintController {
     }
 
     @GetMapping("all")
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     ResponseEntity<List<ComplaintReviewDTO>> getAllWithDTO()
     {
         List<Complaint> complaints = complaintService.findAll();
@@ -73,6 +78,17 @@ public class ComplaintController {
         return complaintReviewDTOS == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(complaintReviewDTOS);
+    }
+
+
+    @GetMapping("checkForPharmacy/{pharmacyId}")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<String> checkPossibilityPharmacy(@PathVariable Integer pharmacyId)
+    {
+        Boolean hasEreceipt = ePrescriptionService.checkEReceiptInPharmacy(pharmacyId);
+        return hasEreceipt == false ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok("Successfully");
     }
 
 

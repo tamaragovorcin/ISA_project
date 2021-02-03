@@ -93,7 +93,7 @@ public class DermatologistController {
     {   List<UserBasicInfoDTO> basicInfos = new ArrayList<>();
         List<Dermatologist> dermatologists = dermatologistService.findAll();
         for (Dermatologist dermatologist: dermatologists) {
-            basicInfos.add(new UserBasicInfoDTO(dermatologist.getName() + " " + dermatologist.getSurname(), dermatologist.getEmail()));
+            basicInfos.add(new UserBasicInfoDTO(dermatologist.getName() + " " + dermatologist.getSurname(), dermatologist.getEmail(), dermatologist.getId()));
         }
         return basicInfos == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

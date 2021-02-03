@@ -58,7 +58,7 @@ public class ComplaintService implements IComplaintService {
         else complaint.setPharmacist(pharmacistRepository.findByEmail(complaintDTO.getPharmacist().getEmail()));
 
         if(complaintDTO.getPharmacyName()==null) complaint.setPharmacy(null);
-        else complaint.setPharmacy(pharmacyRepository.findByPharmacyName(complaintDTO.getPharmacyName().getPharmacyName()));
+        else complaint.setPharmacy(pharmacyRepository.findById(complaintDTO.getPharmacyName().getPharmacyId()).get());
 
         return complaintRepository.save(complaint);
     }
