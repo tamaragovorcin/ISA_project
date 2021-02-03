@@ -198,7 +198,12 @@ public class PatientController {
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<String> subsribe(@RequestBody PharmacyNameDTO pharmacyName)
     {
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("DOSAO DO KONTROLERA");
+
         Pharmacy pharmacy =pharmacyService.findByPharmacyName(pharmacyName.getPharmacyName());
+        System.out.println(pharmacyService.findByPharmacyName(pharmacyName.getPharmacyName()));
+
         return patientService.subsribeToPharmacy(pharmacy) == false ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
