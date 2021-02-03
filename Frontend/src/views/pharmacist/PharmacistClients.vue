@@ -81,17 +81,15 @@
                 <th scope="col"></th>
                 <th scope="col">Name</th>
                 <th scope="col">Surname</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone Number</th>
+                
               </tr>
             </thead>
             <tbody>
-              <tr v-for="patient in patients" :key="patient.id">
+              <tr v-for="consulting in ourConsultings" :key="consulting.id">
                 <td></td>
-                <td>{{patient.name}}</td>
-                <td>{{patient.surname}}</td>
-                <td>{{patient.email}}</td>
-                <td>{{patient.phoneNumber}}</td>
+                <td>{{consulting.namePatient}}</td>
+                <td>{{consulting.surnamePatient}}</td>
+               
                 <td><button  v-on:click ="remove($event, patient)" class="btn btn-info">Remove</button></td>
               </tr>
             </tbody>
@@ -139,17 +137,37 @@ export default {
         country : "",
         showMedicationListInfoDiv: false,
         medicationSeacrhList : [],
+         ourConsultings: "",
+         consulting: {
+       patient : {
+         name : "",
+         surname : ""
+       },
+       pharmacist : "", 
+       date: "",
+       startTime: "",
+       duration: "", 
+       price: "",
+       canceled: false,
+       showedUp: false,
+       information: ""
+       },
     }  
    },
 
    mounted(){
-   
-		this.axios.get('/patient')
-      .then(response => {
-          this.patients = response.data;
-          
-          console.log(response);
-      })
+    let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+      this.axios.get('/pharmacist/consultings',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            this.ourConsultings = response.data;
+                            alert(this.ourConsultings);
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
     },
  
      methods:{

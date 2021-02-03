@@ -60,10 +60,10 @@ public class PatientController {
     JavaMailSenderImpl mailSender;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerPatient(@RequestBody PersonUserDTO person)
-    {
+    public ResponseEntity<String> registerPatient(@RequestBody PersonUserDTO person) {
 
         Patient existingUser = patientService.findByEmail(person.getEmail());
+
         if(existingUser != null)
         {
             return ResponseEntity.ok("This email already exists!");
@@ -81,7 +81,7 @@ public class PatientController {
             mail.setSubject("Complete Registration!");
             mail.setFrom(environment.getProperty("spring.mail.username"));
             mail.setText("To confirm your account, please click here : "
-                    +"http://localhost:8082/api/patient/confirm-account/"+confirmationToken.getConfirmationToken());
+                    + "http://localhost:8082/api/patient/confirm-account/" + confirmationToken.getConfirmationToken());
 
             mailSender.send(mail);
             return ResponseEntity.ok("");
@@ -163,8 +163,21 @@ public class PatientController {
                 ResponseEntity.ok(email);
     }
 
+    @GetMapping("penals/{id}")
+    //@PreAuthorize("hasRole('PHARMACIST')")
+    ResponseEntity<Patient> getByPatientId(@PathVariable Integer id)
+    {
+        Patient patient = patientService.findById(id);
+        patient.setPenalties(patient.getPenalties()+1);
+        this.patientRepository.save(patient);
+
+        return patient == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(patient);
+    }
 
     @PostMapping("/update")
+
     ResponseEntity<Patient> update(@RequestBody PersonUserDTO person)
     {
         Patient per = patientService.findByEmail(person.getEmail());

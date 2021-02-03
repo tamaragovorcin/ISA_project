@@ -12,4 +12,5 @@ public interface IConsultingService {
     List<Consulting> findAll ();
     Consulting save(ConsultingDTO loyaltyProgramDTO);
     Consulting update(Consulting loyaltyProgram);
+    Consulting updateIgnored(Consulting loyaltyProgram);
 }

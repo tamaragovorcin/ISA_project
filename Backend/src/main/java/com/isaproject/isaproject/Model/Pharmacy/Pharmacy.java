@@ -54,7 +54,8 @@ public class Pharmacy implements Serializable{
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<MedicationReservation> medicationReservations = new HashSet<MedicationReservation>();
 
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference(value="prescription-pharmacy")
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<Prescription> prescriptions = new HashSet<Prescription>();
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

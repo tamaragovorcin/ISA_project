@@ -1,8 +1,10 @@
 package com.isaproject.isaproject.Controller;
 
+import com.isaproject.isaproject.DTO.ConsultingNoteDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.DTO.PharmacistDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
+import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
@@ -16,7 +18,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/pharmacist")
@@ -27,9 +32,9 @@ public class PharmacistController {
     PharmacistService pharmacistService;
 
     @PostMapping("/register")
-    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    //@PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacistDTO userRequest) {
-        System.out.println(userRequest.getPharmacy().getPharmacyName());
+        //System.out.println(userRequest.getPharmacy().getPharmacyName());
 
         PersonUser existUser = pharmacistService.findByEmail(userRequest.getEmail());
         if (existUser != null) {
@@ -55,6 +60,25 @@ public class PharmacistController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 new ResponseEntity<>("Pharmacist is successfully updated!", HttpStatus.CREATED);
     }
+    @GetMapping("/consultings")
+    @PreAuthorize("hasRole('PHARMACIST')")
+    ResponseEntity<Set<ConsultingNoteDTO>> getOurConsultings() {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser) currentUser.getPrincipal();
+        Pharmacist pharmacyAdmin = pharmacistService.findById(user.getId());
+        HashSet<ConsultingNoteDTO> cons = new HashSet<>();
+
+        for (Consulting c : pharmacyAdmin.getConsulting()) {
+            if(c.getDate().isAfter(LocalDate.now()))
+            cons.add(new ConsultingNoteDTO(c.getId(), c.getPatient().getId(), c.getPatient().getName(), c.getPatient().getSurname(), c.getDate(), c.getStartTime()));
+        }
+        return pharmacyAdmin.getConsulting() == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(cons);
+    }
+
+
+
     @PostMapping("/delete")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody Pharmacist pharmacist) {

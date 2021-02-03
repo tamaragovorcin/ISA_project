@@ -84,16 +84,17 @@ public class DermatologistService implements IDermatologistService {
         Dermatologist supplier= findById(user.getId());
         supplier.setAddress(userRequest.getAddress());
         List<Authority> auth = new ArrayList<Authority>();
-        Authority authoritySupplier = authService.findByname("ROLE_DERMATOLOGIST");
+        Authority authoritySupplier = authService.findByname("ROLE_DERMATOLOGISTT");
 
         if(authoritySupplier==null) {
-            authorityRepository.save(new Authority("ROLE_DERMATOLOGIST"));
-            auth.add(authService.findByname("ROLE_DERMATOLOGIST"));
+            authorityRepository.save(new Authority("ROLE_DERMATOLOGISTT"));
+            auth.add(authService.findByname("ROLE_DERMATOLOGISTT"));
         }
         else {
             auth.add(authoritySupplier);
         }
-        supplier.setAuthorities(auth);        supplier.setEmail(userRequest.getEmail());
+        supplier.setAuthorities(auth);
+        supplier.setEmail(userRequest.getEmail());
         supplier.setEnabled(true);
         supplier.setFirstLogged(userRequest.getFirstLogged());
         supplier.setName(userRequest.getName());
@@ -102,6 +103,7 @@ public class DermatologistService implements IDermatologistService {
         supplier.setPassword(supplier.getPassword());
         supplier.setLastPasswordResetDate(userRequest.getLastPasswordResetDate());
         return this.dermatologistRepository.save(supplier);
+
     }
 
     public Boolean addPharmacy(WorkingHoursDermatologistDTO dto) {
