@@ -34,16 +34,18 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
 
     @Override
     public ExaminationSchedule save(ExaminationScheduleDTO examinationScheduleDTO) {
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println(examinationScheduleDTO.getPharmacy());
         ExaminationSchedule examinationSchedule = new ExaminationSchedule();
         examinationSchedule.setPharmacy(examinationScheduleDTO.getPharmacy());
         examinationSchedule.setDate(examinationScheduleDTO.getDate());
         examinationSchedule.setDermatologist(examinationScheduleDTO.getDermatologist());
-        examinationSchedule.setDuration(10);
-        examinationSchedule.setPrice(20);
+        examinationSchedule.setDuration(examinationScheduleDTO.getDuration());
+        examinationSchedule.setPrice(examinationSchedule.getPrice());
         examinationSchedule.setStartTime(examinationScheduleDTO.getStartTime());
         examinationSchedule.setFinished(false);
 
-        return examinationScheduleRepository.save(examinationSchedule);
+        return this.examinationScheduleRepository.save(examinationSchedule);
     }
 
     @Override

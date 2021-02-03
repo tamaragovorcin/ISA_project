@@ -87,15 +87,39 @@ public class Pharmacy implements Serializable{
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Actions> actions = new HashSet<Actions>();
 
-    @JsonManagedReference(value = "pharmacy-dermatologist")
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<WorkingHoursDermatologist> workingHoursDermatologists = new HashSet<WorkingHoursDermatologist>();
 
     @JsonManagedReference(value="pharmacy-medicationPrice")
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<MedicationPrice> medicationPrices = new HashSet<MedicationPrice>();
 
     public Pharmacy() {}
+
+    public Pharmacy(Integer id, String pharmacyName, double mark, String description, double consultingPrice, Set<ExaminationSchedule> examinationSchedules, Set<MedicationReservation> medicationReservations, Set<Prescription> prescriptions, Address address, Set<Dermatologist> dermatologists, Set<Pharmacist> pharmacists, Set<Patient> subscribedPatients, Set<PharmacyAdmin> pharmacyAdmins, Set<Actions> actions, Set<WorkingHoursDermatologist> workingHoursDermatologists, Set<MedicationPrice> medicationPrices) {
+        this.id = id;
+        this.pharmacyName = pharmacyName;
+        this.mark = mark;
+        this.description = description;
+        this.consultingPrice = consultingPrice;
+        this.examinationSchedules = examinationSchedules;
+        this.medicationReservations = medicationReservations;
+        this.prescriptions = prescriptions;
+        this.address = address;
+        this.dermatologists = dermatologists;
+        this.pharmacists = pharmacists;
+        this.subscribedPatients = subscribedPatients;
+        this.pharmacyAdmins = pharmacyAdmins;
+        this.actions = actions;
+        this.medicationPrices = medicationPrices;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 
     public Integer getId() {
         return id;
@@ -121,13 +145,6 @@ public class Pharmacy implements Serializable{
         this.mark = mark;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public double getConsultingPrice() {
         return consultingPrice;
@@ -215,14 +232,6 @@ public class Pharmacy implements Serializable{
 
     public void setActions(Set<Actions> actions) {
         this.actions = actions;
-    }
-
-    public Set<WorkingHoursDermatologist> getWorkingHoursDermatologists() {
-        return workingHoursDermatologists;
-    }
-
-    public void setWorkingHoursDermatologists(Set<WorkingHoursDermatologist> workingHoursDermatologists) {
-        this.workingHoursDermatologists = workingHoursDermatologists;
     }
 
     public Set<MedicationPrice> getMedicationPrices() {

@@ -3,7 +3,7 @@ package com.isaproject.isaproject.Controller;
 import com.isaproject.isaproject.DTO.MarkDTO;
 import com.isaproject.isaproject.DTO.DermatologistDTO;
 import com.isaproject.isaproject.DTO.UserBasicInfoDTO;
-import com.isaproject.isaproject.DTO.WorkingHoursDermatologistDTO;
+import com.isaproject.isaproject.DTO.PharmacyDermatologistsDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.MarkDermatologist;
@@ -32,7 +32,7 @@ public class DermatologistController {
     MarkDermatologistService markService;
 
     @PostMapping("/register")
-   // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody DermatologistDTO userRequest) {
 
         PersonUser existUser = dermatologistService.findByEmail(userRequest.getEmail());
@@ -76,7 +76,7 @@ public class DermatologistController {
     }
     @PostMapping("/addPharmacy")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    public ResponseEntity<String> addPharmacy(@RequestBody WorkingHoursDermatologistDTO dto) {
+    public ResponseEntity<String> addPharmacy(@RequestBody PharmacyDermatologistsDTO dto) {
 
         if(dermatologistService.addPharmacy(dto)){
             return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
@@ -96,6 +96,8 @@ public class DermatologistController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(basicInfos);
     }
+
+
 
 
     @PostMapping("/leaveAMark")

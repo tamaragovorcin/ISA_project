@@ -86,15 +86,32 @@ public class PharmacyAdminController {
     }
     @GetMapping("/dermatologists")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    ResponseEntity<Set<Dermatologist>> getOurDermatologists()
+    List<Dermatologist> getOurDermatologists()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
-        return pharmacyAdmin.getPharmacy().getDermatologists() == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacyAdmin.getPharmacy().getDermatologists());
+        List<Dermatologist> dermatologists = new ArrayList<Dermatologist>();
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        for(Dermatologist derm : pharmacyAdmin.getPharmacy().getDermatologists()){
+            dermatologists.add(derm);
+        }
+        for(Dermatologist derm : dermatologists){
+            System.out.println(derm.getName()+" "+derm.getSurname());
+        }
+        return dermatologists;
     }
+
+    @PostMapping("/dermatologist/remove")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<String> removeDermatologistFromPharmacy(@RequestBody Dermatologist dermatologist)
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
+        pharmacyAdminService.removeDermatologistFromPharmacy(pharmacyAdmin.getPharmacy().getId(),dermatologist);
+        return new ResponseEntity<>("Dermatologist successfully removed from pharmacy!", HttpStatus.ACCEPTED);    }
+
     @GetMapping("/actions")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<Set<Actions>> getActions()
@@ -158,7 +175,7 @@ public class PharmacyAdminController {
     }
 
 
-    @GetMapping("orders")
+    @GetMapping("/orders")
     ResponseEntity<List<OrderReviewDTO>> getAllOrders()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
@@ -167,7 +184,7 @@ public class PharmacyAdminController {
         List<Order> orders = orderService.findAll();
         List<OrderReviewDTO> ordersDto = new ArrayList<>();
         for (Order order: orders) {
-            if((order.getPharmacyAdmin().getPharmacy().getId() == pharmacyAdmin.getPharmacy().getId())&& !order.getStatus().equals("CLOSED")) {
+            if((order.getPharmacyAdmin().getPharmacy().getId() == pharmacyAdmin.getPharmacy().getId())) {
                 ordersDto.add(new OrderReviewDTO(order.getId(), order.getDate(), order.getStatus(), getMedicationsInOrder(order.getMedicationInOrders()),
                         order.getPharmacyAdmin().getPharmacy().getPharmacyName()));
             }

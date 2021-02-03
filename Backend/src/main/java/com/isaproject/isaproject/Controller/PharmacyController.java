@@ -261,22 +261,25 @@ public class PharmacyController {
                 ResponseEntity.ok(freeExaminationTerms);
 
     }
-    @PostMapping("/addDermatologist")
+   /* @PostMapping("/addDermatologist")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody WorkingHoursDermatologistDTO dto) {
 
         if(pharmacyService.savePharmacy(dto)){
-            return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
+            return new ResponseEntity<>("Dermatologist is successfully added as employee!", HttpStatus.CREATED);
 
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
 
-    }
+    }*/
 
     @PostMapping("/addExaminationSchedule")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<ExaminationSchedule> addSchedule(@RequestBody ExaminationScheduleDTO dto) {
+
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         ExaminationSchedule examinationSchedule = examinationScheduleService.save(dto);
         return examinationSchedule == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
