@@ -1,5 +1,6 @@
 package com.isaproject.isaproject.Model.Examinations;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
 
@@ -15,7 +16,8 @@ public class Examination {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference(value="patient-schedule")
+    @ManyToOne(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = false)
     private Patient patient;
 

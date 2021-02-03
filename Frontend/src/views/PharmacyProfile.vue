@@ -231,7 +231,6 @@ export default {
        welcomePageShow : true
        
        
-
     }
   },
   mounted() {
@@ -262,9 +261,6 @@ export default {
                        alert("Please try again later.");
                         console.log(res);
                  });
-
-
-
        this.axios.get('pharmacy/freeExaminationTerms/'+this.id,{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
@@ -275,8 +271,6 @@ export default {
                        alert("Please try again later.");
                         console.log(res);
                  });
-
-
              this.axios.get('pharmacy/medication/'+this.id,{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
@@ -296,7 +290,6 @@ export default {
                 console.log(res);
         });
        
-
         
     }
      ,
@@ -323,8 +316,7 @@ export default {
           this.medicationShow = false;
           this.availabilityShow = false;
 
-
-      },
+     },
         showTerms : function(){
           this.welcomePageShow = false;
           this.dermatologistsShow = false;
@@ -333,7 +325,7 @@ export default {
           this.medicationShow = false;
           this.availabilityShow = false;
 
-      }
+     }
       ,
         showMedication : function(){
           this.welcomePageShow = false;
@@ -364,7 +356,7 @@ export default {
       subscribe :  function(){
          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
             const data = {
-              pharmacyName : this.pharmacy.pharmacyName
+              pharmacyId : this.pharmacy.id
             }
             this.axios.post('/patient/subscribeToPharmacy',data,{ 
                          headers: {
@@ -407,7 +399,6 @@ export default {
                            alert(response.data);
                         }).catch(response => {
                             alert(response.data);
-                            console.log(res);
                         });     
 
                 }).catch(res => {

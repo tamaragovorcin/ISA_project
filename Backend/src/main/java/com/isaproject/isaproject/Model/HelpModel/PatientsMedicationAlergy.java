@@ -1,5 +1,6 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Users.Patient;
 
@@ -13,11 +14,13 @@ public class PatientsMedicationAlergy {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference(value="patient-alergy")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = false)
     private Patient patient;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference(value="medicine-alergy")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "medication_id", referencedColumnName = "id", nullable = false, unique = false)
     private Medication medication;
 

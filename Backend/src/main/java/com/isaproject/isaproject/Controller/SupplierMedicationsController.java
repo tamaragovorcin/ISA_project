@@ -50,8 +50,7 @@ public class SupplierMedicationsController {
 
         for (SupplierMedications medication:supplierMedications ) {
             supplierMedicationsDTOS.add(new SupplierMedicationReviewDTO(medication.getId(), medication.getQuantity(),
-                    medication.getReservedQuantity(),medication.getName(), medication.getCode(), medication.getForm(),
-                    medication.getType()));
+                    medication.getReservedQuantity(),medication.getName(), medication.getCode()));
         }
         return supplierMedicationsDTOS == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

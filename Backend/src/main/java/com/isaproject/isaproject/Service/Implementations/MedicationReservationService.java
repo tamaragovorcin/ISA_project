@@ -1,7 +1,8 @@
 package com.isaproject.isaproject.Service.Implementations;
-
 import com.isaproject.isaproject.DTO.MedicationReservationDTO;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
+import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Repository.MedicationReservationRepository;
 import com.isaproject.isaproject.Service.IServices.IMedicationReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,12 @@ public class MedicationReservationService implements IMedicationReservationServi
     @Autowired
     MedicationReservationRepository medicationRepository;
 
+    @Autowired
+    MedicationService medicationService;
+
+    @Autowired
+    PharmacyService pharmacyService;
+
     @Override
     public MedicationReservation findById(Integer id) {
         return null;
@@ -22,25 +29,25 @@ public class MedicationReservationService implements IMedicationReservationServi
 
     @Override
     public List<MedicationReservation> findAll() {
-        return null;
+
+        return medicationRepository.findAll();
     }
 
     @Override
     public MedicationReservation save(MedicationReservationDTO medicationDTO) {
 
-        System.out.println(medicationDTO.getPharmacy().getPharmacyName());
-        MedicationReservation medication = new MedicationReservation();
-        medication.setDateOfTakeOver(medicationDTO.getDateOfTakeOver());
-        medication.setPharmacy(medicationDTO.getPharmacy());
-        medication.setMedicineCode(medicationDTO.getMedicineCode());
-        medication.setPatient(medicationDTO.getPatient());
-
-
-        return medicationRepository.save(medication);
+        Medication medication = medicationService.findById(medicationDTO.getMedicationId());
+        Pharmacy pharmacy = pharmacyService.findById(medicationDTO.getPharmacyId());
+        MedicationReservation medicationReservation = new MedicationReservation();
+        medicationReservation.setDateOfTakeOver(medicationDTO.getDateOfTakeOver());
+        medicationReservation.setPharmacy(pharmacy);
+        medicationReservation.setMedicine(medication);
+        medicationReservation.setPatient(medicationDTO.getPatient());
+        return medicationRepository.save(medicationReservation);
     }
 
     @Override
     public void delete(MedicationReservation medication) {
-
+            medicationRepository.delete(medication);
     }
 }

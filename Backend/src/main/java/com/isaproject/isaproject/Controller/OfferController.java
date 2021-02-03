@@ -82,7 +82,7 @@ public class OfferController {
     {
         Set<MedicationInOrder> medicationInOrder = orderService.findById(orderId).getMedicationInOrders();
         for(MedicationInOrder medication : medicationInOrder) {
-            if(doesSupplierHaveMedication(medication.getMedicine(), medication.getQuantity())) { System.out.println("JA SAM OVDE DOSLA 2222222222222222 ************");}
+            if(doesSupplierHaveMedication(medication.getMedicine(), medication.getQuantity())) {}
             else {
                 return ResponseEntity.ok(false);
             }
@@ -181,6 +181,12 @@ public class OfferController {
                         mail.setText("Tender in " + offer.getOrder().getPharmacyAdmin().getPharmacy().getPharmacyName() + " is closed."
                                 + " Congratulations, you won tender.");
                         mailSender.send(mail);
+
+                        medicationPriceService.updateMedicineQuantityTender(offer.getOrder());
+                        Set<SupplierMedications> supplierMedications = offer.getSupplier().getSupplierMedications();
+                        Set<MedicationInOrder> medicationInOrders = offer.getOrder().getMedicationInOrders();
+                        supplierMedicationService.updateMedicineQuantityTenderWon(supplierMedications, medicationInOrders);
+
                     } else {
                         offer.setStatus("REFUSED");
                         SimpleMailMessage mail = new SimpleMailMessage();
@@ -191,6 +197,10 @@ public class OfferController {
                                 + " We are sorry, but this time you didn't win tender.");
                         mailSender.send(mail);
                         this.offerRepository.save(offer);
+                        Set<SupplierMedications> supplierMedications = offer.getSupplier().getSupplierMedications();
+                        Set<MedicationInOrder> medicationInOrders = offer.getOrder().getMedicationInOrders();
+                        supplierMedicationService.updateMedicineQuantityTenderLost(supplierMedications, medicationInOrders);
+
                     }
 
                 }

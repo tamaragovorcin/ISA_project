@@ -20,6 +20,7 @@ public class WorkingHoursDermatologist  {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
+    @JsonBackReference(value = "pharmacy-dermatologist")
     @OneToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = true, unique = false)
     private Pharmacy pharmacy;

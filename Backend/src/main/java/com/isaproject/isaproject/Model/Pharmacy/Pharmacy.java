@@ -13,6 +13,9 @@ import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.Order;
 import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
 import com.isaproject.isaproject.Model.Schedule.WorkingHoursDermatologist;
+import com.isaproject.isaproject.Model.Schedule.WorkingHoursPharmacist;
+import com.isaproject.isaproject.Model.Users.*;
+import net.minidev.json.annotate.JsonIgnore;
 import com.isaproject.isaproject.Model.Users.*;
 
 import javax.persistence.*;
@@ -54,14 +57,19 @@ public class Pharmacy implements Serializable{
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<MedicationReservation> medicationReservations = new HashSet<MedicationReservation>();
 
+    @JsonManagedReference(value="pharmacy-mark")
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Mark> marks = new HashSet<Mark>();
+
+    @JsonManagedReference(value="prescription-pharmacy")
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<Prescription> prescriptions = new HashSet<Prescription>();
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = false, unique = false)
     private Address address;
 
-   @ManyToMany(mappedBy = "pharmacies")
+    @ManyToMany(mappedBy = "pharmacies")
     private Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
 
     @JsonManagedReference
@@ -112,6 +120,7 @@ public class Pharmacy implements Serializable{
         this.description = description;
     }
 
+
     public Integer getId() {
         return id;
     }
@@ -128,11 +137,6 @@ public class Pharmacy implements Serializable{
         this.pharmacyName = pharmacyName;
     }
 
-
-    public Set<MedicationReservation> getMedicationReservations() {
-        return medicationReservations;
-    }
-
     public double getMark() {
         return mark;
     }
@@ -140,6 +144,7 @@ public class Pharmacy implements Serializable{
     public void setMark(double mark) {
         this.mark = mark;
     }
+
 
     public double getConsultingPrice() {
         return consultingPrice;
@@ -157,8 +162,20 @@ public class Pharmacy implements Serializable{
         this.examinationSchedules = examinationSchedules;
     }
 
+    public Set<MedicationReservation> getMedicationReservations() {
+        return medicationReservations;
+    }
+
     public void setMedicationReservations(Set<MedicationReservation> medicationReservations) {
         this.medicationReservations = medicationReservations;
+    }
+
+    public Set<Mark> getMarks() {
+        return marks;
+    }
+
+    public void setMarks(Set<Mark> marks) {
+        this.marks = marks;
     }
 
     public Set<Prescription> getPrescriptions() {

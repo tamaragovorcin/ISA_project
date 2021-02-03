@@ -25,7 +25,9 @@ public class Patient extends PersonUser{
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Consulting> consulting = new HashSet<Consulting>();
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference(value="patient-schedule")
+
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     private Set<Examination> examinations = new HashSet<Examination>();
 
     @JsonManagedReference
@@ -38,7 +40,8 @@ public class Patient extends PersonUser{
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<EPrescription> ePrescriptions = new HashSet<EPrescription>();
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference(value="prescription-patient")
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<Prescription> prescriptions = new HashSet<Prescription>();
 
 
@@ -48,12 +51,29 @@ public class Patient extends PersonUser{
             inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
     private Set<Pharmacy> subscribedToPharmacies = new HashSet<Pharmacy>();
 
+    @JsonManagedReference(value="patient-alergy")
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PatientsMedicationAlergy> patientsMedicationAlergy = new HashSet<PatientsMedicationAlergy>();
 
     @JsonManagedReference(value="patient-medication")
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<MedicationReservation> medicationReservations = new HashSet<MedicationReservation>();
+
+    @JsonManagedReference(value="patient-mark")
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Mark> marks = new HashSet<Mark>();
+
+    @JsonManagedReference(value="patient-markDermatologist")
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MarkDermatologist> markDermatologists = new HashSet<MarkDermatologist>();
+
+    @JsonManagedReference(value="patient-markMedication")
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MarkMedication> markMedications = new HashSet<MarkMedication>();
+
+    @JsonManagedReference(value="patient-markPharmacist")
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<MarkPharmacist> markPharmacists = new HashSet<MarkPharmacist>();
 
     @Column(name = "penalties", nullable = true)
     private int penalties;
@@ -93,6 +113,38 @@ public class Patient extends PersonUser{
         this.points = points;
         this.loyaltyCategory = loyaltyCategory;
         this.discount = discount;
+    }
+
+    public Set<Mark> getMarks() {
+        return marks;
+    }
+
+    public void setMarks(Set<Mark> marks) {
+        this.marks = marks;
+    }
+
+    public Set<MarkDermatologist> getMarkDermatologists() {
+        return markDermatologists;
+    }
+
+    public void setMarkDermatologists(Set<MarkDermatologist> markDermatologists) {
+        this.markDermatologists = markDermatologists;
+    }
+
+    public Set<MarkMedication> getMarkMedications() {
+        return markMedications;
+    }
+
+    public void setMarkMedications(Set<MarkMedication> markMedications) {
+        this.markMedications = markMedications;
+    }
+
+    public Set<MarkPharmacist> getMarkPharmacists() {
+        return markPharmacists;
+    }
+
+    public void setMarkPharmacists(Set<MarkPharmacist> markPharmacists) {
+        this.markPharmacists = markPharmacists;
     }
 
     public Set<MedicationReservation> getMedicationReservations() {

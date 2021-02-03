@@ -32,6 +32,10 @@ public class Pharmacist extends  PersonUser {
     @Column(name = "markPharmacist", nullable = true)
     private double markPharmacist;
 
+    @JsonManagedReference(value="pharmacist-mark")
+    @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private Set<MarkPharmacist> marks = new HashSet<MarkPharmacist>();
+
 
     @JsonBackReference
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
@@ -41,20 +45,6 @@ public class Pharmacist extends  PersonUser {
 
     public Pharmacist() { super();}
 
-    public Pharmacist(Integer id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, boolean enabled, Timestamp lastPasswordResetDate, List<Authority> authorities, Address address, Set<Consulting> consulting, Set<HolidaySchedulePharmacist> holidaySchedulePharmacists, WorkingHoursPharmacist workingHoursPharmacists, double markPharmacist, Pharmacy pharmacy) {
-        super(id, name, surname, email, password, phoneNumber, firstLogged, enabled, lastPasswordResetDate, authorities, address);
-        this.consulting = consulting;
-        this.holidaySchedulePharmacists = holidaySchedulePharmacists;
-        this.markPharmacist = markPharmacist;
-        this.pharmacy = pharmacy;
-    }
-
-    public Pharmacist(Set<Consulting> consulting, Set<HolidaySchedulePharmacist> holidaySchedulePharmacists, WorkingHoursPharmacist workingHoursPharmacists, double markPharmacist, Pharmacy pharmacy) {
-        this.consulting = consulting;
-        this.holidaySchedulePharmacists = holidaySchedulePharmacists;
-        this.markPharmacist = markPharmacist;
-        this.pharmacy = pharmacy;
-    }
 
     public Set<Consulting> getConsulting() {
         return consulting;
@@ -72,13 +62,20 @@ public class Pharmacist extends  PersonUser {
         this.holidaySchedulePharmacists = holidaySchedulePharmacists;
     }
 
-
     public double getMarkPharmacist() {
         return markPharmacist;
     }
 
     public void setMarkPharmacist(double markPharmacist) {
         this.markPharmacist = markPharmacist;
+    }
+
+    public Set<MarkPharmacist> getMarks() {
+        return marks;
+    }
+
+    public void setMarks(Set<MarkPharmacist> marks) {
+        this.marks = marks;
     }
 
     public Pharmacy getPharmacy() {

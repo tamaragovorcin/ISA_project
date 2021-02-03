@@ -3,6 +3,7 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
+            
             <span style="float: left; margin: 15px;">
 
                 <b-dropdown id="ddCommodity" name="ddCommodity" text="New registration" 
@@ -18,84 +19,90 @@
                          <b-dropdown-item v-on:click = "registerSystemAdmin" disabled>System admin</b-dropdown-item>
                     </div>                    
                  </b-dropdown> 
-                 <b class="tab"></b>   
+                  <strong class="tab"></strong>  
                  <button class = "btn btn-link btn-lg" v-on:click = "addMedicine">Add medication</button>
-                 <b class="tab"></b>   
+                  <strong class="tab"></strong>  
                  <button class = "btn btn-link btn-lg" v-on:click = "medicationSearch">Medications</button>
-                 <b class="tab"></b>  
+                  <strong class="tab"></strong>  
                  <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
-                 <b class="tab"></b>  
+                  <strong class="tab"></strong>  
                  <button class = "btn btn-link btn-lg" v-on:click = "showComplaints">Complaints</button>
-                 
-
             </span>
-              <span  style="float:right;margin:15px">
-                     <b class="tab"></b>    
+            <span  style="float:right;margin:15px">
+                  <strong class="tab"></strong>  
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
-                
-                </span>
+             </span>
         </div>
-       <div style = "background-color:lightgray; margin: auto; width: 30%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-                       <h3 style="color: #0D184F;margin-bottom:20px">Filters</h3>
-                <div class="form-row">
-                    <div class="form-group col-md-10">
-                        <input type="text" class="form-control" v-model="medicationName" placeholder="Enter name...">
-                    </div>
-                    <div class="form-group col-md-2">
-                        <button v-on:click = "showMedicationInfo" class="btn btn-primary">Confirm</button>
-                    </div>
-               </div>
-                <div class="form-row">
-                    <div class="form-group col-md-2">
-                        <label>Form:</label>
-                       
-                    </div>
-                    <div class="form-group col-md-2">
-                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication form" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+       <div style="background: white; height: 60px; margin-top: 20px">
+          <span  style="float:right;margin:15px">
+            <div class="input-group mb-3">
+              <input type="text" v-model="medicationName" class="form-control" placeholder="Enter name..." aria-label="Enter name..." aria-describedby="basic-addon2">
+                 <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button"  v-on:click = "showMedicationInfo" >Search</button>
+                  </div>
+            </div>
+          </span>
+          <span  style="float:right;margin:15px">
+              <div class="input-group mb-3">
+                  <label>Form:</label>
+                   <div class="input-group-append  align-self-center">
+                      <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication form" class = "btn btn-link btn-lg " style="float:left;margin-left:20px;">
                               <b-dropdown-item v-for="item in this.forms"  v-on:click ="formIsSelected($event, item.form)" v-bind:key="item.form"> {{item.form }}</b-dropdown-item>
-                        </b-dropdown>
-                    </div>
-               </div>
-                <div class="form-row">
-                    <div class="form-group col-md-2">
-                        <label>Type:</label> 
-                    </div>
-                    <div class="form-group col-md-2">
-                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication type" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+                      </b-dropdown>
+                  </div>
+              </div>
+          </span>  
+           <span  style="float:right;margin:15px">
+              <div class="input-group mb-3">
+                  <label>Type:</label>
+                   <div class="input-group-append  align-self-center">
+                       <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication type" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
                               <b-dropdown-item v-for="item in this.types"  v-on:click ="typeIsSelected($event, item.type)" v-bind:key="item.type"> {{item.type }}</b-dropdown-item>
                         </b-dropdown> 
-                    </div>
-               </div>
-               <div class="form-row">
-                    <div class="form-group col-md-2">
-                        <label>Average mark around:</label> 
-                    </div>
-                    <div class="form-group col-md-2">
-                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication mark" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+                  </div>
+              </div>
+          </span>  
+           <span  style="float:right;margin:15px">
+              <div class="input-group mb-3">
+                  <label>Average mark around:</label>
+                   <div class="input-group-append  align-self-center">
+                       <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication mark" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
                               <b-dropdown-item v-for="item in this.marks"  v-on:click ="markIsSelected($event, item.mark)" v-bind:key="item.mark"> {{item.mark }}</b-dropdown-item>
                         </b-dropdown> 
-                    </div>
-               </div>
+                  </div>
+              </div>
+          </span>  
         </div>
-        <div v-if = "showMedicationInfoDiv" style = "background-color:lightgray; margin: auto; width: 60%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-               <div class="row">
-                    <div class=" form-group col">
-                        <label >Name</label>
-                    </div>
-                    <div class=" form-group col">          
-                        <label >Type</label>
-                    </div>
-                    <div class=" form-group col">
-                        <label >Form</label>
-                    </div>
-                    <div class=" form-group col">          
-                        <label >Mark</label>
-                    </div>
-                    <div class=" form-group col">
-                        <label ></label>
-                    </div>
-               </div>
-               <div class="row">
+    <h4 style="color: #0D184F;margin:auto; width: 50%;margin-top:45px;">Medications:</h4>
+
+      <div style = "background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+
+          <div class="row">
+                        <div class=" form-group col">
+                            <label >Medication name</label>
+                        </div>
+                        <div class=" form-group col">          
+                            <label >Type</label>
+                        </div>
+                        <div class=" form-group col">
+                            <label >Form</label>
+                        </div>
+                        <div class=" form-group col">          
+                            <label >Mark</label>
+                        </div>
+                    
+                        <div class=" form-group col">
+                            <label >Specification</label>
+                        </div>
+                          <div class=" form-group col">
+                            <label >Availability in pharmacies</label>
+                        </div>
+
+           </div>
+      </div>
+      <div v-if = "showMedicationInfoDiv" style = "background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+
+           <div class="row">
                     <div class=" form-group col">
                         <label >{{medicationInfo.name}}</label>
                     </div>
@@ -108,31 +115,53 @@
                     <div class=" form-group col">          
                         <label >{{medicationInfo.mark}}</label>
                     </div>
+                    
                     <div class=" form-group col">
-                        <button v-on:click = "showMedicationSpecification" class="btn btn-primary">Specification</button>
-                    </div>
-               </div>
-        </div>
-        <div v-if = "showMedicationListInfoDiv" style = "background-color:lightgray; margin: auto; width: 60%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-               <div class="row">
-                    <div class=" form-group col">
-                        <label >Name</label>
-                    </div>
-                    <div class=" form-group col">          
-                        <label >Type</label>
+                        <button v-on:click = "showMedicationSpecification" class="btn btn-primary">Show</button>
                     </div>
                     <div class=" form-group col">
-                        <label >Form</label>
+                        <button v-on:click =  "showMedicationPharmacyAvailability($event, medicationInfo.code)"  class="btn btn-primary">Show</button>
                     </div>
-                    <div class=" form-group col">          
-                        <label >Mark</label>
-                    </div>
-                    <div class=" form-group col">
-                        <label ></label>
-                    </div>
-               </div>
-               <div v-for="medicine in medicationSeacrhList"   v-bind:key="medicine.name">
-                <div class="row">
+            </div>
+      </div>
+            <div v-if="choosenMedicationForAvailability==medicationInfo.code">
+                          <div v-if="showMedicationPharmacyAvailabilityDiv" style = "background-color:lightgray; margin: auto; width: 40%;border: 3px solid #0D184F;padding: 0px;margin-top:0px;">
+
+                                <div v-for="pharmacy in pharmaciesAvailability"   v-bind:key="pharmacy.id">
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Pharmacy {{pharmacy.pharmacyName}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Pharmacy average mark  {{pharmacy.mark}}</label>
+                                            </div>
+                                        </div>   
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Price {{pharmacy.sumPrice}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Address  {{pharmacy.address.country}}, {{pharmacy.address.town}}, {{pharmacy.address.street}} {{pharmacy.address.number}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <hr/>
+                              </div>
+                      </div>
+            
+      </div>
+       <div v-if = "showMedicationListInfoDiv"> 
+              <div v-for="medicine in medicationSeacrhList"   v-bind:key="medicine.medicationId">
+                  <div style = "background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+
+                     <div class="row">
                         <div class=" form-group col">
                             <label >{{medicine.name}}</label>
                         </div>
@@ -145,13 +174,52 @@
                         <div class=" form-group col">          
                             <label >{{medicine.mark}}</label>
                         </div>
+                    
                         <div class=" form-group col">
-                            <button v-on:click = "showMedicationSpecificationList($event, medicine.name)" class="btn btn-primary">Specification</button>
+                            <button v-on:click = "showMedicationSpecificationList($event, medicine.name)" class="btn btn-primary">Show</button>
                         </div>
-                </div>
-               </div>
+                        <div class=" form-group col">
+                            <button v-on:click = "showMedicationPharmacyAvailabilityList($event, medicine.code)" class="btn btn-primary">Show</button>
+                        </div>
+                      </div>
+                  </div>
+                      <div v-if="choosenMedicationForAvailability==medicine.code">
+                          <div v-if="showMedicationPharmacyAvailabilityListDiv" style = "background-color:lightgray; margin: auto; width: 40%;border: 3px solid #0D184F;padding: 0px;margin-top:0px;">
+
+                                <div v-for="pharmacy in pharmaciesAvailability"   v-bind:key="pharmacy.id">
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Pharmacy {{pharmacy.pharmacyName}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Pharmacy average mark  {{pharmacy.mark}}</label>
+                                            </div>
+                                        </div>   
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Price {{pharmacy.sumPrice}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Address  {{pharmacy.address.country}}, {{pharmacy.address.town}}, {{pharmacy.address.street}} {{pharmacy.address.number}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <hr/>
+                                </div>
+                          </div>
+                      
+                 </div>
+               
+            </div>
         </div>
-        <div> 
+  <div> 
           <b-modal ref="specification-modal" hide-footer scrollable title="Medication specification" size="lg" modal-class="b-modal">
                <div modal-class="modal-dialog" role="document">
                     <div class="modal-content" style="background-color:whitesmoke">
@@ -247,7 +315,7 @@ export default {
       accountInformation :null,
       allowSystemAdminRegistration : false,
       notallowSystemAdminRegistration : false,
-      medicationName : "",
+     medicationName : "",
       specificationInfo : {
             contraIndications :"",
             structure : "",
@@ -266,6 +334,8 @@ export default {
                     recommendedConsumption : "",
                     manufacturer : ""
             },
+            medicationId : 0,
+            code : 0
       },
       showMedicationInfoDiv : false, 
       forms: [
@@ -302,6 +372,11 @@ export default {
                     recommendedConsumption : "",
                     manufacturer : ""
             },
+        pharmaciesAvailability : [],
+        showMedicationPharmacyAvailabilityDiv : false,
+        showMedicationPharmacyAvailabilityListDiv : false,
+        choosenMedicationForAvailability : 0
+       
     }
   },
 
@@ -334,12 +409,19 @@ export default {
       medicationSearch : function() {
           window.location.href = "/systemAdminMedicationSearch";
       }, 
-      formIsSelected : function(event, form) { 
+      
+      showComplaints : function() {
+            window.location.href = "/complaints";
+      },
+       formIsSelected : function(event, form) { 
            this.axios.get('/medication/searchForm/'+form).
             then(response => {
                     this.medicationSeacrhList= response.data;
                     this.showMedicationInfoDiv=false;
                     this.showMedicationListInfoDiv = true;
+                    this.showMedicationPharmacyAvailabilityListDiv = false;
+                    this.showMedicationPharmacyAvailabilityDiv = false;
+
             }).catch(res => {
                         alert("NOT OK");
                         console.log(res);
@@ -351,6 +433,8 @@ export default {
                     this.medicationSeacrhList= response.data;
                     this.showMedicationInfoDiv=false;
                     this.showMedicationListInfoDiv = true;
+                    this.showMedicationPharmacyAvailabilityListDiv = false;
+                    this.showMedicationPharmacyAvailabilityDiv = false;
             }).catch(res => {
                         alert("NOT OK");
                         console.log(res);
@@ -365,6 +449,8 @@ export default {
                      this.medicationSeacrhList= response.data;
                      this.showMedicationInfoDiv=false;
                      this.showMedicationListInfoDiv = true;
+                     this.showMedicationPharmacyAvailabilityListDiv = false;
+                    this.showMedicationPharmacyAvailabilityDiv = false;
                 }).catch(res => {
                      alert("NOT OK");
                     console.log(res);
@@ -377,7 +463,7 @@ export default {
                     this.showMedicationListInfoDiv = false;
                     this.showMedicationInfoDiv = true;
             }).catch(res => {
-                        alert("NOT OK");
+                        alert("There is no medication with entered name.");
                         console.log(res);
                     });
       },
@@ -387,6 +473,7 @@ export default {
       closeSpecification : function() {
         this.$refs['specification-modal'].hide()
       },
+      
       showMedicationSpecificationList : function($event, name) {
           let i =0;
           for(i=0; i< this.medicationSeacrhList.length;i++) {
@@ -399,9 +486,30 @@ export default {
        closeSpecificationList : function() {
         this.$refs['specificationList-modal'].hide()
       }, 
-      showComplaints : function() {
-            window.location.href = "/complaints";
-      }
+      showMedicationPharmacyAvailability : function(event, code) {
+            this.pharmaciesAvailability = []
+            this.axios.get('/pharmacy/medicationAvailability/'+code,).then(response => {
+                          this.pharmaciesAvailability= response.data;
+                          this.choosenMedicationForAvailability = code;
+                          this.showMedicationPharmacyAvailabilityListDiv = false;
+                          this.showMedicationPharmacyAvailabilityDiv = true;
+                    }).catch(res => {
+                                  alert("NOT OK");
+                                    console.log(res);
+                            });
+      },
+      showMedicationPharmacyAvailabilityList : function(event, code) {
+            this.pharmaciesAvailability = []
+            this.axios.get('/pharmacy/medicationAvailability/'+code,).then(response => {
+                          this.pharmaciesAvailability= response.data;
+                          this.choosenMedicationForAvailability = code;
+                          this.showMedicationPharmacyAvailabilityDiv = false;
+                          this.showMedicationPharmacyAvailabilityListDiv = true;
+                    }).catch(res => {
+                                  alert("NOT OK");
+                                    console.log(res);
+                            });
+      },
       
 },
  mounted() {
@@ -424,14 +532,11 @@ export default {
                        alert("NOT OK");
                         console.log(res);
                  });
-         this.axios.get('/medication/getAll',{ 
-             headers: {
-                 'Authorization': 'Bearer ' + token,
-             }
-         }).then(response => {
+
+         this.axios.get('/medication/getAll',).then(response => {
                this.medicationSeacrhList= response.data;
          }).catch(res => {
-                       alert("NOT OK");
+                       alert("Please try again later.");
                         console.log(res);
                  });
     }

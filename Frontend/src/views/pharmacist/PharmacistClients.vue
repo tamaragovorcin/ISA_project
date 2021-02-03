@@ -6,27 +6,28 @@
             
             <span style="float: left; margin: 15px;">
                     <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
-                    <b class="tab"></b>  
-                    <b class="tab"></b>  
-                    <b class="tab"></b>  
+                   <strong class="tab"></strong>  
+                    <strong class="tab"></strong> 
 
                     <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
 
-                    <b class="tab"></b>     
-                    <b class="tab"></b>             
-                   
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>
 
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showclients">My clients</button>
-                    <b class="tab"></b>  
-                    <b class="tab"></b>      
+                     <strong class="tab"></strong>  
+                    <strong class="tab"></strong>    
 
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "workCalendar">Work calendar</button>
-                    <b class="tab"></b>
-                    <b class="tab"></b>  
+                   <strong class="tab"></strong>  
+                    <strong class="tab"></strong>
 
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "vacation">Create a vacation</button>
-                    <b class="tab"></b>
-                    
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>
 
                 
             </span>
@@ -81,17 +82,15 @@
                 <th scope="col"></th>
                 <th scope="col">Name</th>
                 <th scope="col">Surname</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone Number</th>
+                
               </tr>
             </thead>
             <tbody>
-              <tr v-for="patient in patients" :key="patient.id">
+              <tr v-for="consulting in ourConsultings" :key="consulting.id">
                 <td></td>
-                <td>{{patient.name}}</td>
-                <td>{{patient.surname}}</td>
-                <td>{{patient.email}}</td>
-                <td>{{patient.phoneNumber}}</td>
+                <td>{{consulting.namePatient}}</td>
+                <td>{{consulting.surnamePatient}}</td>
+               
                 <td><button  v-on:click ="remove($event, patient)" class="btn btn-info">Remove</button></td>
               </tr>
             </tbody>
@@ -139,17 +138,37 @@ export default {
         country : "",
         showMedicationListInfoDiv: false,
         medicationSeacrhList : [],
+         ourConsultings: "",
+         consulting: {
+       patient : {
+         name : "",
+         surname : ""
+       },
+       pharmacist : "", 
+       date: "",
+       startTime: "",
+       duration: "", 
+       price: "",
+       canceled: false,
+       showedUp: false,
+       information: ""
+       },
     }  
    },
 
    mounted(){
-   
-		this.axios.get('/patient')
-      .then(response => {
-          this.patients = response.data;
-          
-          console.log(response);
-      })
+    let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+      this.axios.get('/pharmacist/consultings',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            this.ourConsultings = response.data;
+                            alert(this.ourConsultings);
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
     },
  
      methods:{
@@ -200,7 +219,10 @@ export default {
       },
       logOut : function(){
           window.location.href = "/login";
-      }
+      },
+      showMedications : function() {
+          window.location.href = "/pharmacistMedicationSearch";
+      },
   }
 }
 </script>

@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class ExaminationScheduleDTO {
+
     private Dermatologist dermatologist;
 
     private Pharmacy pharmacy;

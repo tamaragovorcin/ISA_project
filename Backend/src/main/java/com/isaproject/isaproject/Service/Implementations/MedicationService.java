@@ -17,7 +17,7 @@ public class MedicationService implements IMedicationService {
 
     @Override
     public Medication findById(Integer id) {
-        return null;
+        return medicationRepository.findById(id).get();
     }
 
     @Override
@@ -54,6 +54,10 @@ public class MedicationService implements IMedicationService {
     }
 
     @Override
+    public Medication update(Medication medication) {
+        return medicationRepository.save(medication);
+    }
+
     public Medication findByName(String name) {
         return medicationRepository.findByName(name);
     }
