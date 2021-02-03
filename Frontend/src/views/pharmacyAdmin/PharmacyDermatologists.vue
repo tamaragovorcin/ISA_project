@@ -52,7 +52,7 @@
                                  <div class="form-group col">
                                     <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologist"
                                         class = "btn btn-link btn-lg" style="float:left; width=200px;">
-                                            <b-dropdown-item v-for="dermatologist in this.allDermatologists"  v-on:click = "dermatologistIsSelected($event, dermatologist)" v-bind:key="dermatologist.id"> 
+                                            <b-dropdown-item v-for="dermatologist in this.ourDermatologists"  v-on:click = "dermatologistIsSelected($event, dermatologist)" v-bind:key="dermatologist.id"> 
                                             {{ dermatologist.name }}&nbsp; {{dermatologist.surname }}
                                             </b-dropdown-item>
                                     </b-dropdown> 
@@ -302,7 +302,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr v-for="dermatologist in allDermatologists" :key="dermatologist.id">
+    <tr v-for="dermatologist in ourDermatologists" :key="dermatologist.id">
                                                     <td></td>
                                                     <td>{{dermatologist.name}}</td>
                                                     <td>{{dermatologist.surname}}</td>

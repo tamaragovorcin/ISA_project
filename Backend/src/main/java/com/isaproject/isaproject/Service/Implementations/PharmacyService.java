@@ -22,6 +22,8 @@ public class PharmacyService implements IPharmacyService {
     PharmacyRepository pharmacyRepository;
     @Autowired
     DermatologistRepository dermatologistRepository;
+
+
     @Override
     public Pharmacy findById(Integer id) {
         return pharmacyRepository.getOne(id);

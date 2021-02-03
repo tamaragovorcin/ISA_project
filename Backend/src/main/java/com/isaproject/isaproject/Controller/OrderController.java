@@ -1,9 +1,6 @@
 package com.isaproject.isaproject.Controller;
 
-import com.isaproject.isaproject.DTO.MedicationDTO;
-import com.isaproject.isaproject.DTO.MedicationsInOrderReviewDTO;
-import com.isaproject.isaproject.DTO.OrderDTO;
-import com.isaproject.isaproject.DTO.OrderReviewDTO;
+import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
 import com.isaproject.isaproject.Model.Orders.Offer;
@@ -45,6 +42,14 @@ public class OrderController {
     ResponseEntity<Order> register(@RequestBody OrderDTO orderDTO)
     {
         Order order = orderService.save(orderDTO);
+        return order == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(order);
+    }
+    @PostMapping("/update")
+    ResponseEntity<Order> updateOrder(@RequestBody OrderUpdateDTO orderDTO)
+    {
+        Order order = orderService.update(orderDTO);
         return order == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(order);

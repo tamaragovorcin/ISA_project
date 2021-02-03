@@ -20,8 +20,9 @@ public class WorkingHoursDermatologist  {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "pharmacy_id", nullable = true)
-    private Integer pharmacy_id;
+    @OneToOne(cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id", nullable = true, unique = false)
+    private Pharmacy pharmacy;
 
 
     @OneToOne(cascade = {CascadeType.MERGE})
@@ -78,12 +79,12 @@ public class WorkingHoursDermatologist  {
         this.id = id;
     }
 
-    public Integer getPharmacy_id() {
-        return pharmacy_id;
+    public Pharmacy getPharmacy() {
+        return pharmacy;
     }
 
-    public void setPharmacy_id(Integer pharmacy_id) {
-        this.pharmacy_id = pharmacy_id;
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
     }
 
     public Dermatologist getDermatologist() {

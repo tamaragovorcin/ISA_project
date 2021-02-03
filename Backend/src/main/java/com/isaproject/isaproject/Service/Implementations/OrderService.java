@@ -1,8 +1,11 @@
 package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.MedicationsInOrderDTO;
+import com.isaproject.isaproject.DTO.OfferUpdateDTO;
 import com.isaproject.isaproject.DTO.OrderDTO;
+import com.isaproject.isaproject.DTO.OrderUpdateDTO;
 import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
+import com.isaproject.isaproject.Model.Orders.Offer;
 import com.isaproject.isaproject.Model.Orders.Order;
 import com.isaproject.isaproject.Repository.MedicationInOrderRepository;
 import com.isaproject.isaproject.Repository.OrderRepository;
@@ -49,5 +52,23 @@ public class OrderService implements IOrderService {
     @Override
     public void delete(Order order) {
 
+    }
+    @Override
+    public Order update(OrderUpdateDTO order) {
+        Order or = findById(order.getOrderId());
+        for(MedicationInOrder medication : or.getMedicationInOrders()){
+            medicationInOrderRepository.delete(medication);
+        }
+        or.setDate(order.getDate());
+        MedicationInOrder medicationInOrder = new MedicationInOrder();
+
+
+        for(MedicationsInOrderDTO medDto : order.getMedicationsInOrderDTO()){
+            MedicationInOrder medicationInOrder1 = new MedicationInOrder(medDto.getMedicine(),medDto.getQuantity());
+            medicationInOrder1.setOrder(or);
+            medicationInOrderRepository.save(medicationInOrder1);
+        }
+
+        return orderRepository.save(or);
     }
 }

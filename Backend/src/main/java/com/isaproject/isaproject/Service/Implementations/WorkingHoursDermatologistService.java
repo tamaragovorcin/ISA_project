@@ -28,6 +28,8 @@ public class WorkingHoursDermatologistService implements IWorkingHoursDermatolog
     SaturdayScheduleRepository saturdayScheduleRepository;
     @Autowired
     SundayScheduleRepository sundayScheduleRepository;
+    @Autowired
+    PharmacyService pharmacyService;
 
 
     @Override
@@ -45,7 +47,7 @@ public class WorkingHoursDermatologistService implements IWorkingHoursDermatolog
         WorkingHoursDermatologist workingHoursDermatologist = new WorkingHoursDermatologist();
 
         workingHoursDermatologist.setDermatologist(userRequest.getDermatologist());
-        workingHoursDermatologist.setPharmacy_id(userRequest.getPharmacyId());
+        workingHoursDermatologist.setPharmacy(pharmacyService.findById(userRequest.getPharmacyId()));
 
         MondaySchedule mondaySchedule = new MondaySchedule();
         mondaySchedule.setStartTime(userRequest.getStartTimeMonday());

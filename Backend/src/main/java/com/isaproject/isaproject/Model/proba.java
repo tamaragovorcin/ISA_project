@@ -137,12 +137,10 @@ public class proba {
 
 
         ExaminationSchedule examinationSchedule = new ExaminationSchedule();
-        examinationSchedule.setDermatologist(dermatologist);
         examinationSchedule.setDate(LocalDate.now());
         examinationSchedule.setDuration(30.0);
         examinationSchedule.setPrice(150.0);
         examinationSchedule.setStartTime(LocalTime.now());
-        examinationSchedule.setPharmacy(pharmacy);
 
         Examination examination = new Examination();
         examination.setPatient(patient);
