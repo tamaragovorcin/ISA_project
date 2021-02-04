@@ -9,9 +9,9 @@ import java.time.LocalTime;
 
 public class ExaminationScheduleDTO {
 
-    private Dermatologist dermatologist;
+    private Integer dermatologist;
 
-    private Pharmacy pharmacy;
+    private Integer pharmacy;
 
     private LocalDate date;
 
@@ -26,7 +26,8 @@ public class ExaminationScheduleDTO {
     public ExaminationScheduleDTO() {
     }
 
-    public ExaminationScheduleDTO(Dermatologist dermatologist, Pharmacy pharmacy, LocalDate date, LocalTime startTime, double duration, Boolean finished, double price) {
+
+    public ExaminationScheduleDTO(Integer dermatologist, Integer pharmacy, LocalDate date, LocalTime startTime, double duration, Boolean finished, double price) {
         this.dermatologist = dermatologist;
         this.pharmacy = pharmacy;
         this.date = date;
@@ -36,19 +37,19 @@ public class ExaminationScheduleDTO {
         this.price = price;
     }
 
-    public Dermatologist getDermatologist() {
+    public Integer getDermatologist() {
         return dermatologist;
     }
 
-    public void setDermatologist(Dermatologist dermatologist) {
+    public void setDermatologist(Integer dermatologist) {
         this.dermatologist = dermatologist;
     }
 
-    public Pharmacy getPharmacy() {
+    public Integer getPharmacy() {
         return pharmacy;
     }
 
-    public void setPharmacy(Pharmacy pharmacy) {
+    public void setPharmacy(Integer pharmacy) {
         this.pharmacy = pharmacy;
     }
 

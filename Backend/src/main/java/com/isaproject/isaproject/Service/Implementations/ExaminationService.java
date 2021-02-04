@@ -1,27 +1,35 @@
 package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.ExaminationDTO;
+import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Examinations.Examination;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
+import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Repository.ExaminationRepository;
 import com.isaproject.isaproject.Repository.ExaminationScheduleRepository;
+import com.isaproject.isaproject.Repository.PatientRepository;
 import com.isaproject.isaproject.Service.IServices.IExaminationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ExaminationService implements IExaminationService {
-
 
     @Autowired
     ExaminationRepository examinationRepository;
 
     @Autowired
     ExaminationScheduleRepository examinationScheduleRepository;
+    @Autowired
+    PatientRepository patientRepository;
 
     @Override
     public Optional<Examination> findById(Integer id) {
@@ -65,5 +73,19 @@ public class ExaminationService implements IExaminationService {
     @Override
     public void delete(Examination examination) {
         examinationRepository.delete(examination);
+    }
+
+    public Boolean checkIfPatientHasExamination(Integer pharmacyId) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        Patient patient = patientRepository.findById(user.getId()).get();
+
+        Set<Examination> examinations = patient.getExaminations();
+        for (Examination examination : examinations) {
+            if(examination.getShowedUp()==true && examination.getExaminationSchedule().getPharmacy().getId()==pharmacyId) {
+                return true;
+            }
+        }
+        return false;
     }
 }

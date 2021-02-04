@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="62a33759-ea49-4229-9b2b-cbc2bdc5f4b1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/isaproject/isaproject/Controller/DermatologistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/isaproject/isaproject/Controller/DermatologistController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/isaproject/isaproject/Controller/PharmacyAdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/isaproject/isaproject/Controller/PharmacyAdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/isaproject/isaproject/Controller/PharmacyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/isaproject/isaproject/Controller/PharmacyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/isaproject/isaproject/Service/Implementations/DermatologistService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/isaproject/isaproject/Service/Implementations/DermatologistService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/isaproject/isaproject/Service/Implementations/ExaminationScheduleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/isaproject/isaproject/Service/Implementations/ExaminationScheduleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/isaproject/isaproject/Service/Implementations/MedicationPriceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/isaproject/isaproject/Service/Implementations/MedicationPriceService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/src/views/pharmacyAdmin/PharmacyDermatologists.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/views/pharmacyAdmin/PharmacyDermatologists.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,7 +29,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Backend" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../New folder (2)/ISA_project/Backend" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

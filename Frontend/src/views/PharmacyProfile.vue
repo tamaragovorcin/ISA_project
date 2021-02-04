@@ -8,18 +8,20 @@
                 <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href = "/isaHomePage">Home page</button>
             </span>
               <span  style="float:right;margin:15px">
-                    <button class = "btn btn-warning btn-lg" href = "/login">&nbsp;&nbsp;Login&nbsp;&nbsp;</button>
+                    <a class = "btn btn-warning btn-lg" href = "/login">&nbsp;&nbsp;Login&nbsp;&nbsp;</a>
                     <b class="tab"></b>    
-                    <button class = "btn btn-warning btn-lg" style="margin-right:20px;" href = "/registration">Register</button>
+                    <a class = "btn btn-warning btn-lg" style="margin-right:20px;" href = "/registration">Register</a>
                 </span>
 
         </div>
   <div class = "col md-8">
-          <h1 style="color:#0D184F;font-suze:75px;font-weight:bold;"><u>{{pharmacy.pharmacyName}}</u></h1>
+        <button class = "btn btn-info btn-lg" style = "float:right;margin-right:20px;" @click = "subscribe">Subscribe</button>
+
 
         <div class = "container" v-if="welcomePageShow">
-                <h3 style="color:#0D184F;font-suze:55px;font-weight:bold;margin-top:30px;" align = "center">About us:</h3>
+                  <h1 style="color:#0D184F;font-suze:75px;font-weight:bold;" align = "center"><u>{{pharmacy.pharmacyName}}</u></h1>
 
+                <h3 style="color:#0D184F;font-suze:55px;font-weight:bold;margin-top:30px;" align = "center">About us:</h3>
             <div style="color:#0D184F;font-suze:40px;font-style:italic;font-weight:bold;">{{pharmacy.description}}</div>
              <h3 style="color:green;font-suze:55px;font-weight:bold;margin-top:30px;" align = "center">Visit us at address:</h3>
 
@@ -55,6 +57,7 @@
        <div v-if="pharmacistsShow" class="container justify-content-center" id ="table" align="center">
 
                           <h3 style="color:white;">Pharmacists of&nbsp; {{pharmacy.pharmacyName}}</h3>
+                          <h5 style="color:white;float:left;color:red;">Consulting price:&nbsp; {{pharmacy.consultingPrice}}&nbsp; din</h5>
 
                       <table class="table table-striped table-light">
                       <thead class="thead-light">
@@ -108,7 +111,7 @@
                                                                         <td>{{term.startTime}}</td>
                                                                         <td>{{term.duration}}</td>
                                                                         <td>{{term.price}}</td>
-
+                                                                        <td><button class = "btn btn-info" @click = "schedule">Schedule</button></td>
                                                                     </tr>
                       
                       </tbody>
@@ -132,6 +135,7 @@
                           <th scope="col">Mark</th>
                           <th scope="col">Loyalty points</th>
                           <th scope="col">Price</th>
+                          <th scope="col">Reservation</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -145,12 +149,58 @@
                                                                         <td>{{med.loyaltyPoints}}</td>
                                                                         <td>{{med.mark}}</td>
                                                                         <td>{{med.price}}din</td>
-                                                                        
+                                                                        <td><button class ="btn btn-info" @click = "reserve($event,med)">Reserve</button></td>
                                                                     </tr>
                       
                       </tbody>
                     </table>
 
+                     <b-modal ref="my-modal2" hide-footer scrollable title="Complete medication reservation" size="lg" modal-class="b-modal">
+                    <div modal-class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content" style="background-color:whitesmoke">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Medication  {{selectedMedication.name}}</label>
+                                </div>
+                            
+                               <div class="form-row">
+                                  <label>Enter a pick-up day:</label>
+                                  <input type="date" name = "pickUpDay" class="form-control" v-model="pickUpDay" placeholder="Enter a pick-up date">
+                                </div>
+                                 <p class="tab2"></p>     
+                                  <p><button class="btn btn-primary btn-lg" v-on:click = "reserveMedication">Reserve a medication</button></p>       
+                            </div>                
+                        </div>
+                    </div>
+          </b-modal>
+
+      </div>
+
+      <div v-if="availabilityShow">
+      
+         <div style = "background-color:whitesmoke; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+                       <h3 style="color: #0D184F;margin-bottom:20px">Upload QR code</h3>
+                <div class="form-group">
+                   <div class="row">
+                       
+                        <div class="col">
+                             <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+                        </div> 
+                          <div class="col">
+                              <button  class="btn btn-primary" v-on:click="submitFile()">Check availability</button>
+
+                        </div>
+                         <h4 style="color:green;margin:20px" v-if="availabe">Requested medicine is available in our pharmacy</h4>
+                         <h4 style="color:red;margin:20px" v-if="notAvailabe">Requested medicine not is available in our pharmacy</h4>
+
+                   </div>
+                </div>
+        </div>
+      
+      
+      
+      
+      
       </div>
 
 
@@ -172,9 +222,10 @@
                 <hr/>
                 <a v-on:click = "showTerms">Appointments with a dermatologists </a>
                 <hr/>
-                <a href = "/actionsAndBenefits">Pricelist</a>
+                <a href = "/">Pricelist</a>
                 <hr/>
-                <a href="/order"></a>
+                <a v-on:click = "showAvailability">Check medication availability </a>
+
                 </div>
     </div>
     </div>
@@ -196,11 +247,18 @@ export default {
        pharmacistsShow : false,
        termsShow : false,
        medicationShow : false,
+       availabilityShow : false,
        ourDermatologists : [],
        ourMedications : [],
        ourTerms : [],
        ourPharmacists : [],
-       welcomePageShow : true
+       welcomePageShow : true,
+       availabe : false,
+       notAvailabe : false,
+       pickUpDay : "",
+       patient : null,
+       selectedMedication : {}
+
        
        
     }
@@ -278,6 +336,7 @@ export default {
             this.pharmacistsShow = false;
             this.termsShow = false;
             this.medicationShow = false;
+            this.availabilityShow = false;
       },
       showPharmacists : function(){
         this.welcomePageShow = false;
@@ -285,14 +344,18 @@ export default {
           this.pharmacistsShow = true;
           this.termsShow = false;
           this.medicationShow = false;
-      },
+          this.availabilityShow = false;
+
+     },
         showTerms : function(){
           this.welcomePageShow = false;
           this.dermatologistsShow = false;
           this.pharmacistsShow = false;
           this.termsShow = true;
           this.medicationShow = false;
-      }
+          this.availabilityShow = false;
+
+     }
       ,
         showMedication : function(){
           this.welcomePageShow = false;
@@ -300,14 +363,127 @@ export default {
           this.pharmacistsShow = false;
           this.termsShow = false;
           this.medicationShow = true;
+          this.availabilityShow = false;
           
       },
       showWelcomePage : function(){
-        this.dermatologistsShow = false;
+          this.dermatologistsShow = false;
           this.pharmacistsShow = false;
           this.termsShow = false;
           this.medicationShow = false;
           this.welcomePageShow = true;
+          this.availabilityShow = false;
+      },
+      showAvailability : function(){
+          this.dermatologistsShow = false;
+          this.pharmacistsShow = false;
+          this.termsShow = false;
+          this.medicationShow = false;
+          this.welcomePageShow = false;
+          this.availabilityShow = true;
+
+      },
+      subscribe :  function(){
+         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+            const data = {
+              pharmacyId : this.pharmacy.id
+            }
+            this.axios.post('/patient/subscribeToPharmacy',data,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                }}).then(response => {
+
+                    alert("Successfully subrsribed.")
+                    console.log(response)
+                }).catch(res => {
+                       alert("Please log in.");
+                       window.location.href="/login"
+                       console.log(res);
+                });
+      },
+      reserve : function(event,medication){
+        this.selectedMedication  = medication;
+        this.$refs['my-modal2'].show()
+
+      },
+      reserveMedication: function(){
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+         }).then(response => {
+                this.patient = response.data;
+                const med = {
+                  patient : this.patient,
+                  pharmacyId: this.pharmacy.id,
+                  medicationId: this.selectedMedication.id,
+                  dateOfTakeOver: this.pickUpDay 
+                };
+         this.axios.post('/medicationReservation/add',med)
+        
+                    .then(res => {
+                       alert("You successfully reserved "+this.selectedMedication.name);
+                       window.location.href="/pharmacyProfile/"+this.pharmacy.id;
+                        console.log(res);
+                    })
+                    .catch(res => {
+                      alert("Please, try later.");
+                        console.log(res);
+                    })
+                
+          }).catch(res => {
+                       alert("Please log in!");
+                       window.location.href="/login"
+                       console.log(res);
+                 });
+        
+              
+      },
+       submitFile(){
+            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+
+            let formData = new FormData();
+
+            formData.append('file', this.file);
+
+            this.axios.post( '/erecipes/file/noAuthentication', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                     'Authorization': 'Bearer ' + token
+                }
+              }). then(response => {
+                    const data = {
+                      pharmacy : this.pharmacy,
+                      listMedications : response.data
+                    }
+                    this.axios.post( '/erecipes/availability/pharmacy', data,{
+                          headers: {
+                              'Authorization': 'Bearer ' + token
+                          }
+                        }). then(response => {
+                          this.availabe = true;
+                          this.notAvailabe = false;
+
+                          console.log(response);
+                        }).catch(response => {
+                          this.notAvailabe = true;
+                          this.availabe = false;
+                          console.log(response);
+                        });     
+
+                }).catch(res => {
+                     alert("Please upload correct QR code!");
+                    console.log(res);
+                });     
+      },
+
+      
+      handleFileUpload(){
+        this.file = this.$refs.file.files[0];
+      },
+      schedule : function(){
+
       }
    
 }

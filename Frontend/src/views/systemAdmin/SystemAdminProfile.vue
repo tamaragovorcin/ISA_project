@@ -27,6 +27,8 @@
                  <button class = "btn btn-link btn-lg" v-on:click = "defineLoyaltyProgram">Loyalty program</button>
                   <strong class="tab"></strong>  
                  <button class = "btn btn-link btn-lg" v-on:click = "showComplaints">Complaints</button>
+                 <strong class="tab"></strong>  
+                 <a class = "btn btn-link btn-lg" href = "/holidayRequestsDermatologists">Holiday requests</a>
             </span>
             <span  style="float:right;margin:15px">
                   <strong class="tab"></strong>  

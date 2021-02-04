@@ -22,6 +22,8 @@ public class PharmacyService implements IPharmacyService {
     PharmacyRepository pharmacyRepository;
     @Autowired
     DermatologistRepository dermatologistRepository;
+
+
     @Override
     public Pharmacy findById(Integer id) {
         return pharmacyRepository.getOne(id);
@@ -49,10 +51,10 @@ public class PharmacyService implements IPharmacyService {
 
     @Override
     public Boolean savePharmacy(WorkingHoursDermatologistDTO dto) {
-        Pharmacy ph = findById(dto.getPharmacy().getId());
+        Pharmacy ph = findById((dto.getPharmacyId()));
         try{
             ph.getDermatologists().add(dto.getDermatologist());
-            pharmacyRepository.save(ph);
+            this.pharmacyRepository.save(ph);
             return true;
         }catch (Exception e){
             return false;

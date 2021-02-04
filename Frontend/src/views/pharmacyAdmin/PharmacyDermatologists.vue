@@ -54,14 +54,13 @@
                                  <div class="form-group col">
                                     <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologist"
                                         class = "btn btn-link btn-lg" style="float:left; width=200px;">
-                                            <b-dropdown-item v-for="dermatologist in this.allDermatologists"  v-on:click = "dermatologistIsSelected($event, dermatologist)" v-bind:key="dermatologist.id"> 
-                                            {{ dermatologist.firstname }}<div style="width:20px"></div>{{dermatologist.surname }}
+                                            <b-dropdown-item v-for="dermatologist in this.ourDermatologists"  v-on:click = "dermatologistIsSelected($event, dermatologist)" v-bind:key="dermatologist.id"> 
+                                            {{ dermatologist.name }}&nbsp; {{dermatologist.surname }}
                                             </b-dropdown-item>
                                     </b-dropdown> 
                                  </div>
                                 <div class="form-group col-md-6 ">
-                                    <label style="font-size:25px;font-weight:bold;">{{this.dermatologistName}}</label>
-                                    <label style="font-size:25px;font-weight:bold;">{{this.dermatologistSurName}}</label>
+                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist.name}}&nbsp; {{this.selectedDermatologist.surname}} </label>
                                 </div>
                                     
                             </div>
@@ -104,7 +103,7 @@
                                     </div>
                     <div class="modal-footer">
                                         <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" v-on:click="add">Add</button>
+                                        <button class="btn btn-primary" v-on:click="addTerm">Add</button>
                    </div>
 
                             
@@ -113,6 +112,8 @@
                     </div>
     
     </b-modal>
+
+
 
 
 <b-button class = "btn btn-warning" @click="showModal1">+ Add dermatologist</b-button>
@@ -129,13 +130,12 @@
                                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologist"
                                         class = "btn btn-link btn-lg" style="float:left; width=200px;">
                                             <b-dropdown-item v-for="dermatologist in this.allDermatologists"  v-on:click = "dermatologistIsSelected1($event, dermatologist)" v-bind:key="dermatologist.id"> 
-                                            {{ dermatologist.firstname }}<div style="width:20px"></div>{{dermatologist.surname }}
+                                            {{ dermatologist.name }}&nbsp; {{dermatologist.surname }}
                                             </b-dropdown-item>
                                     </b-dropdown> 
                                  </div>
                                 <div class="form-group col-md-6 ">
-                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist1.firstname}}</label>
-                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist1.surname}}</label>
+                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist1.name}}&nbsp; {{this.selectedDermatologist1.surname}}</label>
                                 </div>
                                     
                             </div>
@@ -149,6 +149,135 @@
                     <div class="modal-footer">
                                         <button class="btn btn-secondary" block @click="hideModal1">Close</button>
                                         <button class="btn btn-primary" v-on:click="addDermatologist">Add</button>
+                   </div>
+
+                            
+                                   
+                            </div>
+                    </div>
+    
+    </b-modal>
+
+
+     <b-modal ref="my-modalSchedule" hide-footer scrollable title="Define" size="lg" modal-class="b-modal">
+                    <div modal-class="modal-dialog" role="document">
+                            <div class="modal-content" style="background-color:whitesmoke">
+                                    <div class="modal-header">
+                                                                                 
+                        
+                                    </div>
+                                    <div class="modal-body">
+
+
+                                        <div class="form-row">
+                                                              <label align="center">Monday:</label>
+                                        </div>
+                                        <div class = "form-row">
+                                              <div class="form-group col-md-4">
+                                                  <label>Start time:</label>
+                                                  <input type="time" class="form-control" v-model="startTimeMonday">
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                  <label>End time:</label>
+                                                  <input type="time" class="form-control" v-model = "endTimeMonday">
+                                              </div>
+                                        </div>
+
+                                         <div class="form-row">
+                                                              <label align="center">Tuesday:</label>
+                                        </div>
+                                        <div class = "form-row">
+                                              <div class="form-group col-md-4">
+                                                  <label>Start time:</label>
+                                                  <input type="time" class="form-control" v-model="startTimeTuesday">
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                  <label>End time:</label>
+                                                  <input type="time" class="form-control" v-model = "endTimeTuesday">
+                                              </div>
+                                        </div>
+
+                                         <div class="form-row">
+                                                              <label align="center">Wednesday:</label>
+                                        </div>
+                                        <div class = "form-row">
+                                              <div class="form-group col-md-4">
+                                                  <label>Start time:</label>
+                                                  <input type="time" class="form-control" v-model="startTimeWednesday">
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                  <label>End time:</label>
+                                                  <input type="time" class="form-control" v-model = "endTimeWednesday">
+                                              </div>
+                                        </div>
+
+                                         <div class="form-row">
+                                                              <label align="center">Thursday:</label>
+                                        </div>
+                                        <div class = "form-row">
+                                              <div class="form-group col-md-4">
+                                                  <label>Start time:</label>
+                                                  <input type="time" class="form-control" v-model="startTimeThursday">
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                  <label>End time:</label>
+                                                  <input type="time" class="form-control" v-model = "endTimeThursday">
+                                              </div>
+                                        </div>
+
+
+                                        <div class="form-row">
+                                                              <label align="center">Friday:</label>
+                                        </div>
+                                        <div class = "form-row">
+                                              <div class="form-group col-md-4">
+                                                  <label>Start time:</label>
+                                                  <input type="time" class="form-control" v-model="startTimeFriday">
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                  <label>End time:</label>
+                                                  <input type="time" class="form-control" v-model = "endTimeFriday">
+                                              </div>
+                                        </div>
+
+
+                                        <div class="form-row">
+                                                              <label align="center">Saturday:</label>
+                                        </div>
+                                        <div class = "form-row">
+                                              <div class="form-group col-md-4">
+                                                  <label>Start time:</label>
+                                                  <input type="time" class="form-control" v-model="startTimeSaturday">
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                  <label>End time:</label>
+                                                  <input type="time" class="form-control" v-model = "endTimeSaturday">
+                                              </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                                              <label align="center">Sunday:</label>
+                                        </div>
+                                        <div class = "form-row">
+                                              <div class="form-group col-md-4">
+                                                  <label>Start time:</label>
+                                                  <input type="time" class="form-control" v-model="startTimeSunday">
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                  <label>End time:</label>
+                                                  <input type="time" class="form-control" v-model = "endTimeSunday">
+                                              </div>
+                                        </div>
+                                          
+                                          
+
+                                          
+                                     
+                                    </div>
+                    <div class="modal-footer">
+                                       <button class="btn btn-secondary" block @click="addSchedule">Add</button>
+
+                                        <button class="btn btn-secondary" block @click="hideModalSchedule">Close</button>
                    </div>
 
                             
@@ -181,6 +310,8 @@
                                                     <td>{{dermatologist.surname}}</td>
                                                     <td>{{dermatologist.phoneNumber}}</td>
                                                     <td>{{dermatologist.email}}</td>
+                                                    <td><button  v-on:click ="remove($event, dermatologist)" class="btn btn-info">Remove</button></td>
+      <td><button  v-on:click ="defineSchedule($event, dermatologist)" class="btn btn-info">Define schedule</button></td>
                                                 </tr>
    
   </tbody>
@@ -215,7 +346,22 @@ export default {
        admin : {},
        duration : 0,
        price : 0,
-       selectedDermatologist1 : {}
+       selectedDermatologist1 : {},
+        selectedDermatologist2 : {},
+        startTimeMonday : "",
+        startTimeTuesday : "",
+        startTimeWednesday : "",
+        startTimeThursday : "",
+        startTimeFriday : "",
+        startTimeSaturday : "",
+        startTimeSunday : "",
+        endTimeMonday : "",
+        endTimeTuesday : "",
+        endTimeWednesday : "",
+        endTimeThursday : "",
+        endTimeFriday : "",
+        endTimeSaturday : "",
+        endTimeSunday : ""
     }
   },
   mounted() {
@@ -252,7 +398,6 @@ export default {
                     }
                     }).then(response => {
                             this.ourDermatologists = response.data;
-                            alert(this.ourDermatologists);
                     }).catch(res => {
                             alert("NOT OK");
                             console.log(res);
@@ -304,22 +449,26 @@ export default {
       hideModal1() {
         this.$refs['my-modal1'].hide()
       },
-       add : function(){
+       hideModalSchedule() {
+        this.$refs['my-modalSchedule'].hide()
+      },
+       addTerm : function(){
             const data ={
-              pharmacy : this.pharmacy,
-              dermatologist : this.selectedDermatologist,
+              pharmacy : this.pharmacy.id,
+              dermatologist : this.selectedDermatologist.id,
               date : this.date,
               startTime : this.startTime,
               duration : this.duration,
               price : this.price
           }
-            
+            alert()
             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
             this.axios.post('/pharmacy/addExaminationSchedule',data,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                         }})
                 .then(response => {
+                        alert("Successfully added examination to schedule!")
                         console.log(response.data);
                 })
                 .catch(response => {
@@ -342,8 +491,8 @@ export default {
       },
       addDermatologist: function(){
          const data ={
-              pharmacy : this.pharmacy,
-              dermatologist : this.selectedDermatologist1,
+              pharmacyId : this.pharmacy.id,
+              dermatologistId : this.selectedDermatologist1.id,
               
           }
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
@@ -359,7 +508,62 @@ export default {
                        alert("Please try later.");
                         console.log(response);
                  });  
-      }
+      },
+      remove : function(event,dermatologist){
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.post('/pharmacyAdmin/dermatologist/remove', dermatologist,{ 
+                headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            console.log(response);
+                          
+                             
+                    }).catch(response => {
+                            alert("NOT OK");
+                            console.log(response);
+                    });
+
+		},
+    defineSchedule : function(event, dermatologist){
+            this.selectedDermatologist2 = dermatologist;  
+            this.$refs['my-modalSchedule'].show()
+  
+    },
+    addSchedule : function(){
+      const data ={
+                    pharmacyId : this.pharmacy.id,
+                    dermatologist : this.selectedDermatologist2,
+                    startTimeMonday : this.startTimeMonday,
+                    startTimeTuesday : this.startTimeTuesday,
+                    startTimeWednesday : this.startTimeWednesday,
+                    startTimeThursday : this.startTimeWednesday,
+                    startTimeFriday : this.startTimeThursday,
+                    startTimeSaturday : this.startTimeFriday,
+                    startTimeSunday : this.startTimeSunday,
+                    endTimeMonday : this.endTimeMonday,
+                    endTimeTuesday : this.endTimeTuesday,
+                    endTimeWednesday : this.endTimeWednesday,
+                    endTimeThursday : this.endTimeThursday,
+                    endTimeFriday : this.endTimeFriday,
+                    endTimeSaturday : this.endTimeSunday,
+                    endTimeSunday : this.endTimeSaturday
+          }
+           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+
+            this.axios.post('/workingHours/dermatologist',data,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+                .then(response => {
+                       alert("Successfully added schedule.");
+                        console.log(response.data);
+                })
+                .catch(response => {
+                       alert("Please try later.");
+                        console.log(response);
+                 });  
+    }
 }
 }
 </script>

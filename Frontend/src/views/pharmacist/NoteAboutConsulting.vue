@@ -427,13 +427,13 @@ export default {
       },
        patientIsSelected : function(event, medication) {
         this.medication = medication;
+
         this.medicationName = medication.name;
-      }
-
       },
-      
 
-  
+    
+
+    }
 }
 
 </script>

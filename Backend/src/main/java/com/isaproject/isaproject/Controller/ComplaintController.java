@@ -7,6 +7,7 @@ import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
 import com.isaproject.isaproject.Service.Implementations.ComplaintService;
+import com.isaproject.isaproject.Service.Implementations.EPrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class ComplaintController {
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<Complaint> add(@RequestBody ComplaintDTO complaintDTO)
+    public ResponseEntity<Complaint> add(@RequestBody ComplaintDTO complaintDTO)
     {
         Complaint complaint = complaintService.save(complaintDTO);
         return complaint == null ?
@@ -35,7 +36,7 @@ public class ComplaintController {
 
     @PostMapping("/answer")
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
-    ResponseEntity<Complaint> answer(@RequestBody ComplaintReviewDTO complaintReviewDTO)
+    public ResponseEntity<Complaint> answer(@RequestBody ComplaintReviewDTO complaintReviewDTO)
     {
         Complaint complaint = complaintService.sendAnswerToPatient(complaintReviewDTO);
         return complaint == null ?
@@ -44,7 +45,8 @@ public class ComplaintController {
     }
 
     @GetMapping("all")
-    ResponseEntity<List<ComplaintReviewDTO>> getAllWithDTO()
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    public ResponseEntity<List<ComplaintReviewDTO>> getAllWithDTO()
     {
         List<Complaint> complaints = complaintService.findAll();
         List<ComplaintReviewDTO> complaintReviewDTOS  = new ArrayList<>();
@@ -74,7 +76,6 @@ public class ComplaintController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(complaintReviewDTOS);
     }
-
 
     private PharmacyDTO getPharmacyDto(Pharmacy pharmacy) {
         Address address = pharmacy.getAddress();

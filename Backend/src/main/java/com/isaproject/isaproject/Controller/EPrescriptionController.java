@@ -73,6 +73,31 @@ public class EPrescriptionController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    @PostMapping("/file/noAuthentication")
+    ResponseEntity<List<QRcodeInformationDTO>> uploadFile(@RequestParam("file") MultipartFile file) {
+        System.out.println("POGODIOOOO");
+
+        if (!file.isEmpty()) {
+            try {
+                System.out.println(file.getOriginalFilename());
+                BufferedImage src = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
+                File destination = new File("src/main/resources/qr/" + file.getOriginalFilename());
+                ImageIO.write(src, "png", destination);
+                String decodedText = decodeQRCode(new File("src/main/resources/qr/" + file.getOriginalFilename()));
+                if (decodedText == null) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                } else {
+                    List<QRcodeInformationDTO> medicationsInQRcode = getMedicationsInQRcode(decodedText);
+
+                    return medicationsInQRcode == null ?
+                            new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                            ResponseEntity.ok(medicationsInQRcode);
+                }
+            } catch (IOException | NotFoundException e) {
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
     @PostMapping("/availability")
     @PreAuthorize("hasRole('PATIENT')")
@@ -83,6 +108,17 @@ public class EPrescriptionController {
         return pharmacyAvailability == null ?
                             new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                             ResponseEntity.ok(pharmacyAvailability);
+    }
+    @PostMapping("/availability/pharmacy")
+    ResponseEntity<String> getAvailabilityInPharmacy(@RequestBody MedicineAvailabilityQRDTO listMedications) {
+
+        for(PharmacyMedicationAvailabilityDTO dto : getAvailabilityInPharmacies(listMedications.getListMedications())) {
+            if(dto.getPharmacyName().equals(listMedications.getPharmacy().getPharmacyName()))
+                return new ResponseEntity<>("Requested medication is available in our pharmacy.", HttpStatus.CREATED);
+
+        }
+        return new ResponseEntity<>("Requested medication is not available in our pharmacy.", HttpStatus.NOT_FOUND);
+
     }
 
     @PostMapping("/choosePharmacy")
@@ -133,6 +169,8 @@ public class EPrescriptionController {
         }
         return pharmacyList;
     }
+
+
 
     private double pharmacyHasAllMedications(Set<MedicationPrice> medicationPrices, List<QRcodeInformationDTO> medicationsInQRcode) {
         double sumPrice = 0;

@@ -22,7 +22,7 @@ public class ScheduleController {
     WorkingHoursDermatologistService workingHoursDermatologistService;
 
     @PostMapping("/add")
-    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    //@PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<WorkingHoursDermatologist> addWorkingHours(@RequestBody WorkingHoursDermatologistDTO workingHoursDermatologistDTO) {
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
