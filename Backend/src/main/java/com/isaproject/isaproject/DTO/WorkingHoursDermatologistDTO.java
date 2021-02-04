@@ -10,7 +10,7 @@ import java.time.LocalTime;
 
 public class WorkingHoursDermatologistDTO {
     private Dermatologist dermatologist;
-    private Pharmacy pharmacy;
+    private Integer pharmacyId;
     private LocalTime startTimeMonday;
     private LocalTime startTimeTuesday;
     private LocalTime startTimeWednesday;
@@ -37,12 +37,12 @@ public class WorkingHoursDermatologistDTO {
         this.dermatologist = dermatologist;
     }
 
-    public Pharmacy getPharmacy() {
-        return pharmacy;
+    public Integer getPharmacyId() {
+        return pharmacyId;
     }
 
-    public void setPharmacy(Pharmacy pharmacy) {
-        this.pharmacy = pharmacy;
+    public void setPharmacyId(Integer pharmacyId) {
+        this.pharmacyId = pharmacyId;
     }
 
     public LocalTime getStartTimeMonday() {

@@ -98,6 +98,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/pharmacy/medication/{id}") .permitAll()
                 .antMatchers("/api/pharmacy/freeExaminationTerms/{id}") .permitAll()
                 .antMatchers("/api/medication/priceInPharmacy") .permitAll()
+                .antMatchers("/api/erecipes/availability/pharmacy") .permitAll()
+                .antMatchers("/api/erecipes/file/noAuthetication") .permitAll()
+
+                // .antMatchers("/api/pharmacyAdmin/medication") .permitAll()
+
+
                 .antMatchers("/api/patient/penals") .permitAll()
                 .antMatchers("/api/prescription/add") .permitAll()
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
@@ -138,7 +144,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.POST, "/api/order/add");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/pharmacists/{id}");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/dermatologists/{id}");
-
+        web.ignoring().antMatchers(HttpMethod.POST, "/api/erecipes/availability/pharmacy");
+        web.ignoring().antMatchers(HttpMethod.POST, "/api/erecipes/file/noAuthetication");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/medication/{id}");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/medication/priceInPharmacy");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacy/freeExaminationTerms/{id}");

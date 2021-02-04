@@ -4,13 +4,12 @@ import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.DTO.PharmacyAdminDTO;
 import com.isaproject.isaproject.DTO.PharmacyDTO;
-import com.isaproject.isaproject.Model.Users.Address;
-import com.isaproject.isaproject.Model.Users.Authority;
-import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
-import com.isaproject.isaproject.Model.Users.Supplier;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
 import com.isaproject.isaproject.Repository.DermatologistRepository;
 import com.isaproject.isaproject.Repository.PharmacyAdminRepository;
+import com.isaproject.isaproject.Repository.PharmacyRepository;
 import com.isaproject.isaproject.Service.IServices.IPharmacyAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +28,12 @@ public class PharmacyAdminService implements IPharmacyAdminService {
     private AuthorityRepository authorityRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PharmacyService pharmacyService;
+    @Autowired
+    private PharmacyRepository pharmacyRepository;
+    @Autowired
+    private DermatologistRepository dermatologistRepository;
 
     @Override
     public PharmacyAdmin findById(Integer id) {
@@ -74,5 +79,21 @@ public class PharmacyAdminService implements IPharmacyAdminService {
     @Override
     public void delete(PharmacyAdmin admin) {
         pharmacyAdminRepository.delete(admin);
+    }
+
+    public void removeDermatologistFromPharmacy(Integer pharmacyId, Dermatologist dermatologist){
+        Pharmacy pharmacy = pharmacyService.findById(pharmacyId);
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println(pharmacy.getPharmacyName());
+        for(Dermatologist dermatologist1 : pharmacy.getDermatologists()){
+            System.out.println(dermatologist1.getName() +" "+dermatologist.getSurname() );
+        }
+        //fale provjere da li je zakazan neki termin kod njega
+        pharmacy.getDermatologists().remove(dermatologist);
+        for(Dermatologist dermatologist1 : pharmacy.getDermatologists()){
+            System.out.println(dermatologist1.getName() +" "+dermatologist.getSurname() );
+        }
+        this.dermatologistRepository.save(dermatologist);
+
     }
 }

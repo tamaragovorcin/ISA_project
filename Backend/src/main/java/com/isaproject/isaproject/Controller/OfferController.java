@@ -204,6 +204,8 @@ public class OfferController {
                     }
 
                 }
+            }else{
+
             }
         }
         if(offerService.findById(id).getStatus().equals("CREATED")){

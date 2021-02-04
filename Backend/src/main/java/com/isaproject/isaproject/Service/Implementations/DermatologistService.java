@@ -3,6 +3,7 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.DermatologistDTO;
+import com.isaproject.isaproject.DTO.PharmacyDermatologistsDTO;
 import com.isaproject.isaproject.DTO.WorkingHoursDermatologistDTO;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
@@ -27,6 +28,8 @@ public class DermatologistService implements IDermatologistService {
     private AuthorityRepository authorityRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PharmacyService pharmacyService;
 
     @Override
     public Dermatologist findById(Integer id) {
@@ -111,7 +114,7 @@ public class DermatologistService implements IDermatologistService {
 
     }
 
-    public Boolean addPharmacy(WorkingHoursDermatologistDTO dto) {
+    public Boolean addPharmacy(PharmacyDermatologistsDTO dto) {
         System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getPharmacy().getPharmacyName());
         Dermatologist ph = findById(dto.getDermatologist().getId());
         try{

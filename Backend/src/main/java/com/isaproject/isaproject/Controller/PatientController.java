@@ -263,6 +263,7 @@ public class PatientController {
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<String> subsribe(@RequestBody PharmacyIdDTO pharmacyId)
     {
+
         Pharmacy pharmacy =pharmacyService.findById(pharmacyId.getPharmacyId());
         return patientService.subsribeToPharmacy(pharmacy) == false ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
