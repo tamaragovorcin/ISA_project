@@ -153,6 +153,10 @@
                                             <b-dropdown-item v-for="medication in this.medications"  v-on:click ="patientIsSelected($event, medication)" v-bind:key="medication.id"> {{medication.name}} </b-dropdown-item>
                                             </b-dropdown> 
                                           </div>
+                                           <b class="tab"></b> 
+                                           <div class=" col">
+                                              <button v-on:click = "showMedicationSpecification" class="btn btn-danger btn-lg">Specification of {{medicationName}}</button>
+                                           </div>
                                           <div class="col">
                                             <label> </label>
                                           
@@ -173,6 +177,49 @@
                       </div>
     </b-modal>
   </div>
+   <div> 
+        <b-modal ref="specification-modal" hide-footer scrollable title="Medication specification" size="lg" modal-class="b-modal">
+               <div modal-class="modal-dialog" role="document">
+                    <div class="modal-content" style="background-color:whitesmoke">
+                         <div class="modal-body">
+                             <div class="row">
+                                <div class=" form-group col">
+                                     <label>Contra indications</label> 
+                                </div>
+                                <div class=" form-group col">  
+                                      <label>{{medicationInfo.specification.contraIndications}}</label> 
+                                </div>
+                             </div>
+                            <div class="row">
+                                <div class=" form-group col">
+                                     <label>Structure</label> 
+                                </div>
+                                <div class=" form-group col">  
+                                      <label>{{medicationInfo.specification.structure}}</label> 
+                                </div>
+                             </div>
+                             <div class="row">
+                                <div class=" form-group col">
+                                     <label>Recommended consumption</label>
+                                </div>
+                                <div class=" form-group col">  
+                                      <label>{{medicationInfo.specification.recommendedConsumption}}</label> 
+                                </div>
+                             </div>
+                            
+                            <div class="row">
+                                <div class=" form-group col">
+                                    <label>Manufacturer</label>
+                                </div>
+                                <div class=" form-group col">  
+                                      <label>{{medicationInfo.specification.manufacturer}}</label> 
+                                </div>
+                             </div>                               
+                         </div>                
+                    </div>
+               </div>
+          </b-modal>
+      </div>
 
 </div>
 </template>
@@ -182,7 +229,7 @@ export default {
 
   data() {
     return {
-      
+      medicationName : "",
       consultingId : "",
        consulting: {
        patient : {
@@ -204,7 +251,23 @@ export default {
       durationOfTherapy : "",
       medicationList : [],
      
-      medication : ""
+      medication : "",
+        medicationInfo : {
+            name : "",
+            form : "",
+            type :"",
+            issuanceRegime :"",
+            mark : 0,
+            specification: {
+                    contraIndications :"",
+                    structure : "",
+                    recommendedConsumption : "",
+                    manufacturer : ""
+            },
+            medicationId : 0,
+            code : 0
+      },
+      
 
       
 
@@ -291,6 +354,17 @@ export default {
 
       },
      
+      showMedicationSpecification : function() {
+          this.axios.get('/medication/searchName/'+this.medicationName).
+            then(response => {
+                    this.medicationInfo= response.data;
+                  
+            }).catch(res => {
+                        alert("There is no medication with entered name.");
+                        console.log(res);
+                    });
+         this.$refs['specification-modal'].show();
+      },
        hideModal() {
         this.$refs['my-modal'].hide()
       },
@@ -348,14 +422,16 @@ export default {
                  });    
 
       },
-       patientIsSelected : function(event, medication) {
-        this.medication = medication;
-      }
-
-      },
       showMedications : function() {
           window.location.href = "/pharmacistMedicationSearch";
       },
+       patientIsSelected : function(event, medication) {
+        this.medication = medication;
+        this.medicationName = medication.name;
+      }
+
+      },
+      
 
   
 }
