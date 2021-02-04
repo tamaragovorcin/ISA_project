@@ -1,10 +1,5 @@
 package com.isaproject.isaproject.DTO;
-
 import com.isaproject.isaproject.Model.Medicine.Medication;
-import com.isaproject.isaproject.Model.Medicine.Specification;
-
-import javax.persistence.Column;
-import java.util.HashSet;
 import java.util.Set;
 
 public class MedicationDTO {
@@ -42,8 +37,7 @@ public class MedicationDTO {
         this.wayOfSelling = wayOfSelling;
     }
 
-    public MedicationDTO() {
-    }
+    public MedicationDTO() { }
 
     public String getWayOfSelling() {
         return wayOfSelling;

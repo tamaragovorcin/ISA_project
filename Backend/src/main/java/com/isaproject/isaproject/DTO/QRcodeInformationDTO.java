@@ -5,8 +5,7 @@ public class QRcodeInformationDTO {
     private long medicationCode;
     private int quantity;
 
-    public QRcodeInformationDTO() {
-    }
+    public QRcodeInformationDTO() {}
 
     public QRcodeInformationDTO(String medicationName, long medicationCode, int quantity) {
         this.medicationName = medicationName;

@@ -9,8 +9,7 @@ public class RefuseHolidayScheduleDTO {
         this.reason = reason;
     }
 
-    public RefuseHolidayScheduleDTO() {
-    }
+    public RefuseHolidayScheduleDTO() { }
 
     public Integer getRequestId() {
         return requestId;

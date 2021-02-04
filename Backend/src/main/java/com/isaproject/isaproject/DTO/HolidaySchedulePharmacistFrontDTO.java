@@ -1,7 +1,4 @@
 package com.isaproject.isaproject.DTO;
-
-import com.isaproject.isaproject.Model.Users.Pharmacist;
-
 import java.time.LocalDate;
 
 public class HolidaySchedulePharmacistFrontDTO {
@@ -13,8 +10,7 @@ public class HolidaySchedulePharmacistFrontDTO {
     private String type;
     private String approved;
 
-    public HolidaySchedulePharmacistFrontDTO() {
-    }
+    public HolidaySchedulePharmacistFrontDTO() { }
 
     public String getEmail() {
         return email;

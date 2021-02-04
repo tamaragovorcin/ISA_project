@@ -27,6 +27,12 @@ public class Supplier extends PersonUser{
 
     public Supplier() {}
 
+    public Supplier(Integer id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, boolean enabled,
+                    Timestamp lastPasswordResetDate, List<Authority> authorities, Address address, Set<Offer> offer, Set<SupplierMedications> supplierMedications) {
+        super(id, name, surname, email, password, phoneNumber, firstLogged, enabled, lastPasswordResetDate, authorities, address);
+        this.offer = offer;
+        this.supplierMedications = supplierMedications;
+    }
 
     public Set<Offer> getOffer() {
         return offer;

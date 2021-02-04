@@ -4,14 +4,12 @@ public class PatientSearchDTO {
     private String name;
     private String surname;
 
-
     public PatientSearchDTO(String name, String surname) {
         this.name = name;
         this.surname = surname;
     }
 
-    public PatientSearchDTO() {
-    }
+    public PatientSearchDTO() { }
 
     public String getName() {
         return name;

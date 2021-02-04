@@ -1,8 +1,6 @@
 package com.isaproject.isaproject.DTO;
-
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -101,7 +99,5 @@ public class ConsultingDTO {
         this.showedUp = showedUp;
         this.information = information;
     }
-    public ConsultingDTO(){
-
-    }
+    public ConsultingDTO(){ }
 }

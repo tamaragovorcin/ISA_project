@@ -1,5 +1,4 @@
 package com.isaproject.isaproject.DTO;
-
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 
 public class PharmacistDTO {
@@ -22,8 +21,7 @@ public class PharmacistDTO {
 
     private double mark;
 
-    public PharmacistDTO() {
-    }
+    public PharmacistDTO() {}
 
     public PharmacistDTO(String email, String password, String firstname, String surname, String phonenumber, AddressDTO address, Pharmacy pharmacy) {
         this.email = email;

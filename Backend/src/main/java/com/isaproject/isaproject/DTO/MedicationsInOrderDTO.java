@@ -1,17 +1,12 @@
 package com.isaproject.isaproject.DTO;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.Order;
-
-import javax.persistence.*;
 
 public class MedicationsInOrderDTO {
     private Medication medicine;
     private int quantity;
 
-    public MedicationsInOrderDTO() {
-    }
+    public MedicationsInOrderDTO() { }
 
     public MedicationsInOrderDTO(Medication medicine, int quantity, Order order) {
         this.medicine = medicine;

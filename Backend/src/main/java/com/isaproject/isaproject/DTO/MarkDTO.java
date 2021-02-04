@@ -1,5 +1,4 @@
 package com.isaproject.isaproject.DTO;
-
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
@@ -20,8 +19,7 @@ public class MarkDTO {
 
     private int mark;
 
-    public MarkDTO() {
-    }
+    public MarkDTO() {}
 
     public Pharmacy getPharmacy() {
         return pharmacy;

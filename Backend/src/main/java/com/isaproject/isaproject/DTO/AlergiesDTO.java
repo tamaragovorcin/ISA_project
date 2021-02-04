@@ -1,21 +1,12 @@
 package com.isaproject.isaproject.DTO;
-
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Users.Patient;
 
-import javax.persistence.*;
-
 public class AlergiesDTO {
-
-
     private Patient patient;
-
     private Medication medication;
 
-
-    public AlergiesDTO() {
-    }
-
+    public AlergiesDTO() {}
 
     public Patient getPatient() {
         return patient;

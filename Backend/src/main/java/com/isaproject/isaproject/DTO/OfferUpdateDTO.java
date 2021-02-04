@@ -1,5 +1,4 @@
 package com.isaproject.isaproject.DTO;
-
 import java.time.LocalDate;
 
 public class OfferUpdateDTO {
@@ -7,8 +6,7 @@ public class OfferUpdateDTO {
     private LocalDate dateOfDelivery;
     private double summaryPrice;
 
-    public OfferUpdateDTO() {
-    }
+    public OfferUpdateDTO() {}
 
     public OfferUpdateDTO(Integer offerId, LocalDate dateOfDelivery, double summaryPrice) {
         this.offerId = offerId;

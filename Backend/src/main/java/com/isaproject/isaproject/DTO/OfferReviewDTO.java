@@ -1,7 +1,4 @@
 package com.isaproject.isaproject.DTO;
-
-import com.isaproject.isaproject.Model.Users.Supplier;
-
 import java.time.LocalDate;
 
 public class OfferReviewDTO {
@@ -19,8 +16,7 @@ public class OfferReviewDTO {
         this.summaryPrice = summaryPrice;
     }
 
-    public OfferReviewDTO() {
-    }
+    public OfferReviewDTO() {}
 
     public String getSupplierName() {
         return supplierName;

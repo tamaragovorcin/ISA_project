@@ -1,5 +1,4 @@
 package com.isaproject.isaproject.DTO;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,8 +12,7 @@ public class SupplierOffersInfoDTO {
     private String pharmacyName;
     private boolean changable;
 
-    public SupplierOffersInfoDTO() {
-    }
+    public SupplierOffersInfoDTO() {}
 
     public SupplierOffersInfoDTO(Integer offerId, Integer orderId, LocalDate dateOfDelivery, double summaryPrice, LocalDate date, List<MedicationsInOrderReviewDTO> medications, String pharmacyName, boolean changable) {
         this.offerId = offerId;

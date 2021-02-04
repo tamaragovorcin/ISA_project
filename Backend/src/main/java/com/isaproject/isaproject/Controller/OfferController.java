@@ -4,7 +4,6 @@ import com.isaproject.isaproject.DTO.OfferDTO;
 import com.isaproject.isaproject.DTO.OfferReviewDTO;
 import com.isaproject.isaproject.Model.Orders.Offer;
 import com.isaproject.isaproject.Model.Orders.Order;
-import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
 import com.isaproject.isaproject.Repository.OfferRepository;
@@ -31,13 +30,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @RestController

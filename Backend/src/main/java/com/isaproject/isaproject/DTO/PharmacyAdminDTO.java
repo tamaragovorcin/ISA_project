@@ -1,5 +1,4 @@
 package com.isaproject.isaproject.DTO;
-
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 
 public class PharmacyAdminDTO {
@@ -17,8 +16,7 @@ public class PharmacyAdminDTO {
 
     private Pharmacy pharmacy;
 
-    public PharmacyAdminDTO() {
-    }
+    public PharmacyAdminDTO() {}
 
     public PharmacyAdminDTO(String email, String password, String firstname, String surname, String phonenumber, AddressDTO address, Pharmacy pharmacy) {
         this.email = email;
