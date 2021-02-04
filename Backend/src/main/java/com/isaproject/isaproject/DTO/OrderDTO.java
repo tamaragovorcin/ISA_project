@@ -1,13 +1,7 @@
 package com.isaproject.isaproject.DTO;
-
-
-import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
-
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
-
 
 public class OrderDTO {
     private PharmacyAdmin pharmacyAdmin;
@@ -15,8 +9,7 @@ public class OrderDTO {
     private String status;
     private Set<MedicationsInOrderDTO> medicationsInOrderDTO;
 
-    public OrderDTO() {
-    }
+    public OrderDTO() {}
 
     public OrderDTO(PharmacyAdmin pharmacyAdmin, LocalDate date, String status, Set<MedicationsInOrderDTO> medicationsInOrderDTO) {
         this.pharmacyAdmin = pharmacyAdmin;

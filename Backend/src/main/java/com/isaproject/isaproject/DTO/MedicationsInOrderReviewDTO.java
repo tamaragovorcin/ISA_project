@@ -1,6 +1,4 @@
 package com.isaproject.isaproject.DTO;
-
-
 import java.time.LocalDate;
 
 public class MedicationsInOrderReviewDTO {
@@ -13,8 +11,8 @@ public class MedicationsInOrderReviewDTO {
     private String manufacturer;
     private LocalDate date;
     private Integer orderId;
-    public MedicationsInOrderReviewDTO() {
-    }
+
+    public MedicationsInOrderReviewDTO() { }
 
     public MedicationsInOrderReviewDTO(int id, String name, long code, String form, String type, int quantity) {
         this.id = id;

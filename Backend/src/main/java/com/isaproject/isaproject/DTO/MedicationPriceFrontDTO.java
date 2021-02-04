@@ -1,8 +1,4 @@
 package com.isaproject.isaproject.DTO;
-
-import com.isaproject.isaproject.Model.Medicine.Medication;
-import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
-
 import java.time.LocalDate;
 
 public class MedicationPriceFrontDTO {
@@ -24,8 +20,7 @@ public class MedicationPriceFrontDTO {
         this.date = date;
     }
 
-    public MedicationPriceFrontDTO() {
-    }
+    public MedicationPriceFrontDTO() { }
 
     public String getName() {
         return name;

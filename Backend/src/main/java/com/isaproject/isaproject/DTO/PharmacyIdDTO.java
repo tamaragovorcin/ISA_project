@@ -3,9 +3,7 @@ package com.isaproject.isaproject.DTO;
 public class PharmacyIdDTO {
     private Integer pharmacyId;
 
-    public PharmacyIdDTO() {
-    }
-
+    public PharmacyIdDTO() {}
     public PharmacyIdDTO(Integer pharmacyId) {
         this.pharmacyId = pharmacyId;
     }

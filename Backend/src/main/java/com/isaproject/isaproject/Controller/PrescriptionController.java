@@ -1,19 +1,13 @@
 package com.isaproject.isaproject.Controller;
-
-
-import com.isaproject.isaproject.DTO.ConsultingDTO;
 import com.isaproject.isaproject.DTO.PrescriptionDTO;
 import com.isaproject.isaproject.DTO.PrescriptionSendDTO;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
-import com.isaproject.isaproject.Model.Examinations.Prescription;
-import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Service.Implementations.ConsultingService;
 import com.isaproject.isaproject.Service.Implementations.PatientService;
 import com.isaproject.isaproject.Service.Implementations.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

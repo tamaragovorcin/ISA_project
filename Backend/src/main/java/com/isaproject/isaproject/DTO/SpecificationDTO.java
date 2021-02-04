@@ -1,7 +1,5 @@
 package com.isaproject.isaproject.DTO;
 
-import javax.persistence.Column;
-
 public class SpecificationDTO {
 
     private String contraIndications;
@@ -19,8 +17,7 @@ public class SpecificationDTO {
         this.manufacturer = manufacturer;
     }
 
-    public SpecificationDTO() {
-    }
+    public SpecificationDTO() {}
 
     public String getContraIndications() {
         return contraIndications;

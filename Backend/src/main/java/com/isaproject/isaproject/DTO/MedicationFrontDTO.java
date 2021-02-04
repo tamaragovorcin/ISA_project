@@ -1,11 +1,5 @@
 package com.isaproject.isaproject.DTO;
 
-import com.isaproject.isaproject.Model.Medicine.Medication;
-import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
-
-import javax.persistence.Column;
-import java.time.LocalDate;
-
 public class MedicationFrontDTO {
     private Integer id;
     private String name;

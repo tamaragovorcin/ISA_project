@@ -1,18 +1,11 @@
-
 package com.isaproject.isaproject.Controller;
-
 import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
-import com.isaproject.isaproject.Model.Examinations.Examination;
-import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
-import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Users.*;
-import com.isaproject.isaproject.Repository.MarkPharmacistRepository;
 import com.isaproject.isaproject.Service.Implementations.ConsultingService;
 import com.isaproject.isaproject.Service.Implementations.MarkPharmacistService;
 import com.isaproject.isaproject.Service.Implementations.PharmacistService;
-import com.isaproject.isaproject.Service.Implementations.PharmacyAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -84,7 +76,6 @@ public class PharmacistController {
             PharmacistFrontDTO pharmacyFrontDTO = new PharmacistFrontDTO(pharmacist.getName(),pharmacist.getSurname(),pharmacist.getMarkPharmacist(),pharmacist.getPharmacy().getPharmacyName());
             pharmacistFrontDTOS.add(pharmacyFrontDTO);
         }
-
         return  ResponseEntity.ok(pharmacistFrontDTOS);
     }
 
@@ -112,22 +103,16 @@ public class PharmacistController {
     }
 
 
-
     public Boolean ableToRatePharmacist(Integer pharmacistId, Integer patientId) {
-
         Boolean able = false;
-
         List<Consulting> consultings = consultingService.findAll();
-
         for (Consulting consulting : consultings) {
             if (consulting.getPatient().getId() == patientId && consulting.getPharmacist().getId() == pharmacistId) {
                 able = true;
             }
         }
-
         return able;
     }
-
 
     @PostMapping("/delete")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
@@ -391,11 +376,3 @@ public class PharmacistController {
                 ResponseEntity.ok(cons);
     }
 }
-
-
-
-
-
-
-
-

@@ -1,8 +1,5 @@
 package com.isaproject.isaproject.DTO;
 
-
-import com.isaproject.isaproject.Model.Users.Address;
-
 public class PersonUserDTO {
 
     private String email;
@@ -17,7 +14,6 @@ public class PersonUserDTO {
 
     private AddressDTO address;
 
-
     public PersonUserDTO(String email, String password, String firstname, String surname, String phonenumber, AddressDTO address) {
         this.email = email;
         this.password = password;
@@ -27,8 +23,7 @@ public class PersonUserDTO {
         this.address = address;
     }
 
-    public PersonUserDTO() {
-    }
+    public PersonUserDTO() { }
 
     public String getEmail() {
         return email;

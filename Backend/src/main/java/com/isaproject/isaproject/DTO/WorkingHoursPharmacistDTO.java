@@ -1,7 +1,5 @@
 package com.isaproject.isaproject.DTO;
-
 import com.isaproject.isaproject.Model.Users.Pharmacist;
-
 import java.time.LocalTime;
 
 public class WorkingHoursPharmacistDTO {
@@ -21,8 +19,7 @@ public class WorkingHoursPharmacistDTO {
     private LocalTime endTimeSaturday;
     private LocalTime endTimeSunday;
 
-    public WorkingHoursPharmacistDTO() {
-    }
+    public WorkingHoursPharmacistDTO() {}
 
     public WorkingHoursPharmacistDTO(Pharmacist pharmacist, LocalTime startTimeMonday, LocalTime startTimeTuesday, LocalTime startTimeWednesday, LocalTime startTimeThursday, LocalTime startTimeFriday, LocalTime startTimeSaturday, LocalTime startTimeSunday, LocalTime endTimeMonday, LocalTime endTimeTuesday, LocalTime endTimeWednesday, LocalTime endTimeThursday, LocalTime endTimeFriday, LocalTime endTimeSaturday, LocalTime endTimeSunday) {
         this.pharmacist = pharmacist;

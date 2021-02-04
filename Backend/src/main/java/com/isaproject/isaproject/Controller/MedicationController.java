@@ -2,27 +2,19 @@ package com.isaproject.isaproject.Controller;
 
 import com.isaproject.isaproject.DTO.MarkDTO;
 import com.isaproject.isaproject.DTO.MedicationDTO;
-import com.isaproject.isaproject.DTO.PersonUserDTO;
-import com.isaproject.isaproject.Model.Examinations.Examination;
-import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
 import com.isaproject.isaproject.Model.Medicine.Medication;
-import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Service.Implementations.*;
 import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
-import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Medicine.Specification;
-import com.isaproject.isaproject.Model.Users.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/medication")
@@ -73,20 +65,14 @@ public class MedicationController {
     public Boolean ableToRateMedications(Integer medicationId, Integer patientId){
 
         Boolean able = false;
-
         List<MedicationReservation> medicationReservations = medicationReservationService.findAll();
-
         for(MedicationReservation medicationReservation: medicationReservations){
             if(medicationReservation.getMedicine().getId() == medicationId && medicationReservation.getPatient().getId() == patientId){
                 able=true;
-
             }
         }
-
         return able;
     }
-
-
 
     @PostMapping("/leaveAMark")
     //@PreAuthorize("hasRole('SYSTEM_ADMIN')")

@@ -1,13 +1,4 @@
 package com.isaproject.isaproject.DTO;
-
-
-
-import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
-import com.isaproject.isaproject.Model.Users.Patient;
-
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -33,12 +24,7 @@ public class ExaminationFrontDTO {
 
     private Boolean finished;
 
-
-
-
-
-    public ExaminationFrontDTO() {
-    }
+    public ExaminationFrontDTO() { }
 
     public Integer getPatientId() {
         return patientId;

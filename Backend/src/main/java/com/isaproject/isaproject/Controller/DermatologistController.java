@@ -9,7 +9,6 @@ import com.isaproject.isaproject.Model.Examinations.Examination;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.MarkDermatologist;
-import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Service.Implementations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 

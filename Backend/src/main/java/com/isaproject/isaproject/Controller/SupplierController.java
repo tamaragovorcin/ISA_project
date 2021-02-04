@@ -52,7 +52,4 @@ public class SupplierController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 new ResponseEntity<>("Supplier is successfully updated!", HttpStatus.CREATED);
     }
-
-
-
 }

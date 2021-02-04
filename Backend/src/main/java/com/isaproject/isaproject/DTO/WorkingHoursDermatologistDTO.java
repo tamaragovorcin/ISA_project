@@ -1,11 +1,5 @@
 package com.isaproject.isaproject.DTO;
-
-import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
-import com.isaproject.isaproject.Model.Users.Pharmacist;
-
-import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class WorkingHoursDermatologistDTO {
@@ -26,8 +20,7 @@ public class WorkingHoursDermatologistDTO {
     private LocalTime endTimeSaturday;
     private LocalTime endTimeSunday;
 
-    public WorkingHoursDermatologistDTO() {
-    }
+    public WorkingHoursDermatologistDTO() { }
 
     public Dermatologist getDermatologist() {
         return dermatologist;
