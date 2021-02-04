@@ -61,6 +61,10 @@ import ERecipes from '../views/patient/ERecipes.vue'
 import PatientComplaint from '../views/patient/PatientComplaint.vue'
 import showMedicationsHome from '../views/home/showMedicationsHome.vue'
 import myPharmacistsConsultation from '../views/patient/myPharmacistsConsultation.vue'
+import PharmacyAdminMedicationSearch from '../views/pharmacyAdmin/PharmacyAdminMedicationSearch.vue'
+import PharmacistMedicationSearch from '../views/pharmacist/PharmacistMedicationSearch.vue'
+import DermatologistMedicationSearch from '../views/dermatologist/DermatologistMedicationSearch.vue'
+
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -383,8 +387,23 @@ const routes = [
       name: 'myPharmacistsConsultation',
       component: myPharmacistsConsultation
     },
+    {
+      path: '/pharmacyAdminMedicationSearch',
+      name: 'PharmacyAdminMedicationSearch',
+      component: PharmacyAdminMedicationSearch
+    },
+    {
+      path: '/pharmacistMedicationSearch',
+      name: 'PharmacistMedicationSearch',
+      component: PharmacistMedicationSearch
+    },
+    {
+      path: '/dermatologistMedicationSearch',
+      name: 'DermatologistMedicationSearch',
+      component: DermatologistMedicationSearch
+    }
     
-
+    
   ]
 const router = new VueRouter({
   mode: 'history',

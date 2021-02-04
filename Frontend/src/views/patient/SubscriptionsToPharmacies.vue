@@ -7,44 +7,64 @@ ines (39 sloc)  1.61 KB
             
              <span style="float: left; margin: 15px;">
                     <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
-                    <b class="tab"></b>                
+                    <strong class="tab"></strong>          
                     <a  class = "btn btn-secondary" href= "/showPharmaciesPatient">Pharmacies</a>
-                    <b class="tab"></b>     
+                    <strong class="tab"></strong>          
                     <a  class = "btn btn-secondary" href= "/myProfilePatient">My profile</a>
-                    <b class="tab"></b>                
+                    <strong class="tab"></strong>          
                     <a  class = "btn btn-secondary" href= "/patientComplaint">Write complaint</a>
-                    <b class="tab"></b>   
+                    <strong class="tab"></strong>          
                     <a  class = "btn btn-secondary" href= "/subscriptionsToPharmacies">My subscriptions</a>
-                    <b class="tab"></b>   
+                    <strong class="tab"></strong>          
                     <a  class = "btn btn-secondary" href= "/eRecipes">ERecipes</a>
-                    <b class="tab"></b> 
+                    <strong class="tab"></strong>          
             </span>
-              <span  style="float:right;margin:15px">
-                    
-
-                    <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
-
-                </span>
+            <span  style="float:right;margin:15px">
+                <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
+           </span>
         </div>
 
-    <div style = "background-color:lightgray; margin: auto; width: 13%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+    <div v-for="item in this.completeDictionary" v-bind:key="item.pharmacy.id">
+                        <div style = "background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
 
-                <table class="form-group">
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
+                            <table id="table2" class="table">
+                            
+                            
+                                <tbody>
+                                    <tr>
+                                    <th scope="row"></th>
+                                    <td>Pharmacy name</td>
+                                    <td>{{item.pharmacy.pharmacyName}}</td>
+                                    
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"></th>
+                                    <td>Address</td>
+                                    <td>{{item.pharmacy.postalCode}} {{item.pharmacy.country}}, {{item.pharmacy.street}} {{item.pharmacy.number}}</td>
 
-                    <tr v-for="item in this.completeDictionary" v-bind:key="item.pharmacy.pharmacyName">
-                        <td>{{item.pharmacy.pharmacyName}}</td>
-                        <td v-if = "item.subscribed==='NO'">
-                            <button class = "btn btn-link btn-lg" v-on:click = "subrsribe($event,item.pharmacy)">Subscribe</button>
-                        </td>
-                        <td v-if = "item.subscribed==='YES'">
-                            <button class = "btn btn-link btn-lg" v-on:click = "unsubrsribe($event,item.pharmacy)">Unsubscribe</button>
-                        </td>   
-                    </tr>
-                </table>     
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"></th>
+                                    <td>Mark</td>
+                                    <td>{{item.pharmacy.mark}} </td>
+                                    
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"></th>
+                                    <td v-if = "item.subscribed==='NO'" colspan="2">
+                                        <button class="btn btn-primary" v-on:click = "subrsribe($event,item.pharmacy.id)">Subscribe</button>
+                                    </td>
+                                    <td v-if = "item.subscribed==='YES'" colspan="2">
+                                        <button class="btn btn-primary" v-on:click = "unsubrsribe($event,item.pharmacy.id)">Unsubscribe</button>
+                                    </td>  
+                                    </tr>
+                                    
+                                
+                                </tbody>
+                            </table>
+                         
+                         </div>
+                  
     </div>
 
 </div>
@@ -73,7 +93,10 @@ export default {
       
       unsubrsribe : function(event, pharmacy) {
          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-            this.axios.post('/patient/unsubscribeToPharmacy',pharmacy,{ 
+           const pharmacyInfo = {
+                pharmacyId : pharmacy
+            }
+            this.axios.post('/patient/unsubscribeToPharmacy',pharmacyInfo,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                 }}).then(response => {
@@ -86,7 +109,10 @@ export default {
       },
       subrsribe : function(event, pharmacy){
             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-            this.axios.post('/patient/subscribeToPharmacy',pharmacy,{ 
+            const pharmacyInfo = {
+                pharmacyId : pharmacy
+            }
+            this.axios.post('/patient/subscribeToPharmacy',pharmacyInfo,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                 }}).then(response => {
@@ -109,22 +135,23 @@ export default {
                         this.patientsSubscriptions=response.data;
                         var i = 0;
                         for (i = 0; i < this.pharmaciesSubscriptions.length; i++) {
-                            if(this.patientsSubscriptions.includes(this.pharmaciesSubscriptions[i])) {
+                            if(this.patientsSubscriptions.includes(this.pharmaciesSubscriptions[i].id)) {
                                 const dict = {
-                                        pharmacy : {pharmacyName : this.pharmaciesSubscriptions[i] },
+                                        pharmacy :  this.pharmaciesSubscriptions[i] ,
                                         subscribed : "YES"
                                     }
                                     this.completeDictionary.push(dict)
                             }
                             else {
                                 const dict = {
-                                        pharmacy : { pharmacyName: this.pharmaciesSubscriptions[i] },
+                                        pharmacy : this.pharmaciesSubscriptions[i],
                                         subscribed : "NO"
                                     }
                                 this.completeDictionary.push(dict)
                                 
                             }   
                         }
+                        console.log(this.completeDictionary)
                         
                     }).catch(res => {
                                 alert("Please try again later.");
@@ -150,10 +177,3 @@ export default {
     }
 }
 </script>
-
-<style>
-
-</style>
-
-
-  

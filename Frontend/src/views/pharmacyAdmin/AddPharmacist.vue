@@ -5,30 +5,32 @@
         
              <span style="float: left; margin: 15px;">
                 <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
-                <b class="tab"></b>    
+                <strong class="tab"></strong>  
                 <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
-                <b class="tab"></b>    
+                <strong class="tab"></strong>  
                 <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
-                 <b class="tab"></b>    
+                <strong class="tab"></strong>  
                  <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
                  
-                <b class="tab"></b> 
+                <strong class="tab"></strong>  
                  <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
                                class = "btn btn-link btn-lg">
                     <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
                     <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
                 </b-dropdown> 
-                  <b class="tab"></b>  
+                <strong class="tab"></strong>  
                 <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
-                <b class="tab"></b> 
+                <strong class="tab"></strong>  
                 <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
-                        <b class="tab"></b>    
+                <strong class="tab"></strong>  
+                 <a   class = "btn btn-secondary" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
+                <strong class="tab"></strong>  
                 <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
-                        <b class="tab"></b>    
+                <strong class="tab"></strong>  
                 <a   class = "btn btn-secondary" href="/order">Orders</a>
             </span>
               <span  style="float:right;margin:15px">
-                     <b class="tab"></b>    
+                <strong class="tab"></strong>  
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
                 
                 </span>
@@ -179,7 +181,6 @@ export default {
                     }
                     }).then(response => {
                             this.pharmacy = response.data;
-                            alert(this.pharmacy);
                             console.log(this.pharmacy);
                              
                     }).catch(res => {

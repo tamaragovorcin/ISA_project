@@ -1,6 +1,8 @@
 package com.isaproject.isaproject.DTO;
 
 public class MedicationSearchDTO {
+
+    private int medicationId;
     private String name;
 
     private String form;
@@ -10,19 +12,38 @@ public class MedicationSearchDTO {
     private String issuanceRegime;
 
     private double mark;
+    private long code;
 
     private SpecificationDTO specification;
 
     public MedicationSearchDTO() {
     }
 
-    public MedicationSearchDTO(String name, String form, String type, String issuanceRegime, double mark, SpecificationDTO specification) {
+    public MedicationSearchDTO(int medicationId, String name, String form, String type, String issuanceRegime, double mark, long code, SpecificationDTO specification) {
+        this.medicationId = medicationId;
         this.name = name;
         this.form = form;
         this.type = type;
         this.issuanceRegime = issuanceRegime;
         this.mark = mark;
+        this.code = code;
         this.specification = specification;
+    }
+
+    public long getCode() {
+        return code;
+    }
+
+    public void setCode(long code) {
+        this.code = code;
+    }
+
+    public int getMedicationId() {
+        return medicationId;
+    }
+
+    public void setMedicationId(int medicationId) {
+        this.medicationId = medicationId;
     }
 
     public String getName() {

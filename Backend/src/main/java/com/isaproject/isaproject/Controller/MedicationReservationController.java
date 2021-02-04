@@ -72,7 +72,7 @@ public class MedicationReservationController {
         mail.setFrom(environment.getProperty("spring.mail.username"));
         //mail.setFrom("pharmacyisa@gmail.com");
         mail.setText("You have successfully reserved a medication : "
-                + medicationReservationDTO.getMedication().getName() +" until " + medicationReservationDTO.getDateOfTakeOver());
+                + medication.getMedicine().getName() +" until " + medicationReservationDTO.getDateOfTakeOver());
 
         mailSender.send(mail);
 

@@ -21,6 +21,7 @@ import com.isaproject.isaproject.Service.Implementations.ActionsService;
 import com.isaproject.isaproject.Service.Implementations.ExaminationScheduleService;
 import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyService;
+import org.hibernate.annotations.GeneratorType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -149,16 +150,29 @@ public class PharmacyController {
     }
 
     @GetMapping("/allNames")
-    ResponseEntity<List<String>> getAllPharmaciesNames()
+    ResponseEntity<List<PharmacyFrontDTO>> getAllPharmaciesNames()
     {
         List<Pharmacy> pharmacies = pharmacyService.findAll();
-        List<String>pharmaciesNames = new ArrayList<>();
-        for (Pharmacy pharmacy: pharmacies)
-            pharmaciesNames.add(pharmacy.getPharmacyName());{
+        List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
+
+        for (Pharmacy ph : pharmacies){
+
+            PharmacyFrontDTO pf = new PharmacyFrontDTO();
+            pf.setId(ph.getId());
+            pf.setCountry(ph.getAddress().getCountry());
+            pf.setNumber(ph.getAddress().getNumber());
+            pf.setPostalCode(ph.getAddress().getPostalCode());
+            pf.setStreet(ph.getAddress().getStreet());
+            pf.setPharmacyName(ph.getPharmacyName());
+            pf.setMark(ph.getMark());
+            pf.setCity(ph.getAddress().getTown());
+
+            pharmacyFrontDTOS.add(pf);
+
         }
-        return pharmaciesNames == null ?
+        return pharmacyFrontDTOS == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmaciesNames);
+                ResponseEntity.ok(pharmacyFrontDTOS);
     }
 
     @GetMapping("/dermatologists/{id}")
@@ -210,8 +224,6 @@ public class PharmacyController {
         Set<ExaminationSchedule> examinationTerms = pharmacyService.findById(id).getExaminationSchedules();
         List<FreeExaminationTermsDTO> freeExaminationTerms = new ArrayList<FreeExaminationTermsDTO>();
         for(ExaminationSchedule ex :  examinationTerms){
-                System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-                System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                 System.out.println(ex.getDermatologist().getName());
 
                 FreeExaminationTermsDTO term = new FreeExaminationTermsDTO();
@@ -232,22 +244,25 @@ public class PharmacyController {
                 ResponseEntity.ok(freeExaminationTerms);
 
     }
-    @PostMapping("/addDermatologist")
+   /* @PostMapping("/addDermatologist")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody WorkingHoursDermatologistDTO dto) {
 
         if(pharmacyService.savePharmacy(dto)){
-            return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
+            return new ResponseEntity<>("Dermatologist is successfully added as employee!", HttpStatus.CREATED);
 
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
 
-    }
+    }*/
 
     @PostMapping("/addExaminationSchedule")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<ExaminationSchedule> addSchedule(@RequestBody ExaminationScheduleDTO dto) {
+
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         ExaminationSchedule examinationSchedule = examinationScheduleService.save(dto);
         return examinationSchedule == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -718,4 +733,33 @@ public class PharmacyController {
             return null;
         }
     }
-}
+
+
+        @GetMapping("/medicationAvailability/{code}")
+        public ResponseEntity<List<PharmacyMedicationAvailabilityDTO>> getAvailability ( @PathVariable long code){
+
+            List<PharmacyMedicationAvailabilityDTO> pharmacyAvailability = getAvailabilityInPharmacies(code);
+
+            return pharmacyAvailability == null ?
+                    new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                    ResponseEntity.ok(pharmacyAvailability);
+        }
+
+        private List<PharmacyMedicationAvailabilityDTO> getAvailabilityInPharmacies ( long code){
+            List<PharmacyMedicationAvailabilityDTO> pharmacyList = new ArrayList<>();
+            List<Pharmacy> pharmacies = pharmacyService.findAll();
+            for (Pharmacy pharmacy : pharmacies) {
+                for (MedicationPrice medicationPrice : pharmacy.getMedicationPrices()) {
+                    if (medicationPrice.getMedication().getCode() == code) {
+                        pharmacyList.add(new PharmacyMedicationAvailabilityDTO(pharmacy.getId(), medicationPrice.getPrice(), pharmacy.getMark(),
+                                new AddressDTO(pharmacy.getAddress().getTown(), pharmacy.getAddress().getStreet(), pharmacy.getAddress().getNumber(),
+                                        pharmacy.getAddress().getPostalCode(), pharmacy.getAddress().getCountry()), pharmacy.getPharmacyName()));
+                    } else {
+                    }
+                }
+
+            }
+            return pharmacyList;
+        }
+    }
+

@@ -1,6 +1,10 @@
 package com.isaproject.isaproject.Controller;
 
 import com.isaproject.isaproject.DTO.*;
+import com.isaproject.isaproject.DTO.MarkDTO;
+import com.isaproject.isaproject.DTO.DermatologistDTO;
+import com.isaproject.isaproject.DTO.UserBasicInfoDTO;
+import com.isaproject.isaproject.DTO.PharmacyDermatologistsDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Examinations.Examination;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
@@ -41,7 +45,7 @@ public class DermatologistController {
 
 
     @PostMapping("/register")
-   // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody DermatologistDTO userRequest) {
 
         PersonUser existUser = dermatologistService.findByEmail(userRequest.getEmail());
@@ -67,15 +71,12 @@ public class DermatologistController {
 
     @PostMapping("/update")
     @PreAuthorize("hasRole('DERMATOLOGIST')")
-    ResponseEntity<Dermatologist> update(@RequestBody DermatologistDTO person)
-    {
-        Dermatologist per = dermatologistService.findByEmail(person.getEmail());
-        Integer id = per.getId();
-        //dermatologistService.delete(per);
-        Dermatologist patient = dermatologistService.save(person);
-        return patient == null ?
+    public ResponseEntity<String> update(@RequestBody Dermatologist userRequest) {
+
+        Dermatologist user = dermatologistService.update(userRequest);
+        return user.getSurname() == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(patient);
+                new ResponseEntity<>("Dermatologist is successfully updated!", HttpStatus.CREATED);
     }
 
     @GetMapping("")
@@ -88,7 +89,7 @@ public class DermatologistController {
     }
     @PostMapping("/addPharmacy")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    public ResponseEntity<String> addPharmacy(@RequestBody WorkingHoursDermatologistDTO dto) {
+    public ResponseEntity<String> addPharmacy(@RequestBody PharmacyDermatologistsDTO dto) {
 
         if(dermatologistService.addPharmacy(dto)){
             return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
@@ -109,10 +110,11 @@ public class DermatologistController {
                 ResponseEntity.ok(basicInfos);
     }
 
+
     public Boolean ableToRateDermatologist(Integer dermatologistId, Integer patientId){
 
         Boolean able = false;
-
+        
         List<Examination> examinations = examinationService.findAll();
         List<ExaminationSchedule> examinationSchedules = examinationScheduleService.findAll();
 

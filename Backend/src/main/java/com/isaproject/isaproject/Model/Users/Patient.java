@@ -40,7 +40,8 @@ public class Patient extends PersonUser{
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<EPrescription> ePrescriptions = new HashSet<EPrescription>();
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference(value="prescription-patient")
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<Prescription> prescriptions = new HashSet<Prescription>();
 
 

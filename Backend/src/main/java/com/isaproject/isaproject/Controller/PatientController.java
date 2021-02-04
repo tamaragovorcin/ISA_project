@@ -163,10 +163,21 @@ public class PatientController {
                 ResponseEntity.ok(email);
     }
 
+    @GetMapping("penals/{id}")
+    //@PreAuthorize("hasRole('PHARMACIST')")
+    ResponseEntity<Patient> getByPatientId(@PathVariable Integer id)
+    {
+        Patient patient = patientService.findById(id);
+        patient.setPenalties(patient.getPenalties()+1);
+        this.patientRepository.save(patient);
+
+        return patient == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(patient);
+    }
 
     @PostMapping("/update")
     ResponseEntity<Patient> update(@RequestBody PersonUserDTO person) {
-        System.out.println("SKDJRHSKDRJHSKDRUHJSKRLHUJSDRKJHWSKSRHKSFJHKSHRSKH" + person);
         Patient patient = patientService.update(person);
 
         return patient == null ?
@@ -174,7 +185,8 @@ public class PatientController {
                 ResponseEntity.ok(patient);
     }
 
-    @PostMapping("/addAlergies")
+
+            @PostMapping("/addAlergies")
     ResponseEntity<PatientsMedicationAlergy> addAlergies(@RequestBody AlergiesDTO al) {
 
 
@@ -231,16 +243,16 @@ public class PatientController {
 
     @GetMapping("/mySubscriptions")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<List<String>> getMySubscriptions()
+    ResponseEntity<List<Integer>> getMySubscriptions()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
 
         Patient patient = patientService.findById(user.getId());
         Set<Pharmacy> pharmacies = patient.getSubscribedToPharmacies();
-        List<String>pharmaciesNames =  new ArrayList<>();
+        List<Integer>pharmaciesNames =  new ArrayList<>();
         for (Pharmacy pharmacy: pharmacies)
-            pharmaciesNames.add(pharmacy.getPharmacyName());{
+            pharmaciesNames.add(pharmacy.getId());{
     }
         return pharmaciesNames == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -249,9 +261,10 @@ public class PatientController {
 
     @PostMapping("/subscribeToPharmacy")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<String> subsribe(@RequestBody PharmacyNameDTO pharmacyName)
+    ResponseEntity<String> subsribe(@RequestBody PharmacyIdDTO pharmacyId)
     {
-        Pharmacy pharmacy =pharmacyService.findByPharmacyName(pharmacyName.getPharmacyName());
+
+        Pharmacy pharmacy =pharmacyService.findById(pharmacyId.getPharmacyId());
         return patientService.subsribeToPharmacy(pharmacy) == false ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
@@ -259,9 +272,9 @@ public class PatientController {
 
     @PostMapping("/unsubscribeToPharmacy")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<String> unsubsribe(@RequestBody PharmacyNameDTO pharmacyName)
+    ResponseEntity<String> unsubsribe(@RequestBody PharmacyIdDTO pharmacyId)
     {
-        Pharmacy pharmacy =pharmacyService.findByPharmacyName(pharmacyName.getPharmacyName());
+        Pharmacy pharmacy =pharmacyService.findById(pharmacyId.getPharmacyId());
 
         return patientService.unsubsribeToPharmacy(pharmacy) == false ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

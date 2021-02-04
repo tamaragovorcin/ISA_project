@@ -7,6 +7,7 @@ import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
 import com.isaproject.isaproject.Model.Orders.Order;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Repository.MedicationPriceRepository;
 import com.isaproject.isaproject.Service.IServices.IMedicationPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +111,7 @@ public class MedicationPriceService implements IMedicationPriceService {
 
                         Integer quantity = medicationPrice.getQuantity();
                         quantity = quantity + med.getQuantity();
-                        MedicationPrice medicationPrice1 = findByName(medicationPrice.getMedication().getName());
+                        MedicationPrice medicationPrice1 = findByName(medicationPrice.getMedication().getName(),order.getPharmacyAdmin().getPharmacy());
                         medicationPrice1.setQuantity(quantity);
                         this.medicationPriceRepository.save(medicationPrice1);
 
@@ -121,7 +122,9 @@ public class MedicationPriceService implements IMedicationPriceService {
 
         }
     for(MedicationInOrder medication : order.getMedicationInOrders()){
-        if(findByName(medication.getMedicine().getName())== null){
+        if(findByName(medication.getMedicine().getName(),order.getPharmacyAdmin().getPharmacy())== null){
+            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            System.out.println("NE POSTOJI");
             MedicationPrice medicationPrice1 = new MedicationPrice();
             medicationPrice1.setMedication(medication.getMedicine());
             medicationPrice1.setQuantity(medication.getQuantity());
@@ -131,9 +134,9 @@ public class MedicationPriceService implements IMedicationPriceService {
         }
     }
     }
-    private MedicationPrice findByName(String name){
+    private MedicationPrice findByName(String name, Pharmacy pharmacy){
         for(MedicationPrice medicationPrice :  medicationPriceRepository.findAll()){
-            if (medicationPrice.getMedication().getName().equals(name)){
+            if (medicationPrice.getMedication().getName().equals(name) && medicationPrice.getPharmacy().getId() == pharmacy.getId()){
                 return medicationPrice;
             }
         }

@@ -3,6 +3,7 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.DermatologistDTO;
+import com.isaproject.isaproject.DTO.PharmacyDermatologistsDTO;
 import com.isaproject.isaproject.DTO.WorkingHoursDermatologistDTO;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
@@ -27,6 +28,8 @@ public class DermatologistService implements IDermatologistService {
     private AuthorityRepository authorityRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PharmacyService pharmacyService;
 
     @Override
     public Dermatologist findById(Integer id) {
@@ -89,16 +92,17 @@ public class DermatologistService implements IDermatologistService {
         Dermatologist supplier= findById(user.getId());
         supplier.setAddress(userRequest.getAddress());
         List<Authority> auth = new ArrayList<Authority>();
-        Authority authoritySupplier = authService.findByname("ROLE_DERMATOLOGIST");
+        Authority authoritySupplier = authService.findByname("ROLE_DERMATOLOGISTT");
 
         if(authoritySupplier==null) {
-            authorityRepository.save(new Authority("ROLE_DERMATOLOGIST"));
-            auth.add(authService.findByname("ROLE_DERMATOLOGIST"));
+            authorityRepository.save(new Authority("ROLE_DERMATOLOGISTT"));
+            auth.add(authService.findByname("ROLE_DERMATOLOGISTT"));
         }
         else {
             auth.add(authoritySupplier);
         }
-        supplier.setAuthorities(auth);        supplier.setEmail(userRequest.getEmail());
+        supplier.setAuthorities(auth);
+        supplier.setEmail(userRequest.getEmail());
         supplier.setEnabled(true);
         supplier.setFirstLogged(userRequest.getFirstLogged());
         supplier.setName(userRequest.getName());
@@ -107,9 +111,10 @@ public class DermatologistService implements IDermatologistService {
         supplier.setPassword(supplier.getPassword());
         supplier.setLastPasswordResetDate(userRequest.getLastPasswordResetDate());
         return this.dermatologistRepository.save(supplier);
+
     }
 
-    public Boolean addPharmacy(WorkingHoursDermatologistDTO dto) {
+    public Boolean addPharmacy(PharmacyDermatologistsDTO dto) {
         System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getPharmacy().getPharmacyName());
         Dermatologist ph = findById(dto.getDermatologist().getId());
         try{

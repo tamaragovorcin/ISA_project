@@ -51,7 +51,7 @@
         </div>
 
 
-               <h4 style="color: #0D184F;margin:20px">Pharmacies:</h4>
+        <h4 style="color: #0D184F;margin:20px">Pharmacies:</h4>
 
 
  <div  v-for="pharmacy in this.pharmacies"  v-bind:key="pharmacy.id">

@@ -5,25 +5,28 @@
             
             <span style="float: left; margin: 15px;">
                     <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
-                    <b class="tab"></b>  
-                    <b class="tab"></b>  
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong> 
 
                     <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
 
-                    <b class="tab"></b>     
-                    <b class="tab"></b>             
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>           
                    
 
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showClients">My patients</button>
-                    <b class="tab"></b>  
-                    <b class="tab"></b>      
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>  
 
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "workCalendar">Work calendar</button>
-                    <b class="tab"></b>
-                    <b class="tab"></b>  
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>
 
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "vacation">Create a vacation</button>
-                    <b class="tab"></b>
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
+                    <strong class="tab"></strong>
                     
 
                 
@@ -116,7 +119,7 @@ export default {
   },
 
   methods:{
-      showclients : function(){
+      showClients : function(){
 
       },
       showMyProfile: function(){
@@ -129,7 +132,7 @@ export default {
           window.location.href = "/login";
 
       },
-      writeConsulting() {
+      writeExamination() {
         this.$refs['my-modal'].show()
       },
        hideModal() {
@@ -154,7 +157,15 @@ export default {
       },
       sendComplaint : function(){
 
-      }
+      },
+       schedule : function(){
+
+      },
+
+       showMedications : function() {
+          window.location.href = "/dermatologistMedicationSearch";
+      },
+
 }
 }
 </script>

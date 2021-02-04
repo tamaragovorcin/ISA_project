@@ -1,6 +1,4 @@
 package com.isaproject.isaproject.Service.Implementations;
-
-import com.isaproject.isaproject.DTO.SupplierMedicationReviewDTO;
 import com.isaproject.isaproject.DTO.SupplierMedicationUpdateDTO;
 import com.isaproject.isaproject.DTO.SupplierMedicationUpdateQuantityDTO;
 import com.isaproject.isaproject.DTO.SupplierMedicationsDTO;
@@ -14,12 +12,9 @@ import com.isaproject.isaproject.Repository.SupplierMedicaionRepository;
 import com.isaproject.isaproject.Repository.SupplierRepository;
 import com.isaproject.isaproject.Service.IServices.ISupplierMedicationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -58,9 +53,7 @@ public class SupplierMedicationService implements ISupplierMedicationService {
         supplierMedications.setSupplier(supplier);
         supplierMedications.setName(supplierMedicationsDTO.getName());
         supplierMedications.setCode(supplierMedicationsDTO.getCode());
-        supplierMedications.setForm(supplierMedicationsDTO.getForm());
         supplierMedications.setQuantity(supplierMedicationsDTO.getQuantity());
-        supplierMedications.setType(supplierMedicationsDTO.getType());
         supplierMedications.setReservedQuantity(0);
 
         return supplierMedicaionRepository.save(supplierMedications);

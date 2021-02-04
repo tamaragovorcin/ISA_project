@@ -2,26 +2,30 @@
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-            <span style="float: left; margin: 15px;">
+           <span style="float: left; margin: 15px;">
                 <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
-                <b class="tab"></b>    
+                <strong class="tab"></strong>  
                 <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
-                <b class="tab"></b>    
+                <strong class="tab"></strong>  
                 <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
-                 <b class="tab"></b>    
+                <strong class="tab"></strong>  
                  <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
                  
-                <b class="tab"></b>    
-                <a  class = "btn btn-secondary" href = "/addPharmacist">Add pharmacist</a>    
-                <b class="tab"></b> 
-                 <a  class = "btn btn-secondary" href = "/pharmacyPharmacists">Our pharmacists</a> 
-                  <b class="tab"></b>  
+                <strong class="tab"></strong>  
+                 <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
+                               class = "btn btn-link btn-lg">
+                    <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
+                    <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
+                </b-dropdown> 
+                <strong class="tab"></strong>  
                 <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
-                <b class="tab"></b> 
+                <strong class="tab"></strong>  
                 <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
-                        <b class="tab"></b>    
+                <strong class="tab"></strong>  
+                 <a   class = "btn btn-secondary" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
+                <strong class="tab"></strong>  
                 <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
-                        <b class="tab"></b>    
+                <strong class="tab"></strong>  
                 <a   class = "btn btn-secondary" href="/order">Orders</a>
             </span>
               <span  style="float:right;margin:15px">
@@ -120,6 +124,97 @@
                 </div>
     
     </b-modal>
+
+ <b-modal ref="edit-modal" hide-footer scrollable title="Edit order" size="lg" modal-class="b-modal">
+                    <div modal-class="modal-dialog" role="document">
+                    <div class="modal-content" style="background-color:whitesmoke">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="exampleModalLabel">Medicing ordering</h3>
+                
+                            </div>
+                            <div class="modal-body">
+                                <div  class="container5">
+
+                                        <div  style="margin-top:30px">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label >Medication:</label>
+                                                </div>
+                                                <div class="col">
+                                                                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication"
+                                        class = "btn btn-link btn-lg" style="float:left; width=200px;">
+                                            <b-dropdown-item v-for="medicine in this.medications"  v-on:click = "medicationIsSelected($event, medicine)" v-bind:key="medicine.id"> 
+                                            {{ medicine.name }}<div style="width:20px"></div>{{medicine.type }}
+                                            </b-dropdown-item>
+                                    </b-dropdown> 
+
+                                                </div>
+
+
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="col">
+                                                    <label>Quantity:</label>
+                                                </div>
+                                                <div class="col">
+                                                    <input type="number" v-model="quantityEdit" placeholder="Enter quantity..">
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                </div>
+                                                <div class="col">
+                                                    <button class="btn btn-secondary" style="margin-left:3px" v-on:click="addNewMedicineEdit">&nbsp;&nbsp;+&nbsp;&nbsp;</button>
+                                                </div>
+                                            </div>
+
+
+
+
+
+                                        </div>
+                                        <div class="row">
+                                            <table class="table table-striped table-dark">
+                                                <thead>
+                                                <th>Medicine name</th>
+                                                <th>Quantity</th>
+                                                </thead>
+                                                <tr v-for="med in medicationQuantityListEdit" :key="med.id">
+                                                    <td>{{med.medicine.name}}</td>
+                                                    <td>{{med.quantity}}</td>
+                                                    <td><button class = "btn btn-primary" >Remove medication</button></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col">
+                                                <label for="name">Closing date:</label>
+                                            </div>
+                                            <div class="col">
+                                                <input type="date" v-model="endDateEdit" />
+                                            </div>
+                                        </div>
+                    
+
+                                </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" block @click="hideModalEdit">Close</button>
+                        <button class="btn btn-primary" @click="editOrder">Share order</button>
+                    </div>
+                    </div>
+                </div>
+    
+    </b-modal>
+
+
+
+
   </div>
        
        <h3 style="margin:25px;color:#0D184F;font-weight:bold;">Active tenders in your pharmacy:</h3>
@@ -173,6 +268,8 @@
                         <hr/>
                          <div class="row justify-content-center">
                            <div class="modal-footer">
+                            <button class="btn btn-primary" @click="showEditForm">Edit</button>
+
                             <button class="btn btn-primary" @click="viewOffers">View offers</button>
                         </div>
                             
@@ -267,6 +364,7 @@ export default {
        admin : {},
        pharmacy : {},
        selectedMedication : {},
+       selectedMedicationEdit : {},
        orders : [],
        medicationInOrder : [],
        choosenOffer :{
@@ -300,7 +398,12 @@ export default {
         showConcreteOffer : false,
         supplierName : "",
         supplierSurName : "",
-        offerData : ""
+        offerData : "",
+        medicationQuantityListEdit : "",
+        endDateEdit : "",
+        quantityEdit : "",
+        
+
     }
     },
      mounted() {
@@ -366,14 +469,25 @@ export default {
        logOut : function(){
            window.location.href = "/login";
       },
+      showEditForm(){
+                  this.$refs['edit-modal'].show()
+
+      },
       showModal() {
         this.$refs['my-modal'].show()
       },
       hideModal() {
         this.$refs['my-modal'].hide()
       },
+       hideModalEdit() {
+        this.$refs['edit-modal'].hide()
+      },
      dermatologistIsSelected : function(event, medicine) {
             this.selectedMedication = medicine;
+            console.log(event);
+      },
+        medicationIsSelected : function(event, medicine) {
+            this.selectedMedicationEdit = medicine;
             console.log(event);
       },
        showTender :function (event, order) {
@@ -408,6 +522,15 @@ export default {
                     quantity: this.quantity,
                 };
                 this.medicationQuantityList.push(medicineWithQuantity)
+                this.medicationQuantityListEdit.push(medicineWithQuantity)
+
+      },
+       addNewMedicineEdit : function(){
+                const medicineWithQuantityEdit = {
+                    medicine: this.selectedMedicationEdit,
+                    quantity: this.quantityEdit,
+                };
+                this.medicationQuantityListEdit.push(medicineWithQuantityEdit)
       },
       shareOrder : function(){
           const order = {
@@ -450,14 +573,34 @@ export default {
                 });
                 this.showOffers = true;
       },
+       editOrder : function(){
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+         const order = {
+                    orderId : this.choosenTender.id,
+                    medicationsInOrderDTO: this.medicationQuantityListEdit,
+                    date: this.endDateEdit
+                };
+            this.axios.post('/order/update',order,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+                .then(response => {
+                       alert(response.data);
+                       window.location.href = "/order";
+                })
+                .catch(response => {
+                       alert("Please try later.");
+                        console.log(response);
+                 });    
+      },
       acceptOffer : function(){
           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
         this.axios.get('/offer/accept/'+this.choosenOffer.id,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                 }}).then(response => {
-                    alert("Offer successfully accepted! Tender is now closed.")
-                    window.location.href = "/order";
+                    alert(response.data)
+                    window.location.href= "/order";
                     console.log(response)
                 }).catch(res => {
                        alert("Please try later.");

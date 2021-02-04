@@ -13,4 +13,5 @@ public interface IConsultingService {
     Consulting save(ConsultingDTO loyaltyProgramDTO);
     Consulting update(Consulting loyaltyProgram);
     void delete(Consulting consulting);
+    Consulting updateIgnored(Consulting loyaltyProgram);
 }

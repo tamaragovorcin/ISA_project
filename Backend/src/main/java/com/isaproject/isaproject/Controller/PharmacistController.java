@@ -1,10 +1,7 @@
 
 package com.isaproject.isaproject.Controller;
 
-import com.isaproject.isaproject.DTO.MarkDTO;
-import com.isaproject.isaproject.DTO.PharmacistDTO;
-import com.isaproject.isaproject.DTO.PharmacyAdminDTO;
-import com.isaproject.isaproject.DTO.UserBasicInfoDTO;
+import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Examinations.Examination;
@@ -24,8 +21,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/pharmacist")
@@ -52,14 +52,15 @@ public class PharmacistController {
         Pharmacist user = pharmacistService.save(userRequest);
         return new ResponseEntity<>("Supplier is successfully registred!", HttpStatus.CREATED);
     }
+
     @GetMapping("")
-    ResponseEntity<List<Pharmacist>> getAll()
-    {
+    ResponseEntity<List<Pharmacist>> getAll() {
         List<Pharmacist> pharmacists = pharmacistService.findAll();
         return pharmacists == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacists);
     }
+
     @PostMapping("/update")
     @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<String> update(@RequestBody Pharmacist userRequest) {
@@ -83,6 +84,7 @@ public class PharmacistController {
                 ResponseEntity.ok(basicInfos);
     }
 
+
     @PostMapping("/delete")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody Pharmacist pharmacist) {
@@ -93,10 +95,9 @@ public class PharmacistController {
 
     @GetMapping("/account")
     @PreAuthorize("hasRole('PHARMACIST')")
-    ResponseEntity<Pharmacist> getMyAccount()
-    {
+    ResponseEntity<Pharmacist> getMyAccount() {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PersonUser user = (PersonUser) currentUser.getPrincipal();
         Pharmacist pharmacist = pharmacistService.findById(user.getId());
         return pharmacist == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -104,25 +105,20 @@ public class PharmacistController {
     }
 
 
-
-
-
-    public Boolean ableToRatePharmacist(Integer pharmacistId, Integer patientId){
+    public Boolean ableToRatePharmacist(Integer pharmacistId, Integer patientId) {
 
         Boolean able = false;
 
         List<Consulting> consultings = consultingService.findAll();
 
-       for(Consulting consulting: consultings){
-           if(consulting.getPatient().getId() == patientId && consulting.getPharmacist().getId()==pharmacistId){
-               able = true;
-           }
-       }
+        for (Consulting consulting : consultings) {
+            if (consulting.getPatient().getId() == patientId && consulting.getPharmacist().getId() == pharmacistId) {
+                able = true;
+            }
+        }
 
         return able;
     }
-
-
 
 
     @PostMapping("/leaveAMark")
@@ -132,7 +128,7 @@ public class PharmacistController {
         String response = "";
         Boolean able = ableToRatePharmacist(dto.getPharmacist().getId(), dto.getPatient().getId());
 
-        if(able) {
+        if (able) {
 
             List<MarkPharmacist> markList = markService.findAll();
             List<Pharmacist> list = pharmacistService.findAll();
@@ -328,7 +324,6 @@ public class PharmacistController {
             }
 
 
-
         }
 
         return able == true ?
@@ -336,4 +331,29 @@ public class PharmacistController {
                 new ResponseEntity<>("You are not able to leave a mark for the pharmacist that you had not had a consultation with!", HttpStatus.CREATED);
 
     }
+
+
+    @GetMapping("/consultings")
+    @PreAuthorize("hasRole('PHARMACIST')")
+    ResponseEntity<Set<ConsultingNoteDTO>> getOurConsultings() {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser) currentUser.getPrincipal();
+        Pharmacist pharmacyAdmin = pharmacistService.findById(user.getId());
+        HashSet<ConsultingNoteDTO> cons = new HashSet<>();
+
+        for (Consulting c : pharmacyAdmin.getConsulting()) {
+            if (c.getDate().isAfter(LocalDate.now()))
+                cons.add(new ConsultingNoteDTO(c.getId(), c.getPatient().getId(), c.getPatient().getName(), c.getPatient().getSurname(), c.getDate(), c.getStartTime()));
+        }
+        return pharmacyAdmin.getConsulting() == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(cons);
+    }
 }
+
+
+
+
+
+
+
