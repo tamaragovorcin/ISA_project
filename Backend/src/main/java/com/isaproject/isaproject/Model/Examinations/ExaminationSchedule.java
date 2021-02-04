@@ -10,8 +10,8 @@ import com.isaproject.isaproject.Model.Users.Pharmacist;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-@Entity
 
+@Entity
 public class ExaminationSchedule {
     @Id
     @GeneratedValue

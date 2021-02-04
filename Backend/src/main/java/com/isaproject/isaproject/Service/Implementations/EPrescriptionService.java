@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -27,6 +28,7 @@ public class EPrescriptionService implements IEPrescriptionService {
 
     @Autowired
     MedicationEPrescriptionRepository medicationEPrescriptionRepository;
+
 
     @Override
     public EPrescription findById(Integer id) {
@@ -64,5 +66,18 @@ public class EPrescriptionService implements IEPrescriptionService {
         catch (Exception e) {
             return null;
         }
+    }
+
+    public Boolean checkEReceiptInPharmacy(Integer pharmacyId) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        Patient patient = patientRepository.findById(user.getId()).get();
+
+        Set<EPrescription> ePrescriptions = patient.getePrescriptions();
+        for (EPrescription ePrescription : ePrescriptions) {
+            if(ePrescription.getPharmacyId()==pharmacyId) {
+                return true;}
+        }
+        return false;
     }
 }

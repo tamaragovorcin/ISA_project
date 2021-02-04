@@ -4,129 +4,107 @@ ines (39 sloc)  1.61 KB
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-          <span style="float: left; margin: 15px;">
+           <span style="float: left; margin: 15px;">
                     <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
-                    <strong class="tab"></strong>          
+                    <strong class="tab"></strong>   
                     <a  class = "btn btn-secondary" href= "/showPharmaciesPatient">Pharmacies</a>
-                    <strong class="tab"></strong>          
+                    <strong class="tab"></strong>   
                     <a  class = "btn btn-secondary" href= "/myProfilePatient">My profile</a>
-                    <strong class="tab"></strong>          
-                    <a  class = "btn btn-secondary" v-on:click=" writeComplaint()">Write complaint</a>
-                    <strong class="tab"></strong>          
+                    <strong class="tab"></strong>   
+                    <a  class = "btn btn-secondary" href= "/patientComplaint">Write complaint</a>
+                    <strong class="tab"></strong>   
                     <a  class = "btn btn-secondary" href= "/subscriptionsToPharmacies">My subscriptions</a>
-                    <strong class="tab"></strong>          
+                    <strong class="tab"></strong>   
                     <a  class = "btn btn-secondary" href= "/eRecipes">ERecipes</a>
-                    <strong class="tab"></strong>          
+                    <strong class="tab"></strong>   
             </span>
             <span  style="float:right;margin:15px">
-                    <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
-            </span>
+               <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
+            </span> 
         </div>
        <div>
-     <b-modal ref="my-modal" hide-footer scrollable title="Write complaint" size="lg" modal-class="b-modal">
-                    <div modal-class="modal-dialog" role="document">
-                            <div class="modal-content" style="background-color:whitesmoke">
-                                    <div class="modal-header">
-                                        
-
-                                         <div class="row">
-                                                    <div class = "tab"></div><div class = "tab"></div>
-                                                  <button class = "btn btn-primary" v-on:click = "complainAboutPharmacy">Pharmacy</button>
-                                                  <div class = "tab"></div>
-                                                  <button class = "btn btn-primary" v-on:click = "complainAboutPharmacist">Pharmacist</button>
-                                                  <div class = "tab"></div>
-                                                   <button class = "btn btn-primary" v-on:click = "complainAboutDermatologist">Dermatologist</button>
-                                        </div>
-                        
-                                    </div>
-                                    <div class="modal-body">
-                                        <div v-if = "showPharmacyComplaint">
-                                                                    <div class="row">
-                                                                        <div class="col">
-                                                                          <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose pharmacy" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
-                                                                             <b-dropdown-item v-for="pharmacy in this.pharmacies"  v-on:click ="pharmacyIsSelected($event, pharmacy)" v-bind:key="pharmacy"> {{pharmacy }}</b-dropdown-item>
-                                                                         </b-dropdown> 
-                                                                         </div>
-                                                                    </div>
-                                                        
-                                                                    <hr />
-                                                                    <div class="row">
-                                                                        <div class="col">
-                                                                        <label for="name">Enter your complaint:</label>
-                                                                    </div> 
-                                                                        
-                                                                    </div>
-                                                                    <div class="row">
-                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" v-model="complaintText" class="form-control">
-                                                                       
-                                                                    </div>
-                                                                     <div class="modal-footer">
-                                        <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" @click="sendComplaintPharmacy">Send complaint</button>
-                                    </div>
-                                        </div>
-                                        <div v-if = "showPharmacistComplaint">
-                                                                    <div class="row">
-                                                                        <div class="col">
-                                                                          <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose pharmacist" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
-                                                                             <b-dropdown-item v-for="pharmacist in this.pharmacists"  v-on:click ="pharmacistIsSelected($event, pharmacist)" v-bind:key="pharmacist.email"> {{pharmacist.fullName }}</b-dropdown-item>
-                                                                         </b-dropdown> 
-                                                                         </div>
-                                                                    </div>
-                                                                    
-                                                                    <hr />
-                                                                    <div class="row">
-                                                                        <div class="col">
-                                                                        <label for="name">Enter your complaint:</label>
-                                                                    </div> 
-                                                                    </div>
-                                                                    <div class="row">
-                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" v-model="complaintText" class="form-control">
-                                                                       
-                                                                    </div>
-                                                                     <div class="modal-footer">
-                                        <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" @click="sendComplaintPharmacist">Send complaint</button>
-                                    </div>
-                                        </div>
-                                        <div v-if = "showDermatologistComplaint">
-                                                                    <div class="row">
-                                                                        <div class="col">
-                                                                          <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologists" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
-                                                                             <b-dropdown-item v-for="derma in this.dermatologists"  v-on:click ="dermatologisttIsSelected($event, derma)" v-bind:key="derma.email"> {{derma.fullName }}</b-dropdown-item>
-                                                                         </b-dropdown> 
-                                                                         </div>
-                                                                    </div>
-                                                                    
-                                                                    <hr />
-                                                                    <div class="row">
-                                                                    <div class="col">
-                                                                        <label for="name">Enter your complaint:</label>
-                                                                    </div> 
-                                                                    </div>
-                                                                    <div class="row">
-                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" v-model="complaintText"  class="form-control">
-                                                                       
-                                                                    </div>
-                                                                     <div class="modal-footer">
-                                        <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" @click="sendComplaintDermatologist">Send complaint</button>
-                                    </div>
-                                        </div>
-                                       
-
-
-                                    </div>
-
-
-                            
-                                   
-                            </div>
+    <div style = "background-color:lightgray; margin: auto; width: 40%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+                 
+            <div class="modal-header">
+                <div class="row d-flex justify-content-center">
+                    <div class="col">
+                        <button class = "btn btn-primary" v-on:click = "complainAboutPharmacy">Pharmacy</button>
                     </div>
+                        <div class="col">
+                    <button class = "btn btn-primary" v-on:click = "complainAboutPharmacist">Pharmacist</button>
+                        </div>
+                    <div class="col">
+                         <button class = "btn btn-primary" v-on:click = "complainAboutDermatologist">Dermatologist</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div v-if = "showPharmacyComplaint">
+                    <div class="row  ">
+                        <div class="col d-flex justify-content-center">
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose pharmacy" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+                                <b-dropdown-item v-for="pharmacy in this.pharmacies"  v-on:click ="pharmacyIsSelected($event, pharmacy)" v-bind:key="pharmacy.pharmacyId"> {{pharmacy.pharmacyName }}</b-dropdown-item>
+                            </b-dropdown> 
+                         </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col">
+                            <label for="name">Enter your complaint:</label>
+                        </div> 
+                    </div>
+                        <div class="row d-flex justify-content-center">
+                        <input type="textarea" style="height:300px; width: 90%;background-color:white;" v-model="complaintText" class="form-control">
+                    </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                        <button class="btn btn-primary" @click="sendComplaintPharmacy">Send complaint</button>
+                    </div>
+                </div>
+                <div v-if = "showPharmacistComplaint">
+                    <div class="row">
+                        <div class="col d-flex justify-content-center">
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose pharmacist" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+                                <b-dropdown-item v-for="pharmacist in this.pharmacists"  v-on:click ="pharmacistIsSelected($event, pharmacist)" v-bind:key="pharmacist.email"> {{pharmacist.fullName }}</b-dropdown-item>
+                            </b-dropdown> 
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col">
+                            <label for="name">Enter your complaint:</label>
+                        </div> 
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <input type="textarea" style="height:300px; width: 90%;background-color:white;" v-model="complaintText" class="form-control">
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button class="btn btn-primary" @click="sendComplaintPharmacist">Send complaint</button>                                                                     </div>
+                    </div>
+                </div>
+               <div v-if = "showDermatologistComplaint">
+                    <div class="row">
+                        <div class="col d-flex justify-content-center">
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologists" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+                                <b-dropdown-item v-for="derma in this.dermatologists"  v-on:click ="dermatologisttIsSelected($event, derma)" v-bind:key="derma.email"> {{derma.fullName }}</b-dropdown-item>
+                            </b-dropdown> 
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col">
+                             <label for="name">Enter your complaint:</label>
+                        </div> 
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <input type="textarea" style="height:300px; width: 90%;background-color:white;" v-model="complaintText" class="form-control">
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                         <button class="btn btn-primary" @click="sendComplaintDermatologist">Send complaint</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     
-    </b-modal>
-  </div>
-
 </div>
 </template>
 
@@ -159,12 +137,6 @@ export default {
           window.location.href = "/login";
 
       },
-      writeComplaint() {
-        this.$refs['my-modal'].show()
-      },
-       hideModal() {
-        this.$refs['my-modal'].hide()
-      },
       complainAboutPharmacy : function(){
           this.showPharmacyComplaint = true;
           this.showPharmacistComplaint = false;
@@ -181,32 +153,39 @@ export default {
           this.showDermatologistComplaint = true;
       },
       sendComplaintPharmacy : function(){
-          const pharmacy = {
-              pharmacyName : this.pharmacy
-          }
+        
           const complaint= {
             answered : false,
             massage : this.complaintText,
             answer : "",
-            pharmacyName : pharmacy,
+            pharmacyName : this.pharmacy,
             patient : this.patientInfo,
             dermatologist : null,
             pharmacist : null,
             subject : "PHARMACY"
           }
           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-
-          this.axios.post('/complaint/add',complaint,{ 
+            this.axios.get('/pharmacy/checkForPharmacy/'+this.pharmacy.pharmacyId,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
-                }}).then(response => {
-                    alert("Complaint is successfully sent!.");
+                }}).then(response =>  {
+                    console.log(response.data)
+                     this.axios.post('/complaint/add',complaint,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }}).then(response => {
+                            alert("Complaint is successfully sent!.");
 
-                    console.log(response);                
+                            console.log(response);                
+                        }).catch(res => {
+                            alert("Please try later.");
+                                console.log(res);
+                        });                
                 }).catch(res => {
-                       alert("Please try later.");
+                       alert("You are not able to write complaint to this pharmacy!");
                         console.log(res);
                 });
+         
       },
       sendComplaintDermatologist : function() {
      
