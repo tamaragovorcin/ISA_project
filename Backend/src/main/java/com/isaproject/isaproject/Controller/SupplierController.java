@@ -48,7 +48,7 @@ public class SupplierController {
     public ResponseEntity<String> update(@RequestBody Supplier userRequest) {
 
         Supplier user = supplierService.update(userRequest);
-        return user.getSurname() == null ?
+        return user == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 new ResponseEntity<>("Supplier is successfully updated!", HttpStatus.CREATED);
     }
