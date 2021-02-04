@@ -208,7 +208,7 @@ public class PharmacyController {
         for (MedicationPrice med : medicationPrices) {
             if (med.getPharmacy().getId() == id) {
                 MedicationFrontDTO medicationFrontDTO = new MedicationFrontDTO();
-                medicationFrontDTO.setId(med.getId());
+                medicationFrontDTO.setId(med.getMedication().getId());
                 medicationFrontDTO.setName(med.getMedication().getName());
                 medicationFrontDTO.setType(med.getMedication().getType());
                 medicationFrontDTO.setForm(med.getMedication().getForm());
@@ -270,6 +270,7 @@ public class PharmacyController {
     @PostMapping("/addExaminationSchedule")
     //@PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<ExaminationSchedule> addSchedule(@RequestBody ExaminationScheduleDTO dto) {
+
         ExaminationSchedule examinationSchedule = examinationScheduleService.save(dto);
         return examinationSchedule == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

@@ -3,6 +3,8 @@ package com.isaproject.isaproject.Controller;
 import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
+import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Service.Implementations.MarkPharmacistService;
 import com.isaproject.isaproject.Service.Implementations.PharmacistService;
@@ -47,6 +49,42 @@ public class PharmacistController {
     public ResponseEntity<List<Pharmacist>> getAll()
     {
         List<Pharmacist> pharmacists = pharmacistService.findAll();
+        return pharmacists == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacists);
+    }
+    @GetMapping("/searchPharmacy/{name}")
+    ResponseEntity<List<PharmacistFrontDTO>> getByPharmacy(@PathVariable String name)
+    {
+        List<Pharmacist> pharmacists= pharmacistService.findByPharmacy(name);
+        List<PharmacistFrontDTO> pharmacistFrontDTOS = new ArrayList<>();
+        for (Pharmacist pharmacist: pharmacists) {
+            PharmacistFrontDTO pharmacyFrontDTO = new PharmacistFrontDTO(pharmacist.getName(),pharmacist.getSurname(),pharmacist.getMarkPharmacist(),pharmacist.getPharmacy().getPharmacyName());
+            pharmacistFrontDTOS.add(pharmacyFrontDTO);
+        }
+        return pharmacistFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacistFrontDTOS);
+    }
+    @GetMapping("/searchMark/{MarkMin}/{MarkMax}")
+    ResponseEntity<List<PharmacistFrontDTO>> getAllByMark(@PathVariable int MarkMin,@PathVariable int MarkMax )
+    {
+        List<Pharmacist> pharmacists= pharmacistService.findByMark(MarkMin,MarkMax);
+        List<PharmacistFrontDTO> pharmacistFrontDTOS = new ArrayList<>();
+        for (Pharmacist pharmacist: pharmacists) {
+            PharmacistFrontDTO pharmacyFrontDTO = new PharmacistFrontDTO(pharmacist.getName(),pharmacist.getSurname(),pharmacist.getMarkPharmacist(),pharmacist.getPharmacy().getPharmacyName());
+            pharmacistFrontDTOS.add(pharmacyFrontDTO);
+        }
+
+            return  ResponseEntity.ok(pharmacistFrontDTOS);
+    }
+    @GetMapping("/front")
+    ResponseEntity<List<PharmacistFrontDTO>> getAllFront()
+    {
+        List<PharmacistFrontDTO> pharmacists = new ArrayList<PharmacistFrontDTO>();
+             for(Pharmacist pharmacist:   pharmacistService.findAll()){
+                pharmacists.add(new PharmacistFrontDTO(pharmacist.getName(),pharmacist.getSurname(),pharmacist.getMarkPharmacist(),pharmacist.getPharmacy().getPharmacyName()));
+             }
         return pharmacists == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacists);

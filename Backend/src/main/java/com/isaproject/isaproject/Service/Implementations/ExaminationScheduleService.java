@@ -42,6 +42,7 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
 
     @Override
     public ExaminationSchedule save(ExaminationScheduleDTO examinationScheduleDTO) {
+
         System.out.println(examinationScheduleDTO.getPharmacy());
         ExaminationSchedule examinationSchedule = new ExaminationSchedule();
         Pharmacy pharmacy = pharmacyRepository.findById(examinationScheduleDTO.getPharmacy()).get();

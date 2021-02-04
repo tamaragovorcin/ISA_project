@@ -103,7 +103,7 @@
                                     </div>
                     <div class="modal-footer">
                                         <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" v-on:click="add">Add</button>
+                                        <button class="btn btn-primary" v-on:click="addTerm">Add</button>
                    </div>
 
                             
@@ -452,7 +452,7 @@ export default {
        hideModalSchedule() {
         this.$refs['my-modalSchedule'].hide()
       },
-       add : function(){
+       addTerm : function(){
             const data ={
               pharmacy : this.pharmacy.id,
               dermatologist : this.selectedDermatologist.id,
@@ -461,7 +461,7 @@ export default {
               duration : this.duration,
               price : this.price
           }
-            
+            alert()
             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
             this.axios.post('/pharmacy/addExaminationSchedule',data,{ 
                          headers: {
