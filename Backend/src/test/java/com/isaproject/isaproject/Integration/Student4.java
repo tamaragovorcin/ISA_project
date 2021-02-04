@@ -8,7 +8,6 @@ import com.isaproject.isaproject.Authentification.JwtAuthenticationRequest;
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.Model.Users.*;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +44,6 @@ public class Student4 extends TestRepository {
                 .andExpect(status().is(200));
     }
 
-
     @Test
     @Transactional
     public void testSuccesfullPatientRegistration() throws Exception {
@@ -65,7 +63,7 @@ public class Student4 extends TestRepository {
 
     @Test
     @Transactional
-    public void testSuccesfulSupplierProfileUpdate() throws Exception {
+    public void testGetSupplierProfileInformation() throws Exception {
 
         JwtAuthenticationRequest loginDTO = new JwtAuthenticationRequest();
         loginDTO.setEmail("supplier@gmail.com");
@@ -77,22 +75,12 @@ public class Student4 extends TestRepository {
 
         UserTokenState userTokenState = mapFromJson(result.getResponse().getContentAsString(), UserTokenState.class);
 
-        Supplier supplierForUpdate = new Supplier();
-        supplierForUpdate.setSurname("SurnameUpdated");
-        supplierForUpdate.setPassword(passwordEncoder.encode("supplierPassword"));
-        supplierForUpdate.setName("NameUpdated");
-        supplierForUpdate.setEmail("supplier@gmail.com");
-        supplierForUpdate.setAddress(new Address());
-        supplierForUpdate.setPhoneNumber("789456123");
-        supplierForUpdate.setEnabled(true);
+        String uri2 = "/api/supplier/account";
 
-
-        String input2 = mapToJson(supplierForUpdate);
-        String uri2 = "/api/supplier/update";
-
-        mockMvc.perform(MockMvcRequestBuilders.post(uri2).header("token",  userTokenState.getAccessToken()).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON).content(input2))
-                .andExpect(status().is(201));;
+        mockMvc.perform(MockMvcRequestBuilders.get(uri2).header("token",  userTokenState.getAccessToken()).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.*", notNullValue()))
+                .andExpect(status().is(200));
     }
 
     @Test

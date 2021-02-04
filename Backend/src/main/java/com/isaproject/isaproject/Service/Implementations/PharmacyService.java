@@ -1,20 +1,15 @@
 package com.isaproject.isaproject.Service.Implementations;
-
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PharmacyDTO;
 import com.isaproject.isaproject.DTO.WorkingHoursDermatologistDTO;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Address;
-import com.isaproject.isaproject.Model.Users.Dermatologist;
-import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Repository.DermatologistRepository;
 import com.isaproject.isaproject.Repository.PharmacyRepository;
 import com.isaproject.isaproject.Service.IServices.IPharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class PharmacyService implements IPharmacyService {
@@ -22,7 +17,6 @@ public class PharmacyService implements IPharmacyService {
     PharmacyRepository pharmacyRepository;
     @Autowired
     DermatologistRepository dermatologistRepository;
-
 
     @Override
     public Pharmacy findById(Integer id) {
@@ -40,6 +34,11 @@ public class PharmacyService implements IPharmacyService {
     @Override
     public Pharmacy save(PharmacyDTO pharmacy) {
         Pharmacy pharmacy1 = new Pharmacy();
+        System.out.println(pharmacy.getPharmacyName());
+        System.out.println(pharmacy.getDescription());
+        System.out.println(pharmacy.getAddress().getCountry());
+        System.out.println(pharmacy.getConsultingPrice());
+
         pharmacy1.setPharmacyName(pharmacy.getPharmacyName());
         pharmacy1.setDescription(pharmacy.getDescription());
         AddressDTO addressDTO = pharmacy.getAddress();
