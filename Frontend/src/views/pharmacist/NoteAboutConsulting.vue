@@ -154,7 +154,7 @@
                                             </b-dropdown> 
                                           </div>
                                            <b class="tab"></b> 
-                                           <div class=" col">
+                                           <div class="col">
                                               <button v-on:click = "showMedicationSpecification" class="btn btn-danger btn-lg">Specification of {{medicationName}}</button>
                                            </div>
                                           <div class="col">
