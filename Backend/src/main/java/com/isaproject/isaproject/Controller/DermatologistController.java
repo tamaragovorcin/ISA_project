@@ -42,7 +42,7 @@ public class DermatologistController {
 
     @GetMapping("/account")
     @PreAuthorize("hasRole('DERMATOLOGIST')")
-    ResponseEntity<Dermatologist> getMyAccount()
+    public ResponseEntity<Dermatologist> getMyAccount()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
@@ -64,7 +64,7 @@ public class DermatologistController {
     }
 
     @GetMapping("")
-    ResponseEntity<List<Dermatologist>> getAll()
+    public ResponseEntity<List<Dermatologist>> getAll()
     {
         List<Dermatologist> dermatologists = dermatologistService.findAll();
         return dermatologists == null ?
@@ -83,7 +83,7 @@ public class DermatologistController {
     }
     @GetMapping("/basicInfo")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<List<UserBasicInfoDTO>> getDermatologistsBasicInfo()
+    public ResponseEntity<List<UserBasicInfoDTO>> getDermatologistsBasicInfo()
     {   List<UserBasicInfoDTO> basicInfos = new ArrayList<>();
         List<Dermatologist> dermatologists = dermatologistService.findAll();
         for (Dermatologist dermatologist: dermatologists) {

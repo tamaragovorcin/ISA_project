@@ -26,7 +26,7 @@ public class ComplaintController {
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<Complaint> add(@RequestBody ComplaintDTO complaintDTO)
+    public ResponseEntity<Complaint> add(@RequestBody ComplaintDTO complaintDTO)
     {
         Complaint complaint = complaintService.save(complaintDTO);
         return complaint == null ?
@@ -36,7 +36,7 @@ public class ComplaintController {
 
     @PostMapping("/answer")
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
-    ResponseEntity<Complaint> answer(@RequestBody ComplaintReviewDTO complaintReviewDTO)
+    public ResponseEntity<Complaint> answer(@RequestBody ComplaintReviewDTO complaintReviewDTO)
     {
         Complaint complaint = complaintService.sendAnswerToPatient(complaintReviewDTO);
         return complaint == null ?
@@ -46,7 +46,7 @@ public class ComplaintController {
 
     @GetMapping("all")
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
-    ResponseEntity<List<ComplaintReviewDTO>> getAllWithDTO()
+    public ResponseEntity<List<ComplaintReviewDTO>> getAllWithDTO()
     {
         List<Complaint> complaints = complaintService.findAll();
         List<ComplaintReviewDTO> complaintReviewDTOS  = new ArrayList<>();

@@ -44,7 +44,7 @@ public class PharmacistController {
         return new ResponseEntity<>("Supplier is successfully registred!", HttpStatus.CREATED);
     }
     @GetMapping("")
-    ResponseEntity<List<Pharmacist>> getAll()
+    public ResponseEntity<List<Pharmacist>> getAll()
     {
         List<Pharmacist> pharmacists = pharmacistService.findAll();
         return pharmacists == null ?
@@ -62,7 +62,7 @@ public class PharmacistController {
     }
     @GetMapping("/consultings")
     @PreAuthorize("hasRole('PHARMACIST')")
-    ResponseEntity<Set<ConsultingNoteDTO>> getOurConsultings() {
+    public ResponseEntity<Set<ConsultingNoteDTO>> getOurConsultings() {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser) currentUser.getPrincipal();
         Pharmacist pharmacyAdmin = pharmacistService.findById(user.getId());
@@ -89,7 +89,7 @@ public class PharmacistController {
 
     @GetMapping("/account")
     @PreAuthorize("hasRole('PHARMACIST')")
-    ResponseEntity<Pharmacist> getMyAccount()
+    public ResponseEntity<Pharmacist> getMyAccount()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
@@ -99,14 +99,9 @@ public class PharmacistController {
                 ResponseEntity.ok(pharmacist);
     }
 
-
-
-
-
-
     @GetMapping("/basicInfo")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<List<UserBasicInfoDTO>> getPharmacistsBasicInfo() {
+    public ResponseEntity<List<UserBasicInfoDTO>> getPharmacistsBasicInfo() {
         List<UserBasicInfoDTO> basicInfos = new ArrayList<>();
         List<Pharmacist> pharmacists = pharmacistService.findAll();
         for (Pharmacist pharmacist : pharmacists) {
@@ -320,8 +315,6 @@ public class PharmacistController {
                 }
             }
         }
-
-
 
         return pharmacist == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
