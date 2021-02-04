@@ -55,6 +55,11 @@ public class ConsultingService implements IConsultingService {
     }
 
     @Override
+    public void delete(Consulting consulting) {
+        consultingRepository.delete(consulting);
+    }
+
+    @Override
     public Consulting updateIgnored(Consulting loyaltyProgram) {
        Consulting cons = new Consulting();
 

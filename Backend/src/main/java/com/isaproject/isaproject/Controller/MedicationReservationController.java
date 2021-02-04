@@ -3,6 +3,7 @@ package com.isaproject.isaproject.Controller;
 import com.isaproject.isaproject.DTO.MedicationDTO;
 import com.isaproject.isaproject.DTO.MedicationReservationDTO;
 import com.isaproject.isaproject.DTO.MedicationReservationFrontDTO;
+import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Users.Patient;
@@ -24,7 +25,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,8 +52,14 @@ public class MedicationReservationController {
 
     @PostMapping("/add")
     //@PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<MedicationReservation> register(@RequestBody MedicationReservationDTO medicationReservationDTO)
+    ResponseEntity<String> register(@RequestBody MedicationReservationDTO medicationReservationDTO)
     {
+
+        Patient patient = patientService.findById(medicationReservationDTO.getPatient().getId());
+        Boolean able = true;
+        if(patient.getPenalties() > 3){
+            able = false;
+        }
 
         MedicationReservation medication = medicationReservationService.save(medicationReservationDTO);
 
@@ -67,9 +76,10 @@ public class MedicationReservationController {
 
         mailSender.send(mail);
 
-        return medication == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(medication);
+        return able == true ?
+                new ResponseEntity<>("", HttpStatus.CREATED) :
+                new ResponseEntity<>("You are not able to reserve a medication because you have 3 or more penalties.", HttpStatus.CREATED);
+
     }
 
     @GetMapping("{id}")
@@ -99,14 +109,21 @@ public class MedicationReservationController {
 
     @GetMapping("/cancel/{id}")
         //@PreAuthorize("hasRole('PATIENT')")
-    void cancel(@PathVariable Integer id)
+    public ResponseEntity<String> cancel(@PathVariable Integer id)
     {
-        List<MedicationReservation> medications = medicationReservationService.findAll();
-        for( MedicationReservation med : medications){
-            if (med.getId() == id){
-                medicationReservationService.delete(med);
-            }
+        MedicationReservation medicationReservation = medicationReservationService.findById(id);
+        LocalDate date = LocalDate.now().plusDays(1);
+
+        Boolean able = false;
+
+        if(medicationReservation.getDateOfReservation().isBefore(date)) {
+            able = true;
+            medicationReservationService.delete(medicationReservation);
         }
+
+        return able == true ?
+                new ResponseEntity<>("You have successfully cancelled a reservation!", HttpStatus.CREATED) :
+                new ResponseEntity<>("You are not able to cancel the reservation because it is in the next 24 hours!", HttpStatus.CREATED);
 
 
     }

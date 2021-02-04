@@ -36,9 +36,14 @@
                 <b><button class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" v-on:click = "allPharmacies">Show all pharmacies</button></b>
                      <b class="tab"></b>                
 
-                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">Dermatologist appointments</button>
+                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">Make a new dermatologist appointment</button>
 
-                    <b class="tab"></b>     
+                    <b class="tab"></b>  
+
+                      <strong class="tab"></strong>    
+                     <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "myDermatologistAppointments">My dermatologist appointments</button>
+        <strong class="tab"></strong> 
+
                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allPharmacists">Pharmacist consultation</button>
 
                     <b class="tab"></b>                
@@ -65,9 +70,9 @@
                   <span  style="float:right;margin:15px">
                     
                    <div class="input-group mb-3">
-  <input type="text" v-model="pharmacyName" class="form-control" placeholder="Search pharmacy by city" aria-label="Search pharmacy by city" aria-describedby="basic-addon2">
+  <input type="text" v-model="pharmacyCity" class="form-control" placeholder="Search pharmacy by city" aria-label="Search pharmacy by city" aria-describedby="basic-addon2">
   <div class="input-group-append">
-    <button class="btn btn-outline-secondary" type="button"  v-on:click = "searchCity(pharmacyName)" >Search</button>
+    <button class="btn btn-outline-secondary" type="button"  v-on:click = "searchCity(pharmacyCity)" >Search</button>
   </div>
 </div>
 
@@ -79,30 +84,39 @@
 
 
 
-<template>
-              <div class="custom-control custom-radio form-group col ">
 
+<template>
+
+              <div class="row">
+              <div class="custom-control custom-radio form-group col ">
                   <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
                    <label class="custom-control-label" for="defaultGroupExample1">0-1</label>
-                   <p class="tab"></p>     
-        
+              </div>
 
+                    <div class="custom-control custom-radio form-group col ">
                   <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
                    <label class="custom-control-label" for="defaultGroupExample2">1-2</label>
+
+                  </div>
                 
-                 <p class="tab"></p>     
+                   <div class="custom-control custom-radio form-group col ">  
                   <input type="radio" class="custom-control-input" id="defaultGroupExample3" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'3')">
                  <label class="custom-control-label" for="defaultGroupExample3">2-3</label>
-                
+                   </div>
         
-             <p class="tab"></p>     
+                 
+                   <div class="custom-control custom-radio form-group col ">  
                   <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'4')" >
                  <label class="custom-control-label" for="defaultGroupExample4" >3-4</label>
-                
-                  <p class="tab"></p>     
+                   </div>
+                 
+                   
+                   <div class="custom-control custom-radio form-group col ">  
                   <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" >
                  <label class="custom-control-label" for="defaultGroupExample4" >4-5</label>
-              </div> 
+                   </div>
+
+              </div>
              </template>
 
 
@@ -205,6 +219,7 @@ export default {
        pharmacyName: null,
        dermatologistAppointmentsSearch: [],
        showTable: true,
+       pharmacyCity: null,
        showSecondTable : false,
        filter: null
 
@@ -212,7 +227,7 @@ export default {
   },
 mounted() {
 
-    this.axios.get('/pharmacy/allPharmacistPharmacies')
+    this.axios.get('/pharmacy/all')
           .then(response => {
                 this.dermatologistAppointments= response.data;
                console.log(this.dermatologistAppointments);
@@ -221,7 +236,10 @@ mounted() {
 },
 
   methods:{
-     
+      myDermatologistAppointments: function(){
+            window.location.href = "/myDermatologistAppointments";
+
+      },
          searchName: function(pharmacyName){
            
              this.pharmacyName = pharmacyName
@@ -240,11 +258,11 @@ mounted() {
           })
       },
 
-      searchCity: function(pharmacyName){
+      searchCity: function(pharmacyCity){
            
-             this.pharmacyName = pharmacyName
-               alert(this.pharmacyName)
-      this.axios.get('/pharmacy/searchCity/'+ this.pharmacyName)
+             this.pharmacyCity = pharmacyCity
+               alert(this.pharmacyCity)
+      this.axios.get('/pharmacy/searchCity/'+ this.pharmacyCity)
           .then(response => {
               this.showTable = false;
               this.showSecondTable = true;
@@ -258,13 +276,13 @@ mounted() {
           })
       },
        allPharmacies: function(){
-        window.location.href = "/myProfilePatient";
+        window.location.href = "/showPharmaciesPatient";
       },
       allDermatologists : function(){
           window.location.href = "/dermatologistAppointments";
       },
       allPharmacists : function(){
-          window.location.href = "/login";
+          window.location.href = "/PharmacistConsultation";
       },
       showMyProfile: function(){
         window.location.href = "/myProfilePatient";
@@ -314,4 +332,8 @@ mounted() {
 </script>
 
 <style>
+#div1 {
+    display: inline-block;
+}
+
 </style>

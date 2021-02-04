@@ -27,7 +27,7 @@ public class WorkingHoursController {
     WorkingHoursDermatologistService workingHoursDermatologistService;
 
     @PostMapping("/pharmacist")
-    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    //@PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addPharmacistWorkingHours(@RequestBody WorkingHoursPharmacistDTO userRequest) {
         System.out.println("------------------------------------------------------------------");
         System.out.println("----POGODIO CONTROLLER---");

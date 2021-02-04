@@ -3,6 +3,9 @@ package com.isaproject.isaproject.DTO;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 
 public class PharmacistDTO {
+
+    private Integer id;
+
     private String email;
 
     private String password;
@@ -17,6 +20,8 @@ public class PharmacistDTO {
 
     private Pharmacy pharmacy;
 
+    private double mark;
+
     public PharmacistDTO() {
     }
 
@@ -28,6 +33,22 @@ public class PharmacistDTO {
         this.phonenumber = phonenumber;
         this.address = address;
         this.pharmacy = pharmacy;
+    }
+
+    public double getMark() {
+        return mark;
+    }
+
+    public void setMark(double mark) {
+        this.mark = mark;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Pharmacy getPharmacy() {

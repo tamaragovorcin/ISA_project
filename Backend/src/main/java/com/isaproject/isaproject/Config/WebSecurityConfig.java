@@ -97,6 +97,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/pharmacy/medication/{id}") .permitAll()
                 .antMatchers("/api/pharmacy/freeExaminationTerms/{id}") .permitAll()
                 .antMatchers("/api/medication/priceInPharmacy") .permitAll()
+
+                .antMatchers("/api/consulting/getPharmacies") .permitAll()
+               // .antMatchers("/api/pharmacyAdmin/medication") .permitAll()
                 .antMatchers("/api/erecipes/availability/pharmacy") .permitAll()
                 .antMatchers("/api/erecipes/file/noAuthetication") .permitAll()
 
@@ -147,6 +150,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/medication/{id}");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/medication/priceInPharmacy");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacy/freeExaminationTerms/{id}");
+
+        web.ignoring().antMatchers(HttpMethod.POST, "/api/consulting/getPharmacies");
+
+        //  web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacyAdmin/medication");
 
         web.ignoring().antMatchers(HttpMethod.GET, "/api/patient/penals");
 

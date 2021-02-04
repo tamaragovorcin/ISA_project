@@ -6,22 +6,22 @@ ines (39 sloc)  1.61 KB
         <div style="background: #0D184F; height: 90px;">
             
             <span style="float: left; margin: 15px;">
-                    <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
+                    <a  class = "btn btn-link btn-lg" href= "/isaHomePage">Home</a>
                     <b class="tab"></b>                
-                    <a  class = "btn btn-secondary" href= "/showPharmaciesPatient">Pharmacies</a>
+                    <a  class = "btn btn-link btn-lg" href= "/showPharmaciesPatient">Pharmacies</a>
                     <b class="tab"></b>     
-                    <a  class = "btn btn-secondary" href= "/myProfilePatient">My profile</a>
+                    <a  class = "btn btn-link btn-lg" href= "/myProfilePatient">My profile</a>
                     <b class="tab"></b>                
-                    <a  class = "btn btn-secondary" href= "/patientComplaint">Write complaint</a>
+                    <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
                     <b class="tab"></b>   
-                    <a  class = "btn btn-secondary" href= "/subscriptionsToPharmacies">My subscriptions</a>
+                    <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
                     <b class="tab"></b>   
 
 
                        <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "leaveAMark">Leave a mark</button>
                     <strong class="tab"></strong>   
 
-                    <a  class = "btn btn-secondary" href= "/eRecipes">ERecipes</a>
+                    <a  class = "btn btn-link btn-lg" href= "/eRecipes">ERecipes</a>
                     <b class="tab"></b> 
 
             </span>
@@ -636,11 +636,11 @@ export default {
 
                         const markk = {
                   patient: this.patient,
-                  pharmacy: this.pharmacy,
+                  pharmacist: this.pharmacist,
                   mark: this.filter,
                  
                 };
-         this.axios.post('/pharmacy/leaveAMark',markk)
+         this.axios.post('/pharmacist/leaveAMark',markk)
         
                     .then(res => {
                        
@@ -694,6 +694,14 @@ export default {
 
                 this.medications= response.data;
                console.log(this.medications);
+              
+          })
+
+                this.axios.get('/pharmacist')
+          .then(response => {
+
+                this.pharmacists= response.data;
+               console.log(this.pharmacists);
               
           })
     

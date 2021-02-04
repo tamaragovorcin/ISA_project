@@ -34,17 +34,14 @@
             
             <span style="float: left; margin: 15px;">
                 <b><button class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" v-on:click = "allPharmacies">Show all pharmacies</button></b>
-                      <p class="tab"></p>              
+                      <strong class="tab"></strong>              
 
                     <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">Make a new dermatologist appointment</button>
-
-                      <p class="tab"></p>    
+        <strong class="tab"></strong>    
                      <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "myDermatologistAppointments">My dermatologist appointments</button>
-
-                <p class="tab"></p>    
+        <strong class="tab"></strong>  
                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allPharmacists">Pharmacist consultation</button>
-
-                    <p class="tab"></p>                  
+        <strong class="tab"></strong>                
                    
             </span>
              

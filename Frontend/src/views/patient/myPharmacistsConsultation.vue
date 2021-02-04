@@ -69,87 +69,75 @@ ines (39 sloc)  1.61 KB
         </div>
 
 
-      <div style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
+ <div  v-for="pharmacist in this.pharmacists"  v-bind:key="pharmacist.id">
+       <div id="customers" v-if="showTable"  style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
+          
 
-           <div class="form-row">
-                       
-                        <label>Choose a date:</label>
-                        
-                        <input type="date" v-model = "date" class="form-control" placeholder = "01/01/2021">
-                        
-                       
-                        <label>Choose the time:</label>
-                        <input type="time" v-model = "startTime" class="form-control" placeholder = "01/01/2021">
-                       
-                    </div>
+<table id="table1" class="table">
+ 
+ 
+    <tbody>
+       <tr>
+       <div v-if="pharmacists.finished" >
+          <th scope="row" style="col-span =2; color:red"> FINISHED </th>
+        </div>
 
+         <div v-else >
+          <th scope="row" style="col-span =2; color:green"> UPCOMING </th>
+        </div>
+      </tr>
+
+    <tr>
+      <th scope="row"></th>
+      <td>Pharmacist's name</td>
+      <td>{{pharmacist.name}} </td>
+    
+    </tr>
+    <tr>
+      <th scope="row"></th>
+      <td>Pharmacist's last name</td>
+      <td>{{pharmacist.surname}} </td>
+
+    </tr>
+    <tr>
+      <th scope="row"></th>
+      <td>Date</td>
+      <td>{{pharmacist.date}} </td>
+     
+    </tr>
+     <tr>
+      <th scope="row"></th>
+      <td>Start time</td>
+      <td>{{pharmacist.time}} </td>
+     
+    </tr>
+     <tr>
+      <th scope="row"></th>
+      <td>Duration</td>
+      <td>{{pharmacist.duration}} </td>
+     
+    </tr>
+     <tr>   <th scope="row"></th>
+     <td>
+        <div v-if="pharmacist.finished" >
+     
+     </div>
+      <div v-else>
+         <button class = "btn btn-outline-primary" style="color:black; col-span =2 " v-on:click = "reserve($event, pharmacist)">Cancel this reservation</button>
+      </div>
+      </td></tr>
+     
+    
+  </tbody>
+</table>
        
-        
-<button class="button3" v-on:click="showAvailability(date,startTime)">Show pharmacies</button>
-
-      
-
-      </div>  
-
-        <div id="customers" v-if="showTable" style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
-
-    <table id="table1" class="table">
-                    <thead  class="thead-dark">
-                        <tr style="font-weight: bold; ">
-                            <th style="width: 200px; height: 80px;" scope="col">Name of pharmacy</th>
-                            <th style="width: 200px; height: 80px;" scope="col">Location</th>
-
-                            <th style="width: 200px; height: 80px;" scope="col">Pharmacy Mark</th>
-                            <th style="width: 200px; height: 80px;" scope="col">Consultation mark</th>
-                       
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                      
-                        <tr  v-for="pharmacy in pharmacies" :key="pharmacy.id" v-on:click="goToBlabla(pharmacy)">
-                            <td>{{pharmacy.pharmacyName}}</td>
-                            <td>{{pharmacy.city}}</td>
-                            <td>{{pharmacy.mark}}</td>
-                            <td></td>
-                        </tr>
-                      
-                    </tbody>
-                </table>
+     
 
 
-        </div>
+           </div>
 
+      </div>     
 
-
-         <div id="customers" v-if="showSecondTable" style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
-
-    <table id="table2"  class="table">
-                    <thead  class="thead-dark">
-                        <tr style="font-weight: bold; ">
-                            <th style="width: 200px;" scope="col">Pharmacist first name</th>
-                            <th style="width: 200px;" scope="col">Pharmacist last name</th>
-
-                            <th style="width: 200px;" scope="col">Pharmacist Mark</th>
-                          
-                       
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                      
-                        <tr  v-for="pharmacist in pharmacists" :key="pharmacist.id" v-on:click="reserve(pharmacist)">
-                            <td>{{pharmacist.firstname}}</td>
-                            <td>{{pharmacist.surname}}</td>
-                            <td>{{pharmacist.mark}}</td>
-                      
-                        </tr>
-                      
-                    </tbody>
-                </table>
-
-
-        </div>
 </div>
 </template>
 
@@ -170,14 +158,22 @@ export default {
        showDermatologistComplaint : false,
        date: null,
        startTime: null,
-        showTable: false,
+        showTable: true,
                 showTableAvailability : false,
       showSecondTable : false
 
     }
   },
 
+mounted() {
 
+    this.axios.get('/consulting/getAll')
+          .then(response => {
+                this.pharmacists= response.data;
+               console.log(this.pharmacists);
+              
+          })
+},
   methods:{
       myDermatologistAppointments: function(){
             window.location.href = "/myDermatologistAppointments";
@@ -249,81 +245,20 @@ export default {
 
       },
 
-      showAvailability: function (date, startTime) {
-          this.date = date;
-          this.startTime = startTime;
-
-            const datum = {
-                date : this.date,
-                time : this.startTime
-
-           }
-            console.log(datum)
-            this.axios.post('/consulting/getPharmacies',datum
-                ).then(response => {
-                    alert("Complaint is successfully sent!.");
-                    this.pharmacies= response.data;
-                    console.log(response);                
-                }).catch(res => {
-                       alert("Please try later.");
-                        console.log(res);
-                });
-
-        this.showTable = true;
-          
-              
-            }, 
-
-    goToBlabla: function (pharmacy) {
-         this.pharmacy = pharmacy;
-         const datum = {
-                date : this.date,
-                time : this.startTime,
-                pharmacyId: pharmacy.id
-
-           }
-   this.axios.post('/consulting/getPharmacists',datum
-                ).then(response => {
-                    alert("Complaint is successfully sent!.");
-                    this.pharmacists= response.data;
-                  
-                    console.log(response);                
-                }).catch(res => {
-                       alert("Please try later.");
-                        console.log(res);
-                });
-
-
-                 this.showTable = false;
-           this.showSecondTable = true;
-              
-            }, 
-
-    reserve: function (pharmacist) {
+      
+         reserve : function(event, pharmacist) {
          
-         const datum = {
-                date : this.date,
-                time : this.startTime,
-                pharmacyId: this.pharmacy.id,
-                pharmacist: pharmacist,
-                patient: this.patient
-
-           }
-   this.axios.post('/consulting/reserveConsultation',datum
-                ).then(response => {
-                    alert("Complaint is successfully sent!.");
-                   
-                    console.log(response);                
-                }).catch(res => {
-                       alert("Please try later.");
-                        console.log(res);
-                });
+          this.pharmacist = pharmacist
+        
+            this.axios.get('/consulting/cancel/'+ pharmacist.id)
+            .then(response => {
+                
+           alert( response.data);})
 
 
-                 this.showTable = false;
-           this.showSecondTable = true;
-              
-            }, 
+      },
+
+   
 }
 }
 </script>
