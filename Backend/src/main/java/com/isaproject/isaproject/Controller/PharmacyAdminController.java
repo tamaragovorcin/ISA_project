@@ -8,11 +8,9 @@ import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
 import com.isaproject.isaproject.Model.Orders.Order;
 import com.isaproject.isaproject.Model.Pharmacy.Actions;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
 import com.isaproject.isaproject.Model.Users.*;
-import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
-import com.isaproject.isaproject.Service.Implementations.OrderService;
-import com.isaproject.isaproject.Service.Implementations.PharmacyAdminService;
-import com.isaproject.isaproject.Service.Implementations.SupplierService;
+import com.isaproject.isaproject.Service.Implementations.*;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +34,8 @@ public class PharmacyAdminController {
     MedicationPriceService medicationPriceService;
     @Autowired
     OrderService orderService;
+    @Autowired
+    HolidaySchedulePharmacistService pharmacistHolidayService;
 
     @PostMapping("/register")
    // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
@@ -134,13 +134,37 @@ public class PharmacyAdminController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacyAdmin.getPharmacy().getPharmacists());
     }
+    @GetMapping("/holidayRequests")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<List<HolidaySchedulePharmacistFrontDTO>> getAllFront()
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
+        List<HolidaySchedulePharmacistFrontDTO> schedulePharmacistFrontDTOS = new ArrayList<HolidaySchedulePharmacistFrontDTO>();
+        for(HolidaySchedulePharmacist holiday :  pharmacistHolidayService.findAll()){
+            if(holiday.getPharmacist().getPharmacy().getId() == pharmacyAdmin.getPharmacy().getId() && holiday.getApproved().equals("WAIT_FOR_RESPONSE")) {
+                HolidaySchedulePharmacistFrontDTO holidaySchedulePharmacistFrontDTO = new HolidaySchedulePharmacistFrontDTO();
+                holidaySchedulePharmacistFrontDTO.setPharmacist(holiday.getPharmacist().getName() + " " + holiday.getPharmacist().getSurname());
+                holidaySchedulePharmacistFrontDTO.setScheduleId(holiday.getId());
+                holidaySchedulePharmacistFrontDTO.setApproved(holiday.getApproved());
+                holidaySchedulePharmacistFrontDTO.setStartDate(holiday.getStartDate());
+                holidaySchedulePharmacistFrontDTO.setEmail(holiday.getPharmacist().getEmail());
+                holidaySchedulePharmacistFrontDTO.setEndDate(holiday.getEndDate());
+                holidaySchedulePharmacistFrontDTO.setType(holiday.getType());
+                schedulePharmacistFrontDTOS.add(holidaySchedulePharmacistFrontDTO);
+            }
+        }
+        return schedulePharmacistFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(schedulePharmacistFrontDTOS);
+    }
+
+
     @GetMapping("/medication")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<List<Medication>> getMedication()
     {
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("POGODIO");
-
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
 

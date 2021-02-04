@@ -126,9 +126,7 @@ public class Consulting implements Serializable {
         this.cancelled = cancelled;
     }
 
-    public Boolean getShowedUp() {
-        return showedUp;
-    }
+    public Boolean getShowedUp() {return showedUp; }
 
     public void setShowedUp(Boolean showedUp) {
         this.showedUp = showedUp;

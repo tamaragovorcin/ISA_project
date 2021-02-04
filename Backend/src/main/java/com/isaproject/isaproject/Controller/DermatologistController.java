@@ -4,7 +4,6 @@ import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.DTO.MarkDTO;
 import com.isaproject.isaproject.DTO.DermatologistDTO;
 import com.isaproject.isaproject.DTO.UserBasicInfoDTO;
-import com.isaproject.isaproject.DTO.PharmacyDermatologistsDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Examinations.Examination;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
@@ -58,7 +57,7 @@ public class DermatologistController {
 
     @GetMapping("/account")
     @PreAuthorize("hasRole('DERMATOLOGIST')")
-    ResponseEntity<Dermatologist> getMyAccount()
+    public ResponseEntity<Dermatologist> getMyAccount()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
@@ -80,7 +79,7 @@ public class DermatologistController {
     }
 
     @GetMapping("")
-    ResponseEntity<List<Dermatologist>> getAll()
+    public ResponseEntity<List<Dermatologist>> getAll()
     {
         List<Dermatologist> dermatologists = dermatologistService.findAll();
         return dermatologists == null ?
@@ -89,7 +88,7 @@ public class DermatologistController {
     }
     @PostMapping("/addPharmacy")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    public ResponseEntity<String> addPharmacy(@RequestBody PharmacyDermatologistsDTO dto) {
+    public ResponseEntity<String> addPharmacy(@RequestBody DermaotlogistPharmacyDTO dto) {
 
         if(dermatologistService.addPharmacy(dto)){
             return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
@@ -99,11 +98,11 @@ public class DermatologistController {
     }
     @GetMapping("/basicInfo")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<List<UserBasicInfoDTO>> getDermatologistsBasicInfo()
+    public ResponseEntity<List<UserBasicInfoDTO>> getDermatologistsBasicInfo()
     {   List<UserBasicInfoDTO> basicInfos = new ArrayList<>();
         List<Dermatologist> dermatologists = dermatologistService.findAll();
         for (Dermatologist dermatologist: dermatologists) {
-            basicInfos.add(new UserBasicInfoDTO(dermatologist.getName() + " " + dermatologist.getSurname(), dermatologist.getEmail()));
+            basicInfos.add(new UserBasicInfoDTO(dermatologist.getName() + " " + dermatologist.getSurname(), dermatologist.getEmail(), dermatologist.getId()));
         }
         return basicInfos == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

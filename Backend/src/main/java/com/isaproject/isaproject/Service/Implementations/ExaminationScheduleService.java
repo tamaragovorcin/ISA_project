@@ -2,10 +2,15 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.ExaminationScheduleDTO;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Authority;
+import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Model.Users.Supplier;
+import com.isaproject.isaproject.Repository.DermatologistRepository;
 import com.isaproject.isaproject.Repository.ExaminationScheduleRepository;
+import com.isaproject.isaproject.Repository.PharmacistRepository;
+import com.isaproject.isaproject.Repository.PharmacyRepository;
 import com.isaproject.isaproject.Service.IServices.IExaminationScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,7 +25,10 @@ import java.util.Optional;
 public class ExaminationScheduleService implements IExaminationScheduleService {
     @Autowired
     ExaminationScheduleRepository examinationScheduleRepository;
-
+    @Autowired
+    PharmacyRepository pharmacyRepository;
+    @Autowired
+    DermatologistRepository dermatologistRepository;
 
     @Override
     public ExaminationSchedule findById(Integer id) {
@@ -34,12 +42,14 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
 
     @Override
     public ExaminationSchedule save(ExaminationScheduleDTO examinationScheduleDTO) {
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++");
+
         System.out.println(examinationScheduleDTO.getPharmacy());
         ExaminationSchedule examinationSchedule = new ExaminationSchedule();
-        examinationSchedule.setPharmacy(examinationScheduleDTO.getPharmacy());
+        Pharmacy pharmacy = pharmacyRepository.findById(examinationScheduleDTO.getPharmacy()).get();
+        examinationSchedule.setPharmacy(pharmacy);
         examinationSchedule.setDate(examinationScheduleDTO.getDate());
-        examinationSchedule.setDermatologist(examinationScheduleDTO.getDermatologist());
+        Dermatologist dermatologist = dermatologistRepository.findById(examinationScheduleDTO.getDermatologist()).get();
+        examinationSchedule.setDermatologist(dermatologist);
         examinationSchedule.setDuration(examinationScheduleDTO.getDuration());
         examinationSchedule.setPrice(examinationSchedule.getPrice());
         examinationSchedule.setStartTime(examinationScheduleDTO.getStartTime());

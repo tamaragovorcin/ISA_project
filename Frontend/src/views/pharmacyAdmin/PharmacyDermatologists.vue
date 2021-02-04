@@ -103,7 +103,7 @@
                                     </div>
                     <div class="modal-footer">
                                         <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" v-on:click="add">Add</button>
+                                        <button class="btn btn-primary" v-on:click="addTerm">Add</button>
                    </div>
 
                             
@@ -452,22 +452,23 @@ export default {
        hideModalSchedule() {
         this.$refs['my-modalSchedule'].hide()
       },
-       add : function(){
+       addTerm : function(){
             const data ={
-              pharmacy : this.pharmacy,
-              dermatologist : this.selectedDermatologist,
+              pharmacy : this.pharmacy.id,
+              dermatologist : this.selectedDermatologist.id,
               date : this.date,
               startTime : this.startTime,
               duration : this.duration,
               price : this.price
           }
-            
+            alert()
             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
             this.axios.post('/pharmacy/addExaminationSchedule',data,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                         }})
                 .then(response => {
+                        alert("Successfully added examination to schedule!")
                         console.log(response.data);
                 })
                 .catch(response => {
@@ -490,8 +491,8 @@ export default {
       },
       addDermatologist: function(){
          const data ={
-              pharmacy : this.pharmacy,
-              dermatologist : this.selectedDermatologist1,
+              pharmacyId : this.pharmacy.id,
+              dermatologistId : this.selectedDermatologist1.id,
               
           }
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);

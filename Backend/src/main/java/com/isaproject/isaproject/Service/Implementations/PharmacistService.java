@@ -5,10 +5,12 @@ import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 
 import com.isaproject.isaproject.DTO.PharmacistDTO;
+import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
 import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
 import com.isaproject.isaproject.Repository.PharmacistRepository;
+import com.isaproject.isaproject.Repository.PharmacyRepository;
 import com.isaproject.isaproject.Service.IServices.IPharmacistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +33,8 @@ public class PharmacistService implements IPharmacistService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ConfirmationTokenRepository confirmationTokenRepository;
+    @Autowired
+    private PharmacyRepository pharmacyRepository;
 
     @Override
     public Pharmacist findById(Integer id) {
@@ -124,5 +128,19 @@ public class PharmacistService implements IPharmacistService {
         return pharmacistRepository.save(pharmacist);
     }
 
+    @Override
+    public List<Pharmacist> findByPharmacy(String name) {
+        return pharmacistRepository.findByPharmacy(pharmacyRepository.findByPharmacyName(name));
+    }
+    @Override
+    public List<Pharmacist> findByMark(int markMin, int markMax) {
+        List<Pharmacist> pharmacists = new ArrayList<>();
+        for(Pharmacist pharmacist : pharmacistRepository.findAll()){
+            if(pharmacist.getMarkPharmacist() <= markMax && pharmacist.getMarkPharmacist() >= markMin){
+                pharmacists.add(pharmacist);
+            }
+        }
+        return pharmacists;
+    }
 
 }

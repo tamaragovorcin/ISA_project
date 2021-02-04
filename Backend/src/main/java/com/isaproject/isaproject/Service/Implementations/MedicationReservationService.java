@@ -39,6 +39,7 @@ public class MedicationReservationService implements IMedicationReservationServi
 
 
         Medication medication = medicationService.findById(medicationDTO.getMedicationId());
+        System.out.println(medication.getName());
         Pharmacy pharmacy = pharmacyService.findById(medicationDTO.getPharmacyId());
         MedicationReservation medicationReservation = new MedicationReservation();
         medicationReservation.setDateOfTakeOver(medicationDTO.getDateOfTakeOver());

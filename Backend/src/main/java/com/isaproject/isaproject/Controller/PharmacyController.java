@@ -72,6 +72,8 @@ public class PharmacyController {
 
     @Autowired
     ExaminationService examinationService;
+    @Autowired
+    EPrescriptionService ePrescriptionService;
 
     @Autowired
     PatientService patientService;
@@ -150,29 +152,17 @@ public class PharmacyController {
     }
 
     @GetMapping("/allNames")
-    ResponseEntity<List<PharmacyFrontDTO>> getAllPharmaciesNames()
+    //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<PharmacyNameDTO>> getAllPharmaciesNames()
     {
         List<Pharmacy> pharmacies = pharmacyService.findAll();
-        List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
-
-        for (Pharmacy ph : pharmacies){
-
-            PharmacyFrontDTO pf = new PharmacyFrontDTO();
-            pf.setId(ph.getId());
-            pf.setCountry(ph.getAddress().getCountry());
-            pf.setNumber(ph.getAddress().getNumber());
-            pf.setPostalCode(ph.getAddress().getPostalCode());
-            pf.setStreet(ph.getAddress().getStreet());
-            pf.setPharmacyName(ph.getPharmacyName());
-            pf.setMark(ph.getMark());
-            pf.setCity(ph.getAddress().getTown());
-
-            pharmacyFrontDTOS.add(pf);
-
-        }
-        return pharmacyFrontDTOS == null ?
+        List<PharmacyNameDTO>pharmaciesNames = new ArrayList<>();
+        for (Pharmacy pharmacy: pharmacies) {
+            pharmaciesNames.add(new PharmacyNameDTO(pharmacy.getPharmacyName(), pharmacy.getId()));
+         }
+        return pharmaciesNames == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacyFrontDTOS);
+                ResponseEntity.ok(pharmaciesNames);
     }
 
     @GetMapping("/dermatologists/{id}")
@@ -198,7 +188,7 @@ public class PharmacyController {
         for (MedicationPrice med : medicationPrices) {
             if (med.getPharmacy().getId() == id) {
                 MedicationFrontDTO medicationFrontDTO = new MedicationFrontDTO();
-                medicationFrontDTO.setId(med.getId());
+                medicationFrontDTO.setId(med.getMedication().getId());
                 medicationFrontDTO.setName(med.getMedication().getName());
                 medicationFrontDTO.setType(med.getMedication().getType());
                 medicationFrontDTO.setForm(med.getMedication().getForm());
@@ -258,11 +248,9 @@ public class PharmacyController {
     }*/
 
     @PostMapping("/addExaminationSchedule")
-    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    //@PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<ExaminationSchedule> addSchedule(@RequestBody ExaminationScheduleDTO dto) {
 
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         ExaminationSchedule examinationSchedule = examinationScheduleService.save(dto);
         return examinationSchedule == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -761,5 +749,20 @@ public class PharmacyController {
             }
             return pharmacyList;
         }
+
+
+    @GetMapping("checkForPharmacy/{pharmacyId}")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<String> checkPossibilityPharmacy(@PathVariable Integer pharmacyId)
+    {
+        Boolean hasEreceipt = ePrescriptionService.checkEReceiptInPharmacy(pharmacyId);
+        Boolean hasConsulting = consultingService.checkIfPatientHasConsulting(pharmacyId);
+        Boolean hasExamination = examinationService.checkIfPatientHasExamination(pharmacyId);
+
+        return (hasEreceipt == false && hasConsulting==false)?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok("Successfully");
     }
 
+
+}

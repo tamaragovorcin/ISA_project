@@ -1,10 +1,8 @@
 
 package com.isaproject.isaproject.Service.Implementations;
 
-import com.isaproject.isaproject.DTO.AddressDTO;
-import com.isaproject.isaproject.DTO.DermatologistDTO;
-import com.isaproject.isaproject.DTO.PharmacyDermatologistsDTO;
-import com.isaproject.isaproject.DTO.WorkingHoursDermatologistDTO;
+import com.isaproject.isaproject.DTO.*;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
 import com.isaproject.isaproject.Repository.DermatologistRepository;
@@ -114,12 +112,13 @@ public class DermatologistService implements IDermatologistService {
 
     }
 
-    public Boolean addPharmacy(PharmacyDermatologistsDTO dto) {
-        System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +dto.getPharmacy().getPharmacyName());
-        Dermatologist ph = findById(dto.getDermatologist().getId());
+    public Boolean addPharmacy(DermaotlogistPharmacyDTO dto) {
+        Pharmacy pharmacy = pharmacyService.findById(dto.getPharmacyId());
+        Dermatologist dermatologist = dermatologistRepository.findById(dto.getDermatologistId()).get();
+        System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +pharmacy.getPharmacyName());
         try{
-            ph.getPharmacies().add(dto.getPharmacy());
-            dermatologistRepository.save(ph);
+            dermatologist.getPharmacies().add(pharmacy);
+            dermatologistRepository.save(dermatologist);
             return true;
         }catch (Exception e){
             return false;

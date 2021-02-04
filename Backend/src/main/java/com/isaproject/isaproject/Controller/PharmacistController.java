@@ -61,6 +61,33 @@ public class PharmacistController {
                 ResponseEntity.ok(pharmacists);
     }
 
+    @GetMapping("/searchPharmacy/{name}")
+    ResponseEntity<List<PharmacistFrontDTO>> getByPharmacy(@PathVariable String name)
+    {
+        List<Pharmacist> pharmacists= pharmacistService.findByPharmacy(name);
+        List<PharmacistFrontDTO> pharmacistFrontDTOS = new ArrayList<>();
+        for (Pharmacist pharmacist: pharmacists) {
+            PharmacistFrontDTO pharmacyFrontDTO = new PharmacistFrontDTO(pharmacist.getName(),pharmacist.getSurname(),pharmacist.getMarkPharmacist(),pharmacist.getPharmacy().getPharmacyName());
+            pharmacistFrontDTOS.add(pharmacyFrontDTO);
+        }
+        return pharmacistFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacistFrontDTOS);
+    }
+
+    @GetMapping("/searchMark/{MarkMin}/{MarkMax}")
+    ResponseEntity<List<PharmacistFrontDTO>> getAllByMark(@PathVariable int MarkMin,@PathVariable int MarkMax )
+    {
+        List<Pharmacist> pharmacists= pharmacistService.findByMark(MarkMin,MarkMax);
+        List<PharmacistFrontDTO> pharmacistFrontDTOS = new ArrayList<>();
+        for (Pharmacist pharmacist: pharmacists) {
+            PharmacistFrontDTO pharmacyFrontDTO = new PharmacistFrontDTO(pharmacist.getName(),pharmacist.getSurname(),pharmacist.getMarkPharmacist(),pharmacist.getPharmacy().getPharmacyName());
+            pharmacistFrontDTOS.add(pharmacyFrontDTO);
+        }
+
+        return  ResponseEntity.ok(pharmacistFrontDTOS);
+    }
+
     @PostMapping("/update")
     @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<String> update(@RequestBody Pharmacist userRequest) {
@@ -71,38 +98,19 @@ public class PharmacistController {
                 new ResponseEntity<>("Pharmacist is successfully updated!", HttpStatus.CREATED);
     }
 
-    @GetMapping("/basicInfo")
-    @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<List<UserBasicInfoDTO>> getPharmacistsBasicInfo() {
-        List<UserBasicInfoDTO> basicInfos = new ArrayList<>();
-        List<Pharmacist> pharmacists = pharmacistService.findAll();
-        for (Pharmacist pharmacist : pharmacists) {
-            basicInfos.add(new UserBasicInfoDTO(pharmacist.getName() + " " + pharmacist.getSurname(), pharmacist.getEmail()));
+
+    @GetMapping("/front")
+    ResponseEntity<List<PharmacistFrontDTO>> getAllFront()
+    {
+        List<PharmacistFrontDTO> pharmacists = new ArrayList<PharmacistFrontDTO>();
+        for(Pharmacist pharmacist:   pharmacistService.findAll()){
+            pharmacists.add(new PharmacistFrontDTO(pharmacist.getName(),pharmacist.getSurname(),pharmacist.getMarkPharmacist(),pharmacist.getPharmacy().getPharmacyName()));
         }
-        return basicInfos == null ?
+        return pharmacists == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(basicInfos);
+                ResponseEntity.ok(pharmacists);
     }
 
-
-    @PostMapping("/delete")
-    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    public ResponseEntity<String> addUser(@RequestBody Pharmacist pharmacist) {
-        System.out.println(pharmacist.getName());
-        pharmacistService.delete(pharmacist);
-        return new ResponseEntity<>("Pharmacist is successfully removed!", HttpStatus.CREATED);
-    }
-
-    @GetMapping("/account")
-    @PreAuthorize("hasRole('PHARMACIST')")
-    ResponseEntity<Pharmacist> getMyAccount() {
-        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        PersonUser user = (PersonUser) currentUser.getPrincipal();
-        Pharmacist pharmacist = pharmacistService.findById(user.getId());
-        return pharmacist == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacist);
-    }
 
 
     public Boolean ableToRatePharmacist(Integer pharmacistId, Integer patientId) {
@@ -120,6 +128,39 @@ public class PharmacistController {
         return able;
     }
 
+
+    @PostMapping("/delete")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    public ResponseEntity<String> addUser(@RequestBody Pharmacist pharmacist) {
+        System.out.println(pharmacist.getName());
+        pharmacistService.delete(pharmacist);
+        return new ResponseEntity<>("Pharmacist is successfully removed!", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/account")
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<Pharmacist> getMyAccount()
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        Pharmacist pharmacist = pharmacistService.findById(user.getId());
+        return pharmacist == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacist);
+    }
+
+    @GetMapping("/basicInfo")
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<List<UserBasicInfoDTO>> getPharmacistsBasicInfo() {
+        List<UserBasicInfoDTO> basicInfos = new ArrayList<>();
+        List<Pharmacist> pharmacists = pharmacistService.findAll();
+        for (Pharmacist pharmacist : pharmacists) {
+            basicInfos.add(new UserBasicInfoDTO(pharmacist.getName() + " " + pharmacist.getSurname(), pharmacist.getEmail(), pharmacist.getId()));
+        }
+        return basicInfos == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(basicInfos);
+    }
 
     @PostMapping("/leaveAMark")
     //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
@@ -350,6 +391,7 @@ public class PharmacistController {
                 ResponseEntity.ok(cons);
     }
 }
+
 
 
 

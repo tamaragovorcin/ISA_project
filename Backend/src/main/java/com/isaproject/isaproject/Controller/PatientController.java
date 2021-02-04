@@ -115,7 +115,7 @@ public class PatientController {
 
     @GetMapping("/{id}")
         //@PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<Patient> getById(@PathVariable Integer id) {
+    public ResponseEntity<Patient> getById(@PathVariable Integer id) {
         Integer idd = 1;
         Patient patient = patientService.findById(idd);
         return patient == null ?
@@ -125,7 +125,7 @@ public class PatientController {
 
     @GetMapping("/account")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<Patient> getMyAccount() {
+    public ResponseEntity<Patient> getMyAccount() {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser) currentUser.getPrincipal();
         Patient patient = patientService.findById(user.getId());
@@ -137,7 +137,7 @@ public class PatientController {
 
     @GetMapping("/address")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<Address> getMyAddress() {
+    public ResponseEntity<Address> getMyAddress() {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser) currentUser.getPrincipal();
 
@@ -148,7 +148,7 @@ public class PatientController {
     }
 
     @GetMapping("")
-    ResponseEntity<List<Patient>> getAll() {
+    public ResponseEntity<List<Patient>> getAll() {
         List<Patient> patients = patientService.findAll();
         return patients == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -156,7 +156,7 @@ public class PatientController {
     }
 
     @GetMapping("/email/{id}")
-    ResponseEntity<String> getEmail(@PathVariable Integer id) {
+    public ResponseEntity<String> getEmail(@PathVariable Integer id) {
         String email = patientService.getEmail(id);
         return email == null || email.equals("") ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -165,7 +165,7 @@ public class PatientController {
 
     @GetMapping("penals/{id}")
     //@PreAuthorize("hasRole('PHARMACIST')")
-    ResponseEntity<Patient> getByPatientId(@PathVariable Integer id)
+    public ResponseEntity<Patient> getByPatientId(@PathVariable Integer id)
     {
         Patient patient = patientService.findById(id);
         patient.setPenalties(patient.getPenalties()+1);
@@ -177,7 +177,7 @@ public class PatientController {
     }
 
     @PostMapping("/update")
-    ResponseEntity<Patient> update(@RequestBody PersonUserDTO person) {
+    public ResponseEntity<Patient> update(@RequestBody PersonUserDTO person) {
         Patient patient = patientService.update(person);
 
         return patient == null ?
@@ -186,8 +186,8 @@ public class PatientController {
     }
 
 
-            @PostMapping("/addAlergies")
-    ResponseEntity<PatientsMedicationAlergy> addAlergies(@RequestBody AlergiesDTO al) {
+    @PostMapping("/addAlergies")
+    public ResponseEntity<PatientsMedicationAlergy> addAlergies(@RequestBody AlergiesDTO al) {
 
 
         List<PatientsMedicationAlergy> alergy = new ArrayList<PatientsMedicationAlergy>();
@@ -206,7 +206,7 @@ public class PatientController {
 
 }
     @GetMapping("/getAlergies/{id}")
-    ResponseEntity<List<AlergiesFrontDTO>> getAlergies(@PathVariable Integer id) {
+    public ResponseEntity<List<AlergiesFrontDTO>> getAlergies(@PathVariable Integer id) {
         List<PatientsMedicationAlergy> alergies = alergiesService.findAll();
         Patient patient = patientService.findById(id);
         List<AlergiesFrontDTO> patientsAlergies = new ArrayList<AlergiesFrontDTO>();
@@ -228,7 +228,7 @@ public class PatientController {
 
 
     @GetMapping("/deleteAlergies/{id}")
-    void deleteAlergies(@PathVariable Integer id) {
+    public void deleteAlergies(@PathVariable Integer id) {
         List<PatientsMedicationAlergy> alergies = alergiesService.findAll();
        for(PatientsMedicationAlergy patientsMedicationAlergy : alergies){
            if(id==patientsMedicationAlergy.getId()){
@@ -243,7 +243,7 @@ public class PatientController {
 
     @GetMapping("/mySubscriptions")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<List<Integer>> getMySubscriptions()
+    public ResponseEntity<List<Integer>> getMySubscriptions()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
@@ -261,7 +261,7 @@ public class PatientController {
 
     @PostMapping("/subscribeToPharmacy")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<String> subsribe(@RequestBody PharmacyIdDTO pharmacyId)
+    public ResponseEntity<String> subsribe(@RequestBody PharmacyIdDTO pharmacyId)
     {
 
         Pharmacy pharmacy =pharmacyService.findById(pharmacyId.getPharmacyId());
@@ -272,7 +272,7 @@ public class PatientController {
 
     @PostMapping("/unsubscribeToPharmacy")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<String> unsubsribe(@RequestBody PharmacyIdDTO pharmacyId)
+    public ResponseEntity<String> unsubsribe(@RequestBody PharmacyIdDTO pharmacyId)
     {
         Pharmacy pharmacy =pharmacyService.findById(pharmacyId.getPharmacyId());
 
@@ -285,9 +285,8 @@ public class PatientController {
 
     @PreAuthorize("hasRole('PHARMACIST')")
     @GetMapping("searchForm/{patientName}")
-    ResponseEntity<List<PatientSearchDTO>> getAllByForm(@PathVariable String patientName)
+    public ResponseEntity<List<PatientSearchDTO>> getAllByForm(@PathVariable String patientName)
     {
-        System.out.println("--------------------------------------------------------------------");
         List<Patient> medications=  patientService.findAllByName(patientName);
         List<PatientSearchDTO> medicationsForFront = new ArrayList<>();
         for (Patient medication: medications) {

@@ -1,15 +1,26 @@
 package com.isaproject.isaproject.DTO;
 
 public class UserBasicInfoDTO {
-    String fullName;
-    String email;
+    private String fullName;
+    private String email;
+    private Integer userId;
+
 
     public UserBasicInfoDTO() {
     }
 
-    public UserBasicInfoDTO(String fullName, String email) {
+    public UserBasicInfoDTO(String fullName, String email, Integer userId) {
         this.fullName = fullName;
         this.email = email;
+        this.userId = userId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getFullName() {

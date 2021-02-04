@@ -350,14 +350,13 @@ export default {
       },
        patientIsSelected : function(event, medication) {
         this.medication = medication;
-      }
-
       },
+
       showMedications : function() {
           window.location.href = "/pharmacistMedicationSearch";
       },
 
-  
+     }
 }
 
 </script>
