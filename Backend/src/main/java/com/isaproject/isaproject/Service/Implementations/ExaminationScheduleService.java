@@ -34,7 +34,7 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
 
     @Override
     public ExaminationSchedule save(ExaminationScheduleDTO examinationScheduleDTO) {
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("+++++++++++++++++SERVIS+++++++++++++++++++++++");
         System.out.println(examinationScheduleDTO.getPharmacy());
         ExaminationSchedule examinationSchedule = new ExaminationSchedule();
         examinationSchedule.setPharmacy(examinationScheduleDTO.getPharmacy());
