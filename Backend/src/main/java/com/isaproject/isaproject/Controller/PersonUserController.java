@@ -8,12 +8,15 @@ import java.util.Map;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
+import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
 import com.isaproject.isaproject.Service.IServices.IPersonUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -51,6 +54,16 @@ public class PersonUserController {
         Map<String, String> fooObj = new HashMap<>();
         fooObj.put("foo", "bar");
         return fooObj;
+    }
+    @GetMapping("/account")
+    @PreAuthorize("hasRole('USER')")
+    ResponseEntity<PersonUser> getMyAccount()
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        return user == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(user);
     }
 
     @PostMapping("/update")
