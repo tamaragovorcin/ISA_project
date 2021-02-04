@@ -24,6 +24,24 @@ public class WorkingHoursPharmacistDTO {
     public WorkingHoursPharmacistDTO() {
     }
 
+    public WorkingHoursPharmacistDTO(Pharmacist pharmacist, LocalTime startTimeMonday, LocalTime startTimeTuesday, LocalTime startTimeWednesday, LocalTime startTimeThursday, LocalTime startTimeFriday, LocalTime startTimeSaturday, LocalTime startTimeSunday, LocalTime endTimeMonday, LocalTime endTimeTuesday, LocalTime endTimeWednesday, LocalTime endTimeThursday, LocalTime endTimeFriday, LocalTime endTimeSaturday, LocalTime endTimeSunday) {
+        this.pharmacist = pharmacist;
+        this.startTimeMonday = startTimeMonday;
+        this.startTimeTuesday = startTimeTuesday;
+        this.startTimeWednesday = startTimeWednesday;
+        this.startTimeThursday = startTimeThursday;
+        this.startTimeFriday = startTimeFriday;
+        this.startTimeSaturday = startTimeSaturday;
+        this.startTimeSunday = startTimeSunday;
+        this.endTimeMonday = endTimeMonday;
+        this.endTimeTuesday = endTimeTuesday;
+        this.endTimeWednesday = endTimeWednesday;
+        this.endTimeThursday = endTimeThursday;
+        this.endTimeFriday = endTimeFriday;
+        this.endTimeSaturday = endTimeSaturday;
+        this.endTimeSunday = endTimeSunday;
+    }
+
     public Pharmacist getPharmacist() {
         return pharmacist;
     }

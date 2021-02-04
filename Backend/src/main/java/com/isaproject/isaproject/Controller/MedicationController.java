@@ -359,6 +359,7 @@ public class MedicationController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medicationsForFront);
     }
+   
 
     private MedicationSearchDTO getMedicationSearchDTO(Medication medication) {
         Specification specification = medication.getSpecification();

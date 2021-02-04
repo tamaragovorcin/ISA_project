@@ -2,6 +2,7 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.WorkingHoursPharmacistDTO;
 import com.isaproject.isaproject.Model.Schedule.*;
+import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Repository.*;
 import com.isaproject.isaproject.Service.IServices.IWorkingHoursPharmacist;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class WorkingHoursPharmacistService implements IWorkingHoursPharmacist {
     public WorkingHoursPharmacist findById(Integer id) {
         return workingHoursPharmacistRepository.getOne(id);
     }
+
 
     @Override
     public List<WorkingHoursPharmacist> findAll() {
@@ -95,4 +97,7 @@ public class WorkingHoursPharmacistService implements IWorkingHoursPharmacist {
 
 
     }
+
+
+
 }
