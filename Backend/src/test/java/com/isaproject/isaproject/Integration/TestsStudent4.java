@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class Student4 extends TestRepository {
+public class TestsStudent4 extends TestRepository {
 
     @Autowired
     private PasswordEncoder passwordEncoder;

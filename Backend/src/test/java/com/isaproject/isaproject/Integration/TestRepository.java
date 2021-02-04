@@ -8,11 +8,8 @@ import com.isaproject.isaproject.DTO.PharmacyIdDTO;
 import com.isaproject.isaproject.Model.HelpModel.LoyaltyProgram;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.*;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -21,8 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class TestRepository {
     protected MockMvc mockMvc;
 
@@ -53,7 +48,6 @@ public class TestRepository {
     }
 
     protected void SetTestData() {
-
         //SUPPLIER
         Supplier supplier = new Supplier();
         supplier.setSurname("Surname");
@@ -85,7 +79,6 @@ public class TestRepository {
         loyaltyProgram.setRegularDiscount(20);
         loyaltyProgram.setGoldenDiscount(50);
         loyaltyProgram.setGoldLimit(750);
-
 
         //SYSTEM ADMIN
         SystemAdmin systemAdmin =  new SystemAdmin();
@@ -148,7 +141,6 @@ public class TestRepository {
         addressDTO5.setCountry(addressDTO5.getCountry());
         pharmacy.setAddress(address5);
         pharmacy.setConsultingPrice(100);
-
 
         entityManager.persist(patient);
         entityManager.persist(authority4);

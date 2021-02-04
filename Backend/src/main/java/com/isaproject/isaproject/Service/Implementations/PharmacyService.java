@@ -34,11 +34,6 @@ public class PharmacyService implements IPharmacyService {
     @Override
     public Pharmacy save(PharmacyDTO pharmacy) {
         Pharmacy pharmacy1 = new Pharmacy();
-        System.out.println(pharmacy.getPharmacyName());
-        System.out.println(pharmacy.getDescription());
-        System.out.println(pharmacy.getAddress().getCountry());
-        System.out.println(pharmacy.getConsultingPrice());
-
         pharmacy1.setPharmacyName(pharmacy.getPharmacyName());
         pharmacy1.setDescription(pharmacy.getDescription());
         AddressDTO addressDTO = pharmacy.getAddress();
