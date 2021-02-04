@@ -268,11 +268,8 @@ public class PharmacyController {
     }*/
 
     @PostMapping("/addExaminationSchedule")
-    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    //@PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<ExaminationSchedule> addSchedule(@RequestBody ExaminationScheduleDTO dto) {
-
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         ExaminationSchedule examinationSchedule = examinationScheduleService.save(dto);
         return examinationSchedule == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

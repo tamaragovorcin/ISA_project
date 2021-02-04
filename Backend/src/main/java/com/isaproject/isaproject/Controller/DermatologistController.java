@@ -1,9 +1,6 @@
 package com.isaproject.isaproject.Controller;
 
-import com.isaproject.isaproject.DTO.MarkDTO;
-import com.isaproject.isaproject.DTO.DermatologistDTO;
-import com.isaproject.isaproject.DTO.UserBasicInfoDTO;
-import com.isaproject.isaproject.DTO.PharmacyDermatologistsDTO;
+import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.MarkDermatologist;
@@ -76,7 +73,7 @@ public class DermatologistController {
     }
     @PostMapping("/addPharmacy")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    public ResponseEntity<String> addPharmacy(@RequestBody PharmacyDermatologistsDTO dto) {
+    public ResponseEntity<String> addPharmacy(@RequestBody DermaotlogistPharmacyDTO dto) {
 
         if(dermatologistService.addPharmacy(dto)){
             return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);

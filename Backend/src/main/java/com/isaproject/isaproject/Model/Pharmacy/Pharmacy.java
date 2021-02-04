@@ -26,7 +26,7 @@ import java.util.Set;
 @Entity
 @Table(name="pharmacy_table")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Pharmacy implements Serializable{
 
     @Id
@@ -70,6 +70,7 @@ public class Pharmacy implements Serializable{
     private Address address;
 
     @ManyToMany(mappedBy = "pharmacies")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     private Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
 
     @JsonManagedReference
@@ -77,6 +78,7 @@ public class Pharmacy implements Serializable{
     private Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
 
     @ManyToMany(mappedBy = "subscribedToPharmacies")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     private Set<Patient> subscribedPatients= new HashSet<Patient>();
 
     @JsonManagedReference
