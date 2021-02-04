@@ -114,7 +114,6 @@ public class DermatologistController {
     public Boolean ableToRateDermatologist(Integer dermatologistId, Integer patientId){
 
         Boolean able = false;
-        
         List<Examination> examinations = examinationService.findAll();
         List<ExaminationSchedule> examinationSchedules = examinationScheduleService.findAll();
 
