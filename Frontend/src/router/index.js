@@ -67,6 +67,8 @@ import PharmacistMedicationSearch from '../views/pharmacist/PharmacistMedication
 import DermatologistMedicationSearch from '../views/dermatologist/DermatologistMedicationSearch.vue'
 import HolidayRequestsDermatologists from '../views/systemAdmin/HolidayRequestsDermatologists.vue'
 import Pharmacists from '../views/home/Pharmacists.vue'
+import pharmacyProfilePatient from '../views/patient/pharmacyProfilePatient.vue'
+
 
 
 Vue.use(BootstrapVue)
@@ -420,6 +422,11 @@ const routes = [
       path: '/pharmacists',
       name: 'Pharmacists',
       component: Pharmacists
+    },
+    {
+      path: '/pharmacyProfilePatient/:id',
+      name: 'pharmacyProfilePatient',
+      component: pharmacyProfilePatient
     },
     
     

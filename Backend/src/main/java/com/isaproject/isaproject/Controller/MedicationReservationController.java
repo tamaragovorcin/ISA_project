@@ -4,16 +4,15 @@ import com.isaproject.isaproject.DTO.MedicationDTO;
 import com.isaproject.isaproject.DTO.MedicationReservationDTO;
 import com.isaproject.isaproject.DTO.MedicationReservationFrontDTO;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
+import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
 import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
 import com.isaproject.isaproject.Repository.MedicationReservationRepository;
-import com.isaproject.isaproject.Service.Implementations.ActionsService;
-import com.isaproject.isaproject.Service.Implementations.MedicationReservationService;
-import com.isaproject.isaproject.Service.Implementations.PatientService;
-import com.isaproject.isaproject.Service.Implementations.PharmacyService;
+import com.isaproject.isaproject.Service.Implementations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -30,6 +29,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/medicationReservation")
@@ -40,6 +40,13 @@ public class MedicationReservationController {
     MedicationReservationService medicationReservationService;
     @Autowired
     PatientService patientService;
+
+    @Autowired
+    PharmacyService pharmacyService;
+
+    @Autowired
+    MedicationPriceService medicationPriceService;
+
 
     @Autowired
     JavaMailSenderImpl mailSender;
@@ -56,26 +63,41 @@ public class MedicationReservationController {
     {
 
         Patient patient = patientService.findById(medicationReservationDTO.getPatient().getId());
+        Pharmacy pharmacy = pharmacyService.findById(medicationReservationDTO.getMedicationId());
+        List<MedicationPrice> medicationPrices = medicationPriceService.findAll();
         Boolean able = true;
         if(patient.getPenalties() > 3){
             able = false;
         }
 
-        MedicationReservation medication = medicationReservationService.save(medicationReservationDTO);
+
+        if(able) {
+            UUID uuid = UUID.randomUUID();
+
+            MedicationReservation medication = medicationReservationService.save(medicationReservationDTO, uuid);
 
 
-       // LocalDate ldt = medicationReservationDTO.getDateOfTakeOver().toLocalDate();
+            for(MedicationPrice medicationPrice: medicationPrices){
+                if(medicationPrice.getMedication().getId() == medicationReservationDTO.getMedicationId() && medicationPrice.getPharmacy().getId() == medicationReservationDTO.getPharmacyId()){
 
-        SimpleMailMessage mail = new SimpleMailMessage();
-        mail.setTo(medicationReservationDTO.getPatient().getEmail());
-        mail.setSubject("Successfuly reserved medication!");
-        mail.setFrom(environment.getProperty("spring.mail.username"));
-        //mail.setFrom("pharmacyisa@gmail.com");
-        mail.setText("You have successfully reserved a medication : "
-                + medication.getMedicine().getName() +" until " + medicationReservationDTO.getDateOfTakeOver());
+                    medicationPrice.setQuantity(medicationPrice.getQuantity() - 1);
+                    medicationPriceService.update(medicationPrice);
 
-        mailSender.send(mail);
+                }
+            }
 
+
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setTo(medicationReservationDTO.getPatient().getEmail());
+            mail.setSubject("Successfuly reserved medication!");
+            mail.setFrom(environment.getProperty("spring.mail.username"));
+            //mail.setFrom("pharmacyisa@gmail.com");
+            mail.setText("You have successfully reserved a medication : "
+                    + medication.getMedicine().getName() + " until " + medicationReservationDTO.getDateOfTakeOver()+ "A code is "+ uuid+".");
+
+            mailSender.send(mail);
+
+        }
         return able == true ?
                 new ResponseEntity<>("", HttpStatus.CREATED) :
                 new ResponseEntity<>("You are not able to reserve a medication because you have 3 or more penalties.", HttpStatus.CREATED);

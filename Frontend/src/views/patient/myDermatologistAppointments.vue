@@ -7,20 +7,20 @@ ines (39 sloc)  1.61 KB
             
             <span style="float: left; margin: 15px;">
                 <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
-                     <p class="tab"></p>                 
+                     <strong class="tab"></strong>                 
 
                     <button class = "btn btn-link btn-lg" v-on:click = "showPharmacies">Pharmacies</button>
 
-                    <p class="tab"></p>     
+                    <strong class="tab"></strong>     
                    <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
 
-                      <p class="tab"></p>                  
+                      <strong class="tab"></strong>                  
                    
 
    
 
                     <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "writeComplaint">Write complaint</button>
-                     <p class="tab"></p>     
+                   
             </span>
               <span  style="float:right;margin:15px">
                     
@@ -36,17 +36,17 @@ ines (39 sloc)  1.61 KB
             
             <span style="float: left; margin: 15px;">
                 <strong><button class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" v-on:click = "allPharmacies">Show all pharmacies</button></strong>
-                      <p class="tab"></p>                 
+                      <strong class="tab"></strong>                 
 
                     <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">Make a new dermatologist appointment</button>
 
-                   <p class="tab"></p>     
+                    <strong class="tab"></strong>            
                      <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "myDermatologistAppointments">My dermatologist appointments</button>
 
-                      <p class="tab"></p>   
+                      <strong class="tab"></strong>             
                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allPharmacists">Pharmacist consultation</button>
 
-                     <p class="tab"></p>                  
+                               
                    
             </span>
              
@@ -66,6 +66,45 @@ ines (39 sloc)  1.61 KB
              
             
         </div>
+
+<template>
+              <div class="row">
+                 <div> <label> Sort by </label></div>
+              <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="from1to5">
+                   <label class="custom-control-label" for="defaultGroupExample1">Date closest</label>
+              </div>
+
+                    <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="from5to1">
+                   <label class="custom-control-label" for="defaultGroupExample2">Date furthest</label>
+
+                  </div>
+                
+                   <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample3" name="groupOfDefaultRadios" v-on:click="cityfromatoz">
+                 <label class="custom-control-label" for="defaultGroupExample3">Cheapest</label>
+                   </div>
+        
+                 
+                   <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="cityfromztoa" >
+                 <label class="custom-control-label" for="defaultGroupExample4" >Most expensive</label>
+                   </div>
+                 
+                   
+                   <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="namefromatoz" >
+                 <label class="custom-control-label" for="defaultGroupExample5" >Duration - short first</label>
+                   </div>
+
+                    <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample6" name="groupOfDefaultRadios" v-on:click="namefromztoa" >
+                 <label class="custom-control-label" for="defaultGroupExample6" >Duration - long first</label>
+                   </div>
+
+              </div>
+             </template>
 
 
       <div style="background: whitesmoke; border: 3px solid #0D184F; height: 400px; width:1000px; margin-left:300px; margin-top: 20px"  v-for="dermatologistAppointment in this.dermatologistAppointments"  v-bind:key="dermatologistAppointment.id">
@@ -198,7 +237,107 @@ mounted() {
 
 },
   methods:{
-     
+      from1to5: function(){
+      this.axios.get('/pharmacy/dateClosest/' + this.patient.id)
+          .then(response => {
+               console.log(response.data);
+              this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+      
+      from5to1: function(){
+   
+      this.axios.get('/pharmacy/dateFurthest/' + this.patient.id)
+          .then(response => {
+               console.log(response.data);
+                this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+           cityfromatoz: function(){
+   
+      this.axios.get('/pharmacy/sortpricelowest/' + this.patient.id)
+          .then(response => {
+               console.log(response.data);
+                   this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+  
+        cityfromztoa: function(){
+   
+      this.axios.get('/pharmacy/sortpricehighest/' + this.patient.id)
+          .then(response => {
+               console.log(response.data);
+                   this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+      namefromatoz: function(){
+   
+      this.axios.get('/pharmacy/namefromatoz/' + this.patient.id)
+          .then(response => {
+               console.log(response.data);
+                  this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+            namefromztoa: function(){
+   
+      this.axios.get('/pharmacy/durationLongest/' + this.patient.id)
+          .then(response => {
+               console.log(response.data);
+                  this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+    
          allPharmacies: function(){
         window.location.href = "/myProfilePatient";
       },

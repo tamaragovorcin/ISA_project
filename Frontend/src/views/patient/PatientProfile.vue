@@ -6,8 +6,7 @@ ines (39 sloc)  1.61 KB
         <div style="background: #0D184F; height: 90px;">
             
             <span style="float: left; margin: 15px;">
-                    <a  class = "btn btn-link btn-lg" href= "/isaHomePage">Home</a>
-                    <b class="tab"></b>                
+                               
                     <a  class = "btn btn-link btn-lg" href= "/showPharmaciesPatient">Pharmacies</a>
                     <b class="tab"></b>     
                     <a  class = "btn btn-link btn-lg" href= "/myProfilePatient">My profile</a>
@@ -179,7 +178,7 @@ ines (39 sloc)  1.61 KB
                                         
 
                                          <div class="row">
-                                                    <div class = "tab"></div><div class = "tab"></div>
+                                                   
                                                   <button class = "btn btn-primary" v-on:click = "markAboutPharmacy">Pharmacy</button>
                                                   <div class = "tab"></div>
                                                   <button class = "btn btn-primary" v-on:click = "markAboutPharmacist">Pharmacist</button>
@@ -211,14 +210,15 @@ ines (39 sloc)  1.61 KB
                                                                        
 
 
-       
+            <div class = "row">
             <template>
-              <div class="custom-control custom-radio form-group col "  style = "background-color:lightgray; margin: auto; width: 750px; height: 80px; border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <strong class="tab"></strong>  <strong class="tab"></strong>
+                <p class="tab"></p>
+              <div class="custom-control custom-radio form-group col ">
+         
                   <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
                    <label class="custom-control-label" for="defaultGroupExample1">1</label>
                 
-              </div>   <p class="tab"></p>
+              </div>  
               <div class="custom-control custom-radio form-group col ">
 
                   <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
@@ -245,6 +245,7 @@ ines (39 sloc)  1.61 KB
                 
               </div> 
              </template>
+            </div>
                                                                  
                                                                         
                                                                     
@@ -273,13 +274,15 @@ ines (39 sloc)  1.61 KB
                                                                     </div>
                                                                     
                                                                     <hr />
+                                                                    <div class = "row">
                                                                  <template>
-              <div class="custom-control custom-radio form-group col "  style = "background-color:lightgray; margin: auto; width: 750px; height: 80px; border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <strong class="tab"></strong>  <strong class="tab"></strong>
+                                                                      <p class="tab"></p>
+              <div class="custom-control custom-radio form-group col " >
+     
                   <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
                    <label class="custom-control-label" for="defaultGroupExample1">1</label>
                 
-              </div>   <p class="tab"></p>
+              </div>  
               <div class="custom-control custom-radio form-group col ">
 
                   <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
@@ -306,6 +309,7 @@ ines (39 sloc)  1.61 KB
                 
               </div> 
              </template>
+                                                                    </div>
                                  
                                                                      <div class="modal-footer">
                                
@@ -329,14 +333,14 @@ ines (39 sloc)  1.61 KB
                                                                     </div>
                                                                     
                                                                     <hr />
-                                                                   
+              <div class = "row">                                                     
             <template>
-              <div class="custom-control custom-radio form-group col "  style = "background-color:lightgray; margin: auto; width: 750px; height: 80px; border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <strong class="tab"></strong>  <strong class="tab"></strong>
+                 <p class="tab"></p>
+              <div class="custom-control custom-radio form-group col "  >
                   <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
                    <label class="custom-control-label" for="defaultGroupExample1">1</label>
                 
-              </div>   <p class="tab"></p>
+              </div>  
               <div class="custom-control custom-radio form-group col ">
 
                   <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
@@ -363,6 +367,7 @@ ines (39 sloc)  1.61 KB
                 
               </div> 
              </template>
+              </div>
                                                                  
                                                                         
                              
@@ -387,14 +392,14 @@ ines (39 sloc)  1.61 KB
                                                                     </div>
                                                                     
                                                                     <hr />
-                                                                    
+                                                                    <div class = "row">
                                                                    <template>
-              <div class="custom-control custom-radio form-group col "  style = "background-color:lightgray; margin: auto; width: 750px; height: 80px; border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <strong class="tab"></strong>  <strong class="tab"></strong>
+                                                                        <p class="tab"></p>
+              <div class="custom-control custom-radio form-group col "  >
                   <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
                    <label class="custom-control-label" for="defaultGroupExample1">1</label>
                 
-              </div>   <p class="tab"></p>
+              </div> 
               <div class="custom-control custom-radio form-group col ">
 
                   <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
@@ -421,6 +426,7 @@ ines (39 sloc)  1.61 KB
                 
               </div> 
              </template>
+                                                                    </div>
                                                                      <div class="modal-footer">
 
                                         <button class="btn btn-primary" @click="sendMedication">Send </button>

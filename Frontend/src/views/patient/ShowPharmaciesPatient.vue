@@ -4,8 +4,7 @@
         <div style="background: #0D184F; height: 90px;">
             
             <span style="float: left; margin: 15px;">
-                <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
-                     <b class="tab"></b>                
+                             
 
                     <button class = "btn btn-link btn-lg" v-on:click = "showPharmacies">Pharmacies</button>
 
@@ -83,49 +82,82 @@
         </div>
 
 
-
-
 <template>
-
               <div class="row">
+                 <div> <label> Sort by </label></div>
               <div class="custom-control custom-radio form-group col ">
-                  <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
-                   <label class="custom-control-label" for="defaultGroupExample1">0-1</label>
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="from1to5">
+                   <label class="custom-control-label" for="defaultGroupExample1">Mark from 1 to 5</label>
               </div>
 
                     <div class="custom-control custom-radio form-group col ">
-                  <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
-                   <label class="custom-control-label" for="defaultGroupExample2">1-2</label>
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="from5to1">
+                   <label class="custom-control-label" for="defaultGroupExample2">Mark from 5 to 1</label>
 
                   </div>
                 
                    <div class="custom-control custom-radio form-group col ">  
-                  <input type="radio" class="custom-control-input" id="defaultGroupExample3" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'3')">
-                 <label class="custom-control-label" for="defaultGroupExample3">2-3</label>
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample3" name="groupOfDefaultRadios" v-on:click="cityfromatoz">
+                 <label class="custom-control-label" for="defaultGroupExample3">City from A to Z</label>
                    </div>
         
                  
                    <div class="custom-control custom-radio form-group col ">  
-                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'4')" >
-                 <label class="custom-control-label" for="defaultGroupExample4" >3-4</label>
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="cityfromztoa" >
+                 <label class="custom-control-label" for="defaultGroupExample4" >City from Z to A</label>
                    </div>
                  
                    
                    <div class="custom-control custom-radio form-group col ">  
-                  <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" >
-                 <label class="custom-control-label" for="defaultGroupExample4" >4-5</label>
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="namefromatoz" >
+                 <label class="custom-control-label" for="defaultGroupExample5" >Name from A to Z</label>
+                   </div>
+
+                    <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample6" name="groupOfDefaultRadios" v-on:click="namefromztoa" >
+                 <label class="custom-control-label" for="defaultGroupExample6" >Name from Z to A</label>
                    </div>
 
               </div>
              </template>
 
 
+<template>
+              <div class="row">
+                 <div> <label> Filter by mark from: </label></div>
+              <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample7" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
+                   <label class="custom-control-label" for="defaultGroupExample7">1-2</label>
+              </div>
+
+                    <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample8" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
+                   <label class="custom-control-label" for="defaultGroupExample8">2-3</label>
+
+                  </div>
+                
+                   <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample9" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'3')">
+                 <label class="custom-control-label" for="defaultGroupExample9">3-4</label>
+                   </div>
+        
+                 
+                   <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample10" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'4')" >
+                 <label class="custom-control-label" for="defaultGroupExample10" >4-5</label>
+                   </div>
+                 
+
+              </div>
+             </template>
+
 
  <div  v-for="dermatologistAppointment in this.dermatologistAppointments"  v-bind:key="dermatologistAppointment.id">
        <div id="customers" v-if="showTable"  style="background: whitesmoke; border: 3px solid #0D184F; height: 200px; width:1000px; margin-left:300px; margin-top: 20px">
           
-
-<table id="table1" class="table">
+        
+ <router-link :to="{ path: '/pharmacyProfilePatient/'+dermatologistAppointment.id}" v-slot="{href, navigate}">
+<table id="table1" class="table" :href="href" @click="navigate"  elevation="1">
  
  
     <tbody>
@@ -151,7 +183,7 @@
     
   </tbody>
 </table>
-       
+             </router-link>
      
 
 
@@ -162,8 +194,9 @@
  <div  v-for="dermatologistAppointment in this.dermatologistAppointmentsSearch"  v-bind:key="dermatologistAppointment.id">
            <div id="customers" v-if="showSecondTable"  style="background: whitesmoke; border: 3px solid #0D184F; height: 200px; width:1000px; margin-left:300px; margin-top: 20px">
           
-
-<table id="table2" class="table">
+        
+ <router-link :to="{ path: '/pharmacyProfilePatient/'+dermatologistAppointment.id}" v-slot="{href, navigate}">
+<table id="table2" class="table" :href="href" @click="navigate"  elevation="1">
  
  
     <tbody>
@@ -189,7 +222,7 @@
     
   </tbody>
 </table>
-       
+             </router-link>
      
 
 
@@ -236,6 +269,21 @@ mounted() {
 },
 
   methods:{
+
+    updateFiler : function(event, filter) {
+        this.axios.get('/pharmacy/filterMark/'+filter)
+          .then(response => {
+               console.log(response.data);
+                this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+      },
       myDermatologistAppointments: function(){
             window.location.href = "/myDermatologistAppointments";
 
@@ -322,13 +370,111 @@ mounted() {
             window.location.href = "/showPharmaciesPatient";
 
       },
-      
 
-        updateFiler : function(event, filter) {
-               this.filter = filter;
-            },
+      from1to5: function(){
+      this.axios.get('/pharmacy/from1to5')
+          .then(response => {
+               console.log(response.data);
+              this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+      
+      from5to1: function(){
+   
+      this.axios.get('/pharmacy/from5to1')
+          .then(response => {
+               console.log(response.data);
+                this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+           cityfromatoz: function(){
+   
+      this.axios.get('/pharmacy/cityfromatoz')
+          .then(response => {
+               console.log(response.data);
+                   this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+  
+        cityfromztoa: function(){
+   
+      this.axios.get('/pharmacy/cityfromztoa')
+          .then(response => {
+               console.log(response.data);
+                   this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+      namefromatoz: function(){
+   
+      this.axios.get('/pharmacy/namefromatoz')
+          .then(response => {
+               console.log(response.data);
+                  this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+            namefromztoa: function(){
+   
+      this.axios.get('/pharmacy/namefromztoa')
+          .then(response => {
+               console.log(response.data);
+                  this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+  }
+
 }
-}
+
 </script>
 
 <style>

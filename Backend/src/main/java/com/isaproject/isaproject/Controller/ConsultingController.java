@@ -2,6 +2,7 @@ package com.isaproject.isaproject.Controller;
 
 import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
+import com.isaproject.isaproject.Model.Examinations.Examination;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Schedule.*;
 import com.isaproject.isaproject.Model.Users.Patient;
@@ -36,9 +37,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/consulting")
@@ -179,7 +178,262 @@ public class ConsultingController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(consultingsFrontDTOS);
     }
+    @GetMapping("/sortpricelowest")
+    //@PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<ConsultingsFrontDTO>> sortpricelowest() {
 
+        List<Consulting> programs = consultingService.findAll();
+        List<ConsultingsFrontDTO> consultingsFrontDTOS = new ArrayList<ConsultingsFrontDTO>();
+
+        Collections.sort(programs, new Comparator<Consulting>() {
+            @Override
+            public int compare(Consulting c1, Consulting c2) {
+                return Double.compare(c1.getPrice(), c2.getPrice());
+
+            }
+        });
+
+        for(Consulting consulting: programs){
+
+            ConsultingsFrontDTO consultingsFrontDTO = new ConsultingsFrontDTO();
+            consultingsFrontDTO.setId(consulting.getId());
+            consultingsFrontDTO.setDate(consulting.getDate());
+            consultingsFrontDTO.setDuration(consulting.getDuration());
+            consultingsFrontDTO.setName(consulting.getPharmacist().getName());
+            consultingsFrontDTO.setSurname(consulting.getPharmacist().getSurname());
+            consultingsFrontDTO.setTime(consulting.getStartTime());
+
+            LocalDate d = LocalDate.now();
+            if(consulting.getDate().isBefore(d)){
+                consultingsFrontDTO.setFinished(true);
+            }
+            else{
+                consultingsFrontDTO.setFinished(false);
+            }
+
+            consultingsFrontDTOS.add(consultingsFrontDTO);
+
+
+
+        }
+        return consultingsFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(consultingsFrontDTOS);
+    }
+
+
+    @GetMapping("/sortpricehighest")
+    //@PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<ConsultingsFrontDTO>> sortpricehighest() {
+
+        List<Consulting> programs = consultingService.findAll();
+        List<ConsultingsFrontDTO> consultingsFrontDTOS = new ArrayList<ConsultingsFrontDTO>();
+
+        Collections.sort(programs, new Comparator<Consulting>() {
+            @Override
+            public int compare(Consulting c1, Consulting c2) {
+                return Double.compare(c1.getPrice(), c2.getPrice());
+
+            }
+        });
+        Collections.reverse(programs);
+        for(Consulting consulting: programs){
+
+            ConsultingsFrontDTO consultingsFrontDTO = new ConsultingsFrontDTO();
+            consultingsFrontDTO.setId(consulting.getId());
+            consultingsFrontDTO.setDate(consulting.getDate());
+            consultingsFrontDTO.setDuration(consulting.getDuration());
+            consultingsFrontDTO.setName(consulting.getPharmacist().getName());
+            consultingsFrontDTO.setSurname(consulting.getPharmacist().getSurname());
+            consultingsFrontDTO.setTime(consulting.getStartTime());
+
+            LocalDate d = LocalDate.now();
+            if(consulting.getDate().isBefore(d)){
+                consultingsFrontDTO.setFinished(true);
+            }
+            else{
+                consultingsFrontDTO.setFinished(false);
+            }
+
+            consultingsFrontDTOS.add(consultingsFrontDTO);
+
+
+
+        }
+        return consultingsFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(consultingsFrontDTOS);
+    }
+
+
+    @GetMapping("/namefromatoz")
+    //@PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<ConsultingsFrontDTO>> namefromatoz() {
+
+        List<Consulting> programs = consultingService.findAll();
+        List<ConsultingsFrontDTO> consultingsFrontDTOS = new ArrayList<ConsultingsFrontDTO>();
+
+        Collections.sort(programs, new Comparator<Consulting>() {
+            @Override
+            public int compare(Consulting c1, Consulting c2) {
+                return Double.compare(c1.getDuration(), c2.getDuration());
+
+            }
+        });
+        for(Consulting consulting: programs){
+
+            ConsultingsFrontDTO consultingsFrontDTO = new ConsultingsFrontDTO();
+            consultingsFrontDTO.setId(consulting.getId());
+            consultingsFrontDTO.setDate(consulting.getDate());
+            consultingsFrontDTO.setDuration(consulting.getDuration());
+            consultingsFrontDTO.setName(consulting.getPharmacist().getName());
+            consultingsFrontDTO.setSurname(consulting.getPharmacist().getSurname());
+            consultingsFrontDTO.setTime(consulting.getStartTime());
+
+            LocalDate d = LocalDate.now();
+            if(consulting.getDate().isBefore(d)){
+                consultingsFrontDTO.setFinished(true);
+            }
+            else{
+                consultingsFrontDTO.setFinished(false);
+            }
+
+            consultingsFrontDTOS.add(consultingsFrontDTO);
+
+
+
+        }
+        return consultingsFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(consultingsFrontDTOS);
+    }
+
+
+    @GetMapping("/namefromztoa")
+    //@PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<ConsultingsFrontDTO>> namefromztoa() {
+
+        List<Consulting> programs = consultingService.findAll();
+        List<ConsultingsFrontDTO> consultingsFrontDTOS = new ArrayList<ConsultingsFrontDTO>();
+
+        Collections.sort(programs, new Comparator<Consulting>() {
+            @Override
+            public int compare(Consulting c1, Consulting c2) {
+                return Double.compare(c1.getDuration(), c2.getDuration());
+
+            }
+        });
+        Collections.reverse(programs);
+        for(Consulting consulting: programs){
+
+            ConsultingsFrontDTO consultingsFrontDTO = new ConsultingsFrontDTO();
+            consultingsFrontDTO.setId(consulting.getId());
+            consultingsFrontDTO.setDate(consulting.getDate());
+            consultingsFrontDTO.setDuration(consulting.getDuration());
+            consultingsFrontDTO.setName(consulting.getPharmacist().getName());
+            consultingsFrontDTO.setSurname(consulting.getPharmacist().getSurname());
+            consultingsFrontDTO.setTime(consulting.getStartTime());
+
+            LocalDate d = LocalDate.now();
+            if(consulting.getDate().isBefore(d)){
+                consultingsFrontDTO.setFinished(true);
+            }
+            else{
+                consultingsFrontDTO.setFinished(false);
+            }
+
+            consultingsFrontDTOS.add(consultingsFrontDTO);
+
+
+
+        }
+        return consultingsFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(consultingsFrontDTOS);
+    }
+
+    @GetMapping("/dateClosest")
+    //@PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<ConsultingsFrontDTO>> dateClosest() {
+
+        List<Consulting> programs = consultingService.findAll();
+        List<ConsultingsFrontDTO> consultingsFrontDTOS = new ArrayList<ConsultingsFrontDTO>();
+
+        Collections.sort(programs, new Comparator<Consulting>() {
+            public int compare(Consulting o1, Consulting o2) {
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+
+        for(Consulting consulting: programs){
+
+            ConsultingsFrontDTO consultingsFrontDTO = new ConsultingsFrontDTO();
+            consultingsFrontDTO.setId(consulting.getId());
+            consultingsFrontDTO.setDate(consulting.getDate());
+            consultingsFrontDTO.setDuration(consulting.getDuration());
+            consultingsFrontDTO.setName(consulting.getPharmacist().getName());
+            consultingsFrontDTO.setSurname(consulting.getPharmacist().getSurname());
+            consultingsFrontDTO.setTime(consulting.getStartTime());
+
+            LocalDate d = LocalDate.now();
+            if(consulting.getDate().isBefore(d)){
+                consultingsFrontDTO.setFinished(true);
+            }
+            else{
+                consultingsFrontDTO.setFinished(false);
+            }
+
+            consultingsFrontDTOS.add(consultingsFrontDTO);
+
+
+
+        }
+        return consultingsFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(consultingsFrontDTOS);
+    }
+
+    @GetMapping("/dateFurthest")
+    //@PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<List<ConsultingsFrontDTO>> dateFurthest() {
+
+        List<Consulting> programs = consultingService.findAll();
+        List<ConsultingsFrontDTO> consultingsFrontDTOS = new ArrayList<ConsultingsFrontDTO>();
+
+        Collections.sort(programs, new Comparator<Consulting>() {
+            public int compare(Consulting o1, Consulting o2) {
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+
+        Collections.reverse(programs);
+        for(Consulting consulting: programs){
+
+            ConsultingsFrontDTO consultingsFrontDTO = new ConsultingsFrontDTO();
+            consultingsFrontDTO.setId(consulting.getId());
+            consultingsFrontDTO.setDate(consulting.getDate());
+            consultingsFrontDTO.setDuration(consulting.getDuration());
+            consultingsFrontDTO.setName(consulting.getPharmacist().getName());
+            consultingsFrontDTO.setSurname(consulting.getPharmacist().getSurname());
+            consultingsFrontDTO.setTime(consulting.getStartTime());
+
+            LocalDate d = LocalDate.now();
+            if(consulting.getDate().isBefore(d)){
+                consultingsFrontDTO.setFinished(true);
+            }
+            else{
+                consultingsFrontDTO.setFinished(false);
+            }
+
+            consultingsFrontDTOS.add(consultingsFrontDTO);
+
+
+
+        }
+        return consultingsFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(consultingsFrontDTOS);
+    }
 
     @PostMapping("/getPharmacies")
     public ResponseEntity<List<PharmacyFrontDTO>> getPharmacies(@RequestBody PharmacistConsultationTimeDTO dto) {

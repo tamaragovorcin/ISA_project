@@ -68,6 +68,45 @@ ines (39 sloc)  1.61 KB
             
         </div>
 
+<template>
+              <div class="row">
+                 <div> <label> Sort by </label></div>
+              <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="from1to5">
+                   <label class="custom-control-label" for="defaultGroupExample1">Date closest</label>
+              </div>
+
+                    <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="from5to1">
+                   <label class="custom-control-label" for="defaultGroupExample2">Date furthest</label>
+
+                  </div>
+                
+                   <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample3" name="groupOfDefaultRadios" v-on:click="cityfromatoz">
+                 <label class="custom-control-label" for="defaultGroupExample3">Cheapest</label>
+                   </div>
+        
+                 
+                   <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="cityfromztoa" >
+                 <label class="custom-control-label" for="defaultGroupExample4" >Most expensive</label>
+                   </div>
+                 
+                   
+                   <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="namefromatoz" >
+                 <label class="custom-control-label" for="defaultGroupExample5" >Duration - short first</label>
+                   </div>
+
+                    <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample6" name="groupOfDefaultRadios" v-on:click="namefromztoa" >
+                 <label class="custom-control-label" for="defaultGroupExample6" >Duration - long first</label>
+                   </div>
+
+              </div>
+             </template>
+
 
  <div  v-for="pharmacist in this.pharmacists"  v-bind:key="pharmacist.id">
        <div id="customers" v-if="showTable"  style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
@@ -175,6 +214,106 @@ mounted() {
           })
 },
   methods:{
+     from1to5: function(){
+      this.axios.get('/consulting/dateClosest')
+          .then(response => {
+               console.log(response.data);
+              this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+      
+      from5to1: function(){
+   
+      this.axios.get('/consulting/dateFurthest')
+          .then(response => {
+               console.log(response.data);
+                this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+           cityfromatoz: function(){
+   
+      this.axios.get('/consulting/sortpricelowest')
+          .then(response => {
+               console.log(response.data);
+                   this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+  
+        cityfromztoa: function(){
+   
+      this.axios.get('/consulting/sortpricehighest')
+          .then(response => {
+               console.log(response.data);
+                   this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+      namefromatoz: function(){
+   
+      this.axios.get('/consulting/namefromatoz')
+          .then(response => {
+               console.log(response.data);
+                  this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+            namefromztoa: function(){
+   
+      this.axios.get('/consulting/durationLongest')
+          .then(response => {
+               console.log(response.data);
+                  this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
       myDermatologistAppointments: function(){
             window.location.href = "/myDermatologistAppointments";
 

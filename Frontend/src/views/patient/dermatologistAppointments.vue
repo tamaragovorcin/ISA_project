@@ -176,6 +176,7 @@ mounted() {
     
   },
   methods:{
+     
        myDermatologistAppointments: function(){
             window.location.href = "/myDermatologistAppointments";
 

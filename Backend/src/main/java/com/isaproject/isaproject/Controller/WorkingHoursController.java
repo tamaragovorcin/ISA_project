@@ -40,7 +40,7 @@ public class WorkingHoursController {
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addDermatologistWorkingHours(@RequestBody WorkingHoursDermatologistDTO userRequest) {
         System.out.println("------------------------------------------------------------------");
-        System.out.println("----POGODIO CONTROLLER---");
+        System.out.println(userRequest);
 
         WorkingHoursDermatologist workingHoursDermatologist = workingHoursDermatologistService.save(userRequest);
         return new ResponseEntity<>("Working hours for pharmacist successfully added.", HttpStatus.CREATED);

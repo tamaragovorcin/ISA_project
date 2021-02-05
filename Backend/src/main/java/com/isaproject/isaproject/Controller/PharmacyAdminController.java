@@ -86,21 +86,16 @@ public class PharmacyAdminController {
     }
     @GetMapping("/dermatologists")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    List<Dermatologist> getOurDermatologists()
+    ResponseEntity<Set<Dermatologist>> getOurDermatologists()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
-        List<Dermatologist> dermatologists = new ArrayList<Dermatologist>();
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        for(Dermatologist derm : pharmacyAdmin.getPharmacy().getDermatologists()){
-            dermatologists.add(derm);
-        }
-        for(Dermatologist derm : dermatologists){
-            System.out.println(derm.getName()+" "+derm.getSurname());
-        }
-        return dermatologists;
+        return pharmacyAdmin.getPharmacy().getDermatologists() == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacyAdmin.getPharmacy().getDermatologists());
     }
+
 
     @PostMapping("/dermatologist/remove")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
