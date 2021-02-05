@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -65,8 +68,10 @@ public class SupplierMedicationService implements ISupplierMedicationService {
         return supplierMedicaionRepository.save(supplierMedications);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Boolean updateQuantities(Integer orderId) {
-        Set<MedicationInOrder> medicationInOrder = orderRepository.findById(orderId).get().getMedicationInOrders();
+       // Set<MedicationInOrder> medicationInOrder = orderRepository.findById(orderId).get().getMedicationInOrders();
+        Set<MedicationInOrder> medicationInOrder = orderRepository.findOneById(orderId).getMedicationInOrders();
         for(MedicationInOrder medication : medicationInOrder) {
             if(updateQuantityForMedication(medication.getMedicine(), medication.getQuantity())) {}
             else {

@@ -87,7 +87,6 @@ public class DermatologistController {
     @PostMapping("/addPharmacy")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addPharmacy(@RequestBody DermaotlogistPharmacyDTO dto) {
-
         if(dermatologistService.addPharmacy(dto)){
             return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
 

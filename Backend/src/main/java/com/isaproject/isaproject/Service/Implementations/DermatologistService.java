@@ -115,6 +115,7 @@ public class DermatologistService implements IDermatologistService {
     public Boolean addPharmacy(DermaotlogistPharmacyDTO dto) {
         Pharmacy pharmacy = pharmacyService.findById(dto.getPharmacyId());
         Dermatologist dermatologist = dermatologistRepository.findById(dto.getDermatologistId()).get();
+        System.out.println(dermatologist.getEmail());
         System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +pharmacy.getPharmacyName());
         try{
             dermatologist.getPharmacies().add(pharmacy);
