@@ -1,8 +1,6 @@
 package com.isaproject.isaproject.DTO;
 import com.isaproject.isaproject.Model.Users.Supplier;
-
 import java.time.LocalDate;
-import java.util.List;
 
 public class OfferDTO {
     private Supplier supplier;
@@ -10,8 +8,7 @@ public class OfferDTO {
     private LocalDate dateOfDelivery;
     private double summaryPrice;
 
-    public OfferDTO() {
-    }
+    public OfferDTO() {}
 
     public OfferDTO(Supplier supplier, Integer orderId, LocalDate dateOfDelivery, double summaryPrice) {
         this.supplier = supplier;
@@ -19,7 +16,6 @@ public class OfferDTO {
         this.dateOfDelivery = dateOfDelivery;
         this.summaryPrice = summaryPrice;
     }
-
 
     public Supplier getSupplier() {
         return supplier;
@@ -52,5 +48,4 @@ public class OfferDTO {
     public void setSummaryPrice(double summaryPrice) {
         this.summaryPrice = summaryPrice;
     }
-
 }

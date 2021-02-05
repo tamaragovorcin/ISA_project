@@ -16,6 +16,7 @@ import PharmacistHomePage from '../views/pharmacist/PharmacistHomePage.vue'
 import SchedulingConsulting from '../views/pharmacist/SchedulingConsulting.vue'
 import CreateRequestVacation from '../views/pharmacist/CreateRequestVacation.vue'
 import PharmacistUpdateProfile from '../views/pharmacist/PharmacistUpdateProfile.vue'
+import WorkingHoursPharmacist from '../views/pharmacist/WorkingHoursPharmacist.vue'
 import DermatologistHomePage from '../views/dermatologist/DermatologistHomePage.vue'
 import DermatologistProfile from '../views/dermatologist/DermatologistProfile.vue'
 import CreateRequestHoliday from '../views/dermatologist/CreateRequestHoliday.vue'
@@ -152,6 +153,11 @@ const routes = [
       path: '/noteConsultig',
       name: 'NoteAboutConsulting',
       component: NoteAboutConsulting
+    },
+    {
+      path: '/workingHoursPharmacist',
+      name: 'WorkingHoursPharmacist',
+      component: WorkingHoursPharmacist
     },
     {
       path: '/createRequestVacation',

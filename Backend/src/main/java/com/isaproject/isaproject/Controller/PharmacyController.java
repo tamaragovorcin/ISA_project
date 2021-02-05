@@ -1,5 +1,4 @@
 package com.isaproject.isaproject.Controller;
-
 import com.isaproject.isaproject.Authentification.TokenUtils;
 import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
@@ -7,13 +6,11 @@ import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Examinations.Examination;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
-import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Pharmacy.Actions;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.Mark;
 import com.isaproject.isaproject.Model.Users.Patient;
-import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Service.IServices.IPersonUserService;
 import com.isaproject.isaproject.Service.Implementations.*;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
@@ -21,7 +18,6 @@ import com.isaproject.isaproject.Service.Implementations.ActionsService;
 import com.isaproject.isaproject.Service.Implementations.ExaminationScheduleService;
 import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyService;
-import org.hibernate.annotations.GeneratorType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -29,16 +25,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.swing.*;
 import java.time.LocalDate;
-import org.springframework.security.core.parameters.P;
-import org.springframework.web.bind.annotation.*;
-
-import javax.swing.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;

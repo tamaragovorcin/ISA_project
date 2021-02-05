@@ -1,9 +1,5 @@
 package com.isaproject.isaproject.DTO;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
 public class LoyaltyProgramDTO {
 
     private double consultingPoints;
@@ -15,8 +11,7 @@ public class LoyaltyProgramDTO {
     private double silverDiscount;
     private double goldenDiscount;
 
-    public LoyaltyProgramDTO() {
-    }
+    public LoyaltyProgramDTO() {}
 
     public LoyaltyProgramDTO(double consultingPoints, double examinationPoints, double regularLimit, double silverLimit, double goldLimit, double regularDiscount, double silverDiscount, double goldenDiscount) {
         this.consultingPoints = consultingPoints;

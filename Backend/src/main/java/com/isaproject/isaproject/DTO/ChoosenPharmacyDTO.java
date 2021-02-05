@@ -1,13 +1,11 @@
 package com.isaproject.isaproject.DTO;
-
 import java.util.List;
 
 public class ChoosenPharmacyDTO {
     private Integer pharmacyId;
     private List<QRcodeInformationDTO> medications;
 
-    public ChoosenPharmacyDTO() {
-    }
+    public ChoosenPharmacyDTO() {}
 
     public ChoosenPharmacyDTO(Integer pharmacyId, List<QRcodeInformationDTO> medications) {
         this.pharmacyId = pharmacyId;

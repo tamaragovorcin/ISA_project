@@ -75,7 +75,6 @@ public class PharmacyFrontDTO {
         this.mark = mark;
     }
 
-
     public String getCity() {
         return city;
     }

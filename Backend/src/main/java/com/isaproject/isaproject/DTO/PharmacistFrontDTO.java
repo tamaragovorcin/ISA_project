@@ -1,7 +1,5 @@
 package com.isaproject.isaproject.DTO;
 
-import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
-
 public class PharmacistFrontDTO {
     private String firstname;
 
@@ -18,8 +16,7 @@ public class PharmacistFrontDTO {
         this.pharmacy = pharmacy;
     }
 
-    public PharmacistFrontDTO() {
-    }
+    public PharmacistFrontDTO() {}
 
     public String getFirstname() {
         return firstname;

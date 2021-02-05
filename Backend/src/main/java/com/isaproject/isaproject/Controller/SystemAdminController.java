@@ -1,11 +1,8 @@
 package com.isaproject.isaproject.Controller;
-
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
-import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Model.Users.SystemAdmin;
-import com.isaproject.isaproject.Service.Implementations.DermatologistService;
 import com.isaproject.isaproject.Service.Implementations.SystemAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

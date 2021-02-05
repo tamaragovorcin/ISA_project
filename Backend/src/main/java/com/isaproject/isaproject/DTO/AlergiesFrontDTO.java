@@ -3,9 +3,7 @@ package com.isaproject.isaproject.DTO;
 public class AlergiesFrontDTO {
 
     private Integer id;
-
     private Integer patient_id;
-
     private String name;
 
     public Integer getId() {
@@ -32,6 +30,5 @@ public class AlergiesFrontDTO {
         this.name = name;
     }
 
-    public AlergiesFrontDTO() {
-    }
+    public AlergiesFrontDTO() {}
 }

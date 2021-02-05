@@ -1,14 +1,11 @@
 package com.isaproject.isaproject.Authentification;
 
 import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
-
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

@@ -1,14 +1,5 @@
 package com.isaproject.isaproject.DTO;
 
-import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
-import com.isaproject.isaproject.Model.Examinations.Prescription;
-import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
-import com.isaproject.isaproject.Model.Users.Address;
-
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
-
 public class PharmacyDTO {
 
     private String pharmacyName;
@@ -22,8 +13,7 @@ public class PharmacyDTO {
         this.address = address;
     }
 
-    public PharmacyDTO() {
-    }
+    public PharmacyDTO() {}
 
     public PharmacyDTO(String pharmacyName, AddressDTO address, double consultingPrice, String description) {
         this.pharmacyName = pharmacyName;

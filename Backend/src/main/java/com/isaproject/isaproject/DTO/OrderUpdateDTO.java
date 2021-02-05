@@ -1,5 +1,4 @@
 package com.isaproject.isaproject.DTO;
-
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -9,8 +8,7 @@ public class OrderUpdateDTO {
     private String status;
     private Set<MedicationsInOrderDTO> medicationsInOrderDTO;
 
-    public OrderUpdateDTO() {
-    }
+    public OrderUpdateDTO() { }
 
     public OrderUpdateDTO(Integer orderId, LocalDate date, String status, Set<MedicationsInOrderDTO> medicationsInOrderDTO) {
         this.orderId = orderId;

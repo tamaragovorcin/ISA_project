@@ -7,8 +7,7 @@ public class PharmacyMedicationAvailabilityDTO {
     private AddressDTO address;
     private String pharmacyName;
 
-    public PharmacyMedicationAvailabilityDTO() {
-    }
+    public PharmacyMedicationAvailabilityDTO() { }
 
     public PharmacyMedicationAvailabilityDTO(Integer pharmacyId, double sumPrice, double mark, AddressDTO address, String pharmacyName) {
         this.pharmacyId = pharmacyId;

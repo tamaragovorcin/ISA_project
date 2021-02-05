@@ -1,11 +1,6 @@
 package com.isaproject.isaproject.DTO;
-
-import com.isaproject.isaproject.Model.Medicine.Medication;
-import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class MedicationReservationDTO {
 
@@ -17,11 +12,7 @@ public class MedicationReservationDTO {
 
     private LocalDate dateOfTakeOver;
 
-
-
-
-    public MedicationReservationDTO() {
-    }
+    public MedicationReservationDTO() { }
 
     public MedicationReservationDTO(Patient patient, int pharmacyId, int medicationId, LocalDate dateOfTakeOver) {
         this.patient = patient;
