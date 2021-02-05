@@ -54,6 +54,7 @@ public class PharmacistController {
     }
 
     @GetMapping("/searchPharmacy/{name}")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
     ResponseEntity<List<PharmacistFrontDTO>> getByPharmacy(@PathVariable String name)
     {
         List<Pharmacist> pharmacists= pharmacistService.findByPharmacy(name);
@@ -68,6 +69,7 @@ public class PharmacistController {
     }
 
     @GetMapping("/searchMark/{MarkMin}/{MarkMax}")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
     ResponseEntity<List<PharmacistFrontDTO>> getAllByMark(@PathVariable int MarkMin,@PathVariable int MarkMax )
     {
         List<Pharmacist> pharmacists= pharmacistService.findByMark(MarkMin,MarkMax);
@@ -76,6 +78,19 @@ public class PharmacistController {
             PharmacistFrontDTO pharmacyFrontDTO = new PharmacistFrontDTO(pharmacist.getName(),pharmacist.getSurname(),pharmacist.getMarkPharmacist(),pharmacist.getPharmacy().getPharmacyName());
             pharmacistFrontDTOS.add(pharmacyFrontDTO);
         }
+        return  ResponseEntity.ok(pharmacistFrontDTOS);
+    }
+    @PostMapping("/searchName")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
+    ResponseEntity<List<PharmacistFrontDTO>> getAllByName(@RequestBody PharmacistSearchDTO dto)
+    {
+        List<Pharmacist> pharmacists= pharmacistService.findByName(dto.getFirstName(),dto.getSurName());
+        List<PharmacistFrontDTO> pharmacistFrontDTOS = new ArrayList<>();
+        for (Pharmacist pharmacist: pharmacists) {
+            PharmacistFrontDTO pharmacyFrontDTO = new PharmacistFrontDTO(pharmacist.getName(),pharmacist.getSurname(),pharmacist.getMarkPharmacist(),pharmacist.getPharmacy().getPharmacyName());
+            pharmacistFrontDTOS.add(pharmacyFrontDTO);
+        }
+
         return  ResponseEntity.ok(pharmacistFrontDTOS);
     }
 
@@ -91,6 +106,7 @@ public class PharmacistController {
 
 
     @GetMapping("/front")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
     ResponseEntity<List<PharmacistFrontDTO>> getAllFront()
     {
         List<PharmacistFrontDTO> pharmacists = new ArrayList<PharmacistFrontDTO>();

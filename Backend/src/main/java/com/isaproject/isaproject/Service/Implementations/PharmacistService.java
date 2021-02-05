@@ -20,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class PharmacistService implements IPharmacistService {
@@ -137,6 +138,16 @@ public class PharmacistService implements IPharmacistService {
         List<Pharmacist> pharmacists = new ArrayList<>();
         for(Pharmacist pharmacist : pharmacistRepository.findAll()){
             if(pharmacist.getMarkPharmacist() <= markMax && pharmacist.getMarkPharmacist() >= markMin){
+                pharmacists.add(pharmacist);
+            }
+        }
+        return pharmacists;
+    }
+    @Override
+    public List<Pharmacist> findByName(String name, String surname) {
+        List<Pharmacist> pharmacists = new ArrayList<>();
+        for(Pharmacist pharmacist : pharmacistRepository.findAll()){
+            if(pharmacist.getSurname().toLowerCase().contains(surname.toLowerCase()) && pharmacist.getName().toLowerCase().contains(name.toLowerCase())){
                 pharmacists.add(pharmacist);
             }
         }
