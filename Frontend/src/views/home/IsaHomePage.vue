@@ -5,12 +5,12 @@
             
             <span style="float: left; margin: 15px;">
                 <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Pharmacies</button>
-                   <b class="tab"></b>                
+                   <strong class="tab"></strong>                
                    
                 <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showMedications">Medications</button>
-                <b class="tab"></b>         
+                   <strong class="tab"></strong>                
                 <a class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href="/pharmacists">Pharmacists</a>
-                <b class="tab"></b>         
+                   <strong class="tab"></strong>                
                 <a class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href="/pharmacists">Dermatologists</a>
        
 
@@ -18,7 +18,7 @@
               <span  style="float:right;margin:15px">
                     <button class = "btn btn-warning btn-lg" v-on:click = "showLoginForm">&nbsp;&nbsp;Login&nbsp;&nbsp;</button>
 
-                    <b class="tab"></b>                
+                   <strong class="tab"></strong>                
                    
 
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "showRegistrationForm">Register</button>
