@@ -8,7 +8,12 @@
                    <b class="tab"></b>                
                    
                 <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showMedications">Medications</button>
-                  
+                <b class="tab"></b>         
+                <a class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href="/pharmacists">Pharmacists</a>
+                <b class="tab"></b>         
+                <a class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href="/pharmacists">Dermatologists</a>
+       
+
             </span>
               <span  style="float:right;margin:15px">
                     <button class = "btn btn-warning btn-lg" v-on:click = "showLoginForm">&nbsp;&nbsp;Login&nbsp;&nbsp;</button>
