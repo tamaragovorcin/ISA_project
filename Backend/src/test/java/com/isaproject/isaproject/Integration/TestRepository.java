@@ -33,14 +33,6 @@ public class TestRepository {
 
 
     protected PharmacyIdDTO pharmacyIdDTO;
-    protected Integer pharmacyId;
-    protected Integer complaintId;
-    protected Integer patientId;
-    protected Complaint complaint2;
-    protected Patient patientInfo;
-    protected Pharmacy pharmacyInfo;
-    protected PharmacyNameDTO pharmacyNameDTO;
-
 
     protected void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -74,7 +66,7 @@ public class TestRepository {
         supplier.setAddress(address);
         supplier.setPhoneNumber("5623");
         supplier.setEnabled(true);
-        List<Authority> auth = new ArrayList<Authority>();
+        List<Authority> auth = new ArrayList<>();
         Authority authority = new Authority("ROLE_SUPPLIER");
         auth.add(authority);
         supplier.setAuthorities(auth);
@@ -152,19 +144,6 @@ public class TestRepository {
         pharmacy.setAddress(address5);
         pharmacy.setConsultingPrice(100);
 
-
-        //COMPLAINT
-        Complaint complaint = new Complaint();
-        complaint.setPatient(patient);
-        complaint.setAnswer("");
-        complaint.setAnswered(false);
-        complaint.setPharmacy(pharmacy);
-        complaint.setMassage("COmplaint");
-        complaint.setSubject("PHARMACY");
-        complaint.setDermatologist(null);
-        complaint.setPharmacist(null);
-
-
         entityManager.persist(patient);
         entityManager.persist(authority4);
         entityManager.persist(pharmacy);
@@ -173,18 +152,8 @@ public class TestRepository {
         entityManager.persist(systemAdmin);
         entityManager.persist(supplier);
         entityManager.persist(authority);
-        //entityManager.persist(complaint);
         pharmacyIdDTO = new PharmacyIdDTO(pharmacy.getId());
-        complaintId = complaint.getId();
-        pharmacyId = pharmacy.getId();
 
-        patientId = patient.getId();
-        patientInfo = patient;
-        pharmacyInfo = pharmacy;
-        pharmacyNameDTO = new PharmacyNameDTO(pharmacy.getPharmacyName(), pharmacy.getId());
-        complaint2 = complaint;
         entityManager.flush();
-
     }
-
 }

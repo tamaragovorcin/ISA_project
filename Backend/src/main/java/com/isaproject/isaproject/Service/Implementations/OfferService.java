@@ -1,5 +1,4 @@
 package com.isaproject.isaproject.Service.Implementations;
-
 import com.isaproject.isaproject.DTO.OfferDTO;
 import com.isaproject.isaproject.DTO.OfferUpdateDTO;
 import com.isaproject.isaproject.Model.Orders.Offer;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -48,9 +46,7 @@ public class OfferService implements IOfferService {
     }
 
     @Override
-    public void delete(Offer order) {
-
-    }
+    public void delete(Offer order) { }
 
     public Offer update(OfferUpdateDTO offerUpdateDto) {
         Offer offer = findById(offerUpdateDto.getOfferId());
@@ -63,6 +59,7 @@ public class OfferService implements IOfferService {
     public Offer proccedOffer(OfferDTO offerDTO) {
         Boolean quantitiesUpdated = supplierMedicationService.updateQuantities(offerDTO.getOrderId());
         Offer offer = save(offerDTO);
+        if(offer == null || quantitiesUpdated==false) {return null;}
         return offer;
     }
 }
