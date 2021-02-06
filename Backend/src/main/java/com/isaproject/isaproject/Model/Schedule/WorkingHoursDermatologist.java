@@ -12,7 +12,7 @@ import java.time.LocalTime;
 
 
 @Entity
-@DiscriminatorValue("WorkingHoursDermatologist")
+//@DiscriminatorValue("WorkingHoursDermatologist")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class WorkingHoursDermatologist  {
     @Id

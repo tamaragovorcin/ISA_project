@@ -141,16 +141,41 @@ public class PharmacyController {
 
     @GetMapping("/allNames")
     //@PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<List<PharmacyNameDTO>> getAllPharmaciesNames()
+    ResponseEntity<List<PharmacyFrontDTO>> getAllPharmaciesNames()
+    {
+        List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
+        List<Pharmacy> pharmacies = pharmacyService.findAll();
+        for (Pharmacy ph : pharmacies){
+
+            PharmacyFrontDTO pf = new PharmacyFrontDTO();
+            pf.setId(ph.getId());
+            pf.setCountry(ph.getAddress().getCountry());
+            pf.setNumber(ph.getAddress().getNumber());
+            pf.setPostalCode(ph.getAddress().getPostalCode());
+            pf.setStreet(ph.getAddress().getStreet());
+            pf.setPharmacyName(ph.getPharmacyName());
+            pf.setMark(ph.getMark());
+            pf.setCity(ph.getAddress().getTown());
+            pharmacyFrontDTOS.add(pf);
+        }
+        return pharmacyFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacyFrontDTOS);
+    }
+
+    @GetMapping("/allNames2")
+    //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<PharmacyNameDTO>> getAllPharmaciesNames2()
     {
         List<Pharmacy> pharmacies = pharmacyService.findAll();
+
         List<PharmacyNameDTO>pharmaciesNames = new ArrayList<>();
         for (Pharmacy pharmacy: pharmacies) {
             pharmaciesNames.add(new PharmacyNameDTO(pharmacy.getPharmacyName(), pharmacy.getId()));
-         }
+        }
         return pharmaciesNames == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmaciesNames);
+                 ResponseEntity.ok(pharmaciesNames);
     }
 
     @GetMapping("/dermatologists/{id}")
@@ -747,9 +772,9 @@ public class PharmacyController {
         Boolean hasConsulting = consultingService.checkIfPatientHasConsulting(pharmacyId);
         Boolean hasExamination = examinationService.checkIfPatientHasExamination(pharmacyId);
 
-        return (hasEreceipt == false && hasConsulting==false)?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok("Successfully");
+       // return (hasEreceipt == false && hasConsulting==false)?
+              //  new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+               return ResponseEntity.ok("Successfully");
     }
 
 

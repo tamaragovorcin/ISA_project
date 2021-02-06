@@ -267,7 +267,7 @@ export default {
                         console.log(res);
                  });
 
-        this.axios.get('/pharmacy/allNames',{ 
+        this.axios.get('/pharmacy/allNames2',{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
              }

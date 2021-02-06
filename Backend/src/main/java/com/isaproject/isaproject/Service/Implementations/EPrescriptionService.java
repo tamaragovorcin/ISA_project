@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +32,12 @@ public class EPrescriptionService implements IEPrescriptionService {
     @Autowired
     MedicationEPrescriptionRepository medicationEPrescriptionRepository;
 
+    @Autowired
+    MedicationPriceService medicationPriceService;
+
+    @Autowired
+    PatientService patientService;
+
 
     @Override
     public EPrescription findById(Integer id) {
@@ -41,6 +50,7 @@ public class EPrescriptionService implements IEPrescriptionService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public EPrescription save(ChoosenPharmacyDTO choosenPharmacy) {
         try {
             Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
@@ -79,5 +89,13 @@ public class EPrescriptionService implements IEPrescriptionService {
                 return true;}
         }
         return false;
+    }
+
+    @Transactional(readOnly = false)
+    public Boolean proccedEReceipt(ChoosenPharmacyDTO choosenPharmacy) {
+          return medicationPriceService.updateMedicineQuantityEreceipt(choosenPharmacy) == false ||
+                patientService.informPatientAboutEreceipt(choosenPharmacy.getMedications())==false ||
+                save(choosenPharmacy)==null ?
+                 true : false;
     }
 }

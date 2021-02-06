@@ -1,15 +1,10 @@
 package com.isaproject.isaproject.Model.HelpModel;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.isaproject.isaproject.Model.Medicine.Specification;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
-
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Complaint {
@@ -19,16 +14,13 @@ public class Complaint {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-
     @JsonBackReference
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = false)
     private Patient patient;
 
-
     @Column(name = "subject", nullable = true)
-    private String subject;//na sta se zali
-
+    private String subject;
 
     @OneToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "dermatologist_id", referencedColumnName = "id", nullable = true, unique = false)
@@ -54,6 +46,11 @@ public class Complaint {
     @Column(name = "answer", nullable = true)
     private String answer;
 
+    @Version
+    @Column(name = "version", nullable = true)
+    private Integer version;
+
+
     public Complaint() {
     }
 
@@ -67,6 +64,10 @@ public class Complaint {
         this.answered = answered;
         this.massage = massage;
         this.answer = answer;
+    }
+
+    public Integer getVersion() {
+        return version;
     }
 
     public Patient getPatient() {
@@ -84,8 +85,6 @@ public class Complaint {
     public void setId(Integer id) {
         this.id = id;
     }
-
-
 
     public String getSubject() {
         return subject;

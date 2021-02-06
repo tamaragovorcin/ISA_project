@@ -5,16 +5,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.LinkedHashMap;
 import com.isaproject.isaproject.Authentification.JwtAuthenticationRequest;
-import com.isaproject.isaproject.DTO.AddressDTO;
-import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.Users.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -24,8 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 public class TestsStudent4 extends TestRepository {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
     @Before
     public void setUp() { super.setUp(); }
     @Before
@@ -105,7 +100,6 @@ public class TestsStudent4 extends TestRepository {
                 .andExpect(jsonPath("$.*", notNullValue()))
                 .andExpect(jsonPath("$", isA(LinkedHashMap.class)));
     }
-
 
     @Test
     @Transactional
