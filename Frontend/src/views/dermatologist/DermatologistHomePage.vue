@@ -50,58 +50,8 @@
             <button class = "btn btn-info btn-lg" v-on:click = "schedule">Schedule new examination</button>
         </div>
     </div>
- <div>
-     <b-modal ref="my-modal" hide-footer scrollable title="Record the consulting" size="lg" modal-class="b-modal">
-                    <div modal-class="modal-dialog" role="document">
-                            <div class="modal-content" style="background-color:whitesmoke">
-                                    <div class="modal-header">
-                                              
-                                        <label>Record consulting</label>
-                        
-                                    </div>
-                                    <div class="modal-body">
-                                         <input type="text" id="name" name="name">
-                                     </div>
-                                                                    
-                                         <div class="modal-footer">
-                                            <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                            <button class="btn btn-primary" @click="sendComplaint">Send complaint</button>
-                                         </div>
-                            </div>
-                                       
-
-
-                    </div>
-
-    </b-modal>
-  </div>
-
- <div>
-     <b-modal ref="my-modal1" hide-footer scrollable title="Add medicine for patient" size="lg" modal-class="b-modal">
-                    <div modal-class="modal-dialog" role="document">
-                            <div class="modal-content" style="background-color:whitesmoke">
-                                    <div class="modal-header">
-                                              
-                                        <label>Sell medicine for patient</label>
-                        
-                                    </div>
-                                    <div class="modal-body">
-                                         <label>Enter a unique number of reservation</label><b class="tab"></b>  
-                                          <input type="uniqueNumber" id="unique" name="unique"  placeholder="Unigue number of reservation...">
-                                     </div>
-                                                                    
-                                         <div class="modal-footer">
-                                            <button class="btn btn-secondary" block @click="hideModal1">Close</button>
-                                            <button class="btn btn-success" @click="sendComplaint">Sell medicine</button>
-                                         </div>
-                            </div>
-                                       
-
-
-                    </div>
-
-    </b-modal>
-  </div>
+ 
+ 
 
 </div>
 </template>
@@ -133,14 +83,9 @@ export default {
 
       },
       writeExamination() {
-        this.$refs['my-modal'].show()
+       window.location.href = "/noteExamination";
       },
-       hideModal() {
-        this.$refs['my-modal'].hide()
-      },
-       hideModal1() {
-        this.$refs['my-modal1'].hide()
-      },
+     
       workCalendar : function(){
 
       },
@@ -149,17 +94,14 @@ export default {
 
       },
       scheduleConsulting : function(){
-
+         
       },
-      addMedicine : function(){
-          this.$refs['my-modal1'].show()
-
-      },
+   
       sendComplaint : function(){
 
       },
        schedule : function(){
-
+              window.location.href = "/schedulingExamination";
       },
 
        showMedications : function() {

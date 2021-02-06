@@ -5,11 +5,17 @@ import com.isaproject.isaproject.DTO.MarkDTO;
 import com.isaproject.isaproject.DTO.DermatologistDTO;
 import com.isaproject.isaproject.DTO.UserBasicInfoDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
+import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Examinations.Examination;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
+
+import com.isaproject.isaproject.Model.Users.*;
+
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.MarkDermatologist;
 import com.isaproject.isaproject.Model.Users.PersonUser;
+
 import com.isaproject.isaproject.Service.Implementations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +24,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+
+import java.time.LocalDate;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/dermatologist")
@@ -75,6 +87,79 @@ public class DermatologistController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 new ResponseEntity<>("Dermatologist is successfully updated!", HttpStatus.CREATED);
     }
+    @GetMapping("/front")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
+    ResponseEntity<List<DermatologistsFrontDTO>> getAllFront()
+    {
+        List<DermatologistsFrontDTO> dermatologists = new ArrayList<DermatologistsFrontDTO>();
+        for(Dermatologist dermatologist:   dermatologistService.findAll()){
+            List<String> pharmacies = new ArrayList<>();
+            for(Pharmacy pharmacy : dermatologist.getPharmacies()){
+                pharmacies.add(pharmacy.getPharmacyName());
+            }
+            dermatologists.add(new DermatologistsFrontDTO(dermatologist.getName(),dermatologist.getSurname(),dermatologist.getMarkDermatologist(),pharmacies));
+
+        }
+        return dermatologists == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(dermatologists);
+    }
+    @GetMapping("/searchPharmacy/{name}")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
+    ResponseEntity<List<DermatologistsFrontDTO>> getByPharmacy(@PathVariable String name)
+    {
+        List<Dermatologist> dermatologists= dermatologistService.findByPharmacy(name);
+        List<DermatologistsFrontDTO> dermatologistsFrontDTOS = new ArrayList<>();
+        for (Dermatologist dermatologist: dermatologists) {
+            List<String> pharmacies = new ArrayList<>();
+            for(Pharmacy pharmacy : dermatologist.getPharmacies()){
+                pharmacies.add(pharmacy.getPharmacyName());
+            }
+            DermatologistsFrontDTO dermatologistsFrontDTO = new DermatologistsFrontDTO(dermatologist.getName(),dermatologist.getSurname(),dermatologist.getMarkDermatologist(),pharmacies);
+            dermatologistsFrontDTOS.add(dermatologistsFrontDTO);
+        }
+        return dermatologistsFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(dermatologistsFrontDTOS);
+    }
+
+    @GetMapping("/searchMark/{MarkMin}/{MarkMax}")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
+    ResponseEntity<List<DermatologistsFrontDTO>> getAllByMark(@PathVariable int MarkMin,@PathVariable int MarkMax )
+    {
+        List<Dermatologist> dermatologists= dermatologistService.findByMark(MarkMin,MarkMax);
+        List<DermatologistsFrontDTO> dermatologistsFrontDTOS = new ArrayList<>();
+        for (Dermatologist dermatologist: dermatologists) {
+            List<String> pharmacies = new ArrayList<>();
+            for(Pharmacy pharmacy : dermatologist.getPharmacies()){
+                pharmacies.add(pharmacy.getPharmacyName());
+            }
+            DermatologistsFrontDTO dermatologistsFrontDTO = new DermatologistsFrontDTO(dermatologist.getName(),dermatologist.getSurname(),dermatologist.getMarkDermatologist(),pharmacies);
+            dermatologistsFrontDTOS.add(dermatologistsFrontDTO);
+        }
+        return dermatologistsFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(dermatologistsFrontDTOS);
+    }
+    @PostMapping("/searchName")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
+    ResponseEntity<List<DermatologistsFrontDTO>> getAllByName(@RequestBody PharmacistSearchDTO dto)
+    {
+        List<Dermatologist> dermatologists= dermatologistService.findByName(dto.getFirstName(),dto.getSurName());
+        List<DermatologistsFrontDTO> dermatologistsFrontDTOS = new ArrayList<>();
+        for (Dermatologist dermatologist: dermatologists) {
+            List<String> pharmacies = new ArrayList<>();
+            for(Pharmacy pharmacy : dermatologist.getPharmacies()){
+                pharmacies.add(pharmacy.getPharmacyName());
+            }
+            DermatologistsFrontDTO dermatologistsFrontDTO = new DermatologistsFrontDTO(dermatologist.getName(),dermatologist.getSurname(),dermatologist.getMarkDermatologist(),pharmacies);
+            dermatologistsFrontDTOS.add(dermatologistsFrontDTO);
+        }
+        return dermatologistsFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(dermatologistsFrontDTOS);
+    }
+
 
     @GetMapping("")
     public ResponseEntity<List<Dermatologist>> getAll()
@@ -348,6 +433,41 @@ public class DermatologistController {
                 new ResponseEntity<>("You have successfully rated a dermatologist!", HttpStatus.CREATED) :
                 new ResponseEntity<>("You are not able to leave a mark for the dermatologist that you had not had an appointment with!", HttpStatus.CREATED);
 
+    }
+    @GetMapping("/examinationSchedule")
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    ResponseEntity<Set<ExaminationScheduleFrontDTO>> getOurExSch() {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser) currentUser.getPrincipal();
+        Dermatologist dermatologist = dermatologistService.findById(user.getId());
+        HashSet<ExaminationScheduleFrontDTO> cons = new HashSet<>();
+
+        for (ExaminationSchedule c : dermatologist.getExaminationSchedules()) {
+
+                cons.add(new ExaminationScheduleFrontDTO(c.getId(),dermatologist.getName(), dermatologist.getSurname(),  c.getPharmacy().getPharmacyName(),  c.getDate(), c.getStartTime(), c.getDuration(), c.getPrice()));
+        }
+        return dermatologist.getExaminationSchedules() == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(cons);
+    }
+
+    @GetMapping("/examinations")
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    ResponseEntity<Set<ExaminationNoteDTO>> getOurExamination() {
+        //System.out.println("Pogoiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser) currentUser.getPrincipal();
+        Dermatologist dermatologist = dermatologistService.findById(user.getId());
+        HashSet<ExaminationNoteDTO> cons = new HashSet<>();
+
+        for (Examination e : examinationService.findAll()) {
+            if (e.getExaminationSchedule().getDate().isAfter(LocalDate.now()) && e.getExaminationSchedule().getDermatologist().getId()== user.getId())
+                cons.add(new ExaminationNoteDTO(e.getId(), e.getPatient().getId(), e.getPatient().getName(), e.getPatient().getSurname(), e.getExaminationSchedule().getPharmacy().getPharmacyName(), e.getExaminationSchedule().getDate(), e.getExaminationSchedule().getStartTime()));
+
+        }
+        return cons == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(cons);
     }
 
 }

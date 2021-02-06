@@ -30,7 +30,21 @@ public class ExaminationScheduleFrontDTO {
         this.price = price;
     }
 
+
+    public ExaminationScheduleFrontDTO(Integer id, String dermatologistFirst, String dermatologistLast, String pharmacy, LocalDate date, LocalTime startTime, double duration, double price) {
+        this.id = id;
+        this.dermatologistFirst = dermatologistFirst;
+        DermatologistLast = dermatologistLast;
+        this.pharmacy = pharmacy;
+        this.date = date;
+        this.startTime = startTime;
+        this.duration = duration;
+        this.price = price;
+    }
+
+
     public ExaminationScheduleFrontDTO() { }
+
 
     public Integer getId() {
         return id;

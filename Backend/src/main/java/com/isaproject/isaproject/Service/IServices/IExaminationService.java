@@ -2,6 +2,7 @@ package com.isaproject.isaproject.Service.IServices;
 
 import com.isaproject.isaproject.DTO.ExaminationDTO;
 import com.isaproject.isaproject.DTO.ExaminationScheduleDTO;
+import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Examinations.Examination;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 public interface IExaminationService {
 
+    Examination getById(Integer id);
     Optional<Examination> findById(Integer id);
     List<Examination> findAll ();
     Examination save(ExaminationDTO examinationDTO);

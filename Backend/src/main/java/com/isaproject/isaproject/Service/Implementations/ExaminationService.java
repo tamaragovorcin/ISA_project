@@ -32,6 +32,11 @@ public class ExaminationService implements IExaminationService {
     PatientRepository patientRepository;
 
     @Override
+    public Examination getById(Integer id) {
+        return examinationRepository.findById(id).get();
+    }
+
+    @Override
     public Optional<Examination> findById(Integer id) {
         return Optional.empty();
     }

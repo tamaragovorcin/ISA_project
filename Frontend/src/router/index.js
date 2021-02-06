@@ -18,8 +18,10 @@ import CreateRequestVacation from '../views/pharmacist/CreateRequestVacation.vue
 import PharmacistUpdateProfile from '../views/pharmacist/PharmacistUpdateProfile.vue'
 import WorkingHoursPharmacist from '../views/pharmacist/WorkingHoursPharmacist.vue'
 import DermatologistHomePage from '../views/dermatologist/DermatologistHomePage.vue'
+import NoteAboutExamination from '../views/dermatologist/NoteAboutExamination.vue'
 import DermatologistProfile from '../views/dermatologist/DermatologistProfile.vue'
 import CreateRequestHoliday from '../views/dermatologist/CreateRequestHoliday.vue'
+import SchedulingExamination from '../views/dermatologist/SchedulingExamination.vue'
 import DermatologistUpdateProfile from '../views/dermatologist/DermatologistUpdateProfile.vue'
 import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vue'
 import Order from '../views/pharmacyAdmin/Order.vue'
@@ -68,7 +70,7 @@ import PharmacistMedicationSearch from '../views/pharmacist/PharmacistMedication
 import DermatologistMedicationSearch from '../views/dermatologist/DermatologistMedicationSearch.vue'
 import HolidayRequestsDermatologists from '../views/systemAdmin/HolidayRequestsDermatologists.vue'
 import Pharmacists from '../views/home/Pharmacists.vue'
-
+import Dermatologists from '../views/home/Dermatologists.vue'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -120,9 +122,19 @@ const routes = [
       component: PatientProfile
     },
     {
+      path: '/noteExamination',
+      name: 'NoteAboutExamination',
+      component: NoteAboutExamination
+    },
+    {
       path: '/pharmacistProfile',
       name: 'PharmacistProfile',
       component: PharmacistProfile
+    },
+    {
+      path: '/schedulingExamination',
+      name: 'SchedulingExamination',
+      component: SchedulingExamination
     },
     {
       path: '/pharmacistUpdateProfile',
@@ -426,6 +438,11 @@ const routes = [
       path: '/pharmacists',
       name: 'Pharmacists',
       component: Pharmacists
+    },
+    {
+      path: '/dermatologists',
+      name: 'Dermatologists',
+      component: Dermatologists
     },
     
     
