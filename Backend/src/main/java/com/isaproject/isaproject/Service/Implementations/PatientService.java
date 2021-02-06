@@ -4,10 +4,7 @@ import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.DTO.QRcodeInformationDTO;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
-import com.isaproject.isaproject.Model.Users.Address;
-import com.isaproject.isaproject.Model.Users.Authority;
-import com.isaproject.isaproject.Model.Users.Patient;
-import com.isaproject.isaproject.Model.Users.PersonUser;
+import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
 import com.isaproject.isaproject.Repository.PatientRepository;
 import com.isaproject.isaproject.Service.IServices.IPatientService;
@@ -61,6 +58,17 @@ public class PatientService implements IPatientService {
     @Override
     public List<Patient> findAllByName(String name) {
         return patientRepository.findAllByName(name);
+    }
+
+    @Override
+    public List<Patient> findByName(String name, String surname) {
+        List<Patient> patients = new ArrayList<>();
+        for(Patient patient : patientRepository.findAll()){
+            if(patient.getSurname().toLowerCase().contains(surname.toLowerCase()) && patient.getName().toLowerCase().contains(name.toLowerCase())){
+                patients.add(patient);
+            }
+        }
+        return patients;
     }
 
     @Override

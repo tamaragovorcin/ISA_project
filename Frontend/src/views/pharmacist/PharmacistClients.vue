@@ -38,40 +38,18 @@
 
              </span>
     </div>
-    <div>
-    <section class = "border">
-        <h3 align="center"><b>Search your patients</b></h3>
-			<form accept-charset="UTF-8">
-                <table align="center">
-                    <tr>
-                        <b class="tab"></b> 
-                        <td align="left" style="font-size:25px">Patient's name:</td>
-                        <td>&nbsp;</td>
-                            <input style="width: 200px;" class="form-control" placeholder="Enter patient's name" name="name" type="text" id="name" v-model="name" >              
-                        <td>&nbsp;</td>  
-                         
-                         
-                        <b class="tab"></b>     
-                        <b class="tab"></b>  
+     <div style="background: white; height: 60px; margin-top: 20px">
+          <span  style="float:right;margin:15px">
+            <div class="input-group mb-3">
+              <input type="text" v-model="patientName" class="form-control" placeholder="Patient name..." aria-label="Enter name..." aria-describedby="basic-addon2">
+              <input type="text" v-model="patientSurname" class="form-control" placeholder="Patient surname..." aria-label="Enter surname..." aria-describedby="basic-addon2">
 
-                        <td align="left" style="font-size:25px">Patient's secondname:</td>
-                        <td>&nbsp;</td>
-                          <input style="width: 200px;" class="form-control" placeholder="Enter patient's secondname" name="secondname" type="text" v-model="surname" id="secondname">              
-                        <td>&nbsp;</td>  
-                        <b class="tab"></b>     
-                        <b class="tab"></b>  
-
-
-                        <td align="right" ><button  class = "btn btn-success btn-lg" v-on:click="search">Search</button></td>
-                        <b class="tab"></b>  
-                       
-                    </tr>
-
-                    
-                </table>   
-		</form>
-    </section>    
-    </div>
+                 <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button"  v-on:click = "showByPharmacistName" >Search</button>
+                  </div>
+            </div>
+          </span>
+     </div>
 
      <div style="height:25px"></div>
       <h3>Patients</h3>
@@ -87,7 +65,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="pat in ourPatients" :key="pat.id">
+              <tr v-for="pat in ourPatients" :key="pat.idobj">
                 <td></td>
                 <td>{{pat.firstname}}</td>
                 <td>{{pat.surname}}</td>
@@ -97,29 +75,8 @@
               </tr>
             </tbody>
           </table>
-      <div v-if = "showMedicationListInfoDiv" style = "background-color:lightgray; margin: auto; width: 60%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-               <div class="row">
-                    <div class=" form-group col">
-                        <label >Name</label>
-                    </div>
-                    <div class=" form-group col">          
-                        <label >Surname</label>
-                    </div>
-                    <div class=" form-group col">
-                        <label ></label>
-                    </div>
-               </div>
-               <div v-for="patient in medicationSeacrhList"   v-bind:key="patient.name">
-                <div class="row">
-                        <div class=" form-group col">
-                            <label >{{patient.name}}</label>
-                        </div>
-                        <div class=" form-group col">          
-                            <label >{{patient.surname}}</label>
-                        </div>
-                </div>
-        </div>
-    </div>
+     
+    
       <div> 
           <b-modal ref="specification-modal" hide-footer scrollable title="Medication specification" size="lg" modal-class="b-modal">
                <div modal-class="modal-dialog" role="document">
@@ -142,6 +99,8 @@ export default {
   data() {
     return {
       
+        patientName : "",
+        patientSurname : "",
        patients : [],
         name : "",
         surname : "",
@@ -172,7 +131,20 @@ export default {
    },
 
    mounted(){
-    let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+    
+      let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/pharmacist/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+         }).then(response => {
+               this.pharmacist=response.data;
+         }).catch(res => {
+                       alert("NOT OK");
+                        console.log(res);
+                 });
+      
+	
       this.axios.get('/pharmacist/myPatients',{ 
                     headers: {
                         'Authorization': 'Bearer ' + token,
@@ -217,24 +189,29 @@ export default {
                     });
          
      },
-       search: function(){
-           this.axios.get('/patient/searchForm/'+this.name).
-            then(response => {
-                    this.medicationSeacrhList= response.data;
-                    this.showMedicationListInfoDiv = true;
-
+         showByPharmacistName : function() {
+          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+          const data = {
+            name : this.patientName,
+            surname : this.patientSurname
+          }
+            this.axios.post('/patient/searchName',data,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+          .then(response => {
+                    this.ourPatients= response.data;
             }).catch(res => {
-                        alert("NOT OK");
+                        alert("There is no patient with entered name.");
                         console.log(res);
                     });
-         
       },
        cancel: function(){
          
       },
       lookHistory : function(event, id) {
          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-        this.axios.get('/patient/history', +id, { 
+        this.axios.get('/patient/history/', +id, { 
                     headers: {
                         'Authorization': 'Bearer ' + token,
                     }
@@ -246,7 +223,7 @@ export default {
                             console.log(res);
                     });
         
-        this.$refs['specificationList-modal'].show()
+        this.$refs['specification-modal'].show()
       },
 
       showHomePage : function(){

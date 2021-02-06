@@ -296,6 +296,21 @@ public class PatientController {
                // specification.getStructure(), specification.getRecommendedConsumption(), specification.getManufacturer());
         return new PatientSearchDTO(medication.getName(), medication.getSurname());
     }
+    @PostMapping("/searchName")
+    @PreAuthorize("hasAnyRole('DERMATOLOGIST', 'PHARMACIST')")
+    ResponseEntity<List<PatientForFrontDTO>> getAllByName(@RequestBody PatientSearchDTO dto)
+    {
+        List<Patient> patients= patientService.findByName(dto.getName(),dto.getSurname());
+        List<PatientForFrontDTO> patientForFrontDTOS = new ArrayList<>();
+        for (Patient patient: patients) {
+            PatientForFrontDTO patientForFrontDTO = new PatientForFrontDTO(patient.getId(), patient.getEmail(), patient.getName(),patient.getSurname(), patient.getPhoneNumber());
+            patientForFrontDTOS.add(patientForFrontDTO);
+        }
+
+
+        return  ResponseEntity.ok(patientForFrontDTOS);
+    }
+
 
 
 }

@@ -70,7 +70,7 @@ export default {
 
   methods:{
       showClients : function(){
-
+            window.location.href = "/dermatologistClients";
       },
       showMyProfile: function(){
            window.location.href = "/dermatologistProfile";

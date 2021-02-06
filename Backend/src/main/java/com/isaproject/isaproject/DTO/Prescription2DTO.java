@@ -7,17 +7,19 @@ import java.util.Set;
 
 public class Prescription2DTO {
     private Integer examinationId;
-    private Set<Medication> medications = new HashSet<Medication>();
+    private Medication medication;
     private double durationOfTherapy;
 
-    public Prescription2DTO(Integer examinationId, Set<Medication> medications, double durationOfTherapy) {
-        this.examinationId = examinationId;
-        this.medications = medications;
-        this.durationOfTherapy = durationOfTherapy;
-    }
+
 
     public Prescription2DTO() {
 
+    }
+
+    public Prescription2DTO(Integer examinationId, Medication medication, double durationOfTherapy) {
+        this.examinationId = examinationId;
+        this.medication = medication;
+        this.durationOfTherapy = durationOfTherapy;
     }
 
     public Integer getExaminationId() {
@@ -28,12 +30,12 @@ public class Prescription2DTO {
         this.examinationId = examinationId;
     }
 
-    public Set<Medication> getMedications() {
-        return medications;
+    public Medication getMedication() {
+        return medication;
     }
 
-    public void setMedications(Set<Medication> medications) {
-        this.medications = medications;
+    public void setMedication(Medication medication) {
+        this.medication = medication;
     }
 
     public double getDurationOfTherapy() {

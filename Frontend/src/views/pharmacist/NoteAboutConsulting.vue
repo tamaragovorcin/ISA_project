@@ -59,6 +59,7 @@
                                             <th scope="col">Note:</th>
                                             <th scope="col">Prescription:</th>
                                             <th scope="col">Ignored:</th>
+                                            <th scope="col">New:</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -71,7 +72,7 @@
                                                     <td><button class="btn btn-primary btn-lg" v-on:click="Belezi ($event, consulting)">Note Consulting</button></td>
                                                    <td><button class="btn btn-success btn-lg" v-on:click="Recept ($event, consulting)">Add prescription</button></td>
                                                     <td> <button class="btn btn-danger  btn-lg" v-on:click="ignored($event, consulting.patientId)">Ignored, add penal</button></td>
-
+                                                     <td> <button class="btn btn-danger  btn-lg" v-on:click="zakazi">Schedule new exemination</button></td>
                                                 </tr>
    
   </tbody>
@@ -314,15 +315,18 @@ export default {
         vacation: function(){
          
       },
+       zakazi : function(){
+           window.location.href = "/schedulingConsulting";
+      },
        search: function(){
          
       },
       praviRecept: function(){
-         this.medicationList.push(this.medication)
+        
          const pres ={
               
                consultingId : this.selectedConsulting.consultingId,
-               medicationList : this.medicationList,
+               medication : this.medication,
                durationOfTherapy : this.durationOfTherapy,
               
             }
