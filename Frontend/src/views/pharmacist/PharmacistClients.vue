@@ -82,16 +82,18 @@
                 <th scope="col"></th>
                 <th scope="col">Name</th>
                 <th scope="col">Surname</th>
-                
+                <th scope="col">Email</th>
+                 <th scope="col">Phone number</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="consulting in ourConsultings" :key="consulting.id">
+              <tr v-for="pat in ourPatients" :key="pat.id">
                 <td></td>
-                <td>{{consulting.namePatient}}</td>
-                <td>{{consulting.surnamePatient}}</td>
-               
-                <td><button  v-on:click ="remove($event, patient)" class="btn btn-info">Remove</button></td>
+                <td>{{pat.firstname}}</td>
+                <td>{{pat.surname}}</td>
+                 <td>{{pat.email}}</td>
+                <td>{{pat.phonenumber}}</td>
+                <td><button  v-on:click ="lookHistory($event, pat.id)" class="btn btn-info">Look history</button></td>
               </tr>
             </tbody>
           </table>
@@ -116,8 +118,22 @@
                             <label >{{patient.surname}}</label>
                         </div>
                 </div>
-               </div>
+        </div>
     </div>
+      <div> 
+          <b-modal ref="specification-modal" hide-footer scrollable title="Medication specification" size="lg" modal-class="b-modal">
+               <div modal-class="modal-dialog" role="document">
+                    <div class="modal-content" style="background-color:whitesmoke">
+                         <div class="modal-body">
+                          
+                          {{history.namePatient}}
+                        
+                                                        
+                         </div>                
+                    </div>
+               </div>
+          </b-modal>
+       </div>
   </div>
 </template>
 
@@ -138,12 +154,9 @@ export default {
         country : "",
         showMedicationListInfoDiv: false,
         medicationSeacrhList : [],
-         ourConsultings: "",
+         ourPatients: [],
          consulting: {
-       patient : {
-         name : "",
-         surname : ""
-       },
+       patient : {},
        pharmacist : "", 
        date: "",
        startTime: "",
@@ -153,22 +166,27 @@ export default {
        showedUp: false,
        information: ""
        },
+       history : "",
+       idConsulting : ""
     }  
    },
 
    mounted(){
     let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-      this.axios.get('/pharmacist/consultings',{ 
+      this.axios.get('/pharmacist/myPatients',{ 
                     headers: {
                         'Authorization': 'Bearer ' + token,
                     }
                     }).then(response => {
-                            this.ourConsultings = response.data;
-                            alert(this.ourConsultings);
+                            this.ourPatients = response.data;
+                            
                     }).catch(res => {
                             alert("NOT OK");
                             console.log(res);
                     });
+
+
+         
     },
  
      methods:{
@@ -214,6 +232,23 @@ export default {
        cancel: function(){
          
       },
+      lookHistory : function(event, id) {
+         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/history', +id, { 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            this.history = response.data;
+                          
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
+        
+        this.$refs['specificationList-modal'].show()
+      },
+
       showHomePage : function(){
           window.location.href = "/isaHomePage";
       },

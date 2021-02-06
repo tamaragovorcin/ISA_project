@@ -14,4 +14,5 @@ public interface IConsultingService {
     Consulting update(Consulting loyaltyProgram);
     void delete(Consulting consulting);
     Consulting updateIgnored(Consulting loyaltyProgram);
+
 }

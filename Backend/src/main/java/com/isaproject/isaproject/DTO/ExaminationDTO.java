@@ -11,6 +11,7 @@ public class ExaminationDTO {
 
     private Patient patient;
 
+
     private Boolean cancelled;
 
     private Boolean showedUp;
@@ -23,6 +24,14 @@ public class ExaminationDTO {
 
 
     public ExaminationDTO() {
+    }
+
+    public ExaminationDTO(Patient patient, Boolean cancelled, Boolean showedUp, Integer examinationId, String information) {
+        this.patient = patient;
+        this.cancelled = cancelled;
+        this.showedUp = showedUp;
+        this.examinationId = examinationId;
+        this.information = information;
     }
 
     public Patient getPatient() {
