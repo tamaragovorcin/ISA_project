@@ -1,6 +1,4 @@
 package com.isaproject.isaproject.Model.Users;
-
-
 import com.fasterxml.jackson.annotation.*;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
@@ -8,7 +6,6 @@ import com.isaproject.isaproject.Model.Examinations.Examination;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
 import com.isaproject.isaproject.Model.HelpModel.*;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -47,6 +44,7 @@ public class Patient extends PersonUser{
 
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(name = "patients_subscriptions", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
     private Set<Pharmacy> subscribedToPharmacies = new HashSet<Pharmacy>();

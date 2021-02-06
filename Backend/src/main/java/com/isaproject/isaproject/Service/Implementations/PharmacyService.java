@@ -20,7 +20,7 @@ public class PharmacyService implements IPharmacyService {
 
     @Override
     public Pharmacy findById(Integer id) {
-        return pharmacyRepository.getOne(id);
+        return pharmacyRepository.findById(id).get();
     }
 
     @Override
