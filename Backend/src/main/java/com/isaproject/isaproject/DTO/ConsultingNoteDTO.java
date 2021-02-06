@@ -1,8 +1,4 @@
 package com.isaproject.isaproject.DTO;
-
-import com.isaproject.isaproject.Model.Users.Patient;
-import com.isaproject.isaproject.Model.Users.Pharmacist;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -14,10 +10,7 @@ public class ConsultingNoteDTO {
     private LocalDate date;
     private LocalTime startTime;
 
-
-    public ConsultingNoteDTO() {
-
-    }
+    public ConsultingNoteDTO() {  }
 
     public ConsultingNoteDTO(Integer consultingId, Integer patientId, String namePatient, String surnamePatient, LocalDate date, LocalTime startTime) {
         this.consultingId = consultingId;

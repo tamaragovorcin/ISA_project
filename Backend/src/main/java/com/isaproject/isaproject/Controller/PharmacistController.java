@@ -78,6 +78,21 @@ public class PharmacistController {
             PharmacistFrontDTO pharmacyFrontDTO = new PharmacistFrontDTO(pharmacist.getName(),pharmacist.getSurname(),pharmacist.getMarkPharmacist(),pharmacist.getPharmacy().getPharmacyName());
             pharmacistFrontDTOS.add(pharmacyFrontDTO);
         }
+
+        return  ResponseEntity.ok(pharmacistFrontDTOS);
+    }
+    @PostMapping("/searchName")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
+    ResponseEntity<List<PharmacistFrontDTO>> getAllByName(@RequestBody PharmacistSearchDTO dto)
+    {
+        List<Pharmacist> pharmacists= pharmacistService.findByName(dto.getFirstName(),dto.getSurName());
+        List<PharmacistFrontDTO> pharmacistFrontDTOS = new ArrayList<>();
+        for (Pharmacist pharmacist: pharmacists) {
+            PharmacistFrontDTO pharmacyFrontDTO = new PharmacistFrontDTO(pharmacist.getName(),pharmacist.getSurname(),pharmacist.getMarkPharmacist(),pharmacist.getPharmacy().getPharmacyName());
+            pharmacistFrontDTOS.add(pharmacyFrontDTO);
+        }
+
+
         return  ResponseEntity.ok(pharmacistFrontDTOS);
     }
 
@@ -380,6 +395,7 @@ public class PharmacistController {
                 ResponseEntity.ok(cons);
     }
 
+
     @GetMapping("/myPatients")
     @PreAuthorize("hasRole('PHARMACIST')")
     ResponseEntity<Set<PatientForFrontDTO>> getOurPatients() {
@@ -396,4 +412,5 @@ public class PharmacistController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(persons);
     }
+
 }

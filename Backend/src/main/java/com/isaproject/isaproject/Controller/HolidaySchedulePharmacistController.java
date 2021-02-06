@@ -1,16 +1,10 @@
 package com.isaproject.isaproject.Controller;
 
-
 import com.isaproject.isaproject.DTO.HolidaySchedulePharmacistDTO;
-import com.isaproject.isaproject.DTO.HolidaySchedulePharmacistFrontDTO;
 import com.isaproject.isaproject.DTO.RefuseHolidayScheduleDTO;
-import com.isaproject.isaproject.Model.Medicine.Medication;
-import com.isaproject.isaproject.Model.Pharmacy.Actions;
 import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
-import com.isaproject.isaproject.Service.IServices.IHolidaySchedulePharmacistsService;
-import com.isaproject.isaproject.Service.Implementations.DermatologistService;
 import com.isaproject.isaproject.Service.Implementations.HolidaySchedulePharmacistService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/holidayPharmacist")
@@ -56,11 +47,9 @@ public class HolidaySchedulePharmacistController {
         if(pharmacistHolidayService.findById(id).getPharmacist().getPharmacy().getId() == pharmacyAdmin.getPharmacy().getId()) {
             HolidaySchedulePharmacist holidaySchedulePharmacist = pharmacistHolidayService.approve(id);
             pharmacistHolidayService.sendEmailApproved(id);
-            return     ResponseEntity.ok(holidaySchedulePharmacist);
-
+            return ResponseEntity.ok(holidaySchedulePharmacist);
         }
-
-              return   new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/refuse")
@@ -74,13 +63,8 @@ public class HolidaySchedulePharmacistController {
         if(pharmacistHolidayService.findById(dto.getRequestId()).getPharmacist().getPharmacy().getId() == pharmacyAdmin.getPharmacy().getId()) {
             HolidaySchedulePharmacist holidaySchedulePharmacist = pharmacistHolidayService.refuse(dto);
             pharmacistHolidayService.sendEmailRefused(dto);
-            return     ResponseEntity.ok(holidaySchedulePharmacist);
-
+            return ResponseEntity.ok(holidaySchedulePharmacist);
         }
-
-        return   new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
-
-
 }

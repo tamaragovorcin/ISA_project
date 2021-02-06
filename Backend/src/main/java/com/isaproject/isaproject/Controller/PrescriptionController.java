@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Controller;
 
 
+
 import com.isaproject.isaproject.DTO.ConsultingDTO;
 import com.isaproject.isaproject.DTO.Prescription2DTO;
 import com.isaproject.isaproject.DTO.PrescriptionDTO;
@@ -9,6 +10,11 @@ import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Examinations.Examination;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
 import com.isaproject.isaproject.Model.Users.Patient;
+
+import com.isaproject.isaproject.DTO.PrescriptionDTO;
+import com.isaproject.isaproject.DTO.PrescriptionSendDTO;
+import com.isaproject.isaproject.Model.Examinations.Consulting;
+
 import com.isaproject.isaproject.Service.Implementations.ConsultingService;
 import com.isaproject.isaproject.Service.Implementations.ExaminationService;
 import com.isaproject.isaproject.Service.Implementations.PatientService;

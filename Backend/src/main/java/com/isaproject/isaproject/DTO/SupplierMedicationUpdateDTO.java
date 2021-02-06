@@ -1,13 +1,10 @@
 package com.isaproject.isaproject.DTO;
 
-import com.isaproject.isaproject.Model.Medicine.SupplierMedications;
-
 public class SupplierMedicationUpdateDTO {
     private int medicationId;
     private int quantity;
 
-    public SupplierMedicationUpdateDTO() {
-    }
+    public SupplierMedicationUpdateDTO() {}
 
     public SupplierMedicationUpdateDTO(int medicationId, int quantity) {
         this.medicationId = medicationId;

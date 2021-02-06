@@ -1,15 +1,13 @@
 package com.isaproject.isaproject.DTO;
-
 import com.isaproject.isaproject.Model.Users.Pharmacist;
-
 import java.time.LocalDate;
 
 public class HolidaySchedulePharmacistDTO {
     private Pharmacist pharmacist;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String type;//HOLIDAY or ABSENCE
-    private String approved;//APPROVED or REFUSED or WAITING_FOR_RESPONSE
+    private String type;
+    private String approved;
 
     public HolidaySchedulePharmacistDTO(Pharmacist pharmacist, LocalDate startDate, LocalDate endDate, String type, String approved) {
         this.pharmacist = pharmacist;
@@ -18,9 +16,8 @@ public class HolidaySchedulePharmacistDTO {
         this.type = type;
         this.approved = approved;
     }
-    public HolidaySchedulePharmacistDTO() {
+    public HolidaySchedulePharmacistDTO() { }
 
-    }
     public String getApproved() {
         return approved;
     }

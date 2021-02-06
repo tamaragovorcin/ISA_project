@@ -16,8 +16,7 @@ public class MedicationSearchDTO {
 
     private SpecificationDTO specification;
 
-    public MedicationSearchDTO() {
-    }
+    public MedicationSearchDTO() {}
 
     public MedicationSearchDTO(int medicationId, String name, String form, String type, String issuanceRegime, double mark, long code, SpecificationDTO specification) {
         this.medicationId = medicationId;

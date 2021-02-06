@@ -40,6 +40,42 @@ public class DermatologistService implements IDermatologistService {
     }
 
     @Override
+    public List<Dermatologist> findByPharmacy(String name) {
+        List<Dermatologist> dermatologists = new ArrayList<>();
+        for(Dermatologist dermatologist : dermatologistRepository.findAll()){
+            for(Pharmacy pharmacy : dermatologist.getPharmacies()){
+                if(pharmacy.getPharmacyName().equals(name)){
+                    dermatologists.add(dermatologist);
+                }
+            }
+
+        }
+        return dermatologists;
+    }
+
+    @Override
+    public List<Dermatologist> findByMark(int markMin, int markMax) {
+        List<Dermatologist> dermatologists = new ArrayList<>();
+        for(Dermatologist dermatologist : dermatologistRepository.findAll()){
+            if(dermatologist.getMarkDermatologist() <= markMax && dermatologist.getMarkDermatologist() >= markMin){
+                dermatologists.add(dermatologist);
+            }
+        }
+        return dermatologists;
+    }
+
+    @Override
+    public List<Dermatologist> findByName(String name, String surname) {
+        List<Dermatologist> dermatologists = new ArrayList<>();
+        for(Dermatologist dermatologist : dermatologistRepository.findAll()){
+            if(dermatologist.getSurname().toLowerCase().contains(surname.toLowerCase()) && dermatologist.getName().toLowerCase().contains(name.toLowerCase())){
+                dermatologists.add(dermatologist);
+            }
+        }
+        return dermatologists;
+    }
+
+    @Override
     public List<Dermatologist> findAll() {
         return dermatologistRepository.findAll();
     }
@@ -115,7 +151,6 @@ public class DermatologistService implements IDermatologistService {
     public Boolean addPharmacy(DermaotlogistPharmacyDTO dto) {
         Pharmacy pharmacy = pharmacyService.findById(dto.getPharmacyId());
         Dermatologist dermatologist = dermatologistRepository.findById(dto.getDermatologistId()).get();
-        System.out.println("pogodiooooooooooooooooooooooooooooooooooooo" +pharmacy.getPharmacyName());
         try{
             dermatologist.getPharmacies().add(pharmacy);
             dermatologistRepository.save(dermatologist);

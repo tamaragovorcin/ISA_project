@@ -1,10 +1,5 @@
 package com.isaproject.isaproject.DTO;
-
-import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
-import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.Patient;
-import com.isaproject.isaproject.Model.Users.Pharmacist;
-
 
 public class ComplaintDTO {
 

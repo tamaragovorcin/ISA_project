@@ -1,22 +1,16 @@
 package com.isaproject.isaproject.Controller;
 
-
-
-import ch.qos.logback.core.net.SyslogOutputStream;
-
 import com.isaproject.isaproject.DTO.*;
-
 import com.isaproject.isaproject.DTO.AlergiesDTO;
 import com.isaproject.isaproject.DTO.AlergiesFrontDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
-import com.isaproject.isaproject.Model.Medicine.Medication;
-import com.isaproject.isaproject.Model.Medicine.Specification;
-import com.isaproject.isaproject.Model.Pharmacy.Actions;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
+
 import com.isaproject.isaproject.Service.Implementations.*;
+
 
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
@@ -28,17 +22,10 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
-
-import javax.swing.*;
-import javax.websocket.server.PathParam;
-
 import java.util.*;
 
 @RestController
@@ -80,11 +67,8 @@ public class PatientController {
         else
         {
             Patient patient = patientService.save(person);
-
             ConfirmationToken confirmationToken = new ConfirmationToken(patient);
-
             confirmationTokenRepository.save(confirmationToken);
-
             SimpleMailMessage mail = new SimpleMailMessage();
             mail.setTo(person.getEmail());
             mail.setSubject("Complete Registration!");
@@ -111,7 +95,6 @@ public class PatientController {
         } else {
             return "The link is invalid or broken!!";
         }
-
     }
 
     @GetMapping("/{id}")
@@ -205,10 +188,8 @@ public class PatientController {
                 ResponseEntity.ok(patient);
     }
 
-
     @PostMapping("/addAlergies")
     public ResponseEntity<PatientsMedicationAlergy> addAlergies(@RequestBody AlergiesDTO al) {
-
 
         List<PatientsMedicationAlergy> alergy = new ArrayList<PatientsMedicationAlergy>();
         alergy = alergiesService.findAll();
@@ -221,10 +202,8 @@ public class PatientController {
         return patientsMedicationAlergy == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patientsMedicationAlergy);
+    }
 
-
-
-}
     @GetMapping("/getAlergies/{id}")
     public ResponseEntity<List<AlergiesFrontDTO>> getAlergies(@PathVariable Integer id) {
         List<PatientsMedicationAlergy> alergies = alergiesService.findAll();
@@ -236,8 +215,6 @@ public class PatientController {
                 alergiesFrontDTO.setId(patientsMedicationAlergy.getId());
                 alergiesFrontDTO.setPatient_id(patientsMedicationAlergy.getPatient().getId());
                 alergiesFrontDTO.setName(patientsMedicationAlergy.getMedication().getName());
-
-
                 patientsAlergies.add(alergiesFrontDTO);
             }
         }
@@ -245,7 +222,6 @@ public class PatientController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patientsAlergies);
     }
-
 
     @GetMapping("/deleteAlergies/{id}")
     public void deleteAlergies(@PathVariable Integer id) {
@@ -255,11 +231,7 @@ public class PatientController {
                alergiesService.delete(patientsMedicationAlergy);
            }
        }
-
-
     }
-
-
 
     @GetMapping("/mySubscriptions")
     @PreAuthorize("hasRole('PATIENT')")

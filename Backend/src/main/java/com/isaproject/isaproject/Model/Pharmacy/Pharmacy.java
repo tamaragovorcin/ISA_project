@@ -1,6 +1,4 @@
 package com.isaproject.isaproject.Model.Pharmacy;
-
-import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -9,15 +7,8 @@ import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
-import com.isaproject.isaproject.Model.Medicine.Medication;
-import com.isaproject.isaproject.Model.Orders.Order;
-import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
 import com.isaproject.isaproject.Model.Schedule.WorkingHoursDermatologist;
-import com.isaproject.isaproject.Model.Schedule.WorkingHoursPharmacist;
 import com.isaproject.isaproject.Model.Users.*;
-import net.minidev.json.annotate.JsonIgnore;
-import com.isaproject.isaproject.Model.Users.*;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -96,7 +87,10 @@ public class Pharmacy implements Serializable{
 
     public Pharmacy() {}
 
-    public Pharmacy(Integer id, String pharmacyName, double mark, String description, double consultingPrice, Set<ExaminationSchedule> examinationSchedules, Set<MedicationReservation> medicationReservations, Set<Prescription> prescriptions, Address address, Set<Dermatologist> dermatologists, Set<Pharmacist> pharmacists, Set<Patient> subscribedPatients, Set<PharmacyAdmin> pharmacyAdmins, Set<Actions> actions, Set<WorkingHoursDermatologist> workingHoursDermatologists, Set<MedicationPrice> medicationPrices) {
+    public Pharmacy(Integer id, String pharmacyName, double mark, String description, double consultingPrice, Set<ExaminationSchedule> examinationSchedules,
+                    Set<MedicationReservation> medicationReservations, Set<Prescription> prescriptions, Address address, Set<Dermatologist> dermatologists,
+                    Set<Pharmacist> pharmacists, Set<Patient> subscribedPatients, Set<PharmacyAdmin> pharmacyAdmins, Set<Actions> actions,
+                    Set<WorkingHoursDermatologist> workingHoursDermatologists, Set<MedicationPrice> medicationPrices) {
         this.id = id;
         this.pharmacyName = pharmacyName;
         this.mark = mark;
@@ -112,6 +106,15 @@ public class Pharmacy implements Serializable{
         this.pharmacyAdmins = pharmacyAdmins;
         this.actions = actions;
         this.medicationPrices = medicationPrices;
+    }
+
+    public Pharmacy(Integer id, String pharmacyName, double mark, String description, double consultingPrice, Address address) {
+        this.id = id;
+        this.pharmacyName = pharmacyName;
+        this.mark = mark;
+        this.description = description;
+        this.consultingPrice = consultingPrice;
+        this.address = address;
     }
 
     public String getDescription() {

@@ -1,27 +1,15 @@
 package com.isaproject.isaproject.Controller;
-
-
 import com.isaproject.isaproject.DTO.HolidayScheduleDermatologistDTO;
-import com.isaproject.isaproject.DTO.HolidaySchedulePharmacistDTO;
 import com.isaproject.isaproject.DTO.HolidaySchedulePharmacistFrontDTO;
 import com.isaproject.isaproject.DTO.RefuseHolidayScheduleDTO;
 import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
-import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
-import com.isaproject.isaproject.Model.Users.PersonUser;
-import com.isaproject.isaproject.Model.Users.Pharmacist;
-import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
-import com.isaproject.isaproject.Model.Users.SystemAdmin;
 import com.isaproject.isaproject.Service.Implementations.HolidayScheduleDermatologistService;
-import com.isaproject.isaproject.Service.Implementations.HolidaySchedulePharmacistService;
 import com.isaproject.isaproject.Service.Implementations.SystemAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,9 +71,7 @@ public class HolidayScheduleDermatologistController {
             if(holidayScheduleDermatologist != null) {
                 return ResponseEntity.ok(holidayScheduleDermatologist);
             }
-
-
-        return   new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/refuse")
@@ -95,10 +81,8 @@ public class HolidayScheduleDermatologistController {
         try{
             HolidayScheduleDermatologist holidayScheduleDermatologist = dermatologistHolidayService.refuse(dto);
             dermatologistHolidayService.sendEmailRefused(dto);
-            return     ResponseEntity.ok(holidayScheduleDermatologist);
-
+            return ResponseEntity.ok(holidayScheduleDermatologist);
         }catch (Exception e) {
-
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

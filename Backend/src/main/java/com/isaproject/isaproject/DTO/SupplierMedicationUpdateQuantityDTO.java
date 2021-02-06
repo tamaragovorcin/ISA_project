@@ -4,8 +4,7 @@ public class SupplierMedicationUpdateQuantityDTO {
     private Integer medicationId;
     private int newQuantity;
 
-    public SupplierMedicationUpdateQuantityDTO() {
-    }
+    public SupplierMedicationUpdateQuantityDTO() { }
 
     public SupplierMedicationUpdateQuantityDTO(Integer medicationId, int newQuantity) {
         this.medicationId = medicationId;
