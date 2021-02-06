@@ -29,7 +29,7 @@ public class WorkingHoursController {
     PharmacistService pharmacistService;
 
     @PostMapping("/pharmacist")
-    //@PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addPharmacistWorkingHours(@RequestBody WorkingHoursPharmacistDTO userRequest) {
 
         WorkingHoursPharmacist workingHoursPharmacist = workingHoursPharmacistService.save(userRequest);

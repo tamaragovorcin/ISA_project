@@ -153,7 +153,7 @@
                                      
                                     </div>
                     <div class="modal-footer">
-                                       <button class="btn btn-secondary" block @click="addSchedule">Add</button>
+                                       <button class="btn btn-primary" block @click="addSchedule">Add</button>
 
                                         <button class="btn btn-secondary" block @click="hideModal">Close</button>
                    </div>
@@ -164,6 +164,34 @@
                     </div>
     
     </b-modal>
+
+        <div style="background: white; height: 60px; margin-top: 20px">
+          <span  style="float:right;margin:15px">
+            <div class="input-group mb-3">
+              <input type="text" v-model="pharmacistName" class="form-control" placeholder="Pharmacist name..." aria-label="Enter name..." aria-describedby="basic-addon2">
+              <input type="text" v-model="phrmacistSurname" class="form-control" placeholder="Pharmacist surname..." aria-label="Enter surname..." aria-describedby="basic-addon2">
+
+                 <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button"  v-on:click = "showByPharmacistName" >Search</button>
+                  </div>
+            </div>
+          </span>
+
+        
+         
+           <span  style="float:right;margin:15px">
+              <div class="input-group mb-3">
+                  <label>Average mark around:</label>
+                   <div class="input-group-append  align-self-center">
+                       <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose pharmacists mark" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+                              <b-dropdown-item v-for="item in this.marks"  v-on:click ="markIsSelected($event, item.mark)" v-bind:key="item.mark"> {{item.mark }}</b-dropdown-item>
+                        </b-dropdown> 
+                  </div>
+              </div>
+          </span>  
+        </div>
+
+
     <div style="height:25px"></div>
       <h3>Pharmacists in {{pharmacy.pharmacyName}}</h3>
 
@@ -175,6 +203,9 @@
       <th scope="col">Surname</th>
       <th scope="col">Email</th>
       <th scope="col">Phone Number</th>
+      <th scope="col">Mark</th>
+      <th scope="col">Define schedule</th>
+       <th scope="col">Remove from pharmacy</th>
     </tr>
   </thead>
   <tbody>
@@ -184,8 +215,9 @@
       <td>{{pharmacist.surname}}</td>
       <td>{{pharmacist.email}}</td>
       <td>{{pharmacist.phoneNumber}}</td>
-      <td><button  v-on:click ="remove($event, pharmacist)" class="btn btn-info">Remove</button></td>
+      <td>{{pharmacist.markPharmacist}}</td>
       <td><button  v-on:click ="defineSchedule($event, pharmacist)" class="btn btn-info">Define schedule</button></td>
+      <td><button  v-on:click ="remove($event, pharmacist)" class="btn btn-info">Remove</button></td>
     </tr>
   </tbody>
 </table>
@@ -231,7 +263,20 @@ export default {
         endTimeThursday : "",
         endTimeFriday : "",
         endTimeSaturday : "",
-        endTimeSunday : ""
+        endTimeSunday : "",
+         pharmacyName : "",
+        marks: [
+          { mark: "0-1" },
+          { mark: "1-2" },
+          { mark: "2-3" },
+          { mark: "3-5" },
+          { mark: "4-5" },
+      ],
+      choosenMark :0,
+      choosenPharmacy : {},
+      pharmacistName : "",
+      phrmacistSurname : "",
+      pharmacies : [],
     }
   },
 
@@ -253,8 +298,7 @@ export default {
                     }
                     }).then(response => {
                             console.log(response);
-                          
-                             
+                            alert(response.data);
                     }).catch(response => {
                             alert("NOT OK");
                             console.log(response);
@@ -292,14 +336,48 @@ export default {
                                 'Authorization': 'Bearer ' + token,
                         }})
                 .then(response => {
-                       alert("Successfully updated medication price.");
+                       alert("Successfully added schedule to pharmacist.");
+                       window.location.hred= "/pharmacyPharmacists";
                         console.log(response.data);
                 })
                 .catch(response => {
                        alert("Please try later.");
                         console.log(response);
                  });  
-    }
+    },
+      markIsSelected : function(event, mark) { 
+            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+            var marks = mark.split('-')
+            var MarkMin = parseInt(marks[0])
+            var MarkMax = parseInt(marks[1])
+            this.axios.get('pharmacyAdmin/pharmacist/searchMark/'+MarkMin+"/"+MarkMax,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                }}).then(response => {
+                     this.pharmacists= response.data;
+                }).catch(res => {
+                     alert("NOT OK");
+                    console.log(res);
+                });     
+     },
+      showByPharmacistName : function() {
+          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+
+          const data = {
+            firstName : this.pharmacistName,
+            surName : this.phrmacistSurname
+          }
+            this.axios.post('pharmacyAdmin/pharmacist/searchName',data,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+          .then(response => {
+                    this.pharmacists= response.data;
+            }).catch(res => {
+                        alert("There is no phatmacists with entered name.");
+                        console.log(res);
+                    });
+      },
 },
   mounted() {
        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);

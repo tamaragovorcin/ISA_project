@@ -2,6 +2,7 @@ package com.isaproject.isaproject.DTO;
 import java.time.LocalDate;
 
 public class MedicationPriceFrontDTO {
+    private Integer id;
     private String name;
     private Long code;
     private String manufacturer;
@@ -9,6 +10,15 @@ public class MedicationPriceFrontDTO {
     private String type;
     private double price;
     private LocalDate date;
+    private Integer quantity;
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 
     public MedicationPriceFrontDTO(String name, Long code, String manufacturer, String form, String type, double price, LocalDate date) {
         this.name = name;
@@ -18,6 +28,14 @@ public class MedicationPriceFrontDTO {
         this.type = type;
         this.price = price;
         this.date = date;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public MedicationPriceFrontDTO() { }

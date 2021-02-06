@@ -301,7 +301,8 @@
       <th scope="col">Surname</th>
       <th scope="col">Phone number</th>
       <th scope="col">Email</th>
-    </tr>
+      <th scope="col">Mark</th>
+  </tr>
   </thead>
   <tbody>
     <tr v-for="dermatologist in ourDermatologists" :key="dermatologist.id">
@@ -310,6 +311,7 @@
                                                     <td>{{dermatologist.surname}}</td>
                                                     <td>{{dermatologist.phoneNumber}}</td>
                                                     <td>{{dermatologist.email}}</td>
+                                                    <td>{{dermatologist.markDermatologist}}</td>
                                                     <td><button  v-on:click ="remove($event, dermatologist)" class="btn btn-info">Remove</button></td>
       <td><button  v-on:click ="defineSchedule($event, dermatologist)" class="btn btn-info">Define schedule</button></td>
                                                 </tr>

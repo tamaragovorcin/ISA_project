@@ -40,7 +40,7 @@ public class ExaminationSchedule {
 
 
     @Column(name = "duration", nullable = true)
-    private double duration;
+    private Long duration;
 
 
     @Column(name = "finished", nullable = true)
@@ -95,11 +95,11 @@ public class ExaminationSchedule {
         this.startTime = startTime;
     }
 
-    public double getDuration() {
+    public Long getDuration() {
         return duration;
     }
 
-    public void setDuration(double duration) {
+    public void setDuration(Long duration) {
         this.duration = duration;
     }
 

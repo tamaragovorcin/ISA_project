@@ -4,6 +4,7 @@ import com.isaproject.isaproject.DTO.ChoosenPharmacyDTO;
 import com.isaproject.isaproject.DTO.MedicationPriceDTO;
 import com.isaproject.isaproject.DTO.QRcodeInformationDTO;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
+import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
 import com.isaproject.isaproject.Model.Orders.Order;
@@ -13,6 +14,7 @@ import com.isaproject.isaproject.Service.IServices.IMedicationPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -22,6 +24,8 @@ public class MedicationPriceService implements IMedicationPriceService {
 
     @Autowired
     MedicationPriceRepository medicationPriceRepository;
+    @Autowired
+    MedicationReservationService medicationReservationService;
 
     @Override
     public MedicationPrice findById(Integer id) {
@@ -35,18 +39,26 @@ public class MedicationPriceService implements IMedicationPriceService {
 
     @Override
     public MedicationPrice save(MedicationPriceDTO medicationDTO) {
-        return null;
+        MedicationPrice medicationPrice1 = new MedicationPrice();
+        medicationPrice1.setMedication(medicationDTO.getMedication());
+        medicationPrice1.setQuantity(0);
+        medicationPrice1.setPrice(medicationDTO.getPrice());
+        medicationPrice1.setDate(medicationDTO.getDate());
+        medicationPrice1.setPharmacy(medicationDTO.getPharmacy());
+        return medicationPriceRepository.save(medicationPrice1);
+
     }
 
 
     public MedicationPrice updatePrice(MedicationPriceDTO medicationDTO) {
-        System.out.println("-----------------------------------------------------");
-        System.out.println("DOSAO DO SERVISA");
 
         MedicationPrice medicationPrice = findByMedicationID(medicationDTO.getMedication().getId());
-        medicationPrice.setPrice(medicationDTO.getPrice());
-        medicationPrice.setDate(medicationDTO.getDate());
-        return this.medicationPriceRepository.save(medicationPrice);
+        if(medicationDTO.getDate().isAfter(LocalDate.now())) {
+            medicationPrice.setPrice(medicationDTO.getPrice());
+            medicationPrice.setDate(medicationDTO.getDate());
+            return this.medicationPriceRepository.save(medicationPrice);
+        }
+        return null;
     }
     public MedicationPrice findByMedicationID(Integer id){
         for(MedicationPrice medicationPrice : medicationPriceRepository.findAll()){
@@ -110,7 +122,7 @@ public class MedicationPriceService implements IMedicationPriceService {
                         System.out.println("PROSAO IF-POSTOJI");
 
                         Integer quantity = medicationPrice.getQuantity();
-                        quantity = quantity + med.getQuantity();
+                        quantity +=  + med.getQuantity();
                         MedicationPrice medicationPrice1 = findByName(medicationPrice.getMedication().getName(),order.getPharmacyAdmin().getPharmacy());
                         medicationPrice1.setQuantity(quantity);
                         this.medicationPriceRepository.save(medicationPrice1);
@@ -123,8 +135,6 @@ public class MedicationPriceService implements IMedicationPriceService {
         }
     for(MedicationInOrder medication : order.getMedicationInOrders()){
         if(findByName(medication.getMedicine().getName(),order.getPharmacyAdmin().getPharmacy())== null){
-            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            System.out.println("NE POSTOJI");
             MedicationPrice medicationPrice1 = new MedicationPrice();
             medicationPrice1.setMedication(medication.getMedicine());
             medicationPrice1.setQuantity(medication.getQuantity());
@@ -141,6 +151,36 @@ public class MedicationPriceService implements IMedicationPriceService {
             }
         }
         return null;
+    }
+    public Boolean remove(MedicationPriceDTO dto) {
+
+        for (MedicationPrice medicationPrice : medicationPriceRepository.findAll()) {
+            if (medicationPrice.getMedication().getCode() == dto.getMedication().getCode() && medicationPrice.getMedication().getName().equals(dto.getMedication().getName())){
+                if( medicationPrice.getPharmacy().getId() == dto.getPharmacy().getId()) {
+                        if (!isMedicationReserved(dto)) {
+                            System.out.println("Prosao if");
+
+                            medicationPriceRepository.delete(medicationPrice);
+                            return true;
+                        }
+                    }
+            }
+        }
+        return false;
+    }
+
+    public Boolean isMedicationReserved(MedicationPriceDTO dto){
+        for(MedicationReservation medicationReservation : medicationReservationService.findAll()){
+            if(medicationReservation.getMedicine().getCode() == dto.getMedication().getCode() && medicationReservation.getMedicine().getName().equals(dto.getMedication().getName())
+            && medicationReservation.getPharmacy().getId() == dto.getPharmacy().getId() && !medicationReservation.getCollected()){
+                System.out.println("Rezervisan");
+
+                return true;
+            }
+        }
+        System.out.println("Slobodan");
+
+        return false;
     }
 
     public boolean updateMedicineQuantityEreceipt(ChoosenPharmacyDTO choosenPharmacy) {

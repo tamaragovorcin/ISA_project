@@ -27,7 +27,7 @@ public class WorkingHoursPharmacist {
 
 
     @OneToOne(cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "pharmacist_id", referencedColumnName = "id", nullable = true, unique = false)
+    @JoinColumn(name = "pharmacist_id", referencedColumnName = "id", nullable = true, unique = true)
     private Pharmacist pharmacist;
 
     @JsonBackReference(value="schedule-monday")

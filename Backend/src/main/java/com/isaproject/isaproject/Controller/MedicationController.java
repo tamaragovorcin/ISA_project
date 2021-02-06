@@ -12,7 +12,10 @@ import com.isaproject.isaproject.Model.Medicine.Specification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,19 +46,65 @@ public class MedicationController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medication);
     }
+    @PostMapping("/addToPharmacy")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<String> addInPharmacy(@RequestBody MedicationPriceDTO medicationPriceDTO)
+    {
+        if(medicationPriceDTO.getDate().isAfter(LocalDate.now())) {
+            MedicationPrice medicationPrice = medicationPriceService.save(medicationPriceDTO);
+            if (medicationPrice != null) {
+                return new ResponseEntity<>("Medication  is successfully added in pharmacy.", HttpStatus.CREATED);
+
+
+            }
+        }
+        return new ResponseEntity<>("Price expiry date has to be in future.", HttpStatus.CREATED);
+
+
+    }
     @PostMapping("/priceInPharmacy")
-    ResponseEntity<MedicationPrice> addToPharmacy(@RequestBody MedicationPriceDTO medicationPriceDTO)
+    ResponseEntity<String> addToPharmacy(@RequestBody MedicationPriceDTO medicationPriceDTO)
     {
         MedicationPrice medicationPrice = medicationPriceService.updatePrice(medicationPriceDTO);
-        return medicationPrice == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(medicationPrice);
+        if(medicationPrice != null)
+             return new ResponseEntity<>("Medication price is successfully updated.", HttpStatus.CREATED);
+        else
+             return new ResponseEntity<>("Date has to be in future.", HttpStatus.CREATED);
+    }
+
+    @PostMapping("/remove")
+    ResponseEntity<String> remove(@RequestBody MedicationPriceDTO medicationPriceDTO)
+    {
+        Boolean deleted = medicationPriceService.remove(medicationPriceDTO);
+
+        if(deleted){
+            return new ResponseEntity<>("Medication is removed from pharmacy.", HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<>("Medication can not be removed from pharmacy. It's been reserved.", HttpStatus.CREATED);
+
+        }
     }
 
     @GetMapping("")
     ResponseEntity<List<Medication>> getAll()
     {
         List<Medication> medications = medicationService.findAll();
+        return medications == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(medications);
+    }
+    @GetMapping("/notInPharmacy/{id}")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<List<Medication>> getMedication(@PathVariable Integer id)
+    {
+        List<Medication> medications = medicationService.findAll();
+        for(Medication med :  medicationService.findAll()){
+            for(MedicationPrice price : medicationPriceService.findByPharmacy(id)){
+                if(med.getId() == price.getMedication().getId()){
+                    medications.remove(med);
+                }
+            }
+        }
         return medications == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medications);
@@ -318,6 +367,7 @@ public class MedicationController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medicationsForFront);
     }
+
 
     @GetMapping("searchMark/{MarkMin}/{MarkMax}")
     ResponseEntity<List<MedicationSearchDTO>> getAllByType(@PathVariable int MarkMin,@PathVariable int MarkMax )

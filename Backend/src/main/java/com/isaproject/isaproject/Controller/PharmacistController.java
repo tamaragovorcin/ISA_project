@@ -134,8 +134,8 @@ public class PharmacistController {
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody Pharmacist pharmacist) {
         System.out.println(pharmacist.getName());
-        pharmacistService.delete(pharmacist);
-        return new ResponseEntity<>("Pharmacist is successfully removed!", HttpStatus.CREATED);
+        String answer = pharmacistService.delete(pharmacist);
+        return new ResponseEntity<>(answer, HttpStatus.CREATED);
     }
 
     @GetMapping("/account")
