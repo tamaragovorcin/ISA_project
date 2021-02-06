@@ -85,7 +85,7 @@ public class PharmacyAdminController {
                 ResponseEntity.ok(pharmacyAdmin.getPharmacy());
     }
     @GetMapping("/dermatologists")
-    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    //@PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<Set<Dermatologist>> getOurDermatologists()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
