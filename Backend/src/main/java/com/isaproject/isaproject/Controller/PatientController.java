@@ -4,15 +4,17 @@ import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.DTO.AlergiesDTO;
 import com.isaproject.isaproject.DTO.AlergiesFrontDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
+
+import com.isaproject.isaproject.Service.Implementations.*;
+
+
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
 import com.isaproject.isaproject.Repository.PatientRepository;
-import com.isaproject.isaproject.Service.Implementations.AlergiesService;
-import com.isaproject.isaproject.Service.Implementations.PatientService;
-import com.isaproject.isaproject.Service.Implementations.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,9 @@ public class PatientController {
     AlergiesService alergiesService;
     @Autowired
     PharmacyService pharmacyService;
+
+    @Autowired
+    ConsultingService consultingService;
 
     @Autowired
     PatientRepository patientRepository;
@@ -153,6 +158,25 @@ public class PatientController {
         return patient == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patient);
+    }
+
+    @GetMapping("history")
+    //@PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity <HashSet<ConsultingNoteDTO>> getByPatient(@PathVariable Integer id)
+    {
+        Consulting cons = consultingService.findById(id);
+        Integer idP = cons.getPatient().getId();
+
+        HashSet<ConsultingNoteDTO> newC = new HashSet<>();
+        for (Consulting c : consultingService.findAll()) {
+            if(c.getPatient().getId() == idP)
+                newC.add(new ConsultingNoteDTO(c.getId(), c.getPatient().getId(), c.getPatient().getName(), c.getPatient().getSurname(), c.getDate(), c.getStartTime()));
+
+        }
+
+        return newC == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(newC);
     }
 
     @PostMapping("/update")

@@ -80,6 +80,14 @@ public class ConsultingController {
 
 
         Consulting consulting = consultingService.save(consultingDTO);
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(consultingDTO.getPatient().getEmail());
+        mail.setSubject("Successfuly reserved pharmacist consultation!");
+        mail.setFrom(environment.getProperty("spring.mail.username"));
+        mail.setText("You have successfully reserved an appointment on : "
+                + consulting.getDate() + " at " + consulting.getStartTime() + ". Your doctor is " + consulting.getPharmacist().getName() + " " + consulting.getPharmacist().getSurname());
+
+        mailSender.send(mail);
         return consulting == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 new ResponseEntity<>("Consulting is successfully added!", HttpStatus.CREATED);

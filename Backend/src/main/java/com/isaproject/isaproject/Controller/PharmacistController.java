@@ -78,6 +78,7 @@ public class PharmacistController {
             PharmacistFrontDTO pharmacyFrontDTO = new PharmacistFrontDTO(pharmacist.getName(),pharmacist.getSurname(),pharmacist.getMarkPharmacist(),pharmacist.getPharmacy().getPharmacyName());
             pharmacistFrontDTOS.add(pharmacyFrontDTO);
         }
+
         return  ResponseEntity.ok(pharmacistFrontDTOS);
     }
     @PostMapping("/searchName")
@@ -91,8 +92,10 @@ public class PharmacistController {
             pharmacistFrontDTOS.add(pharmacyFrontDTO);
         }
 
+
         return  ResponseEntity.ok(pharmacistFrontDTOS);
     }
+
 
     @PostMapping("/update")
     @PreAuthorize("hasRole('PHARMACIST')")
@@ -391,4 +394,23 @@ public class PharmacistController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(cons);
     }
+
+
+    @GetMapping("/myPatients")
+    @PreAuthorize("hasRole('PHARMACIST')")
+    ResponseEntity<Set<PatientForFrontDTO>> getOurPatients() {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser) currentUser.getPrincipal();
+        Pharmacist pharmacist = pharmacistService.findById(user.getId());
+        HashSet<PatientForFrontDTO> persons = new HashSet<>();
+
+        for (Consulting c : consultingService.findAll()) {
+            if (c.getPharmacist().getId() == pharmacist.getId())
+                persons.add(new PatientForFrontDTO(c.getPatient().getId(),c.getPatient().getEmail(), c.getPatient().getName(), c.getPatient().getSurname(), c.getPatient().getPhoneNumber()));
+        }
+        return persons== null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(persons);
+    }
+
 }
