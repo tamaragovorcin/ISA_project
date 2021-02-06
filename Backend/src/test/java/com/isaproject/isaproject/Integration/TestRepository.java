@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PharmacyIdDTO;
+import com.isaproject.isaproject.DTO.PharmacyNameDTO;
+import com.isaproject.isaproject.Model.HelpModel.Complaint;
 import com.isaproject.isaproject.Model.HelpModel.LoyaltyProgram;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.*;
@@ -64,7 +66,7 @@ public class TestRepository {
         supplier.setAddress(address);
         supplier.setPhoneNumber("5623");
         supplier.setEnabled(true);
-        List<Authority> auth = new ArrayList<Authority>();
+        List<Authority> auth = new ArrayList<>();
         Authority authority = new Authority("ROLE_SUPPLIER");
         auth.add(authority);
         supplier.setAuthorities(auth);
@@ -150,11 +152,8 @@ public class TestRepository {
         entityManager.persist(systemAdmin);
         entityManager.persist(supplier);
         entityManager.persist(authority);
-
         pharmacyIdDTO = new PharmacyIdDTO(pharmacy.getId());
 
         entityManager.flush();
-
     }
-
 }

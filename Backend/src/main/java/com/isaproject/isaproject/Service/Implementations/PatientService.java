@@ -16,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -187,6 +189,7 @@ public class PatientService implements IPatientService {
         catch(Exception e) {return false;}
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public boolean informPatientAboutEreceipt(List<QRcodeInformationDTO> medications) {
         try {
             Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();

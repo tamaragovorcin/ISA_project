@@ -13,10 +13,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class ComplaintService implements IComplaintService {
     @Autowired
     ComplaintRepository complaintRepository;
@@ -43,6 +45,7 @@ public class ComplaintService implements IComplaintService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public Complaint save(ComplaintDTO complaintDTO) {
         Complaint complaint = new Complaint();
         complaint.setAnswered(complaintDTO.isAnswered());
@@ -63,6 +66,7 @@ public class ComplaintService implements IComplaintService {
         return complaintRepository.save(complaint);
     }
 
+  /*  @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Complaint sendAnswerToPatient(ComplaintReviewDTO complaintReviewDTO) {
         String email = complaintReviewDTO.getPatient().getEmail();
         SimpleMailMessage mail = new SimpleMailMessage();
@@ -75,6 +79,19 @@ public class ComplaintService implements IComplaintService {
         Complaint complaint = complaintRepository.findById(complaintReviewDTO.getId()).get();
         complaint.setAnswered(true);
         complaint.setAnswer(complaintReviewDTO.getAnswer());
+        return complaintRepository.save(complaint);
+    }
+    */
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public Complaint update(Complaint complaint) {
+        String email = complaint.getPatient().getEmail();
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setSubject("Complaint on " + complaint.getSubject() +"!");
+        mail.setFrom(environment.getProperty("spring.mail.username"));
+        mail.setText("Your complaint:  " + complaint.getMassage() + "\n\nAnswer:  " + complaint.getAnswer());
+        mailSender.send(mail);
+
         return complaintRepository.save(complaint);
     }
 }

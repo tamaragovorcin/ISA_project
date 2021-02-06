@@ -108,6 +108,8 @@ export default {
                 });
       },
       subrsribe : function(event, pharmacy){
+          console.log("/////")
+          console.log(pharmacy)
             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
             const pharmacyInfo = {
                 pharmacyId : pharmacy
@@ -168,6 +170,7 @@ export default {
             }).then(response => { 
                 this.pharmaciesSubscriptions=[];
                 this.pharmaciesSubscriptions=response.data;
+                console.log(this.pharmaciesSubscriptions)
             }).catch(res => {
                         alert("Please try again later.");
                         console.log(res);});
