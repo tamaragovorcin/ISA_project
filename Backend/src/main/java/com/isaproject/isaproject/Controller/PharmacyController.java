@@ -125,12 +125,30 @@ public class PharmacyController  {
         return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
     }
     @GetMapping("/all")
-    ResponseEntity<List<Pharmacy>> getAllPharmacies()
+    ResponseEntity<List<PharmacyFrontDTO>> getAllPharmacies()
     {
         List<Pharmacy> pharmacies = pharmacyService.findAll();
-        return pharmacies == null ?
+        List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
+
+        for(Pharmacy pharmacy: pharmacies){
+
+            PharmacyFrontDTO pharmacyFrontDTO = new PharmacyFrontDTO();
+            pharmacyFrontDTO.setId(pharmacy.getId());
+            pharmacyFrontDTO.setPharmacyName(pharmacy.getPharmacyName());
+            pharmacyFrontDTO.setStreet(pharmacy.getAddress().getStreet());
+            pharmacyFrontDTO.setNumber(pharmacy.getAddress().getNumber());
+            pharmacyFrontDTO.setCountry(pharmacy.getAddress().getCountry());
+            pharmacyFrontDTO.setMark(pharmacy.getMark());
+            pharmacyFrontDTO.setPostalCode(pharmacy.getAddress().getPostalCode());
+            pharmacyFrontDTO.setCity(pharmacy.getAddress().getTown());
+            pharmacyFrontDTOS.add(pharmacyFrontDTO);
+
+        }
+
+
+        return pharmacyFrontDTOS == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacies);
+                ResponseEntity.ok(pharmacyFrontDTOS);
     }
 
 
@@ -706,8 +724,7 @@ public class PharmacyController  {
         List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
 
         for (Pharmacy ph : pharmacies){
-            if(ph.getPharmacyName().equals(name)) {
-                System.out.println("Tu sammmm");
+            if(ph.getPharmacyName().contains(name)) {
                 PharmacyFrontDTO pf = new PharmacyFrontDTO();
                 pf.setId(ph.getId());
                 pf.setCountry(ph.getAddress().getCountry());
@@ -738,8 +755,7 @@ public class PharmacyController  {
         List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
 
         for (Pharmacy ph : pharmacies){
-            if(ph.getAddress().getTown().equals(city)) {
-                System.out.println("Tu sammmm");
+            if(ph.getAddress().getTown().contains(city)) {
                 PharmacyFrontDTO pf = new PharmacyFrontDTO();
                 pf.setId(ph.getId());
                 pf.setCountry(ph.getAddress().getCountry());

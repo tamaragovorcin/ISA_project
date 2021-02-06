@@ -3,21 +3,21 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-            <span style="float: left; margin: 15px;">
-                             
-
-                    <button class = "btn btn-link btn-lg" v-on:click = "showPharmacies">Pharmacies</button>
-
-                    <b class="tab"></b>     
-                   <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
-
-                    <b class="tab"></b>                
+              <span style="float: left; margin: 15px;">
+                               
+                    <a  class = "btn btn-link btn-lg" href= "/patientProfile">Home page</a>
+                    <a  class = "btn btn-link btn-lg" href= "/showPharmaciesPatient">Pharmacies</a>
+                    <a  class = "btn btn-link btn-lg" href= "/eRecipes">ERecipes</a>
+                    <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
+                    <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
+                     <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
+                    <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
+                         <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
                    
 
-   
+             
+                  
 
-                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "writeComplaint">Write complaint</button>
-                    <b class="tab"></b>   
             </span>
               <span  style="float:right;margin:15px">
                     
@@ -32,20 +32,14 @@
         <div style="background: lightgray; height: 60px;">
             
             <span style="float: left; margin: 15px;">
-                <b><button class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" v-on:click = "allPharmacies">Show all pharmacies</button></b>
-                     <b class="tab"></b>                
 
-                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">Make a new dermatologist appointment</button>
-
-                    <b class="tab"></b>  
-
-                      <strong class="tab"></strong>    
-                     <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "myDermatologistAppointments">My dermatologist appointments</button>
-        <strong class="tab"></strong> 
-
-                   <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allPharmacists">Pharmacist consultation</button>
-
-                    <b class="tab"></b>                
+                 <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/showPharmaciesPatient">Show all pharmacies</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/dermatologistAppointments">Make a new dermatologist appointmen</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/myDermatologistAppointments">My dermatologist appointments</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/PharmacistConsultation">Pharmacist consultation</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/myPharmacistsConsultation">My pharmacist consultations</a>
+ 
+                             
                    
             </span>
              
@@ -170,7 +164,7 @@
     <tr>
       <th scope="row"></th>
       <td>Address</td>
-      <td>{{dermatologistAppointment.postalCode}} {{dermatologistAppointment.country}}, {{dermatologistAppointment.street}} {{dermatologistAppointment.number}}</td>
+      <td>{{dermatologistAppointment.postalCode}} {{dermatologistAppointment.city}} {{dermatologistAppointment.country}}, {{dermatologistAppointment.street}} {{dermatologistAppointment.number}}</td>
 
     </tr>
     <tr>
@@ -209,7 +203,7 @@
     <tr>
       <th scope="row"></th>
       <td>Address</td>
-      <td>{{dermatologistAppointment.postalCode}} {{dermatologistAppointment.country}}, {{dermatologistAppointment.street}} {{dermatologistAppointment.number}}</td>
+      <td>{{dermatologistAppointment.postalCode}}  {{dermatologistAppointment.city}}  {{dermatologistAppointment.country}}, {{dermatologistAppointment.street}} {{dermatologistAppointment.number}}</td>
 
     </tr>
     <tr>
@@ -269,7 +263,9 @@ mounted() {
 },
 
   methods:{
-
+medicationReservation : function(){
+             window.location.href = "/medicationReservation";
+      },
     updateFiler : function(event, filter) {
         this.axios.get('/pharmacy/filterMark/'+filter)
           .then(response => {
@@ -284,14 +280,10 @@ mounted() {
                     })
 
       },
-      myDermatologistAppointments: function(){
-            window.location.href = "/myDermatologistAppointments";
-
-      },
+     
          searchName: function(pharmacyName){
            
              this.pharmacyName = pharmacyName
-               alert(this.pharmacyName)
       this.axios.get('/pharmacy/searchName/'+ this.pharmacyName)
           .then(response => {
               this.showTable = false;
@@ -309,7 +301,6 @@ mounted() {
       searchCity: function(pharmacyCity){
            
              this.pharmacyCity = pharmacyCity
-               alert(this.pharmacyCity)
       this.axios.get('/pharmacy/searchCity/'+ this.pharmacyCity)
           .then(response => {
               this.showTable = false;
@@ -323,15 +314,8 @@ mounted() {
               
           })
       },
-       allPharmacies: function(){
-        window.location.href = "/showPharmaciesPatient";
-      },
-      allDermatologists : function(){
-          window.location.href = "/dermatologistAppointments";
-      },
-      allPharmacists : function(){
-          window.location.href = "/PharmacistConsultation";
-      },
+       
+    
       showMyProfile: function(){
         window.location.href = "/myProfilePatient";
       },
@@ -366,11 +350,7 @@ mounted() {
       sendComplaint : function(){
  
         },
-       showPharmacies : function(){
-            window.location.href = "/showPharmaciesPatient";
-
-      },
-
+     
       from1to5: function(){
       this.axios.get('/pharmacy/from1to5')
           .then(response => {

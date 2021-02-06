@@ -26,7 +26,6 @@ import DermatologistUpdateProfile from '../views/dermatologist/DermatologistUpda
 import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vue'
 import Order from '../views/pharmacyAdmin/Order.vue'
 import PharmacyProfile from '../views/PharmacyProfile.vue'
-import MyProfile from '../views/patient/MyProfile.vue'
 import UpdateProfilePatient from '../views/patient/UpdateProfilePatient.vue'
 import MedicationReservation from '../views/patient/MedicationReservation.vue'
 import ShowPharmaciesPatient from '../views/patient/ShowPharmaciesPatient.vue'
@@ -208,13 +207,6 @@ const routes = [
       path: '/pharmacyProfile/:id',
       name: 'PharmacyProfile',
       component: PharmacyProfile
-    },
-    {
-
-
-      path: '/myProfilePatient',
-      name: 'MyProfile',
-      component: MyProfile
     },
     {
       path: '/updateProfilePatient',

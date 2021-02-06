@@ -111,7 +111,7 @@
                                                                         <td>{{term.startTime}}</td>
                                                                         <td>{{term.duration}}</td>
                                                                         <td>{{term.price}}</td>
-                                                                        <td><button class = "btn btn-info" @click = "schedule">Schedule</button></td>
+                                                                        <td><button class = "btn btn-info" v-click = "schedule(term)">Schedule</button></td>
                                                                     </tr>
                       
                       </tbody>
@@ -482,9 +482,25 @@ export default {
       handleFileUpload(){
         this.file = this.$refs.file.files[0];
       },
-      schedule : function(){
+      schedule  : function( term) {
+          this.term = term;
+          alert(this.term)
+          const examination = {
+              patient: this.patient,
+              cancelled : false,
+              showedUp: false,
+              examinationId: this.term.id,
+              information: null
 
-      }
+
+
+          }
+            this.axios.post('/pharmacy/addExamination', examination)
+
+
+    
+
+      },
    
 }
 }

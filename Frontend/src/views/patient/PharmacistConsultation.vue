@@ -5,22 +5,21 @@ ines (39 sloc)  1.61 KB
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-            <span style="float: left; margin: 15px;">
-                <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
-                   <strong class="tab"></strong>               
-
-                    <button class = "btn btn-link btn-lg" v-on:click = "showPharmacies">Pharmacies</button>
-
-                  <strong class="tab"></strong>     
-                   <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
-
-                  <strong class="tab"></strong>                   
+              <span style="float: left; margin: 15px;">
+                               
+                    <a  class = "btn btn-link btn-lg" href= "/patientProfile">Home page</a>
+                    <a  class = "btn btn-link btn-lg" href= "/showPharmaciesPatient">Pharmacies</a>
+                    <a  class = "btn btn-link btn-lg" href= "/eRecipes">ERecipes</a>
+                    <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
+                    <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
+                     <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
+                    <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
+                      <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
                    
 
-   
+             
+                  
 
-                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "writeComplaint">Write complaint</button>
-                    <strong class="tab"></strong>    
             </span>
               <span  style="float:right;margin:15px">
                     
@@ -35,19 +34,14 @@ ines (39 sloc)  1.61 KB
         <div style="background: lightgray; height: 60px;">
             
             <span style="float: left; margin: 15px;">
-                <strong><button class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" v-on:click = "allPharmacies">Show all pharmacies</button></strong>
-                        
 
-                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">Make a new dermatologist appointment</button>
-
-                        
-                     <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "myDermatologistAppointments">My dermatologist appointments</button>
-
+                 <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/showPharmaciesPatient">Show all pharmacies</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/dermatologistAppointments">Make a new dermatologist appointmen</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/myDermatologistAppointments">My dermatologist appointments</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/PharmacistConsultation">Pharmacist consultation</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/myPharmacistsConsultation">My pharmacist consultations</a>
+ 
                              
-                   <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allPharmacists">Pharmacist consultation</button>
-              
-                   <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "myPharmacistsConsultation">My pharmacist consultation</button>
-                     
                    
             </span>
              
@@ -93,6 +87,32 @@ ines (39 sloc)  1.61 KB
 
         <div id="customers" v-if="showTable" style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
 
+<template>
+              <div class="row">
+                
+              <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="marklowest">
+                   <label class="custom-control-label" for="defaultGroupExample1">Sort by pharmacy mark - lowest first</label>
+              </div>
+
+                    <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="markhighest">
+                   <label class="custom-control-label" for="defaultGroupExample2">Sort by pharmacy mark - highest first</label>
+
+                  </div>
+                  <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample3" name="groupOfDefaultRadios" v-on:click="pricelowest">
+                   <label class="custom-control-label" for="defaultGroupExample3">Sort by consultation price - lowest first</label>
+              </div>
+
+                    <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="pricehighest">
+                   <label class="custom-control-label" for="defaultGroupExample4">Sort by consultation price - highest first</label>
+
+                  </div>
+                
+              </div>
+             </template>
     <table id="table1" class="table">
                     <thead  class="thead-dark">
                         <tr style="font-weight: bold; ">
@@ -100,7 +120,7 @@ ines (39 sloc)  1.61 KB
                             <th style="width: 200px; height: 80px;" scope="col">Location</th>
 
                             <th style="width: 200px; height: 80px;" scope="col">Pharmacy Mark</th>
-                            <th style="width: 200px; height: 80px;" scope="col">Consultation mark</th>
+                            <th style="width: 200px; height: 80px;" scope="col">Consultation price</th>
                        
 
                         </tr>
@@ -111,7 +131,7 @@ ines (39 sloc)  1.61 KB
                             <td>{{pharmacy.pharmacyName}}</td>
                             <td>{{pharmacy.city}}</td>
                             <td>{{pharmacy.mark}}</td>
-                            <td></td>
+                            <td>{{pharmacy.price}}</td>
                         </tr>
                       
                     </tbody>
@@ -124,6 +144,22 @@ ines (39 sloc)  1.61 KB
 
          <div id="customers" v-if="showSecondTable" style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
 
+
+<template>
+              <div class="row">
+                
+              <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="marklowestpharmacist">
+                   <label class="custom-control-label" for="defaultGroupExample5">Sort by pharmacist mark - lowest first</label>
+              </div>
+
+                    <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample6" name="groupOfDefaultRadios" v-on:click="markhighestpharmacist">
+                   <label class="custom-control-label" for="defaultGroupExample6">Sort by pharmacist mark - highest first</label>
+
+                    </div>
+              </div>
+             </template>
     <table id="table2"  class="table">
                     <thead  class="thead-dark">
                         <tr style="font-weight: bold; ">
@@ -168,6 +204,7 @@ export default {
        showPharmacyComplaint : false,
        showPharmacistComplaint : false,
        showDermatologistComplaint : false,
+       patient: null,
        date: null,
        startTime: null,
         showTable: false,
@@ -177,6 +214,22 @@ export default {
     }
   },
 
+mounted() {
+ let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }})
+             .then(response => {
+                this.patient = response.data;
+                console.log(response.data);
+                  
+            
+         }).catch(res => {
+                       alert("NOT OK");
+                        console.log(res);
+                 });
+},
 
   methods:{
       myDermatologistAppointments: function(){
@@ -250,6 +303,8 @@ export default {
       },
 
       showAvailability: function (date, startTime) {
+                   let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+                  
           this.date = date;
           this.startTime = startTime;
 
@@ -259,9 +314,11 @@ export default {
 
            }
             console.log(datum)
-            this.axios.post('/consulting/getPharmacies',datum
+            this.axios.post('/consulting/getPharmacies',datum,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }}
                 ).then(response => {
-                    alert("Complaint is successfully sent!.");
                     this.pharmacies= response.data;
                     console.log(response);                
                 }).catch(res => {
@@ -275,6 +332,7 @@ export default {
             }, 
 
     goToBlabla: function (pharmacy) {
+                 let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
          this.pharmacy = pharmacy;
          const datum = {
                 date : this.date,
@@ -282,9 +340,13 @@ export default {
                 pharmacyId: pharmacy.id
 
            }
-   this.axios.post('/consulting/getPharmacists',datum
+   this.axios.post('/consulting/getPharmacists',datum,{ 
+       
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }}
                 ).then(response => {
-                    alert("Complaint is successfully sent!.");
+                  
                     this.pharmacists= response.data;
                   
                     console.log(response);                
@@ -300,7 +362,7 @@ export default {
             }, 
 
     reserve: function (pharmacist) {
-         
+                
          const datum = {
                 date : this.date,
                 time : this.startTime,
@@ -309,10 +371,14 @@ export default {
                 patient: this.patient
 
            }
-   this.axios.post('/consulting/reserveConsultation',datum
+
+  let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+   this.axios.post('/consulting/reserveConsultation',datum,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }}
                 ).then(response => {
-                    alert("Complaint is successfully sent!.");
-                   
+                    alert("Successfully reserved consultation!.");
                     console.log(response);                
                 }).catch(res => {
                        alert("Please try later.");
@@ -324,6 +390,157 @@ export default {
            this.showSecondTable = true;
               
             }, 
+
+              marklowest: function(){
+
+            
+
+            const datum = {
+                date : this.date,
+                time : this.startTime
+
+           }
+
+
+
+
+      this.axios.post('/consulting/marklowest', datum)
+          .then(response => {
+               console.log(response.data);
+              this.pharmacies = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+       markhighest: function(){
+           alert(this.date)
+           alert(this.startTime)
+            const datum = {
+                date : this.date,
+                time : this.startTime
+
+           }
+
+      this.axios.post('/consulting/markhighest', datum)
+          .then(response => {
+               console.log(response.data);
+              this.pharmacies = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+       pricelowest: function(){
+           
+            const datum = {
+                date : this.date,
+                time : this.startTime
+
+           }
+
+      this.axios.post('/consulting/pricelowest', datum)
+          .then(response => {
+               console.log(response.data);
+              this.pharmacies = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+       pricehighest: function(){
+           
+            const datum = {
+                date : this.date,
+                time : this.startTime
+
+           }
+
+      this.axios.post('/consulting/pricehighest', datum)
+          .then(response => {
+               console.log(response.data);
+              this.pharmacies = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+
+       marklowestpharmacist: function(){
+            const datum = {
+                date : this.date,
+                time : this.startTime,
+                pharmacyId: this.pharmacy.id
+
+           }
+
+      this.axios.post('/consulting/marklowestpharmacist', datum)
+          .then(response => {
+               console.log(response.data);
+              this.pharmacies = response.data;
+              this.showTable = false;
+           this.showSecondTable = false;
+            this.showSecondTable = true;
+
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+      },
+
+      
+       markhighestpharmacist: function(){
+           
+             const datum = {
+                date : this.date,
+                time : this.startTime,
+                pharmacyId: this.pharmacy.id
+
+           }
+
+      this.axios.post('/consulting/markhighestpharmacist', datum)
+          .then(response => {
+               console.log(response.data);
+              this.pharmacies = response.data;
+             this.showTable = false;
+           this.showSecondTable = false;
+            this.showSecondTable = true;
+
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
 }
 }
 </script>

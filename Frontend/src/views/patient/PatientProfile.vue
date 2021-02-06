@@ -7,21 +7,24 @@ ines (39 sloc)  1.61 KB
             
             <span style="float: left; margin: 15px;">
                                
+                    <a  class = "btn btn-link btn-lg" href= "/patientProfile">Home page</a>
                     <a  class = "btn btn-link btn-lg" href= "/showPharmaciesPatient">Pharmacies</a>
-                    <b class="tab"></b>     
-                    <a  class = "btn btn-link btn-lg" href= "/myProfilePatient">My profile</a>
-                    <b class="tab"></b>                
-                    <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
-                    <b class="tab"></b>   
-                    <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
-                    <b class="tab"></b>   
-
-
-                       <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "leaveAMark">Leave a mark</button>
-                    <strong class="tab"></strong>   
-
                     <a  class = "btn btn-link btn-lg" href= "/eRecipes">ERecipes</a>
-                    <b class="tab"></b> 
+                    <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
+                     <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "leaveAMark">Leave a mark</button>
+                   
+            
+                    <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
+               
+                    
+                    
+                     <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
+                    <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
+                         <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
+                   
+
+             
+                  
 
             </span>
               <span  style="float:right;margin:15px">
@@ -32,7 +35,24 @@ ines (39 sloc)  1.61 KB
                 </span>
 
         </div>
-
+  <div style="background-color:lightgray;  width: 100%; margin-top:30px;">
+        <div style="background-color:white;  margin: auto; width: 80%;padding: 30px;">
+            <h4 style="color: #0D184F"><b>POINTS</b></h4>
+             <h5 style="color: #0D184F">{{this.patient.points}}</h5>
+        </div>
+        <div style="background-color:white; margin: auto; width: 80%;padding: 30px;margin-top:30px;">
+            <b><h4 style="color: #0D184F"><b> CATEGORY</b></h4></b>
+             <h5 style="color: #0D184F">{{this.patient.loyaltyCategory}}</h5>
+        </div>
+        <div style="background-color:white; margin: auto; width: 80%; padding:30px;margin-top:30px;">
+            <b><h4 style="color: #0D184F"><b>BENEFITS</b></h4></b>
+             <h5 style="color: #0D184F">{{this.patient.discount}}</h5>
+        </div>
+         <div style="background-color:white; margin: auto; width: 80%; padding:30px;margin-top:30px;">
+            <strong><h4 style="color: #0D184F"><strong>PENALTIES</strong></h4></strong>
+             <h5 style="color: #0D184F">{{this.patient.penalties}}</h5>
+        </div>
+        </div>
 
        <div>
      <b-modal ref="my-modal" hide-footer scrollable title="Write complaint" size="lg" modal-class="b-modal">
@@ -658,6 +678,7 @@ export default {
                     })
 
             },
+             
 
 
   
@@ -665,6 +686,7 @@ export default {
 },
     mounted() {
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        
         this.axios.get('/patient/account',{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
