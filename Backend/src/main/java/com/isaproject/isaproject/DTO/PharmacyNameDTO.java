@@ -4,8 +4,7 @@ public class PharmacyNameDTO {
     private String pharmacyName;
     private int pharmacyId;
 
-    public PharmacyNameDTO() {
-    }
+    public PharmacyNameDTO() { }
 
     public PharmacyNameDTO(String pharmacyName, int pharmacyId) {
         this.pharmacyName = pharmacyName;

@@ -1,15 +1,10 @@
 package com.isaproject.isaproject.DTO;
-
-import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.Users.Patient;
-
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 
 public class ExaminationDTO {
 
     private Patient patient;
+
 
     private Boolean cancelled;
 
@@ -19,10 +14,14 @@ public class ExaminationDTO {
 
     private String information;
 
+    public ExaminationDTO() {  }
 
-
-
-    public ExaminationDTO() {
+    public ExaminationDTO(Patient patient, Boolean cancelled, Boolean showedUp, Integer examinationId, String information) {
+        this.patient = patient;
+        this.cancelled = cancelled;
+        this.showedUp = showedUp;
+        this.examinationId = examinationId;
+        this.information = information;
     }
 
     public Patient getPatient() {

@@ -1,10 +1,6 @@
 package com.isaproject.isaproject.DTO;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
-
-import javax.persistence.*;
 import java.time.LocalDate;
 
 public class MedicationPriceDTO {
@@ -21,8 +17,7 @@ public class MedicationPriceDTO {
         this.pharmacy = pharmacy;
     }
 
-    public MedicationPriceDTO() {
-    }
+    public MedicationPriceDTO() {}
 
     public Medication getMedication() {
         return medication;

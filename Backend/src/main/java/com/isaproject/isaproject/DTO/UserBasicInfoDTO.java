@@ -5,9 +5,7 @@ public class UserBasicInfoDTO {
     private String email;
     private Integer userId;
 
-
-    public UserBasicInfoDTO() {
-    }
+    public UserBasicInfoDTO() { }
 
     public UserBasicInfoDTO(String fullName, String email, Integer userId) {
         this.fullName = fullName;

@@ -1,8 +1,4 @@
 package com.isaproject.isaproject.DTO;
-
-import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
-import com.isaproject.isaproject.Model.Users.Dermatologist;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -31,8 +27,7 @@ public class FreeExaminationTermsDTO {
         this.price = price;
     }
 
-    public FreeExaminationTermsDTO() {
-    }
+    public FreeExaminationTermsDTO() { }
 
     public Integer getId() {
         return id;

@@ -16,9 +16,12 @@ import PharmacistHomePage from '../views/pharmacist/PharmacistHomePage.vue'
 import SchedulingConsulting from '../views/pharmacist/SchedulingConsulting.vue'
 import CreateRequestVacation from '../views/pharmacist/CreateRequestVacation.vue'
 import PharmacistUpdateProfile from '../views/pharmacist/PharmacistUpdateProfile.vue'
+import WorkingHoursPharmacist from '../views/pharmacist/WorkingHoursPharmacist.vue'
 import DermatologistHomePage from '../views/dermatologist/DermatologistHomePage.vue'
+import NoteAboutExamination from '../views/dermatologist/NoteAboutExamination.vue'
 import DermatologistProfile from '../views/dermatologist/DermatologistProfile.vue'
 import CreateRequestHoliday from '../views/dermatologist/CreateRequestHoliday.vue'
+import SchedulingExamination from '../views/dermatologist/SchedulingExamination.vue'
 import DermatologistUpdateProfile from '../views/dermatologist/DermatologistUpdateProfile.vue'
 import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vue'
 import Order from '../views/pharmacyAdmin/Order.vue'
@@ -70,6 +73,7 @@ import Pharmacists from '../views/home/Pharmacists.vue'
 import pharmacyProfilePatient from '../views/patient/pharmacyProfilePatient.vue'
 
 
+import Dermatologists from '../views/home/Dermatologists.vue'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -121,9 +125,19 @@ const routes = [
       component: PatientProfile
     },
     {
+      path: '/noteExamination',
+      name: 'NoteAboutExamination',
+      component: NoteAboutExamination
+    },
+    {
       path: '/pharmacistProfile',
       name: 'PharmacistProfile',
       component: PharmacistProfile
+    },
+    {
+      path: '/schedulingExamination',
+      name: 'SchedulingExamination',
+      component: SchedulingExamination
     },
     {
       path: '/pharmacistUpdateProfile',
@@ -154,6 +168,11 @@ const routes = [
       path: '/noteConsultig',
       name: 'NoteAboutConsulting',
       component: NoteAboutConsulting
+    },
+    {
+      path: '/workingHoursPharmacist',
+      name: 'WorkingHoursPharmacist',
+      component: WorkingHoursPharmacist
     },
     {
       path: '/createRequestVacation',
@@ -427,6 +446,12 @@ const routes = [
       path: '/pharmacyProfilePatient/:id',
       name: 'pharmacyProfilePatient',
       component: pharmacyProfilePatient
+      
+    },
+    {
+      path: '/dermatologists',
+      name: 'Dermatologists',
+      component: Dermatologists
     },
     
     

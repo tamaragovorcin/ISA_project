@@ -1,6 +1,5 @@
 package com.isaproject.isaproject.DTO;
 
-
 public class ComplaintReviewDTO {
     private Integer id;
     private PersonUserDTO patient;

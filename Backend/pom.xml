@@ -82,6 +82,10 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+		</dependency>
 		<!-- Reactor| Hot loading -->
 		<dependency>
 			<groupId>io.projectreactor</groupId>
@@ -153,6 +157,11 @@
             <artifactId>hibernate-core</artifactId>
             <version>5.4.23.Final</version>
         </dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 
     </dependencies>
 

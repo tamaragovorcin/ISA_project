@@ -1,15 +1,12 @@
 package com.isaproject.isaproject.Controller;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.isaproject.isaproject.Authentification.JwtAuthenticationRequest;
 import com.isaproject.isaproject.Authentification.TokenUtils;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
-import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Model.Users.UserTokenState;
 import com.isaproject.isaproject.Service.IServices.IPersonUserService;
@@ -27,8 +24,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-
-//Kontroler zaduzen za autentifikaciju korisnika
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
@@ -127,9 +122,6 @@ public class AuthenticationController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(userWithId);
     }
-
-
-
 
     static class PasswordChanger {
         public String oldPassword;

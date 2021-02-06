@@ -1,18 +1,11 @@
-
 package com.isaproject.isaproject.Controller;
-
 import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
-import com.isaproject.isaproject.Model.Examinations.Examination;
-import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
-import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Users.*;
-import com.isaproject.isaproject.Repository.MarkPharmacistRepository;
 import com.isaproject.isaproject.Service.Implementations.ConsultingService;
 import com.isaproject.isaproject.Service.Implementations.MarkPharmacistService;
 import com.isaproject.isaproject.Service.Implementations.PharmacistService;
-import com.isaproject.isaproject.Service.Implementations.PharmacyAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -62,6 +54,7 @@ public class PharmacistController {
     }
 
     @GetMapping("/searchPharmacy/{name}")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
     ResponseEntity<List<PharmacistFrontDTO>> getByPharmacy(@PathVariable String name)
     {
         List<Pharmacist> pharmacists= pharmacistService.findByPharmacy(name);
@@ -76,6 +69,7 @@ public class PharmacistController {
     }
 
     @GetMapping("/searchMark/{MarkMin}/{MarkMax}")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
     ResponseEntity<List<PharmacistFrontDTO>> getAllByMark(@PathVariable int MarkMin,@PathVariable int MarkMax )
     {
         List<Pharmacist> pharmacists= pharmacistService.findByMark(MarkMin,MarkMax);
@@ -87,6 +81,21 @@ public class PharmacistController {
 
         return  ResponseEntity.ok(pharmacistFrontDTOS);
     }
+    @PostMapping("/searchName")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
+    ResponseEntity<List<PharmacistFrontDTO>> getAllByName(@RequestBody PharmacistSearchDTO dto)
+    {
+        List<Pharmacist> pharmacists= pharmacistService.findByName(dto.getFirstName(),dto.getSurName());
+        List<PharmacistFrontDTO> pharmacistFrontDTOS = new ArrayList<>();
+        for (Pharmacist pharmacist: pharmacists) {
+            PharmacistFrontDTO pharmacyFrontDTO = new PharmacistFrontDTO(pharmacist.getName(),pharmacist.getSurname(),pharmacist.getMarkPharmacist(),pharmacist.getPharmacy().getPharmacyName());
+            pharmacistFrontDTOS.add(pharmacyFrontDTO);
+        }
+
+
+        return  ResponseEntity.ok(pharmacistFrontDTOS);
+    }
+
 
     @PostMapping("/update")
     @PreAuthorize("hasRole('PHARMACIST')")
@@ -100,6 +109,7 @@ public class PharmacistController {
 
 
     @GetMapping("/front")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
     ResponseEntity<List<PharmacistFrontDTO>> getAllFront()
     {
         List<PharmacistFrontDTO> pharmacists = new ArrayList<PharmacistFrontDTO>();
@@ -112,22 +122,16 @@ public class PharmacistController {
     }
 
 
-
     public Boolean ableToRatePharmacist(Integer pharmacistId, Integer patientId) {
-
         Boolean able = false;
-
         List<Consulting> consultings = consultingService.findAll();
-
         for (Consulting consulting : consultings) {
             if (consulting.getPatient().getId() == patientId && consulting.getPharmacist().getId() == pharmacistId) {
                 able = true;
             }
         }
-
         return able;
     }
-
 
     @PostMapping("/delete")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
@@ -390,12 +394,23 @@ public class PharmacistController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(cons);
     }
+
+
+    @GetMapping("/myPatients")
+    @PreAuthorize("hasRole('PHARMACIST')")
+    ResponseEntity<Set<PatientForFrontDTO>> getOurPatients() {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser) currentUser.getPrincipal();
+        Pharmacist pharmacist = pharmacistService.findById(user.getId());
+        HashSet<PatientForFrontDTO> persons = new HashSet<>();
+
+        for (Consulting c : consultingService.findAll()) {
+            if (c.getPharmacist().getId() == pharmacist.getId())
+                persons.add(new PatientForFrontDTO(c.getPatient().getId(),c.getPatient().getEmail(), c.getPatient().getName(), c.getPatient().getSurname(), c.getPatient().getPhoneNumber()));
+        }
+        return persons== null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(persons);
+    }
+
 }
-
-
-
-
-
-
-
-

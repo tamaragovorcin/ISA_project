@@ -74,6 +74,8 @@ public class ConsultingService implements IConsultingService {
 
     }
 
+
+
     public Boolean checkIfPatientHasConsulting(Integer pharmacyId) {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();

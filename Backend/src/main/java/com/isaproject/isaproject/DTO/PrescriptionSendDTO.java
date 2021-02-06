@@ -1,7 +1,5 @@
 package com.isaproject.isaproject.DTO;
-
 import com.isaproject.isaproject.Model.Medicine.Medication;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,7 +9,6 @@ public class PrescriptionSendDTO {
     private double durationOfTherapy;
 
     public PrescriptionSendDTO() {}
-
 
     public Integer getConsultingId() {
         return consultingId;

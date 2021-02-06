@@ -1,9 +1,4 @@
 package com.isaproject.isaproject.DTO;
-
-import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
-import com.isaproject.isaproject.Model.Users.Dermatologist;
-
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -23,9 +18,7 @@ public class ExaminationScheduleDTO {
 
     private double price;
 
-    public ExaminationScheduleDTO() {
-    }
-
+    public ExaminationScheduleDTO() { }
 
     public ExaminationScheduleDTO(Integer dermatologist, Integer pharmacy, LocalDate date, LocalTime startTime, double duration, Boolean finished, double price) {
         this.dermatologist = dermatologist;

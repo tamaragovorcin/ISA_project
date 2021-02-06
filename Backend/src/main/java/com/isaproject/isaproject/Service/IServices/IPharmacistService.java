@@ -13,6 +13,7 @@ public interface IPharmacistService {
     Pharmacist findByEmail(String email);
     List<Pharmacist> findByPharmacy(String name);
     List<Pharmacist> findByMark(int markMin, int markMax);
+    List<Pharmacist> findByName(String name, String surname);
     List<Pharmacist> findAll ();
     Pharmacist save(PharmacistDTO userRequest);
     void delete(Pharmacist admin);

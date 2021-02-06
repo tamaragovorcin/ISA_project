@@ -1,8 +1,5 @@
 package com.isaproject.isaproject.DTO;
-
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
-
-import java.time.LocalDate;
 import java.util.Date;
 
 public class ActionsDTO {

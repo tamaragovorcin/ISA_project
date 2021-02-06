@@ -19,7 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-
 @Configuration
 // Ukljucivanje podrske za anotacije "@Pre*" i "@Post*" koje ce aktivirati autorizacione provere za svaki pristup metodi
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -93,7 +92,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/pharmacy/pharmacists/{id}") .permitAll()
 
                 .antMatchers("/api/consulting/add") .permitAll()
-
+                .antMatchers("/api/dermatologist/examination") .permitAll()
                 .antMatchers("/api/pharmacy/medication/{id}") .permitAll()
                 .antMatchers("/api/pharmacy/freeExaminationTerms/{id}") .permitAll()
                 .antMatchers("/api/medication/priceInPharmacy") .permitAll()
@@ -107,7 +106,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
                 .antMatchers("/api/patient/penals") .permitAll()
-                .antMatchers("/api/prescription/add") .permitAll()
+               //.antMatchers("/api/prescription/add") .permitAll()
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
                 .cors().and()
@@ -156,8 +155,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //  web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacyAdmin/medication");
 
         web.ignoring().antMatchers(HttpMethod.GET, "/api/patient/penals");
-
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/prescription/add");
+        web.ignoring().antMatchers(HttpMethod.GET, "/api/dermatologist/examination");
+        //web.ignoring().antMatchers(HttpMethod.POST, "/api/prescription/add");
 
 
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html",

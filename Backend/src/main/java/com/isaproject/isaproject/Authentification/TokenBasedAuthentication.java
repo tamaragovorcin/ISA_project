@@ -38,5 +38,4 @@ public class TokenBasedAuthentication extends AbstractAuthenticationToken {
     public UserDetails getPrincipal() {
         return principle;
     }
-
 }

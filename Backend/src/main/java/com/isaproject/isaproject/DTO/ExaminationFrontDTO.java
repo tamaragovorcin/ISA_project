@@ -1,13 +1,4 @@
 package com.isaproject.isaproject.DTO;
-
-
-
-import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
-import com.isaproject.isaproject.Model.Users.Patient;
-
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -37,7 +28,23 @@ public class ExaminationFrontDTO {
 
 
 
+
+
+
     public ExaminationFrontDTO() {
+    }
+
+    public ExaminationFrontDTO(Integer patientId, Integer id, String dermatologistFirst, String dermatologistLast, String pharmacy, LocalDate date, LocalTime startTime, double duration, double price, Boolean finished) {
+        this.patientId = patientId;
+        this.id = id;
+        this.dermatologistFirst = dermatologistFirst;
+        DermatologistLast = dermatologistLast;
+        this.pharmacy = pharmacy;
+        this.date = date;
+        this.startTime = startTime;
+        this.duration = duration;
+        this.price = price;
+        this.finished = finished;
     }
 
     public Integer getPatientId() {
