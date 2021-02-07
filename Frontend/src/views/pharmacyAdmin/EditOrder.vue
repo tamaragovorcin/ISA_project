@@ -47,99 +47,8 @@
 
         </div>
              
-                     <h3 style="margin:25px;color:#0D184F;font-weight:bold;">All tenders in your pharmacy:</h3>
-                     <div class="row">
-            <b-button class = "btn btn-warning btn-lg" style ="margin-top:25px;" @click="showModal">+ Announce new tender</b-button>
-            </div>
-                     <button class = "btn btn-info btn-lg" style="margin-right:20px;" v-on:click = "showActive">Show active tenders</button>
-                    <button class = "btn btn-info btn-lg" style="margin-right:20px;" v-on:click = "showFinised">Show finished tenders</button>
-               
-    <b-modal ref="my-modal" hide-footer scrollable title="Fill order form" size="lg" modal-class="b-modal">
-                    <div modal-class="modal-dialog" role="document">
-                    <div class="modal-content" style="background-color:whitesmoke">
-                            <div class="modal-header">
-                                <h3 class="modal-title" id="exampleModalLabel">Medicing ordering</h3>
-                
-                            </div>
-                            <div class="modal-body">
-                                <div  class="container5">
-
-                                        <div  style="margin-top:30px">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <label >Medication:</label>
-                                                </div>
-                                                <div class="col">
-                                                                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication"
-                                        class = "btn btn-link btn-lg" style="float:left; width=200px;">
-                                            <b-dropdown-item v-for="medicine in this.medications"  v-on:click = "dermatologistIsSelected($event, medicine)" v-bind:key="medicine.id"> 
-                                            {{ medicine.name }}<div style="width:20px"></div>{{medicine.type }}
-                                            </b-dropdown-item>
-                                    </b-dropdown> 
-
-                                                </div>
-
-
-                                            </div>
-                                            <div class="row">
-
-                                                <div class="col">
-                                                    <label>Quantity:</label>
-                                                </div>
-                                                <div class="col">
-                                                    <input type="number" v-model="quantity" placeholder="Enter quantity..">
-                                                </div>
-
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                </div>
-                                                <div class="col">
-                                                    <button class="btn btn-secondary" style="margin-left:3px" v-on:click="addNewMedicine">&nbsp;&nbsp;+&nbsp;&nbsp;</button>
-                                                </div>
-                                            </div>
-                                            <hr v-if="showTable" />
-
-
-
-
-
-                                        </div>
-                                        <div class="row">
-                                            <table v-if="showTable" class="table table-striped table-dark">
-                                                <thead>
-                                                <th>Medicine name</th>
-                                                <th>Quantity</th>
-                                                </thead>
-                                                <tr v-for="med in medicationQuantityList" :key="med.id">
-                                                    <td>{{med.medicine.name}}</td>
-                                                    <td>{{med.quantity}}</td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <hr />
-                                        <div class="row">
-                                            <div class="col">
-                                                <label for="name">Closing date:</label>
-                                            </div>
-                                            <div class="col">
-                                                <input type="date" v-model="endDate" />
-                                            </div>
-                                        </div>
-                    
-
-                                </div>
-
-
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                        <button class="btn btn-primary" @click="shareOrder">Share order</button>
-                    </div>
-                    </div>
-                </div>
-    
-    </b-modal>
+                     <h3 style="margin:25px;color:#0D184F;font-weight:bold;">Active tenders:</h3>
+                 
 
  <b-modal ref="edit-modal" hide-footer scrollable title="Edit order" size="lg" modal-class="b-modal">
                     <div modal-class="modal-dialog" role="document">
@@ -233,7 +142,6 @@
 
        <div>
        <h3 style="margin:25px;color:#0D184F;font-weight:bold;" v-if="active">Active tenders(waiting for offers):</h3>
-      <h3 style="margin:25px;color:#0D184F;font-weight:bold;" v-if="finished">Finished tenders:</h3>
 
         <div class="row" style = "background-color:whitesmoke; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
                         <div class=" form-group col"  v-for="order in orders" :key="order.id">
@@ -283,75 +191,11 @@
                            
                         </div>
                         <hr/>
-                         <div v-if="active" class="row justify-content-center">
-                           <div class="modal-footer">
-                            <button class="btn btn-primary" @click="showEditForm">Edit</button>
-
-                            <button class="btn btn-primary" @click="viewOffers">View offers</button>
-                        </div>
-                            
-                        </div>
-                        <hr/>
-                       
-
-                    </div>
-                        
-            </div>
-
-
-       <div v-if="showOffers && active" class="row" style = "background-color:whitesmoke; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-                        <div class=" form-group col"  v-for="offer in offers" :key="offer.id">
-                                   <h4 style="color: #0D184F;margin:20px">Choose offer:</h4>
-
-                            <button class="btn btn-secondary" v-on:click="viewConcreteOffer($event, offer)">Offer {{offer.id}}</button>
-                        </div>
-                    </div>
-
-    <div v-if="showConcreteOffer && active" style = "background-color:white; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-                   
-                    <hr/>
-                                                       <h4 style="color: #0D184F;margin:20px">Offer from {{supplierName}}&nbsp; {{supplierSurName}}</h4>
-
-                    <hr/>
-                    <div >
-                        <div class="row">
-                            <div class=" form-group col">
-                                <label >Supplier name</label>
-                            </div>
-                            <div class=" form-group col">
-                                <label >Supplier surname</label>
-                            </div>
-                            
-                            <div class=" form-group col">          
-                                <label >Summary price</label>
-                            </div>
-                            <div class=" form-group col">          
-                                <label >Date of delievery</label>
-                            </div>
-                        </div>
-                        
-                         <div class="row">
-                                    <div class=" form-group col">
-                                          <label >{{supplierName}}</label>
-
-                                    </div>
-                                    <div class=" form-group col">
-                                          <label >{{supplierSurName}}</label>
-
-                                    </div>
-                                    <div class=" form-group col">
-                                        <label >{{choosenOffer.summaryPrice}}</label>
-                                    </div>
-                                    <div class=" form-group col">
-                                        <label >{{choosenOffer.dateOfDelivery}}</label>
-                                    </div>
-                                     
-                             </div>
-                      
-                        <hr/>
                          <div class="row justify-content-center">
                            <div class="modal-footer">
-                            <button class="btn btn-primary" @click="acceptOffer">Accept offer</button>
+                            <button class="btn btn-primary" @click="showEditForm">Edit</button>
+                           <button class="btn btn-primary" @click="removeOrder">Remove</button>
+
                         </div>
                             
                         </div>
@@ -361,10 +205,10 @@
                     </div>
                         
             </div>
-            </div>
+
            
       
-            
+   </div>         
        
 
     </div>
@@ -516,83 +360,12 @@ export default {
             this.choosenTender = order;
            
       },
-       viewConcreteOffer :function (event, offer) {
-            this.showConcreteOffer = true;
-            this.choosenOffer = offer;
-             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-        this.axios.get('/offer/data/'+this.choosenOffer.id,{ 
-                         headers: {
-                                'Authorization': 'Bearer ' + token,
-                }}).then(response => {
-                  this.offerData = response.data;
-                  this.supplierName = this.offerData.supplierName;
-                  this.supplierSurName = this.offerData.supplierSurName;
-                    console.log(response)
-                }).catch(res => {
-                       alert("Please try later.");
-                        console.log(res);
-                });
-                this.showOffers = true;
-
-           
-      },
-      addNewMedicine : function(){
-               this.showTable = true;
-                const medicineWithQuantity = {
-                    medicine: this.selectedMedication,
-                    quantity: this.quantity,
-                };
-                this.medicationQuantityList.push(medicineWithQuantity)
-                this.medicationQuantityListEdit.push(medicineWithQuantity)
-
-      },
        addNewMedicineEdit : function(){
                 const medicineWithQuantityEdit = {
                     medicine: this.selectedMedicationEdit,
                     quantity: this.quantityEdit,
                 };
                 this.medicationQuantityListEdit.push(medicineWithQuantityEdit)
-      },
-      shareOrder : function(){
-          const order = {
-                    medicationsInOrderDTO: this.medicationQuantityList,
-                    date: this.endDate,
-                    pharmacyAdmin : this.admin,
-                    status : "CREATED"
-                };
-            console.log(order);
-             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-            this.axios.post('/order/add',order,{ 
-                         headers: {
-                                'Authorization': 'Bearer ' + token,
-                        }})
-                .then(response => {
-                       alert(response.data);
-                       this.medicationQuantityList = [];
-                       this.selectedMedication = {};
-                       console.log(response.data);
-                       this.$refs['my-modal'].hide()
-                       window.location.href = "/order";
-                })
-                .catch(response => {
-                       alert("Please try later.");
-                        console.log(response);
-                 });    
-      },
-    
-      viewOffers : function(){
-        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-        this.axios.get('/offer/'+this.choosenTender.id,{ 
-                         headers: {
-                                'Authorization': 'Bearer ' + token,
-                }}).then(response => {
-                  this.offers = response.data;
-                    console.log(response)
-                }).catch(res => {
-                       alert("Please try later.");
-                        console.log(res);
-                });
-                this.showOffers = true;
       },
        editOrder : function(){
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
@@ -614,61 +387,22 @@ export default {
                         console.log(response);
                  });    
       },
-      acceptOffer : function(){
-     let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-
-        this.axios.get('/offer/accept/'+this.choosenOffer.id,{ 
+    removeOrder : function(){
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        
+            this.axios.get('/order/remove/'+this.choosenTender.id,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
-                }}).then(response => {
-                    alert(response.data)
-                    window.location.href= "/order";
-                    console.log(response)
-                }).catch(res => {
+                        }})
+                .then(response => {
+                       alert(response.data);
+                       window.location.href = "/editOrder";
+                })
+                .catch(response => {
                        alert("Please try later.");
-                        console.log(res);
-                });
-      },
-      showActive : function(){
-            this.active = true;
-            this.finished = false;
-          this.showConcreteOffer = false;
-          this.showConcreteTender = false;
-        this.showOffers = false;
-
-           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-           this.axios.get('/pharmacyAdmin/activeOrders',{ 
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                    }
-                    }).then(response => {
-                            this.orders = response.data;
-                    }).catch(res => {
-                            alert("NOT OK");
-                            console.log(res);
-                    });
-          
-      },
-      showFinised :function(){
-          this.finished = true;
-          this.active = false;
-          this.showConcreteOffer = false;
-          this.showConcreteTender = false;
-          this.showOffers = false;
-          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-           this.axios.get('/pharmacyAdmin/finishedOrders',{ 
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                    }
-                    }).then(response => {
-                            this.orders = response.data;
-                    }).catch(res => {
-                            alert("NOT OK");
-                            console.log(res);
-                    });
-
-      }
-      
+                        console.log(response);
+                 });  
+    }
    
    
   }

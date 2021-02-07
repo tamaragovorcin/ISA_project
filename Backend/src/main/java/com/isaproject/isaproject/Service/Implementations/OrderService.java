@@ -1,7 +1,6 @@
 package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.MedicationsInOrderDTO;
-import com.isaproject.isaproject.DTO.OfferUpdateDTO;
 import com.isaproject.isaproject.DTO.OrderDTO;
 import com.isaproject.isaproject.DTO.OrderUpdateDTO;
 import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
@@ -21,6 +20,8 @@ public class OrderService implements IOrderService {
     OrderRepository orderRepository;
     @Autowired
     MedicationInOrderRepository medicationInOrderRepository;
+    @Autowired
+    OfferService offerService;
 
     @Override
     public Order findById(Integer id) {
@@ -50,8 +51,14 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public void delete(Order order) {
-
+    public Boolean delete(Order order) {
+        for(Offer offer : offerService.findAll()){
+            if(offer.getOrder().getId() == order.getId()){
+                return  false;
+            }
+        }
+        orderRepository.delete(order);
+        return true;
     }
     @Override
     public Order update(OrderUpdateDTO order) {

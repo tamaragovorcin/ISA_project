@@ -211,6 +211,22 @@ public class PharmacyController  {
                 ResponseEntity.ok(dermatologists);
 
     }
+    @GetMapping("/dermatologistsFront/{id}")
+    public ResponseEntity<List<DermatologistsFrontDTO>> getDermatologistsFront(@PathVariable Integer id) {
+        Set<Dermatologist> dermatologists = pharmacyService.findById(id).getDermatologists();
+        List<DermatologistsFrontDTO> dermatologistsFrontDTOS =  new ArrayList<>();
+        for(Dermatologist dermatologist : pharmacyService.findById(id).getDermatologists()){
+            DermatologistsFrontDTO dermatologistFrontDTO = new DermatologistsFrontDTO();
+            dermatologistFrontDTO.setFirstname(dermatologist.getName());
+            dermatologistFrontDTO.setSurname(dermatologist.getSurname());
+            dermatologistFrontDTO.setMarkDermatologist(dermatologist.getMarkDermatologist());
+            dermatologistsFrontDTOS.add(dermatologistFrontDTO);
+        }
+        return dermatologistsFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(dermatologistsFrontDTOS);
+
+    }
     @GetMapping("/pharmacists/{id}")
     public ResponseEntity<Set<Pharmacist>> getPharmacists(@PathVariable Integer id) {
         Set<Pharmacist> pharmacists = pharmacyService.findById(id).getPharmacists();

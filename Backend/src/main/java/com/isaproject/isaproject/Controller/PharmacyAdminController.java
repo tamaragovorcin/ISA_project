@@ -68,10 +68,8 @@ public class PharmacyAdminController {
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<PharmacyAdmin> update(@RequestBody PharmacyAdminDTO person)
     {
-        PharmacyAdmin per = pharmacyAdminService.findByEmail(person.getEmail());
-        Integer id = per.getId();
-        pharmacyAdminService.delete(per);
-        PharmacyAdmin patient = pharmacyAdminService.save(person);
+
+        PharmacyAdmin patient = pharmacyAdminService.update(person);
         return patient == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patient);

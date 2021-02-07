@@ -71,6 +71,7 @@ import DermatologistMedicationSearch from '../views/dermatologist/DermatologistM
 import HolidayRequestsDermatologists from '../views/systemAdmin/HolidayRequestsDermatologists.vue'
 import Pharmacists from '../views/home/Pharmacists.vue'
 import pharmacyProfilePatient from '../views/patient/pharmacyProfilePatient.vue'
+import EditOrder from '../views/pharmacyAdmin/EditOrder.vue'
 
 
 import Dermatologists from '../views/home/Dermatologists.vue'
@@ -450,6 +451,11 @@ const routes = [
       path: '/examinationTerms',
       name: 'ExaminationTerms',
       component: ExaminationTerms
+    },
+    {
+      path: '/editOrder',
+      name: 'EditOrder',
+      component: EditOrder
     },
     
     
