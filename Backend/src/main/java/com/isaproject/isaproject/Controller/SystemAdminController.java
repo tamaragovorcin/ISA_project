@@ -20,13 +20,27 @@ public class SystemAdminController {
     SystemAdminService systemAdminService;
 
     @PostMapping("/register")
-    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+   // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PersonUserDTO userRequest) {
 
+      /*  Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser userLogged = (PersonUser)currentUser.getPrincipal();
+        SystemAdmin systemAdmin = systemAdminService.findById(userLogged.getId());
+        if(!systemAdmin.getMainAdmin()) {
+            throw new IllegalArgumentException("Only main system admin can register new system admin!");
+        }
+*/
         PersonUser existUser = systemAdminService.findByEmail(userRequest.getEmail());
         if (existUser != null) {
             throw new ResourceConflictException(userRequest.getEmail(), "Email already exists");
         }
+        if(userRequest.getPassword().isEmpty() || userRequest.getRewritePassword().isEmpty()) {
+            throw new IllegalArgumentException("Please fill all the required fields!");
+        }
+        if(!userRequest.getPassword().equals(userRequest.getRewritePassword())) {
+            throw new IllegalArgumentException("Please make sure your password and rewrite password match!");
+        }
+
         PersonUser user = systemAdminService.save(userRequest);
         return new ResponseEntity<>("System admin is successfully registred!", HttpStatus.CREATED);
     }

@@ -48,7 +48,7 @@ public class EPrescriptionController {
 
     @PostMapping("/file")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<List<QRcodeInformationDTO>> hello(@RequestParam("file") MultipartFile file) {
+    ResponseEntity<EPrescriptionFullInfoDTO> hello(@RequestParam("file") MultipartFile file) {
 
         if (!file.isEmpty()) {
             try {
@@ -59,18 +59,23 @@ public class EPrescriptionController {
                 String decodedText = decodeQRCode(new File("src/main/resources/qr/" + file.getOriginalFilename()));
                 System.out.println(decodedText);
                 if (decodedText == null) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    throw new IllegalArgumentException("Please upload correct QR code!");
                 } else {
                     List<QRcodeInformationDTO> medicationsInQRcode = getMedicationsInQRcode(decodedText);
-
-                    return medicationsInQRcode == null ?
+                    if(medicationsInQRcode==null) {
+                        throw new IllegalArgumentException("Please try later!");
+                    }
+                    List<PharmacyMedicationAvailabilityDTO> pharmacyAvailability = getAvailabilityInPharmacies(medicationsInQRcode);
+                    EPrescriptionFullInfoDTO ePrescriptionFullInfoDTO = new EPrescriptionFullInfoDTO(pharmacyAvailability,medicationsInQRcode);
+                    return pharmacyAvailability == null ?
                             new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                            ResponseEntity.ok(medicationsInQRcode);
+                            ResponseEntity.ok(ePrescriptionFullInfoDTO);
+
                 }
             } catch (IOException | NotFoundException e) {
-                new ResponseEntity<>(HttpStatus.NOT_FOUND);            }
+                throw new IllegalArgumentException("Please upload correct QR code!");}
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        throw new IllegalArgumentException("Please upload correct QR code!");
     }
     @PostMapping("/file/noAuthentication")
     ResponseEntity<List<QRcodeInformationDTO>> uploadFile(@RequestParam("file") MultipartFile file) {
@@ -98,16 +103,7 @@ public class EPrescriptionController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/availability")
-    @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<List<PharmacyMedicationAvailabilityDTO>> getAvailability(@RequestBody List<QRcodeInformationDTO> listMedications) {
 
-        List<PharmacyMedicationAvailabilityDTO> pharmacyAvailability = getAvailabilityInPharmacies(listMedications);
-
-        return pharmacyAvailability == null ?
-                            new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                            ResponseEntity.ok(pharmacyAvailability);
-    }
     @PostMapping("/availability/pharmacy")
     ResponseEntity<String> getAvailabilityInPharmacy(@RequestBody MedicineAvailabilityQRDTO listMedications) {
 

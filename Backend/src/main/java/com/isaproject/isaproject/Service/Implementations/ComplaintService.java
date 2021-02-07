@@ -1,12 +1,7 @@
 package com.isaproject.isaproject.Service.Implementations;
-
 import com.isaproject.isaproject.DTO.ComplaintDTO;
-import com.isaproject.isaproject.DTO.ComplaintReviewDTO;
 import com.isaproject.isaproject.Model.HelpModel.Complaint;
 import com.isaproject.isaproject.Repository.ComplaintRepository;
-import com.isaproject.isaproject.Repository.DermatologistRepository;
-import com.isaproject.isaproject.Repository.PharmacistRepository;
-import com.isaproject.isaproject.Repository.PharmacyRepository;
 import com.isaproject.isaproject.Service.IServices.IComplaintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -23,12 +18,11 @@ public class ComplaintService implements IComplaintService {
     @Autowired
     ComplaintRepository complaintRepository;
     @Autowired
-    DermatologistRepository dermatologistRepository;
+    DermatologistService dermatologistService;
     @Autowired
-    PharmacyRepository pharmacyRepository;
+    PharmacyService pharmacyService;
     @Autowired
-    PharmacistRepository pharmacistRepository;
-
+    PharmacistService pharmacistService;
     @Autowired
     JavaMailSenderImpl mailSender;
     @Autowired
@@ -55,13 +49,13 @@ public class ComplaintService implements IComplaintService {
         complaint.setPatient(complaintDTO.getPatient());
 
         if(complaintDTO.getDermatologist()==null) complaint.setDermatologist(null);
-        else complaint.setDermatologist(dermatologistRepository.findByEmail(complaintDTO.getDermatologist().getEmail()));
+        else complaint.setDermatologist(dermatologistService.findByEmail(complaintDTO.getDermatologist().getEmail()));
 
         if(complaintDTO.getPharmacist()==null) complaint.setPharmacist(null);
-        else complaint.setPharmacist(pharmacistRepository.findByEmail(complaintDTO.getPharmacist().getEmail()));
+        else complaint.setPharmacist(pharmacistService.findByEmail(complaintDTO.getPharmacist().getEmail()));
 
         if(complaintDTO.getPharmacyName()==null) complaint.setPharmacy(null);
-        else complaint.setPharmacy(pharmacyRepository.findById(complaintDTO.getPharmacyName().getPharmacyId()).get());
+        else complaint.setPharmacy(pharmacyService.findById(complaintDTO.getPharmacyName().getPharmacyId()));
 
         return complaintRepository.save(complaint);
     }

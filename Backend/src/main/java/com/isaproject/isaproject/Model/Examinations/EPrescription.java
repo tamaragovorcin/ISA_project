@@ -1,4 +1,5 @@
 package com.isaproject.isaproject.Model.Examinations;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isaproject.isaproject.Model.Medicine.MedicationEPrescription;
@@ -23,7 +24,8 @@ public class EPrescription {
     @Column(name = "code", nullable = false, unique = true)
     private UUID code;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference(value="eprescription-patient")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = false)
     private Patient patient;
 

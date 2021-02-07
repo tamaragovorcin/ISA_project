@@ -12,6 +12,7 @@ import com.isaproject.isaproject.Model.Medicine.Specification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class MedicationController {
 
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     ResponseEntity<Medication> register(@RequestBody MedicationDTO medicationDTO)
     {
         Medication medication = medicationService.save(medicationDTO);
@@ -53,6 +55,7 @@ public class MedicationController {
     }
 
     @GetMapping("")
+    //@PreAuthorize("anyRole('SYSTEM_ADMIN')")
     ResponseEntity<List<Medication>> getAll()
     {
         List<Medication> medications = medicationService.findAll();

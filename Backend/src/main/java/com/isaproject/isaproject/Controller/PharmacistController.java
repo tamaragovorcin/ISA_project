@@ -35,6 +35,12 @@ public class PharmacistController {
     @PostMapping("/register")
     //@PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacistDTO userRequest) {
+        if(userRequest.getPassword().isEmpty() || userRequest.getRewritePassword().isEmpty()) {
+            throw new IllegalArgumentException("Please fill all the required fields!");
+        }
+        if(!userRequest.getPassword().equals(userRequest.getRewritePassword())) {
+            throw new IllegalArgumentException("Please make sure your password and rewrite password match!");
+        }
         System.out.println(userRequest.getPharmacy().getPharmacyName());
 
         PersonUser existUser = pharmacistService.findByEmail(userRequest.getEmail());

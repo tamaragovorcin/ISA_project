@@ -5,20 +5,30 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class ConsultingDTO {
-    private Pharmacist pharmacist;
-    private Patient patient;
+    //private Pharmacist pharmacist;
+    //private Patient patient;
+    private Integer patient;
+    private Integer pharmacist;
     private LocalDate date;
     private LocalTime startTime;
     private double duration;
     private double price;
     private Boolean cancelled;
 
-    public void setPharmacist(Pharmacist pharmacist) {
-        this.pharmacist = pharmacist;
+    public Integer getPatient() {
+        return patient;
     }
 
-    public void setPatient(Patient patient) {
+    public void setPatient(Integer patient) {
         this.patient = patient;
+    }
+
+    public Integer getPharmacist() {
+        return pharmacist;
+    }
+
+    public void setPharmacist(Integer pharmacist) {
+        this.pharmacist = pharmacist;
     }
 
     public void setDate(LocalDate date) {
@@ -49,13 +59,6 @@ public class ConsultingDTO {
         this.information = information;
     }
 
-    public Pharmacist getPharmacist() {
-        return pharmacist;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
 
     public LocalDate getDate() {
         return date;
@@ -88,9 +91,9 @@ public class ConsultingDTO {
     private Boolean showedUp;
     private String information;
 
-    public ConsultingDTO(Pharmacist pharmacist, Patient patient, LocalDate date, LocalTime startTime, double duration, double price, Boolean cancelled, Boolean showedUp, String information) {
-        this.pharmacist = pharmacist;
+    public ConsultingDTO(Integer patient, Integer pharmacist, LocalDate date, LocalTime startTime, double duration, double price, Boolean cancelled, Boolean showedUp, String information) {
         this.patient = patient;
+        this.pharmacist = pharmacist;
         this.date = date;
         this.startTime = startTime;
         this.duration = duration;
@@ -99,5 +102,6 @@ public class ConsultingDTO {
         this.showedUp = showedUp;
         this.information = information;
     }
+
     public ConsultingDTO(){ }
 }

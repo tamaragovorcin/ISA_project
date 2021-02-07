@@ -165,26 +165,17 @@ export default {
             subject : "PHARMACY"
           }
           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-            this.axios.get('/pharmacy/checkForPharmacy/'+this.pharmacy.pharmacyId,{ 
-                         headers: {
-                                'Authorization': 'Bearer ' + token,
-                }}).then(response =>  {
-                    console.log(response.data)
-                     this.axios.post('/complaint/add',complaint,{ 
-                         headers: {
-                                'Authorization': 'Bearer ' + token,
-                        }}).then(response => {
-                            alert("Complaint is successfully sent!.");
-
-                            console.log(response);                
-                        }).catch(res => {
-                            alert("Please try later.");
-                                console.log(res);
-                        });                
+            
+          this.axios.post('/complaint/add',complaint,{ 
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                }}).then(response => {
+                    alert("Complaint is successfully sent!.");
+                    console.log(response);                
                 }).catch(res => {
-                       alert("You are not able to write complaint to this pharmacy!");
-                        console.log(res);
-                });
+                     alert(res.response.data.message);
+                 });                
+               
          
       },
       sendComplaintDermatologist : function() {
@@ -209,8 +200,8 @@ export default {
 
                     console.log(response);                
                 }).catch(res => {
-                       alert("Please try later.");
-                        console.log(res);
+                    alert(res.response.data.message);
+
                 });
       },
       sendComplaintPharmacist : function() {
@@ -234,8 +225,7 @@ export default {
 
                     console.log(response);                
                 }).catch(res => {
-                       alert("Please try later.");
-                        console.log(res);
+                     alert(res.response.data.message);
                 });
       },
      
@@ -261,7 +251,6 @@ export default {
              }
          }).then(response => {
                 this.patientInfo = response.data;
-                console.log(response.data);
          }).catch(res => {
                        alert("NOT OK");
                         console.log(res);

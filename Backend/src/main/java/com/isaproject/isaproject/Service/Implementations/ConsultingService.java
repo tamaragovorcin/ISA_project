@@ -4,6 +4,7 @@ import com.isaproject.isaproject.DTO.ConsultingDTO;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
 import com.isaproject.isaproject.Repository.ConsultingRepository;
 import com.isaproject.isaproject.Repository.PatientRepository;
 import com.isaproject.isaproject.Repository.PharmacistRepository;
@@ -22,6 +23,8 @@ public class ConsultingService implements IConsultingService {
     ConsultingRepository consultingRepository;
     @Autowired
     PatientRepository patientRepository;
+    @Autowired
+    PharmacistRepository pharmacistRepository;
     @Override
     public Consulting findById(Integer id) {
         return consultingRepository.findById(id).get();
@@ -34,11 +37,12 @@ public class ConsultingService implements IConsultingService {
 
     @Override
     public Consulting save(ConsultingDTO consultingDTO) {
-
+        Patient patient = patientRepository.findById(consultingDTO.getPatient()).get();
+        Pharmacist pharmacist = pharmacistRepository.findById(consultingDTO.getPharmacist()).get();
 
         Consulting consulting = new Consulting();
-        consulting.setPharmacist(consultingDTO.getPharmacist());
-        consulting.setPatient(consultingDTO.getPatient());
+        consulting.setPharmacist(pharmacist);
+        consulting.setPatient(patient);
         consulting.setDate(consultingDTO.getDate());
         consulting.setStartTime(consultingDTO.getStartTime());
         consulting.setDuration(consultingDTO.getDuration());
@@ -88,5 +92,24 @@ public class ConsultingService implements IConsultingService {
             }
         }
         return false;
+    }
+
+    public boolean canMakeComplaintPharmacist(Integer pharmacistId) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        Patient patient = patientRepository.findById(user.getId()).get();
+
+        Boolean able = false;
+
+        List<Consulting> consultings = findAll();
+
+        for(Consulting consulting: consultings){
+            if(consulting.getPharmacist().getId() == pharmacistId && consulting.getPatient().getId()== patient.getId()){
+                if(consulting.getShowedUp()) {
+                    able = true;
+                }
+            }
+        }
+        return able;
     }
 }

@@ -5,6 +5,7 @@ import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 
 import com.isaproject.isaproject.DTO.PharmacistDTO;
+import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
@@ -153,5 +154,4 @@ public class PharmacistService implements IPharmacistService {
         }
         return pharmacists;
     }
-
 }

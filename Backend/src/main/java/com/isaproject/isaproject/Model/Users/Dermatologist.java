@@ -1,15 +1,11 @@
 package com.isaproject.isaproject.Model.Users;
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
-import com.isaproject.isaproject.Model.Examinations.Prescription;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
-import com.isaproject.isaproject.Model.Schedule.WorkingHoursDermatologist;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;

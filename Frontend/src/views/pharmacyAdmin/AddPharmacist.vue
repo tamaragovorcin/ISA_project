@@ -138,6 +138,7 @@ export default {
             const userInfo ={
                 email : this.email,
                 password : this.password,
+                rewritePassword : this.repeatPassword,
                 firstname : this.name2,
                 surname : this.surname,
                 phonenumber : this.phoneNumber,
@@ -156,8 +157,7 @@ export default {
                         window.location.href = "/pharmacyPharmacists";
                 })
                 .catch(response => {
-                       alert("Please try later.");
-                        console.log(response);
+                    alert(response.response.data.message);
                  });    
       },
       logOut : function(){

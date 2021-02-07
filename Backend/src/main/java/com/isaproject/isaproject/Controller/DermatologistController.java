@@ -54,9 +54,15 @@ public class DermatologistController {
 
 
     @PostMapping("/register")
-    // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody DermatologistDTO userRequest) {
 
+        if(userRequest.getPassword().isEmpty() || userRequest.getRewritePassword().isEmpty()) {
+            throw new IllegalArgumentException("Please fill all the required fields!");
+        }
+        if(!userRequest.getPassword().equals(userRequest.getRewritePassword())) {
+            throw new IllegalArgumentException("Please make sure your password and rewrite password match!");
+        }
         PersonUser existUser = dermatologistService.findByEmail(userRequest.getEmail());
         if (existUser != null) {
             throw new ResourceConflictException(userRequest.getEmail(), "Email already exists");

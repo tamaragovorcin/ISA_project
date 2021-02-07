@@ -58,6 +58,13 @@ public class PatientController {
     @PostMapping("/register")
     public ResponseEntity<String> registerPatient(@RequestBody PersonUserDTO person) {
 
+        if(person.getPassword().isEmpty() || person.getRewritePassword().isEmpty()) {
+            throw new IllegalArgumentException("Please fill all the required fields!");
+        }
+        if(!person.getPassword().equals(person.getRewritePassword())) {
+            throw new IllegalArgumentException("Please make sure your password and rewrite password match!");
+        }
+
         Patient existingUser = patientService.findByEmail(person.getEmail());
 
         if(existingUser != null)
@@ -90,7 +97,7 @@ public class PatientController {
             user.setEnabled(true);
             patientRepository.save(user);
             RedirectView redirect = new RedirectView();
-            redirect.setUrl("http://localhost:8085/patientProfile");
+            redirect.setUrl("http://localhost:8085/login");
             return redirect;
         } else {
             return "The link is invalid or broken!!";
@@ -255,22 +262,32 @@ public class PatientController {
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> subsribe(@RequestBody PharmacyIdDTO pharmacyId)
     {
-
-        Pharmacy pharmacy =pharmacyService.findById(pharmacyId.getPharmacyId());
+        Pharmacy pharmacy;
+        try {
+            pharmacy= pharmacyService.findById(pharmacyId.getPharmacyId());
+        }
+        catch(Exception e) {
+            throw new IllegalArgumentException("This pharmacy does not exist.");
+        }
         return patientService.subsribeToPharmacy(pharmacy) == false ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
+                    new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                    ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
     }
 
     @PostMapping("/unsubscribeToPharmacy")
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> unsubsribe(@RequestBody PharmacyIdDTO pharmacyId)
     {
-        Pharmacy pharmacy =pharmacyService.findById(pharmacyId.getPharmacyId());
-
+        Pharmacy pharmacy;
+        try {
+            pharmacy= pharmacyService.findById(pharmacyId.getPharmacyId());
+        }
+        catch(Exception e) {
+            throw new IllegalArgumentException("This pharmacy does not exist.");
+        }
         return patientService.unsubsribeToPharmacy(pharmacy) == false ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
+                ResponseEntity.ok("Patient is now unsubscribed to pharmacy   " + pharmacy.getPharmacyName());
     }
 
 

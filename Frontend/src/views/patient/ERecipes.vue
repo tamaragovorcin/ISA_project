@@ -199,6 +199,8 @@ export default {
             let formData = new FormData();
 
             formData.append('file', this.file);
+            this.pharmacyList = [];
+             this.pharmacyListFilter=[];
 
             this.axios.post( '/erecipes/file', formData, {
                 headers: {
@@ -206,25 +208,14 @@ export default {
                      'Authorization': 'Bearer ' + token
                 }
               }). then(response => {
-                    this.medications = response.data;
-                    this.axios.post( '/erecipes/availability', this.medications,{
-                          headers: {
-                              'Authorization': 'Bearer ' + token
-                          }
-                        }). then(response => {
-                            this.pharmacyList = response.data;
-                            this.pharmacyListFilter=response.data;
-                            if(this.pharmacyList.length===0) {
-                                alert("There is no pharmacy that has all mediciations.")
-                            }
-                        }).catch(res => {
-                            alert("Please try again later!");
-                            console.log(res);
-                        });     
-
+                    this.pharmacyList = response.data.pharmacies;
+                    this.pharmacyListFilter=response.data.pharmacies;
+                    this.medications = response.data.medicationsInQRcode;
+                    if(this.pharmacyList.length===0) {
+                        alert("There is no pharmacy that has all mediciations.")
+                    }    
                 }).catch(res => {
-                     alert("Please upload correct QR code!");
-                    console.log(res);
+                    alert(res.response.data.message);
                 });     
       },
 
@@ -244,7 +235,7 @@ export default {
                               'Authorization': 'Bearer ' + token
                           }
                         }). then(function() {
-                            alert("Medications are successfully reserved in choosen pharmacy!");
+                            alert("Medications are successfully taken from choosen pharmacy!");
                         }).catch(res => {
                             alert("Please try again later!");
                             console.log(res);

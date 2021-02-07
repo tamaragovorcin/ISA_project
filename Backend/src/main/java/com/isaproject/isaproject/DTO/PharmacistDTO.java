@@ -9,6 +9,8 @@ public class PharmacistDTO {
 
     private String password;
 
+    private String rewritePassword;
+
     private String firstname;
 
     private String surname;
@@ -23,14 +25,25 @@ public class PharmacistDTO {
 
     public PharmacistDTO() {}
 
-    public PharmacistDTO(String email, String password, String firstname, String surname, String phonenumber, AddressDTO address, Pharmacy pharmacy) {
+    public PharmacistDTO(Integer id, String email, String password, String rewritePassword, String firstname, String surname, String phonenumber, AddressDTO address, Pharmacy pharmacy, double mark) {
+        this.id = id;
         this.email = email;
         this.password = password;
+        this.rewritePassword = rewritePassword;
         this.firstname = firstname;
         this.surname = surname;
         this.phonenumber = phonenumber;
         this.address = address;
         this.pharmacy = pharmacy;
+        this.mark = mark;
+    }
+
+    public String getRewritePassword() {
+        return rewritePassword;
+    }
+
+    public void setRewritePassword(String rewritePassword) {
+        this.rewritePassword = rewritePassword;
     }
 
     public double getMark() {

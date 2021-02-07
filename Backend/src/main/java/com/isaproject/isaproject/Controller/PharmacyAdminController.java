@@ -35,9 +35,14 @@ public class PharmacyAdminController {
     HolidaySchedulePharmacistService pharmacistHolidayService;
 
     @PostMapping("/register")
-   // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacyAdminDTO userRequest) {
-        System.out.println(userRequest.getPharmacy().getPharmacyName());
+        if(userRequest.getPassword().isEmpty() || userRequest.getRewritePassword().isEmpty()) {
+            throw new IllegalArgumentException("Please fill all the required fields!");
+        }
+        if(!userRequest.getPassword().equals(userRequest.getRewritePassword())) {
+            throw new IllegalArgumentException("Please make sure your password and rewrite password match!");
+        }
 
         PersonUser existUser = pharmacyAdminService.findByEmail(userRequest.getEmail());
         if (existUser != null) {

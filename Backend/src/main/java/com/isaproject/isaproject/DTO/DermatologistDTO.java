@@ -4,6 +4,7 @@ public class DermatologistDTO {
     private String email;
 
     private String password;
+    private String rewritePassword;
 
     private String firstname;
 
@@ -15,15 +16,23 @@ public class DermatologistDTO {
 
     private double markDermatologist;
 
-
-    public DermatologistDTO(String email, String password, String firstname, String surname, String phonenumber, AddressDTO address, double markDermatologist) {
+    public DermatologistDTO(String email, String password, String rewritePassword, String firstname, String surname, String phonenumber, AddressDTO address, double markDermatologist) {
         this.email = email;
         this.password = password;
+        this.rewritePassword = rewritePassword;
         this.firstname = firstname;
         this.surname = surname;
         this.phonenumber = phonenumber;
         this.address = address;
         this.markDermatologist = markDermatologist;
+    }
+
+    public String getRewritePassword() {
+        return rewritePassword;
+    }
+
+    public void setRewritePassword(String rewritePassword) {
+        this.rewritePassword = rewritePassword;
     }
 
     public DermatologistDTO() { }

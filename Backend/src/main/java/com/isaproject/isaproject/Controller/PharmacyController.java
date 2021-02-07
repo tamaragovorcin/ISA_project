@@ -66,14 +66,6 @@ public class PharmacyController {
     @Autowired
     PatientService patientService;
 
-    @PostMapping("/add")
-    ResponseEntity<Pharmacy> add(@RequestBody PharmacyDTO ph)
-    {
-        Pharmacy pharmacy = pharmacyService.save(ph);
-        return pharmacy == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacy);
-    }
     @PostMapping("/addActions")
     ResponseEntity<Actions> shareActions(@RequestBody ActionsDTO action)
     {
@@ -110,7 +102,7 @@ public class PharmacyController {
     }
 
     @PostMapping("/register")
-    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacyDTO pharmacyDTO) {
 
         Pharmacy existedPharmacy = pharmacyService.findByPharmacyName(pharmacyDTO.getPharmacyName());
@@ -768,14 +760,8 @@ public class PharmacyController {
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<String> checkPossibilityPharmacy(@PathVariable Integer pharmacyId)
     {
-        Boolean hasEreceipt = ePrescriptionService.checkEReceiptInPharmacy(pharmacyId);
-        Boolean hasConsulting = consultingService.checkIfPatientHasConsulting(pharmacyId);
-        Boolean hasExamination = examinationService.checkIfPatientHasExamination(pharmacyId);
-
-       // return (hasEreceipt == false && hasConsulting==false)?
-              //  new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-               return ResponseEntity.ok("Successfully");
+        return (pharmacyService.checkConnectionWithPharmacy(pharmacyId)==false) ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok("Successfully");
     }
-
-
 }

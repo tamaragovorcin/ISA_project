@@ -163,7 +163,7 @@ export default {
                             this.notallowSystemAdminRegistration = true;
                     }
                 }).catch(res => {
-                            alert("NOT OK");
+                       alert("Please log in again or try later.");
                                 console.log(res);
                         });
 
@@ -174,7 +174,7 @@ export default {
             }).then(response => {
                 this.loyaltyProgram = response.data;
             }).catch(res => {
-                        alert("Please try later");
+                       alert("Please log in again or try later.");
                         console.log(res);
                     });
 

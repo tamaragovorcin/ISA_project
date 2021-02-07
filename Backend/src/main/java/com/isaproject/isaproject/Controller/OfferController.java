@@ -75,45 +75,21 @@ public class OfferController {
                 ResponseEntity.ok(offer);
     }
 
-    @GetMapping("/checksQuantity/{orderId}")
-    @PreAuthorize("hasRole('SUPPLIER')")
-    ResponseEntity<Boolean> isAbleToMakeOffer(@PathVariable Integer orderId)
-    {
-        Set<MedicationInOrder> medicationInOrder = orderService.findById(orderId).getMedicationInOrders();
-        for(MedicationInOrder medication : medicationInOrder) {
-            if(doesSupplierHaveMedication(medication.getMedicine(), medication.getQuantity())) {}
-            else {
-                return ResponseEntity.ok(false);
-            }
-        }
-        return ResponseEntity.ok(true);
-    }
 
-
-    private boolean doesSupplierHaveMedication(Medication medication, int quantity) {
-        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        PersonUser user = (PersonUser)currentUser.getPrincipal();
-
-        Supplier supplier = supplierService.findById(user.getId());
-        Set<SupplierMedications> medicationsSupplier =supplier.getSupplierMedications();
-
-        for (SupplierMedications supplierMedication: medicationsSupplier) {
-            if(supplierMedication.getCode()==medication.getCode() && supplierMedication.getName().equals(medication.getName())) {
-                if(supplierMedication.getQuantity()>quantity) { return true;}
-            }
-        }
-        return false;
-    }
 
     @PostMapping("/update")
     @PreAuthorize("hasRole('SUPPLIER')")
     ResponseEntity<Offer> updateOffer(@RequestBody OfferUpdateDTO offerUpdateDto)
     {
-        Offer offer = offerService.update(offerUpdateDto);
-        return offer == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(offer);
+        if(offerService.offerCanBeUpdated(offerUpdateDto)) {
+            Offer offer = offerService.update(offerUpdateDto);
+            return offer == null ?
+                    new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                    ResponseEntity.ok(offer);
+        }
+        return null;
     }
+
     @GetMapping("")
     ResponseEntity<List<Offer>> getAll()
     {
@@ -249,7 +225,7 @@ public class OfferController {
         for (Offer offer: offers) {
             if(offer.getStatus().equals(offerStatus)) {
                 Order order = offer.getOrder();
-                if(order.getDate().isAfter(LocalDate.now()))
+                if(order.getDate().isAfter(LocalDate.now()) && !order.getStatus().equals("CLOSED"))
                 {
                     supplierOffersDto.add(new SupplierOffersInfoDTO(offer.getId(), order.getId(), offer.getDateOfDelivery(), offer.getSummaryPrice(),
                             order.getDate(), getMedicationsInOrder(order.getMedicationInOrders()), order.getPharmacyAdmin().getPharmacy().getPharmacyName(),true));
@@ -268,7 +244,7 @@ public class OfferController {
         Set<Offer> offers =  supplier.getOffer();
         for (Offer offer: offers) {
             Order order = offer.getOrder();
-            if(order.getDate().isAfter(LocalDate.now()))
+            if(order.getDate().isAfter(LocalDate.now()) && !order.getStatus().equals("CLOSED") && order.getDate().isAfter(LocalDate.now()))
             {
                 supplierOffersDto.add(new SupplierOffersInfoDTO(offer.getId(), order.getId(), offer.getDateOfDelivery(), offer.getSummaryPrice(),
                         order.getDate(), getMedicationsInOrder(order.getMedicationInOrders()), order.getPharmacyAdmin().getPharmacy().getPharmacyName(),true));
