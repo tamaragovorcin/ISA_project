@@ -36,10 +36,13 @@ public class ComplaintController {
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<Complaint> answer(@RequestBody ComplaintReviewDTO complaintReviewDTO)
     {
-        Complaint complaint = complaintService.sendAnswerToPatient(complaintReviewDTO);
-        return complaint == null ?
+        Complaint complaint = complaintService.findById(complaintReviewDTO.getId());
+        complaint.setAnswered(true);
+        complaint.setAnswer(complaint.getAnswer());
+        Complaint complaintUpdated = complaintService.update(complaint);
+        return complaintUpdated == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(complaint);
+                ResponseEntity.ok(complaintUpdated);
     }
 
     @GetMapping("all")

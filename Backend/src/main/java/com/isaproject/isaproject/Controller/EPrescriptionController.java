@@ -123,10 +123,12 @@ public class EPrescriptionController {
     @PostMapping("/choosePharmacy")
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<String> choosePharmacyForEReceipt(@RequestBody ChoosenPharmacyDTO choosenPharmacy) {
-        return medicationPriceService.updateMedicineQuantityEreceipt(choosenPharmacy) == false ||
+
+       /* return medicationPriceService.updateMedicineQuantityEreceipt(choosenPharmacy) == false ||
                 patientService.informPatientAboutEreceipt(choosenPharmacy.getMedications())==false ||
                 ePrescriptionService.save(choosenPharmacy)==null ?
-
+*/
+        return ePrescriptionService.proccedEReceipt(choosenPharmacy) ==null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok("Successfully updated!");
     }

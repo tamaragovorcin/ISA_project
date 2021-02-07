@@ -377,6 +377,7 @@ export default {
                     }
                     }).then(response => {
                             this.ourDermatologists = response.data;
+                            console.log(this.ourDermatologists);
                     }).catch(res => {
                             alert("NOT OK");
                             console.log(res);
@@ -580,7 +581,6 @@ body {
   font-size: 25px;
   color: #292b2c;
   text-align : left;
-  font-color : white;
 }
 .sidenav a:hover {
   color: darkgray;

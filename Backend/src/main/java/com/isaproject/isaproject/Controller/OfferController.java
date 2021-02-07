@@ -62,11 +62,15 @@ public class OfferController {
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('SUPPLIER')")
-    ResponseEntity<Offer> register(@RequestBody OfferDTO offerDTO)
+    ResponseEntity<Offer> addOffer(@RequestBody OfferDTO offerDTO)
     {
-        Offer offer = offerService.save(offerDTO);
-        Boolean quantitiesUpdated = supplierMedicationService.updateQuantities(offerDTO.getOrderId());
-        return (offer == null || quantitiesUpdated==false) ?
+
+       /* return (offer == null || quantitiesUpdated==false) ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(offer);*
+        */
+        Offer offer = offerService.proccedOffer(offerDTO);
+        return offer == null  ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(offer);
     }

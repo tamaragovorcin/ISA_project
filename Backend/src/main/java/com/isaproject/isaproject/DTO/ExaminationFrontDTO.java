@@ -24,7 +24,28 @@ public class ExaminationFrontDTO {
 
     private Boolean finished;
 
-    public ExaminationFrontDTO() { }
+
+
+
+
+
+
+
+    public ExaminationFrontDTO() {
+    }
+
+    public ExaminationFrontDTO(Integer patientId, Integer id, String dermatologistFirst, String dermatologistLast, String pharmacy, LocalDate date, LocalTime startTime, double duration, double price, Boolean finished) {
+        this.patientId = patientId;
+        this.id = id;
+        this.dermatologistFirst = dermatologistFirst;
+        DermatologistLast = dermatologistLast;
+        this.pharmacy = pharmacy;
+        this.date = date;
+        this.startTime = startTime;
+        this.duration = duration;
+        this.price = price;
+        this.finished = finished;
+    }
 
     public Integer getPatientId() {
         return patientId;
