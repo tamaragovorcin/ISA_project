@@ -2,11 +2,13 @@ package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.ActionsDTO;
 import com.isaproject.isaproject.Model.Pharmacy.Actions;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Repository.ActionsRepository;
 import com.isaproject.isaproject.Service.IServices.IActionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -28,8 +30,9 @@ public class ActionsService implements IActionsService {
 
     @Override
     public Actions save(ActionsDTO action) {
-        Actions actions =  new Actions(action.getPharmacy(),action.getDescription(),action.getExpiryDate());
+        Pharmacy pharmacy = pharmacyService.findById(action.getPharmacy());
+        Actions actions = new Actions(pharmacy, action.getDescription(), action.getExpiryDate());
         return actionsRepository.save(actions);
-
     }
+
 }

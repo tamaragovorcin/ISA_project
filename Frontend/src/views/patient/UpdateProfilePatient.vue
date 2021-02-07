@@ -3,9 +3,22 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-            <span style="float: left; margin: 15px;">
-                <button class = "btn btn-secondary btn-lg" style="float:left;margin-left:20px;" v-on:click = "previousUpdateProfile">Previous page</button>
+           <span style="float: left; margin: 15px;">
+                               
+                    <a  class = "btn btn-link btn-lg" href= "/patientProfile">Home page</a>
+                    <a  class = "btn btn-link btn-lg" href= "/showPharmaciesPatient">Pharmacies</a>
+                    <a  class = "btn btn-link btn-lg" href= "/eRecipes">ERecipes</a>
+                    <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
+                    <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
+               
+                     <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
+                     <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
+            
+                   
+
+             
                   
+
             </span>
               <span  style="float:right;margin:10px">
                     
@@ -23,11 +36,11 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Name:</label>
-                        <input type="text" id = "name" name = "name" class="form-control" v-model = "patient.name"  placeholder="Enter name">
+                        <input type="text" class="form-control" v-model = "patient.name"  placeholder="Enter name">
                         </div>
                         <div class="form-group col-md-6">
                         <label>Surname:</label>
-                        <input type="text" id = "surname" name = "surname" class="form-control" v-model = "patient.surname" placeholder="Enter surname">
+                        <input type="text"  class="form-control" v-model = "patient.surname" placeholder="Enter surname">
                         </div>
                     </div>
                     <div class="form-row">
@@ -38,33 +51,33 @@
                         </div>
                         <div class="form-group col-md-6">
                         <label>Phone number:</label>
-                        <input type="text" id = "phone"  name = "phone" class="form-control" v-model="patient.phoneNumber" placeholder="Enter phone number">
+                        <input type="text"  class="form-control" v-model="patient.phoneNumber" placeholder="Enter phone number">
                         </div>
                     </div>
                       <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Country:</label>
-                        <input type="text" id = "country" name = "country" class="form-control" v-model="patient.address.country" placeholder="Enter country">
+                        <input type="text"  class="form-control" v-model="patient.address.country" placeholder="Enter country">
                         </div>
                         <div class="form-group col-md-6">
                         <label>Town:</label>
-                        <input type="text" id = "town" name = "town" class="form-control" v-model="patient.address.town" placeholder="Enter town">
+                        <input type="text" class="form-control" v-model="patient.address.town" placeholder="Enter town">
                         </div>
                     </div>
                      <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Street:</label>
-                        <input type="text" id = "street" name = "street" class="form-control" v-model="patient.address.street" placeholder="Enter street">
+                        <input type="text"  class="form-control" v-model="patient.address.street" placeholder="Enter street">
                         </div>
                         <div class="form-group col-md-6">
                         <label>Number:</label>
-                        <input type="number" id = "number" name = "number" class="form-control" v-model="patient.address.number" placeholder="Enter number">
+                        <input type="number" class="form-control" v-model="patient.address.number" placeholder="Enter number">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Postal code:</label>
-                        <input type="text" id = "postalCode" name = "postalCode" class="form-control" v-model="patient.address.postalCode" placeholder="Enter postal code">
+                        <input type="text"  class="form-control" v-model="patient.address.postalCode" placeholder="Enter postal code">
                         </div>
 
                         
@@ -73,7 +86,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Password:</label>
-                        <input type="password" id = "password" name = "password" class="form-control" v-model="password" placeholder="Enter new password">
+                        <input type="password"  class="form-control" v-model="password" placeholder="Enter new password">
                         </div>
                         <div class="form-group col-md-6">
                         <label>Repeat password:</label>
@@ -87,7 +100,7 @@
                     <div class="form-row">
                           <div class="form-group col-md-6">
                                     <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication"
-                                        class = "btn btn-secondary dropdown-toggle" style=" width: 680px; float:left;margin-left:20px;">
+                                        class = "btn btn-secondary dropdown-toggle" style=" width: 750px; float:left;margin-left:20px;">
                                             <b-dropdown-item v-for="medicine in this.medications"  v-on:click = "addNewAlergie(medicine)" v-bind:key="medicine.id"> {{ medicine.name }}</b-dropdown-item>
                                     </b-dropdown> 
 
@@ -169,8 +182,10 @@ mounted() {
                 console.log(response.data);
                   this.axios.get('/patient/getAlergies/' + this.patient.id)
                         .then(response => {
+                           
                                 this.medicationQuantityList= response.data;
                             console.log(this.medicationQuantityList);
+                            
               
           })
 
@@ -201,9 +216,12 @@ mounted() {
           window.location.href = "/login";
       },
         remove : function(med){
-            alert(med)
+           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
 
-          this.axios.get('/patient/deleteAlergies/'+med.id)
+          this.axios.get('/patient/deleteAlergies/'+med.id, { 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
          
 
       },
@@ -218,7 +236,7 @@ mounted() {
                 this.medicine = medicine;
             
                  for(const a in this.medicationQuantityList){
-                     
+                     alert(this.medicationQuantityList[a].name)
                      if(this.medicationQuantityList[a] == (this.medicine)){
                             return;
                            
@@ -232,21 +250,21 @@ mounted() {
             },
 
        update : function(){
-         
+         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
            const ad = {
                    
-                    country: this.patient.country,
-                    town: this.patient.town,
-                    street: this.patient.street,
-                    number:this.patient.number,
-                    postalCode: this.patient.postalCode,
+                    country: this.patient.address.country,
+                    town: this.patient.address.town,
+                    street: this.patient.address.street,
+                    number:this.patient.address.number,
+                    postalCode: this.patient.address.postalCode,
                 };
             const p = {
                     id: this.patient.id,
                     email:this.patient.email,
                     name: this.patient.name,
                     surname : this.patient.surname,
-                    phone: this.patient.phone,
+                    phoneNumber: this.patient.phoneNumber,
                     address: ad,
                     password: this.patient.password
                 };
@@ -260,7 +278,10 @@ mounted() {
             }
 
 
-                this.axios.post('/patient/addAlergies',alergies)
+                this.axios.post('/patient/addAlergies',alergies, { 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
                     .then(res => {
                        
                         console.log(res);
@@ -274,8 +295,10 @@ mounted() {
 
 
             }
-              
-                this.axios.post('/patient/update',p)
+                this.axios.post('/patient/update',p, { 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
                     .then(res => {
                        
                         console.log(res);

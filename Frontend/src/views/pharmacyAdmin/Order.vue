@@ -403,7 +403,6 @@ export default {
         endDateEdit : "",
         quantityEdit : "",
         
-
     }
     },
      mounted() {
@@ -471,7 +470,6 @@ export default {
       },
       showEditForm(){
                   this.$refs['edit-modal'].show()
-
       },
       showModal() {
         this.$refs['my-modal'].show()
@@ -512,7 +510,6 @@ export default {
                         console.log(res);
                 });
                 this.showOffers = true;
-
            
       },
       addNewMedicine : function(){
@@ -523,7 +520,6 @@ export default {
                 };
                 this.medicationQuantityList.push(medicineWithQuantity)
                 this.medicationQuantityListEdit.push(medicineWithQuantity)
-
       },
        addNewMedicineEdit : function(){
                 const medicineWithQuantityEdit = {
@@ -615,7 +611,6 @@ export default {
 </script>
 
 <style>
-
 body {
   font-family: "Lato", sans-serif;
 }

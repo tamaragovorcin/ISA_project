@@ -143,8 +143,7 @@ export default {
                     postalCode : "",
                     country : ""
                 }
-    },
-    pharmacy : {}
+    }
     }
   },
   mounted() {
@@ -155,17 +154,6 @@ export default {
              }
          }).then(response => {
                this.admin=response.data;
-                this.axios.get('/pharmacyAdmin/myPharmacy',{ 
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                    }
-                    }).then(response => {
-                            this.pharmacy = response.data;
-                            console.log(this.pharmacyAdminPharmacy);
-                    }).catch(res => {
-                            alert("NOT OK");
-                            console.log(res);
-                    });
          }).catch(res => {
                        alert("NOT OK");
                         console.log(res);

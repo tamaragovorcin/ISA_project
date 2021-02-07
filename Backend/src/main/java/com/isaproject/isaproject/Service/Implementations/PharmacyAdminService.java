@@ -4,6 +4,7 @@ import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.DTO.PharmacyAdminDTO;
 import com.isaproject.isaproject.DTO.PharmacyDTO;
+import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,8 @@ public class PharmacyAdminService implements IPharmacyAdminService {
     private PharmacyRepository pharmacyRepository;
     @Autowired
     private DermatologistRepository dermatologistRepository;
+    @Autowired
+    private ExaminationScheduleService examinationScheduleService;
 
     @Override
     public PharmacyAdmin findById(Integer id) {
@@ -81,19 +85,17 @@ public class PharmacyAdminService implements IPharmacyAdminService {
         pharmacyAdminRepository.delete(admin);
     }
 
-    public void removeDermatologistFromPharmacy(Integer pharmacyId, Dermatologist dermatologist){
+    public Boolean removeDermatologistFromPharmacy(Integer pharmacyId, Dermatologist dermatologist){
         Pharmacy pharmacy = pharmacyService.findById(pharmacyId);
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println(pharmacy.getPharmacyName());
-        for(Dermatologist dermatologist1 : pharmacy.getDermatologists()){
-            System.out.println(dermatologist1.getName() +" "+dermatologist.getSurname() );
+        for(ExaminationSchedule examinationSchedule : examinationScheduleService.findAll()){
+            if(examinationSchedule.getDermatologist().getId() == dermatologist.getId() && examinationSchedule.getPharmacy().getId() == pharmacyId && examinationSchedule.getDate().isAfter(LocalDate.now())){
+                return false;
+            }
         }
-        //fale provjere da li je zakazan neki termin kod njega
-        pharmacy.getDermatologists().remove(dermatologist);
-        for(Dermatologist dermatologist1 : pharmacy.getDermatologists()){
-            System.out.println(dermatologist1.getName() +" "+dermatologist.getSurname() );
-        }
+        dermatologist.getPharmacies().remove(pharmacy);
+
         this.dermatologistRepository.save(dermatologist);
+        return  true;
 
     }
 }

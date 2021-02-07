@@ -3,7 +3,7 @@ import com.isaproject.isaproject.Model.Users.Dermatologist;
 import java.time.LocalTime;
 
 public class WorkingHoursDermatologistDTO {
-    private Dermatologist dermatologist;
+    private Integer dermatologistId;
     private Integer pharmacyId;
     private LocalTime startTimeMonday;
     private LocalTime startTimeTuesday;
@@ -22,12 +22,12 @@ public class WorkingHoursDermatologistDTO {
 
     public WorkingHoursDermatologistDTO() { }
 
-    public Dermatologist getDermatologist() {
-        return dermatologist;
+    public Integer getDermatologistId() {
+        return dermatologistId;
     }
 
-    public void setDermatologist(Dermatologist dermatologist) {
-        this.dermatologist = dermatologist;
+    public void setDermatologistId(Integer dermatologistId) {
+        this.dermatologistId = dermatologistId;
     }
 
     public Integer getPharmacyId() {

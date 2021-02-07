@@ -17,7 +17,7 @@ public interface IPatientService {
     Patient findByName(String name);
     Patient save(PersonUserDTO userRequest);
     void delete(Patient userRequest);
-    Patient update(PersonUserDTO userRequest);
+    Patient update(Patient userRequest);
 
 }
 

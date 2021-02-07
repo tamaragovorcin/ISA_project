@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class MedicationReservationService implements IMedicationReservationService {
@@ -35,11 +36,10 @@ public class MedicationReservationService implements IMedicationReservationServi
     }
 
     @Override
-    public MedicationReservation save(MedicationReservationDTO medicationDTO) {
+    public MedicationReservation save(MedicationReservationDTO medicationDTO, UUID uuid) {
 
 
         Medication medication = medicationService.findById(medicationDTO.getMedicationId());
-        System.out.println(medication.getName());
         Pharmacy pharmacy = pharmacyService.findById(medicationDTO.getPharmacyId());
         MedicationReservation medicationReservation = new MedicationReservation();
         medicationReservation.setDateOfTakeOver(medicationDTO.getDateOfTakeOver());
@@ -47,6 +47,7 @@ public class MedicationReservationService implements IMedicationReservationServi
         medicationReservation.setMedicine(medication);
         medicationReservation.setPatient(medicationDTO.getPatient());
         medicationReservation.setDateOfReservation(LocalDate.now());
+        medicationReservation.setReservationCode(uuid);
         return medicationRepository.save(medicationReservation);
     }
 
