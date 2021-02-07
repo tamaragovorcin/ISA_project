@@ -2447,11 +2447,14 @@ public class ConsultingController {
         if(able) {
             SimpleMailMessage mail = new SimpleMailMessage();
             mail.setTo(dto.getPatient().getEmail());
-            mail.setSubject("Successfuly reserved pharmacist consultation!");
+            mail.setSubject("Successfuly reserved consultation with pharmacist!");
             mail.setFrom(environment.getProperty("spring.mail.username"));
             //mail.setFrom("pharmacyisa@gmail.com");
             mail.setText("You have successfully reserved an appointment on : "
-                    + consulting1.getDate() + " at " + consulting1.getStartTime() + ". Your doctor is " + consulting1.getPharmacist().getName() + " " + consulting1.getPharmacist().getSurname());
+                    + consulting1.getDate() + " at " + consulting1.getStartTime() + "\n" +
+                    ". Your doctor is " + consulting1.getPharmacist().getName() + " " + consulting1.getPharmacist().getSurname() + ".\n" +
+                    "Pharmacy where the consultation will be held is " + consulting1.getPharmacist().getName() + "."
+                    );
 
             mailSender.send(mail);
         }

@@ -55,11 +55,13 @@ public class ExaminationController {
         Examination examination = examinationService.save(examinationDTO);
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo(patient.getEmail());
-        mail.setSubject("Successfuly reserved dermatologist examination!");
+        mail.setSubject("Successfuly reserved examination!");
 
         mail.setFrom(environment.getProperty("spring.mail.username"));
         mail.setText("You have successfully reserved an appointment on : "
-                + examination.getExaminationSchedule().getDate() + " at " + examination.getExaminationSchedule().getStartTime() + ". Your doctor is " + examination.getExaminationSchedule().getDermatologist().getName() + " " + examination.getExaminationSchedule().getDermatologist().getSurname());
+                + examination.getExaminationSchedule().getDate() + " at " + examination.getExaminationSchedule().getStartTime() + ".\n" +
+                " Your doctor is " + examination.getExaminationSchedule().getDermatologist().getName() + " " + examination.getExaminationSchedule().getDermatologist().getSurname()
+        +"\n Pharmacy where the examination will be held is " + examination.getExaminationSchedule().getPharmacy().getPharmacyName() + ".");
 
         mailSender.send(mail);
         return examination == null ?

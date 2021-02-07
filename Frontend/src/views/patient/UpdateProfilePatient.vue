@@ -107,7 +107,7 @@
                             
                           </div>
 
-                        
+                       
                     </div>
                          
                         </div>
@@ -128,7 +128,20 @@
                     </tr>
                 </table>
             </div>
-                   
+
+              <div>
+                <table style="" id="tenderMedicine" class="table table-striped" v-if="showSecondTable">
+                    <thead>
+                    <th id="alergyList">Alergy list</th>
+                  
+                    </thead>
+                    <tr v-for="med in medicationQuantityList" :key="med.id">
+                        <td>{{med.name}}</td><td><button class="btn btn-outline-secondary" v-on:click = "remove(med)">Remove</button></td>
+                     
+                    </tr>
+                </table>
+            </div>
+             
                     <button class="btn btn-primary btn-lg" v-on:click = "update">Update</button>
                     <div style="height:30px;"></div>
                 </form>
@@ -168,7 +181,10 @@ export default {
         showTable: true,
         medicine: null,
         a: null,
-        alergies: []
+        alergies: [],
+        helparray : [],
+        showSecondTable: false,
+        arrayy: []
     }
   },
 mounted() {
@@ -216,12 +232,29 @@ mounted() {
           window.location.href = "/login";
       },
         remove : function(med){
-           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+             
+                this.medicine = med;
+                this.helparray = []
+                
+                for(const a in this.medicationQuantityList){
+                  
+                     if(this.medicationQuantityList[a] == (this.medicine)){
+                         
+                         console.log(this.medicationQuantityList[a].name)
+                           
 
-          this.axios.get('/patient/deleteAlergies/'+med.id, { 
-                         headers: {
-                                'Authorization': 'Bearer ' + token,
-                        }})
+                     }
+                     else{
+            
+                       this.helparray.push(this.medicationQuantityList[a])
+                     }
+                 }
+                    
+                    this.medicationQuantityList = this.helparray
+                    this.showTable = false;
+             this.showSecondTable = true;
+           
+            
          
 
       },
@@ -236,7 +269,7 @@ mounted() {
                 this.medicine = medicine;
             
                  for(const a in this.medicationQuantityList){
-                     alert(this.medicationQuantityList[a].name)
+                    
                      if(this.medicationQuantityList[a] == (this.medicine)){
                             return;
                            
@@ -272,13 +305,23 @@ mounted() {
         for(const a in this.medicationQuantityList){
             
             const alergies = {
-
-                patient: this.patient,
+                id: this.patient.id,
                 medication: this.medicationQuantityList[a]
             }
+            alert(this.patient.id)
+             this.arrayy.push(alergies)
 
+        }
+         if(this.medicationQuantityList.length == 0){
+                const alergies = {
 
-                this.axios.post('/patient/addAlergies',alergies, { 
+                id: this.patient.id,
+                medication: null
+            }
+             this.arrayy.push(alergies)
+         }
+           alert("sjergfsh")
+                this.axios.post('/patient/addAlergies',this.arrayy, { 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                         }})
@@ -294,7 +337,9 @@ mounted() {
 
 
 
-            }
+        
+                
+            
                 this.axios.post('/patient/update',p, { 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
@@ -308,9 +353,9 @@ mounted() {
                         console.log(res);
                     })
 
-            
-      }
-}
+       
+      
+}}
 }
 </script>
 
