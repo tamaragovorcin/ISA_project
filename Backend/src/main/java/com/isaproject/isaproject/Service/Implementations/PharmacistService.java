@@ -7,6 +7,7 @@ import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.DTO.PharmacistDTO;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Schedule.WorkingHoursPharmacist;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.*;
@@ -59,6 +60,7 @@ public class PharmacistService implements IPharmacistService {
     @Override
     public Pharmacist save(PharmacistDTO userRequest) {
         Pharmacist pharmacist =  new Pharmacist();
+        Pharmacy pharmacy = pharmacyRepository.getOne(userRequest.getPharmacyID());
         pharmacist.setName(userRequest.getFirstname());
         pharmacist.setSurname(userRequest.getSurname());
         AddressDTO addressDTO = userRequest.getAddress();
@@ -79,7 +81,7 @@ public class PharmacistService implements IPharmacistService {
         }
         pharmacist.setAuthorities(auth);
         pharmacist.setEnabled(true);
-        pharmacist.setPharmacy(userRequest.getPharmacy());
+        pharmacist.setPharmacy(pharmacy);
         return pharmacistRepository.save(pharmacist);
     }
 

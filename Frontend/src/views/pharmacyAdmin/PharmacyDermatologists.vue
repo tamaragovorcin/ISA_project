@@ -2,31 +2,42 @@
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-               <span style="float: left; margin: 15px;">
-                <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
-                <strong class="tab"></strong>  
-                <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
-                <strong class="tab"></strong>  
-                <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
-                <strong class="tab"></strong>  
-                 <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
-                 
-                <strong class="tab"></strong>  
-                 <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
-                               class = "btn btn-link btn-lg">
-                    <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
-                    <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
-                </b-dropdown> 
-                <strong class="tab"></strong>  
-                <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
-                <strong class="tab"></strong>  
-                <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
-                <strong class="tab"></strong>  
-                 <a   class = "btn btn-secondary" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
-                <strong class="tab"></strong>  
-                <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
-                <strong class="tab"></strong>  
-                <a   class = "btn btn-secondary" href="/order">Orders</a>
+                <span style="float: left; margin: 15px;">
+                              <b-dropdown id="ddCommodity" name="ddCommodity" text="My profile" 
+                                              class = "btn btn-link btn-lg">
+                                    <b-dropdown-item href = "/pharmacyAdminProfile">Our pharmacists</b-dropdown-item>
+                                    <b-dropdown-item href = "/phAdminProfileUpdate">Update profile</b-dropdown-item>      
+                                </b-dropdown>        
+
+                        <strong class="tab"></strong>  
+
+                                    <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
+                                                <button class = "btn btn-secondary" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
+                                    </router-link>
+
+                          <strong class="tab"></strong>  
+
+                                  <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
+                                                class = "btn btn-link btn-lg">
+                                      <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
+                                      <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
+                                  </b-dropdown> 
+                          <strong class="tab"></strong>  
+                                  <b-dropdown id="ddCommodity" name="ddCommodity" text="Dermatologists" 
+                                                  class = "btn btn-link btn-lg">
+                                        <b-dropdown-item href = "/pharmacyDermatologists">Our dermatologists(Add new)</b-dropdown-item>
+                                        <b-dropdown-item href = "/examinationTerms">Examination terms</b-dropdown-item>      
+                                    </b-dropdown>                 
+                            <strong class="tab"></strong>  
+                            <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
+                            <strong class="tab"></strong>  
+                            <a   class = "btn btn-secondary" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
+                            <strong class="tab"></strong>  
+                            <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
+                            <strong class="tab"></strong>  
+                            <a   class = "btn btn-secondary" href="/order">Orders</a>
+                            <strong class="tab"></strong>  
+                            <a   class = "btn btn-secondary" href="/holidayRequests">Holiday/absence requests</a>
             </span>
               <span  style="float:right;margin:15px">
                    
@@ -41,77 +52,6 @@
 
         <div class="container-fluid">
 
-         <b-button class = "btn btn-warning" @click="showModal">+ Add examination terms</b-button>
-        
-        <b-modal ref="my-modal" hide-footer scrollable title="Add examination to schedule" size="lg" modal-class="b-modal">
-                    <div modal-class="modal-dialog" role="document">
-                            <div class="modal-content" style="background-color:whitesmoke">
-                                    
-                                    <div class="modal-body">
-                                    
-                                            <label>Choose dermatologist:</label>
-                            <div class="form-row">
-                                 <div class="form-group col">
-                                    <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologist"
-                                        class = "btn btn-link btn-lg" style="float:left; width=200px;">
-                                            <b-dropdown-item v-for="dermatologist in this.ourDermatologists"  v-on:click = "dermatologistIsSelected($event, dermatologist)" v-bind:key="dermatologist.id"> 
-                                            {{ dermatologist.name }}&nbsp; {{dermatologist.surname }}
-                                            </b-dropdown-item>
-                                    </b-dropdown> 
-                                 </div>
-                                <div class="form-group col-md-6 ">
-                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist.name}}&nbsp; {{this.selectedDermatologist.surname}} </label>
-                                </div>
-                                    
-                            </div>
-                                             <div class="row">
-                                           <div class="col">
-                                                 <label for="name">Date:</label>
-                                            </div> 
-                                         </div>
-                                           <div class="row">
-                                              <input type="date" v-model = "date" class="form-control" placeholder = "01/01/2021">
-                                            </div>
-                                             <div class="row">
-                                           <div class="col">
-                                                 <label for="name">Start time:</label>
-                                            </div> 
-                                         </div>
-                                           <div class="row">
-                                              <input type="time" v-model = "startTime" class="form-control" placeholder = "01/01/2021">
-                                            </div>
-                                        <div class="row">
-                                           <div class="col">
-                                                 <label for="name">Duration:</label>
-                                            </div> 
-                                         </div>
-                                           <div class="row">
-                                              <input type="number" v-model = "duration" class="form-control">
-                                            </div>
-
-                                         <div class="row">
-                                           <div class="col">
-                                                 <label for="name">Price:</label>
-                                            </div> 
-                                         </div>
-                                           <div class="row">
-                                              <input type="number" v-model = "price" class="form-control">
-                                            </div>
-
-                                     
-                                     
-                                    </div>
-                    <div class="modal-footer">
-                                        <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" v-on:click="addTerm">Add</button>
-                   </div>
-
-                            
-                                   
-                            </div>
-                    </div>
-    
-    </b-modal>
 
 
 
@@ -130,12 +70,12 @@
                                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologist"
                                         class = "btn btn-link btn-lg" style="float:left; width=200px;">
                                             <b-dropdown-item v-for="dermatologist in this.allDermatologists"  v-on:click = "dermatologistIsSelected1($event, dermatologist)" v-bind:key="dermatologist.id"> 
-                                            {{ dermatologist.name }}&nbsp; {{dermatologist.surname }}
+                                            {{ dermatologist.firstname }}&nbsp; {{dermatologist.surname }}
                                             </b-dropdown-item>
                                     </b-dropdown> 
                                  </div>
                                 <div class="form-group col-md-6 ">
-                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist1.name}}&nbsp; {{this.selectedDermatologist1.surname}}</label>
+                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist1.firstname}}&nbsp; {{this.selectedDermatologist1.surname}}</label>
                                 </div>
                                     
                             </div>
@@ -292,6 +232,31 @@
     
     <div style="height:45px"></div>
       <h3>Dermatologists of our pharmacy</h3>
+       <div style="background: white; height: 60px; margin-top: 20px">
+          <span  style="float:right;margin:15px">
+            <div class="input-group mb-3">
+              <input type="text" v-model="dermatologistFirstName" class="form-control" placeholder="Dermatologist name..." aria-label="Enter name..." aria-describedby="basic-addon2">
+              <input type="text" v-model="dermatologistLastName" class="form-control" placeholder="Dermatologist surname..." aria-label="Enter surname..." aria-describedby="basic-addon2">
+
+                 <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button"  v-on:click = "showByDermatologistsName" >Search</button>
+                  </div>
+            </div>
+          </span>
+
+        
+         
+           <span  style="float:right;margin:15px">
+              <div class="input-group mb-3">
+                  <label>Average mark around:</label>
+                   <div class="input-group-append  align-self-center">
+                       <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose pharmacists mark" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+                              <b-dropdown-item v-for="item in this.marks"  v-on:click ="markIsSelected($event, item.mark)" v-bind:key="item.mark"> {{item.mark }}</b-dropdown-item>
+                        </b-dropdown> 
+                  </div>
+              </div>
+          </span>  
+        </div>
 
   <table class="table table-striped table-dark">
   <thead class="thead-dark">
@@ -302,14 +267,16 @@
       <th scope="col">Phone number</th>
       <th scope="col">Email</th>
       <th scope="col">Mark</th>
+      <th scope="col">Remove from pharmacy</th>
+      <th scope="col">Define schedule</th>
   </tr>
   </thead>
   <tbody>
     <tr v-for="dermatologist in ourDermatologists" :key="dermatologist.id">
                                                     <td></td>
-                                                    <td>{{dermatologist.name}}</td>
+                                                    <td>{{dermatologist.firstname}}</td>
                                                     <td>{{dermatologist.surname}}</td>
-                                                    <td>{{dermatologist.phoneNumber}}</td>
+                                                    <td>{{dermatologist.phonenumber}}</td>
                                                     <td>{{dermatologist.email}}</td>
                                                     <td>{{dermatologist.markDermatologist}}</td>
                                                     <td><button  v-on:click ="remove($event, dermatologist)" class="btn btn-info">Remove</button></td>
@@ -363,7 +330,17 @@ export default {
         endTimeThursday : "",
         endTimeFriday : "",
         endTimeSaturday : "",
-        endTimeSunday : ""
+        endTimeSunday : "",
+        marks: [
+          { mark: "0-1" },
+          { mark: "1-2" },
+          { mark: "2-3" },
+          { mark: "3-5" },
+          { mark: "4-5" },
+      ],
+      choosenMark :0,
+      dermatologistFirstName : "",
+      dermatologistLastName : "",
     }
   },
   mounted() {
@@ -404,7 +381,7 @@ export default {
                             alert("NOT OK");
                             console.log(res);
                     });
-        this.axios.get('/dermatologist',{ 
+        this.axios.get('/dermatologist/notInPharmacy',{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
              }
@@ -454,31 +431,6 @@ export default {
        hideModalSchedule() {
         this.$refs['my-modalSchedule'].hide()
       },
-       addTerm : function(){
-            const data ={
-              pharmacy : this.pharmacy.id,
-              dermatologist : this.selectedDermatologist.id,
-              date : this.date,
-              startTime : this.startTime,
-              duration : this.duration,
-              price : this.price
-          }
-            alert()
-            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-            this.axios.post('/pharmacy/addExaminationSchedule',data,{ 
-                         headers: {
-                                'Authorization': 'Bearer ' + token,
-                        }})
-                .then(response => {
-                        alert("Successfully added examination to schedule!")
-                        console.log(response.data);
-                })
-                .catch(response => {
-                       alert("Please try later.");
-                        console.log(response);
-                 });    
-      },
-        
       dermatologistIsSelected : function(event, dermatologist) {
             this.selectedDermatologist = dermatologist;
             this.dermatologistName = this.selectedDermatologist.name;
@@ -504,6 +456,7 @@ export default {
                         }})
                 .then(response => {
                         alert("Dermatologist successfully added as employee in your pharmacy");
+                        window.location.href= "pharmacyDermatologists";
                         console.log(response.data);
                 })
                 .catch(response => {
@@ -513,11 +466,13 @@ export default {
       },
       remove : function(event,dermatologist){
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-        this.axios.post('/pharmacyAdmin/dermatologist/remove', dermatologist,{ 
+        this.axios.get('/pharmacyAdmin/dermatologist/remove/'+ dermatologist.id,{ 
                 headers: {
                         'Authorization': 'Bearer ' + token,
                     }
                     }).then(response => {
+                            alert(response.data);
+                            window.location.href="pharmacyDermatologists";
                             console.log(response);
                           
                              
@@ -535,7 +490,7 @@ export default {
     addSchedule : function(){
       const data ={
                     pharmacyId : this.pharmacy.id,
-                    dermatologist : this.selectedDermatologist2,
+                    dermatologistId : this.selectedDermatologist2.id,
                     startTimeMonday : this.startTimeMonday,
                     startTimeTuesday : this.startTimeTuesday,
                     startTimeWednesday : this.startTimeWednesday,
@@ -565,7 +520,40 @@ export default {
                        alert("Please try later.");
                         console.log(response);
                  });  
-    }
+    },
+      markIsSelected : function(event, mark) { 
+            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+            var marks = mark.split('-')
+            var MarkMin = parseInt(marks[0])
+            var MarkMax = parseInt(marks[1])
+            this.axios.get('pharmacyAdmin/dermatologist/searchMark/'+MarkMin+"/"+MarkMax,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                }}).then(response => {
+                     this.ourDermatologists= response.data;
+                }).catch(res => {
+                     alert("NOT OK");
+                    console.log(res);
+                });     
+     },
+      showByDermatologistsName : function() {
+          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+
+          const data = {
+            firstName : this.dermatologistFirstName,
+            surName : this.dermatologistLastName
+          }
+            this.axios.post('pharmacyAdmin/dermatologist/searchName',data,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+          .then(response => {
+                    this.ourDermatologists= response.data;
+            }).catch(res => {
+                        alert("No dermatologists with entered name.");
+                        console.log(res);
+                    });
+      },
 }
 }
 </script>
@@ -601,4 +589,5 @@ body {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
+
 </style>

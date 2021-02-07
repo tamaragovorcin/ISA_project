@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Controller;
 import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
+import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
@@ -36,6 +37,8 @@ public class PharmacyAdminController {
     HolidaySchedulePharmacistService pharmacistHolidayService;
     @Autowired
     PharmacistService pharmacistService;
+    @Autowired
+    DermatologistService dermatologistService;
 
     @PostMapping("/register")
    // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
@@ -86,31 +89,94 @@ public class PharmacyAdminController {
     }
     @GetMapping("/dermatologists")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    List<Dermatologist> getOurDermatologists()
+    List<DermatologistFrontDTO> getOurDermatologists()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
-        List<Dermatologist> dermatologists = new ArrayList<Dermatologist>();
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        List<DermatologistFrontDTO> dermatologists = new ArrayList<DermatologistFrontDTO>();
         for(Dermatologist derm : pharmacyAdmin.getPharmacy().getDermatologists()){
-            dermatologists.add(derm);
-        }
-        for(Dermatologist derm : dermatologists){
-            System.out.println(derm.getName()+" "+derm.getSurname());
+            DermatologistFrontDTO dermatologistFrontDTO = new DermatologistFrontDTO();
+            dermatologistFrontDTO.setFirstname(derm.getName());
+            dermatologistFrontDTO.setSurname(derm.getSurname());
+            dermatologistFrontDTO.setEmail(derm.getEmail());
+            dermatologistFrontDTO.setId(derm.getId());
+            dermatologistFrontDTO.setPhonenumber(derm.getPhoneNumber());
+            dermatologistFrontDTO.setMarkDermatologist(derm.getMarkDermatologist());
+            dermatologists.add(dermatologistFrontDTO);
         }
         return dermatologists;
     }
-
-    @PostMapping("/dermatologist/remove")
+    @PostMapping("dermatologist/searchName")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    ResponseEntity<String> removeDermatologistFromPharmacy(@RequestBody Dermatologist dermatologist)
+    ResponseEntity<List<DermatologistFrontDTO>> getDermatologistByName(@RequestBody PharmacistSearchDTO dto)
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
-        pharmacyAdminService.removeDermatologistFromPharmacy(pharmacyAdmin.getPharmacy().getId(),dermatologist);
-        return new ResponseEntity<>("Dermatologist successfully removed from pharmacy!", HttpStatus.ACCEPTED);    }
+        List<DermatologistFrontDTO> dermatologists = new ArrayList<DermatologistFrontDTO>();
+        for(Dermatologist derm : pharmacyAdmin.getPharmacy().getDermatologists()){
+            if(derm.getName().toLowerCase().contains(dto.getFirstName().toLowerCase(Locale.ROOT))&& derm.getSurname().toLowerCase().contains(dto.getSurName().toLowerCase())){
+            DermatologistFrontDTO dermatologistFrontDTO = new DermatologistFrontDTO();
+            dermatologistFrontDTO.setFirstname(derm.getName());
+            dermatologistFrontDTO.setSurname(derm.getSurname());
+            dermatologistFrontDTO.setEmail(derm.getEmail());
+            dermatologistFrontDTO.setId(derm.getId());
+            dermatologistFrontDTO.setPhonenumber(derm.getPhoneNumber());
+            dermatologistFrontDTO.setMarkDermatologist(derm.getMarkDermatologist());
+            dermatologists.add(dermatologistFrontDTO);
+        }
+
+        }
+        return dermatologists == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(dermatologists);
+
+    }
+
+    @GetMapping("dermatologist/searchMark/{MarkMin}/{MarkMax}")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<List<DermatologistFrontDTO>> getDermatologistByMark(@PathVariable int MarkMin,@PathVariable int MarkMax )
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
+        List<DermatologistFrontDTO> dermatologists = new ArrayList<DermatologistFrontDTO>();
+        for(Dermatologist derm : pharmacyAdmin.getPharmacy().getDermatologists()){
+            if(derm.getMarkDermatologist() >= MarkMin && derm.getMarkDermatologist() <= MarkMax){
+                DermatologistFrontDTO dermatologistFrontDTO = new DermatologistFrontDTO();
+                dermatologistFrontDTO.setFirstname(derm.getName());
+                dermatologistFrontDTO.setSurname(derm.getSurname());
+                dermatologistFrontDTO.setEmail(derm.getEmail());
+                dermatologistFrontDTO.setId(derm.getId());
+                dermatologistFrontDTO.setPhonenumber(derm.getPhoneNumber());
+                dermatologistFrontDTO.setMarkDermatologist(derm.getMarkDermatologist());
+                dermatologists.add(dermatologistFrontDTO);
+            }
+
+        }
+        return dermatologists == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(dermatologists);
+
+    }
+
+
+    @GetMapping("/dermatologist/remove/{id}")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<String> removeDermatologistFromPharmacy(@PathVariable Integer id)
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
+        Dermatologist dermatologist =  dermatologistService.findById(id);
+       if(pharmacyAdminService.removeDermatologistFromPharmacy(pharmacyAdmin.getPharmacy().getId(),dermatologist)) {
+           return new ResponseEntity<>("Dermatologist successfully removed from pharmacy!", HttpStatus.ACCEPTED);
+       }else {
+           return new ResponseEntity<>("Dermatologist can't be removed, he's got some scheduled examinations!", HttpStatus.ACCEPTED);
+
+       }
+    }
 
     @GetMapping("/actions")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
@@ -133,6 +199,22 @@ public class PharmacyAdminController {
         return pharmacyAdmin.getPharmacy().getPharmacists() == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacyAdmin.getPharmacy().getPharmacists());
+    }
+    @GetMapping("/terms")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<List<TermsFrontDTO>> getExaminationTerms()
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
+        List<TermsFrontDTO> termsList = new ArrayList<>();
+        for(ExaminationSchedule examinationSchedule : pharmacyAdmin.getPharmacy().getExaminationSchedules()){
+            TermsFrontDTO termsFrontDTO = new TermsFrontDTO(examinationSchedule.getDermatologist().getName(),examinationSchedule.getDermatologist().getSurname(),examinationSchedule.getDate(),examinationSchedule.getStartTime(),examinationSchedule.getDuration(),examinationSchedule.getPrice());
+            termsList.add(termsFrontDTO);
+        }
+        return termsList == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(termsList);
     }
     @GetMapping("/holidayRequests")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
@@ -250,8 +332,6 @@ public class PharmacyAdminController {
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<List<Pharmacist>> getAllByName(@RequestBody PharmacistSearchDTO dto)
     {
-        System.out.println("--------------------------------------------------");
-        System.out.println(dto.getSurName());
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());

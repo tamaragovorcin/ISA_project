@@ -75,29 +75,34 @@ public class PharmacyController {
                 ResponseEntity.ok(pharmacy);
     }
     @PostMapping("/addActions")
-    ResponseEntity<Actions> shareActions(@RequestBody ActionsDTO action)
+    ResponseEntity<String> shareActions(@RequestBody ActionsDTO action)
     {
-        Actions actions = actionsService.save(action);
-                if(actions != null) {
-                    Pharmacy pharmacy = action.getPharmacy();
-                    Set<Patient> subPatients = pharmacy.getSubscribedPatients();
-                    SimpleMailMessage mail = new SimpleMailMessage();
+        if(action.getExpiryDate().isAfter(LocalDate.now())) {
+            Actions actions = actionsService.save(action);
+            if (actions != null) {
+                Pharmacy pharmacy = pharmacyService.findById(action.getPharmacy());
+                Set<Patient> subPatients = pharmacy.getSubscribedPatients();
+                SimpleMailMessage mail = new SimpleMailMessage();
 
-                    System.out.println("Take advantage of a special opportunity!\n"
+                System.out.println("Take advantage of a special opportunity!\n"
+                        + " " + action.getDescription() + " till the " + action.getExpiryDate());
+                for (Patient patient : subPatients) {
+                    mail.setTo(patient.getEmail());
+                    mail.setSubject("Action in pharmacy " + pharmacy.getPharmacyName() + "!");
+                    mail.setFrom(environment.getProperty("spring.mail.username"));
+                    mail.setText("Take advantage of a special opportunity!\n"
                             + " " + action.getDescription() + " till the " + action.getExpiryDate());
-                    for (Patient patient : subPatients) {
-                        mail.setTo(patient.getEmail());
-                        mail.setSubject("Action in pharmacy " + pharmacy.getPharmacyName()+"!");
-                        mail.setFrom(environment.getProperty("spring.mail.username"));
-                        mail.setText("Take advantage of a special opportunity!\n"
-                                + " " + action.getDescription() + " till the " + action.getExpiryDate());
-                        mailSender.send(mail);
-                    }
-                        return ResponseEntity.ok(actions);
-                }else{
-                    return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+                    mailSender.send(mail);
                 }
+                return new ResponseEntity<>("Action/promotion is successfully published!", HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>("Please try later!", HttpStatus.CREATED);
+
+            }
+        }else{
+            return new ResponseEntity<>("Expiry date has to be in future.", HttpStatus.CREATED);
+
+        }
     }
 
     @GetMapping("/actions/{id}")
@@ -222,27 +227,19 @@ public class PharmacyController {
                 ResponseEntity.ok(freeExaminationTerms);
 
     }
-   /* @PostMapping("/addDermatologist")
-    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    public ResponseEntity<String> addUser(@RequestBody WorkingHoursDermatologistDTO dto) {
-
-        if(pharmacyService.savePharmacy(dto)){
-            return new ResponseEntity<>("Dermatologist is successfully added as employee!", HttpStatus.CREATED);
-
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-
-    }*/
-
     @PostMapping("/addExaminationSchedule")
-    //@PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    public ResponseEntity<ExaminationSchedule> addSchedule(@RequestBody ExaminationScheduleDTO dto) {
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    public ResponseEntity<String> addSchedule(@RequestBody ExaminationScheduleDTO dto) {
 
         ExaminationSchedule examinationSchedule = examinationScheduleService.save(dto);
-        return examinationSchedule == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(examinationSchedule);
+        System.out.println(examinationSchedule);
+         if(examinationSchedule == null) {
+            return new ResponseEntity<>("Dermatologist is not available at required time! Try in another time.", HttpStatus.CREATED);
+
+         }else{
+            return new ResponseEntity<>("Term is successfully created.", HttpStatus.CREATED);
+
+         }
 
     }
 

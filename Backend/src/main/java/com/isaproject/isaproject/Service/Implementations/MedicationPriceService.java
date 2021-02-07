@@ -26,6 +26,8 @@ public class MedicationPriceService implements IMedicationPriceService {
     MedicationPriceRepository medicationPriceRepository;
     @Autowired
     MedicationReservationService medicationReservationService;
+    @Autowired
+    PharmacyService pharmacyService;
 
     @Override
     public MedicationPrice findById(Integer id) {
@@ -40,11 +42,12 @@ public class MedicationPriceService implements IMedicationPriceService {
     @Override
     public MedicationPrice save(MedicationPriceDTO medicationDTO) {
         MedicationPrice medicationPrice1 = new MedicationPrice();
+        Pharmacy pharmacy = pharmacyService.findById(medicationDTO.getPharmacy());
         medicationPrice1.setMedication(medicationDTO.getMedication());
         medicationPrice1.setQuantity(0);
         medicationPrice1.setPrice(medicationDTO.getPrice());
         medicationPrice1.setDate(medicationDTO.getDate());
-        medicationPrice1.setPharmacy(medicationDTO.getPharmacy());
+        medicationPrice1.setPharmacy(pharmacy);
         return medicationPriceRepository.save(medicationPrice1);
 
     }
@@ -116,7 +119,7 @@ public class MedicationPriceService implements IMedicationPriceService {
     public void updateMedicineQuantityTender(Order order){
         for(MedicationPrice medicationPrice : medicationPriceRepository.findAll()){
             for(MedicationInOrder med : order.getMedicationInOrders()){
-                if(medicationPrice.getPharmacy().getId() == med.getOrder().getPharmacyAdmin().getPharmacy().getId()){
+                if(medicationPrice.getPharmacy().getId().toString().equals(med.getOrder().getPharmacyAdmin().getPharmacy().getId().toString())){
                     if(medicationPrice.getMedication().getName().equals(med.getMedicine().getName())) {
                         System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                         System.out.println("PROSAO IF-POSTOJI");
@@ -156,7 +159,7 @@ public class MedicationPriceService implements IMedicationPriceService {
 
         for (MedicationPrice medicationPrice : medicationPriceRepository.findAll()) {
             if (medicationPrice.getMedication().getCode() == dto.getMedication().getCode() && medicationPrice.getMedication().getName().equals(dto.getMedication().getName())){
-                if( medicationPrice.getPharmacy().getId() == dto.getPharmacy().getId()) {
+                if( medicationPrice.getPharmacy().getId() == dto.getPharmacy()) {
                         if (!isMedicationReserved(dto)) {
                             System.out.println("Prosao if");
 
@@ -172,7 +175,7 @@ public class MedicationPriceService implements IMedicationPriceService {
     public Boolean isMedicationReserved(MedicationPriceDTO dto){
         for(MedicationReservation medicationReservation : medicationReservationService.findAll()){
             if(medicationReservation.getMedicine().getCode() == dto.getMedication().getCode() && medicationReservation.getMedicine().getName().equals(dto.getMedication().getName())
-            && medicationReservation.getPharmacy().getId() == dto.getPharmacy().getId() && !medicationReservation.getCollected()){
+            && medicationReservation.getPharmacy().getId() == dto.getPharmacy() && !medicationReservation.getCollected()){
                 System.out.println("Rezervisan");
 
                 return true;

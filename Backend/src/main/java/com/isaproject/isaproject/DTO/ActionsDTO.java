@@ -1,28 +1,30 @@
 package com.isaproject.isaproject.DTO;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 public class ActionsDTO {
-    private Pharmacy pharmacy;
+    private Integer pharmacy;
 
     private String description;
 
-    private Date expiryDate;
+    private LocalDate expiryDate;
 
     public ActionsDTO() {
     }
 
-    public ActionsDTO(Pharmacy pharmacy, String description, Date expiryDate) {
+    public ActionsDTO(Integer pharmacy, String description, LocalDate expiryDate) {
         this.pharmacy = pharmacy;
         this.description = description;
         this.expiryDate = expiryDate;
     }
 
-    public Pharmacy getPharmacy() {
+    public Integer getPharmacy() {
         return pharmacy;
     }
 
-    public void setPharmacy(Pharmacy pharmacy) {
+    public void setPharmacy(Integer pharmacy) {
         this.pharmacy = pharmacy;
     }
 
@@ -34,11 +36,11 @@ public class ActionsDTO {
         this.description = description;
     }
 
-    public Date getExpiryDate() {
+    public LocalDate getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(LocalDate expiryDate) {
         this.expiryDate = expiryDate;
     }
 }

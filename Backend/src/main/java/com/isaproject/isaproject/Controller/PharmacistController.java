@@ -6,6 +6,7 @@ import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Service.Implementations.ConsultingService;
 import com.isaproject.isaproject.Service.Implementations.MarkPharmacistService;
 import com.isaproject.isaproject.Service.Implementations.PharmacistService;
+import com.isaproject.isaproject.Service.Implementations.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,10 +33,13 @@ public class PharmacistController {
     @Autowired
     ConsultingService consultingService;
 
+    @Autowired
+    PharmacyService pharmacyService;
+
     @PostMapping("/register")
-    //@PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacistDTO userRequest) {
-        System.out.println(userRequest.getPharmacy().getPharmacyName());
+        System.out.println(userRequest.getPharmacyID());
 
         PersonUser existUser = pharmacistService.findByEmail(userRequest.getEmail());
         if (existUser != null) {

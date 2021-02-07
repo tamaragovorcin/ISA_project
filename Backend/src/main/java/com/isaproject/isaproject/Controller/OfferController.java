@@ -177,7 +177,6 @@ public class OfferController {
                                 + " Congratulations, you won tender.");
                         mailSender.send(mail);
 
-                        medicationPriceService.updateMedicineQuantityTender(offer.getOrder());
                         Set<SupplierMedications> supplierMedications = offer.getSupplier().getSupplierMedications();
                         Set<MedicationInOrder> medicationInOrders = offer.getOrder().getMedicationInOrders();
                         supplierMedicationService.updateMedicineQuantityTenderWon(supplierMedications, medicationInOrders);

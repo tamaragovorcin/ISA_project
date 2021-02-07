@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,46 +59,48 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
         System.out.println(examinationScheduleDTO.getDate().getDayOfWeek());
         for(WorkingHoursDermatologist workingHoursDermatologist : workingHoursDermatologistService.findAll()){
             if(workingHoursDermatologist.getDermatologist().getId() == examinationScheduleDTO.getDermatologist() && workingHoursDermatologist.getPharmacy().getId() == examinationScheduleDTO.getPharmacy()){
-                if(examinationScheduleDTO.getDate().getDayOfWeek().equals("MONDAY")){
+                if(examinationScheduleDTO.getDate().getDayOfWeek() == DayOfWeek.MONDAY){
                     LocalTime shiftStarts = workingHoursDermatologist.getMondaySchedule().getStartTime();
                     LocalTime shiftEnds = workingHoursDermatologist.getMondaySchedule().getEndTime();
                     return checkSchedule(examinationScheduleDTO,shiftStarts,shiftEnds);
 
-                }else if(examinationScheduleDTO.getDate().getDayOfWeek().equals("TUESDAY")){
+                }else if(examinationScheduleDTO.getDate().getDayOfWeek() == DayOfWeek.TUESDAY){
                     LocalTime shiftStarts = workingHoursDermatologist.getTuesdaySchedule().getStartTime();
                     LocalTime shiftEnds = workingHoursDermatologist.getTuesdaySchedule().getEndTime();
                     return checkSchedule(examinationScheduleDTO,shiftStarts,shiftEnds);
 
-                }else if(examinationScheduleDTO.getDate().getDayOfWeek().equals("WEDNESDAY")){
+                }else if(examinationScheduleDTO.getDate().getDayOfWeek() == DayOfWeek.WEDNESDAY){
                     LocalTime shiftStarts = workingHoursDermatologist.getWednesdaySchedule().getStartTime();
                     LocalTime shiftEnds = workingHoursDermatologist.getWednesdaySchedule().getEndTime();
                     return checkSchedule(examinationScheduleDTO,shiftStarts,shiftEnds);
 
-                }else if(examinationScheduleDTO.getDate().getDayOfWeek().equals("THURSDAY")){
+                }else if(examinationScheduleDTO.getDate().getDayOfWeek() == DayOfWeek.THURSDAY){
                     LocalTime shiftStarts = workingHoursDermatologist.getThursdaySchedule().getStartTime();
                     LocalTime shiftEnds = workingHoursDermatologist.getThursdaySchedule().getEndTime();
                     return checkSchedule(examinationScheduleDTO,shiftStarts,shiftEnds);
 
 
-                }else if(examinationScheduleDTO.getDate().getDayOfWeek().equals("FRIDAY")){
+                }else if(examinationScheduleDTO.getDate().getDayOfWeek() == DayOfWeek.FRIDAY){
                     LocalTime shiftStarts = workingHoursDermatologist.getTuesdaySchedule().getStartTime();
                     LocalTime shiftEnds = workingHoursDermatologist.getTuesdaySchedule().getEndTime();
                     return checkSchedule(examinationScheduleDTO,shiftStarts,shiftEnds);
 
-                }else if(examinationScheduleDTO.getDate().getDayOfWeek().equals("SATURDAY")){
+                }else if(examinationScheduleDTO.getDate().getDayOfWeek() == DayOfWeek.SATURDAY){
                     LocalTime shiftStarts = workingHoursDermatologist.getSaturdaySchedule().getStartTime();
                     LocalTime shiftEnds = workingHoursDermatologist.getSaturdaySchedule().getEndTime();
                     return checkSchedule(examinationScheduleDTO,shiftStarts,shiftEnds);
 
-                }else if(examinationScheduleDTO.getDate().getDayOfWeek().equals("SUNDAY")){
+                }else if(examinationScheduleDTO.getDate().getDayOfWeek() == DayOfWeek.SUNDAY){
+                    System.out.println("USAO U SUNDAY");
+
                     LocalTime shiftStarts = workingHoursDermatologist.getSundaySchedule().getStartTime();
                     LocalTime shiftEnds = workingHoursDermatologist.getSundaySchedule().getEndTime();
                     return checkSchedule(examinationScheduleDTO,shiftStarts,shiftEnds);
                 }
             }
         }
-        /*
-        ExaminationSchedule examinationSchedule = new ExaminationSchedule();
+
+      /*  ExaminationSchedule examinationSchedule = new ExaminationSchedule();
         examinationSchedule.setPharmacy(pharmacy);
         examinationSchedule.setDate(examinationScheduleDTO.getDate());
         examinationSchedule.setDermatologist(dermatologist);
@@ -109,14 +112,17 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
     }
 
     private ExaminationSchedule createNewExaminationTerm(ExaminationScheduleDTO examinationScheduleDTO){
+        System.out.println("USAO U CREATE");
+
         ExaminationSchedule examinationSchedule = new ExaminationSchedule();
         examinationSchedule.setPharmacy(pharmacyRepository.getOne(examinationScheduleDTO.getPharmacy()));
         examinationSchedule.setDermatologist(dermatologistRepository.getOne(examinationScheduleDTO.getDermatologist()));
         examinationSchedule.setDate(examinationScheduleDTO.getDate());
         examinationSchedule.setDuration(examinationScheduleDTO.getDuration());
-        examinationSchedule.setPrice(examinationSchedule.getPrice());
+        examinationSchedule.setPrice(examinationScheduleDTO.getPrice());
         examinationSchedule.setStartTime(examinationScheduleDTO.getStartTime());
         examinationSchedule.setFinished(false);
+
 
         return this.examinationScheduleRepository.save(examinationSchedule);
     }
@@ -124,7 +130,11 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
         if(examinationScheduleDTO.getStartTime().isAfter(shiftStarts) && examinationScheduleDTO.getStartTime().isBefore(shiftEnds)
                 &&  examinationScheduleDTO.getStartTime().plusMinutes(examinationScheduleDTO.getDuration()).isBefore(shiftEnds))
         {
+            System.out.println("USAO U CHECK SCHEDYLE");
+
             if(isDermatologistAvailable(examinationScheduleDTO) && !isDermatologistOnHoliday(examinationScheduleDTO)){
+                System.out.println("USAO U 2. IF");
+
                 return createNewExaminationTerm(examinationScheduleDTO);
             }
 

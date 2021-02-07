@@ -35,9 +35,9 @@
                 </span>
 
         </div>
-                     <button class = "btn btn-info btn-lg" style="margin-right:20px;" v-on:click = "showActive">Active tenders</button>
-                    <button class = "btn btn-info btn-lg" style="margin-right:20px;" v-on:click = "showFinised">Finised tenders</button>
-            <b-button class = "btn btn-warning btn-lg" style ="margin-top:25px;" @click="showModal">+ Announce new tender</b-button>
+        <div>
+      
+    <b-button class = "btn btn-warning btn-lg" style ="margin-top:25px;" @click="showModal">+ Announce new tender</b-button>
     <b-modal ref="my-modal" hide-footer scrollable title="Fill order form" size="lg" modal-class="b-modal">
                     <div modal-class="modal-dialog" role="document">
                     <div class="modal-content" style="background-color:whitesmoke">
@@ -129,7 +129,7 @@
                     <div modal-class="modal-dialog" role="document">
                     <div class="modal-content" style="background-color:whitesmoke">
                             <div class="modal-header">
-                                <h3 class="modal-title" id="exampleModalLabel">Medicine ordering</h3>
+                                <h3 class="modal-title" id="exampleModalLabel">Medicing ordering</h3>
                 
                             </div>
                             <div class="modal-body">
@@ -215,8 +215,9 @@
 
 
 
-       <div>
-       <h3 style="margin:25px;color:#0D184F;font-weight:bold;">Tenders in your pharmacy:</h3>
+  </div>
+       
+       <h3 style="margin:25px;color:#0D184F;font-weight:bold;">Active tenders in your pharmacy:</h3>
         <div class="row" style = "background-color:whitesmoke; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
                         <div class=" form-group col"  v-for="order in orders" :key="order.id">
                                    <h4 style="color: #0D184F;margin:20px">Choose tender:</h4>
@@ -265,7 +266,7 @@
                            
                         </div>
                         <hr/>
-                         <div v-if="active" class="row justify-content-center">
+                         <div class="row justify-content-center">
                            <div class="modal-footer">
                             <button class="btn btn-primary" @click="showEditForm">Edit</button>
 
@@ -281,7 +282,7 @@
             </div>
 
 
-       <div v-if="showOffers && active" class="row" style = "background-color:whitesmoke; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+       <div v-if="showOffers" class="row" style = "background-color:whitesmoke; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
                         <div class=" form-group col"  v-for="offer in offers" :key="offer.id">
                                    <h4 style="color: #0D184F;margin:20px">Choose offer:</h4>
 
@@ -289,7 +290,7 @@
                         </div>
                     </div>
 
-    <div v-if="showConcreteOffer && active" style = "background-color:white; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+    <div v-if="showConcreteOffer" style = "background-color:white; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
                    
                     <hr/>
                                                        <h4 style="color: #0D184F;margin:20px">Offer from {{supplierName}}&nbsp; {{supplierSurName}}</h4>
@@ -343,8 +344,7 @@
                     </div>
                         
             </div>
-            </div>
-      
+
             
        
 
@@ -402,10 +402,7 @@ export default {
         medicationQuantityListEdit : "",
         endDateEdit : "",
         quantityEdit : "",
-        active : true,
-        finised :false
         
-
     }
     },
      mounted() {
@@ -473,7 +470,6 @@ export default {
       },
       showEditForm(){
                   this.$refs['edit-modal'].show()
-
       },
       showModal() {
         this.$refs['my-modal'].show()
@@ -514,7 +510,6 @@ export default {
                         console.log(res);
                 });
                 this.showOffers = true;
-
            
       },
       addNewMedicine : function(){
@@ -525,7 +520,6 @@ export default {
                 };
                 this.medicationQuantityList.push(medicineWithQuantity)
                 this.medicationQuantityListEdit.push(medicineWithQuantity)
-
       },
        addNewMedicineEdit : function(){
                 const medicineWithQuantityEdit = {
@@ -596,8 +590,7 @@ export default {
                  });    
       },
       acceptOffer : function(){
-     let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-
+          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
         this.axios.get('/offer/accept/'+this.choosenOffer.id,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
@@ -610,38 +603,6 @@ export default {
                         console.log(res);
                 });
       },
-      showActive : function(){
-            this.active = true;
-            this.finised = false;
-           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-           this.axios.get('/pharmacyAdmin/activeOrders',{ 
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                    }
-                    }).then(response => {
-                            this.orders = response.data;
-                    }).catch(res => {
-                            alert("NOT OK");
-                            console.log(res);
-                    });
-          
-      },
-      showFinised :function(){
-          this.finised = true;
-          this.active = false;
-          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-           this.axios.get('/pharmacyAdmin/finishedOrders',{ 
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                    }
-                    }).then(response => {
-                            this.orders = response.data;
-                    }).catch(res => {
-                            alert("NOT OK");
-                            console.log(res);
-                    });
-
-      }
       
    
    
@@ -650,7 +611,6 @@ export default {
 </script>
 
 <style>
-
 body {
   font-family: "Lato", sans-serif;
 }
