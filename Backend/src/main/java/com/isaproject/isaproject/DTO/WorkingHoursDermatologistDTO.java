@@ -1,11 +1,9 @@
 package com.isaproject.isaproject.DTO;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import java.time.LocalTime;
+
 public class WorkingHoursDermatologistDTO {
-    private Dermatologist dermatologist;
+    private Integer dermatologistId;
     private Integer pharmacyId;
     private LocalTime startTimeMonday;
     private LocalTime startTimeTuesday;
@@ -22,18 +20,16 @@ public class WorkingHoursDermatologistDTO {
     private LocalTime endTimeSaturday;
     private LocalTime endTimeSunday;
 
-
-    @JsonIgnore
     public WorkingHoursDermatologistDTO() { }
 
-    public Dermatologist getDermatologist() {
-        return dermatologist;
+    public Integer getDermatologistId() {
+        return dermatologistId;
     }
 
-    public void setDermatologist(Dermatologist dermatologist) {
-        this.dermatologist = dermatologist;
+    public void setDermatologistId(Integer dermatologistId) {
+        this.dermatologistId = dermatologistId;
     }
-    @JsonIgnore
+
     public Integer getPharmacyId() {
         return pharmacyId;
     }
@@ -41,7 +37,7 @@ public class WorkingHoursDermatologistDTO {
     public void setPharmacyId(Integer pharmacyId) {
         this.pharmacyId = pharmacyId;
     }
-    @JsonIgnore
+
     public LocalTime getStartTimeMonday() {
         return startTimeMonday;
     }
@@ -49,7 +45,7 @@ public class WorkingHoursDermatologistDTO {
     public void setStartTimeMonday(LocalTime startTimeMonday) {
         this.startTimeMonday = startTimeMonday;
     }
-    @JsonIgnore
+
     public LocalTime getStartTimeTuesday() {
         return startTimeTuesday;
     }
@@ -57,7 +53,7 @@ public class WorkingHoursDermatologistDTO {
     public void setStartTimeTuesday(LocalTime startTimeTuesday) {
         this.startTimeTuesday = startTimeTuesday;
     }
-    @JsonIgnore
+
     public LocalTime getStartTimeWednesday() {
         return startTimeWednesday;
     }
@@ -65,7 +61,7 @@ public class WorkingHoursDermatologistDTO {
     public void setStartTimeWednesday(LocalTime startTimeWednesday) {
         this.startTimeWednesday = startTimeWednesday;
     }
-    @JsonIgnore
+
     public LocalTime getStartTimeThursday() {
         return startTimeThursday;
     }
@@ -73,7 +69,7 @@ public class WorkingHoursDermatologistDTO {
     public void setStartTimeThursday(LocalTime startTimeThursday) {
         this.startTimeThursday = startTimeThursday;
     }
-    @JsonIgnore
+
     public LocalTime getStartTimeFriday() {
         return startTimeFriday;
     }
@@ -81,7 +77,7 @@ public class WorkingHoursDermatologistDTO {
     public void setStartTimeFriday(LocalTime startTimeFriday) {
         this.startTimeFriday = startTimeFriday;
     }
-    @JsonIgnore
+
     public LocalTime getStartTimeSaturday() {
         return startTimeSaturday;
     }
@@ -89,7 +85,7 @@ public class WorkingHoursDermatologistDTO {
     public void setStartTimeSaturday(LocalTime startTimeSaturday) {
         this.startTimeSaturday = startTimeSaturday;
     }
-    @JsonIgnore
+
     public LocalTime getStartTimeSunday() {
         return startTimeSunday;
     }
@@ -97,7 +93,7 @@ public class WorkingHoursDermatologistDTO {
     public void setStartTimeSunday(LocalTime startTimeSunday) {
         this.startTimeSunday = startTimeSunday;
     }
-    @JsonIgnore
+
     public LocalTime getEndTimeMonday() {
         return endTimeMonday;
     }
@@ -105,7 +101,7 @@ public class WorkingHoursDermatologistDTO {
     public void setEndTimeMonday(LocalTime endTimeMonday) {
         this.endTimeMonday = endTimeMonday;
     }
-    @JsonIgnore
+
     public LocalTime getEndTimeTuesday() {
         return endTimeTuesday;
     }
@@ -113,7 +109,7 @@ public class WorkingHoursDermatologistDTO {
     public void setEndTimeTuesday(LocalTime endTimeTuesday) {
         this.endTimeTuesday = endTimeTuesday;
     }
-    @JsonIgnore
+
     public LocalTime getEndTimeWednesday() {
         return endTimeWednesday;
     }
@@ -121,7 +117,7 @@ public class WorkingHoursDermatologistDTO {
     public void setEndTimeWednesday(LocalTime endTimeWednesday) {
         this.endTimeWednesday = endTimeWednesday;
     }
-    @JsonIgnore
+
     public LocalTime getEndTimeThursday() {
         return endTimeThursday;
     }
@@ -129,7 +125,7 @@ public class WorkingHoursDermatologistDTO {
     public void setEndTimeThursday(LocalTime endTimeThursday) {
         this.endTimeThursday = endTimeThursday;
     }
-    @JsonIgnore
+
     public LocalTime getEndTimeFriday() {
         return endTimeFriday;
     }
@@ -137,7 +133,7 @@ public class WorkingHoursDermatologistDTO {
     public void setEndTimeFriday(LocalTime endTimeFriday) {
         this.endTimeFriday = endTimeFriday;
     }
-    @JsonIgnore
+
     public LocalTime getEndTimeSaturday() {
         return endTimeSaturday;
     }
@@ -145,35 +141,12 @@ public class WorkingHoursDermatologistDTO {
     public void setEndTimeSaturday(LocalTime endTimeSaturday) {
         this.endTimeSaturday = endTimeSaturday;
     }
-    @JsonIgnore
+
     public LocalTime getEndTimeSunday() {
         return endTimeSunday;
     }
 
     public void setEndTimeSunday(LocalTime endTimeSunday) {
         this.endTimeSunday = endTimeSunday;
-    }
-
-
-    @Override
-    public String toString() {
-        return "WorkingHoursDermatologistDTO{" +
-                "dermatologist=" + dermatologist +
-                ", pharmacyId=" + pharmacyId +
-                ", startTimeMonday=" + startTimeMonday +
-                ", startTimeTuesday=" + startTimeTuesday +
-                ", startTimeWednesday=" + startTimeWednesday +
-                ", startTimeThursday=" + startTimeThursday +
-                ", startTimeFriday=" + startTimeFriday +
-                ", startTimeSaturday=" + startTimeSaturday +
-                ", startTimeSunday=" + startTimeSunday +
-                ", endTimeMonday=" + endTimeMonday +
-                ", endTimeTuesday=" + endTimeTuesday +
-                ", endTimeWednesday=" + endTimeWednesday +
-                ", endTimeThursday=" + endTimeThursday +
-                ", endTimeFriday=" + endTimeFriday +
-                ", endTimeSaturday=" + endTimeSaturday +
-                ", endTimeSunday=" + endTimeSunday +
-                '}';
     }
 }

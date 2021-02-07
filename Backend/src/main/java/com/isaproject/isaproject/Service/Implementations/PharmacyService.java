@@ -4,6 +4,7 @@ import com.isaproject.isaproject.DTO.PharmacyDTO;
 import com.isaproject.isaproject.DTO.WorkingHoursDermatologistDTO;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Address;
+import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Repository.DermatologistRepository;
 import com.isaproject.isaproject.Repository.PharmacyRepository;
 import com.isaproject.isaproject.Service.IServices.IPharmacyService;
@@ -48,7 +49,8 @@ public class PharmacyService implements IPharmacyService {
     public Boolean savePharmacy(WorkingHoursDermatologistDTO dto) {
         Pharmacy ph = findById((dto.getPharmacyId()));
         try{
-            ph.getDermatologists().add(dto.getDermatologist());
+            Dermatologist dermatologist = dermatologistRepository.getOne(dto.getDermatologistId());
+            ph.getDermatologists().add(dermatologist);
             this.pharmacyRepository.save(ph);
             return true;
         }catch (Exception e){

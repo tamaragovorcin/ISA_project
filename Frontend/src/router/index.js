@@ -65,6 +65,7 @@ import showMedicationsHome from '../views/home/showMedicationsHome.vue'
 import myPharmacistsConsultation from '../views/patient/myPharmacistsConsultation.vue'
 import PharmacyAdminMedicationSearch from '../views/pharmacyAdmin/PharmacyAdminMedicationSearch.vue'
 import HolidayRequests from '../views/pharmacyAdmin/HolidayRequests.vue'
+import ExaminationTerms from '../views/pharmacyAdmin/ExaminationTerms.vue'
 import PharmacistMedicationSearch from '../views/pharmacist/PharmacistMedicationSearch.vue'
 import DermatologistMedicationSearch from '../views/dermatologist/DermatologistMedicationSearch.vue'
 import HolidayRequestsDermatologists from '../views/systemAdmin/HolidayRequestsDermatologists.vue'
@@ -444,6 +445,11 @@ const routes = [
       path: '/dermatologists',
       name: 'Dermatologists',
       component: Dermatologists
+    },
+    {
+      path: '/examinationTerms',
+      name: 'ExaminationTerms',
+      component: ExaminationTerms
     },
     
     

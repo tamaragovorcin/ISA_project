@@ -2,38 +2,47 @@
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-            
              <span style="float: left; margin: 15px;">
-                <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
-                <strong class="tab"></strong>  
-                <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
-                <strong class="tab"></strong>  
-                <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
-                <strong class="tab"></strong>  
-                 <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
-                 
-                <strong class="tab"></strong>  
-                 <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
-                               class = "btn btn-link btn-lg">
-                    <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
-                    <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
-                </b-dropdown> 
-                <strong class="tab"></strong>  
-                <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
-                <strong class="tab"></strong>  
-                <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
-                <strong class="tab"></strong>  
-                 <a   class = "btn btn-secondary" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
-                <strong class="tab"></strong>  
-                <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
-                <strong class="tab"></strong>  
-                <a   class = "btn btn-secondary" href="/order">Orders</a>
+                              <b-dropdown id="ddCommodity" name="ddCommodity" text="My profile" 
+                                              class = "btn btn-link btn-lg">
+                                    <b-dropdown-item href = "/pharmacyAdminProfile">Our pharmacists</b-dropdown-item>
+                                    <b-dropdown-item href = "/phAdminProfileUpdate">Update profile</b-dropdown-item>      
+                                </b-dropdown>        
+
+                        <strong class="tab"></strong>  
+
+                                    <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
+                                                <button class = "btn btn-secondary" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
+                                    </router-link>
+
+                          <strong class="tab"></strong>  
+
+                                  <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
+                                                class = "btn btn-link btn-lg">
+                                      <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
+                                      <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
+                                  </b-dropdown> 
+                          <strong class="tab"></strong>  
+                                  <b-dropdown id="ddCommodity" name="ddCommodity" text="Dermatologists" 
+                                                  class = "btn btn-link btn-lg">
+                                        <b-dropdown-item href = "/pharmacyDermatologists">Our dermatologists(Add new)</b-dropdown-item>
+                                        <b-dropdown-item href = "/examinationTerms">Examination terms</b-dropdown-item>      
+                                    </b-dropdown>                 
+                            <strong class="tab"></strong>  
+                            <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
+                            <strong class="tab"></strong>  
+                            <a   class = "btn btn-secondary" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
+                            <strong class="tab"></strong>  
+                            <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
+                            <strong class="tab"></strong>  
+                            <a   class = "btn btn-secondary" href="/order">Orders</a>
+                            <strong class="tab"></strong>  
+                            <a   class = "btn btn-secondary" href="/holidayRequests">Holiday/absence requests</a>
             </span>
-              <span  style="float:right;margin:10px">
-                    
-
+              <span  style="float:right;margin:15px">
+                   
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
-
+                
                 </span>
         </div>
 
@@ -170,10 +179,9 @@ mounted() {
       previousUpdateProfile : function(){
       },
     logOut : function(){
-          window.location.href = "/login";
-      },
+           localStorage.removeItem('token');
+           window.location.href = "/login";      },
        update : function(){
-        alert(this.admin.address.town);
           const addressInfo ={
               town : this.admin.address.town,
               street : this.admin.address.street,
@@ -206,7 +214,6 @@ mounted() {
                
            
               
-               window.location.href = "/pharmacyAdminProfile";
       }
   }
 }

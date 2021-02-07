@@ -8,9 +8,9 @@ public class MedicationPriceDTO {
     private Medication medication;
     private double price;
     private LocalDate date;
-    private Pharmacy pharmacy;
+    private Integer pharmacy;
 
-    public MedicationPriceDTO(Medication medication, double price, LocalDate date, Pharmacy pharmacy) {
+    public MedicationPriceDTO(Medication medication, double price, LocalDate date, Integer pharmacy) {
         this.medication = medication;
         this.price = price;
         this.date = date;
@@ -43,11 +43,11 @@ public class MedicationPriceDTO {
         this.date = date;
     }
 
-    public Pharmacy getPharmacy() {
+    public Integer getPharmacy() {
         return pharmacy;
     }
 
-    public void setPharmacy(Pharmacy pharmacy) {
+    public void setPharmacy(Integer pharmacy) {
         this.pharmacy = pharmacy;
     }
 }
