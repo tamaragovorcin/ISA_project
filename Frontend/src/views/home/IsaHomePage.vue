@@ -63,7 +63,7 @@
        <div v-if="showTable"  style="background: whitesmoke; border: 3px solid #0D184F; height: 200px; width:1000px; margin-left:300px; margin-top: 20px">
           
  <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
-<table id="table2" class="table" :href="href" @click="navigate"  elevation="1">
+<table  style="" id="table2" class="table" :href="href" @click="navigate"  elevation="1">
  
     <tbody>
     <tr>
@@ -105,7 +105,7 @@
        <div id="customers" v-if="showSecondTable"  style="background: whitesmoke; border: 3px solid #0D184F; height: 200px; width:1000px; margin-left:300px; margin-top: 20px">
           
  <router-link :to="{ path: '/pharmacyProfile/'+pharmacy1.id}" v-slot="{href, navigate}">
-<table id="table1" class="table" :href="href" @click="navigate"  elevation="1">
+<table  style="" id="table1" class="table" :href="href" @click="navigate"  elevation="1">
  
     <tbody>
     <tr>

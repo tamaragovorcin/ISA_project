@@ -53,13 +53,13 @@
 
 
         <div class = "container" v-if="welcomePageShow">
-                  <h1 style="color:#0D184F;font-suze:75px;font-weight:bold;" align = "center"><u>{{pharmacy.pharmacyName}}</u></h1>
+                  <h1 style="color:#0D184F;font-size:75px;font-weight:bold;" align = "center"><u>{{pharmacy.pharmacyName}}</u></h1>
 
-                <h3 style="color:#0D184F;font-suze:55px;font-weight:bold;margin-top:30px;" align = "center">About us:</h3>
-            <div style="color:#0D184F;font-suze:40px;font-style:italic;font-weight:bold;">{{pharmacy.description}}</div>
-             <h3 style="color:green;font-suze:55px;font-weight:bold;margin-top:30px;" align = "center">Visit us at address:</h3>
+                <h3 style="color:#0D184F;font-size:55px;font-weight:bold;margin-top:30px;" align = "center">About us:</h3>
+            <div style="color:#0D184F;font-size:40px;font-style:italic;font-weight:bold;">{{pharmacy.description}}</div>
+             <h3 style="color:green;font-size:55px;font-weight:bold;margin-top:30px;" align = "center">Visit us at address:</h3>
 
-            <div style="color:green;font-suze:40px;font-style:italic;font-weight:bold;">{{pharmacy.address.street}}&nbsp; {{pharmacy.address.number}},&nbsp; {{pharmacy.address.town}}</div>
+            <div style="color:green;font-size:40px;font-style:italic;font-weight:bold;">{{pharmacy.address.street}}&nbsp; {{pharmacy.address.number}},&nbsp; {{pharmacy.address.town}}</div>
       </div>
         <div v-if="dermatologistsShow" class="container justify-content-center" id ="table">
 
@@ -92,7 +92,7 @@
        <div v-if="pharmacistsShow" class="container justify-content-center" id ="table" align="center">
 
                           <h3 style="color:white;">Pharmacists of&nbsp; {{pharmacy.pharmacyName}}</h3>
-                          <h5 style="color:white;float:left;color:red;">Consulting price:&nbsp; {{pharmacy.consultingPrice}}&nbsp; din</h5>
+                          <h5 style="float:left;color:red;">Consulting price:&nbsp; {{pharmacy.consultingPrice}}&nbsp; din</h5>
 
                       <table class="table table-striped table-light">
                       <thead class="thead-light">

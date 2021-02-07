@@ -6,24 +6,24 @@
         <div style="background: #0D184F; height: 90px;">
                 <span style="float: left; margin: 15px;">
                 <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
-                <b class="tab"></b>    
+                <strong class="tab"></strong>    
                 <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
-                <b class="tab"></b>    
+                 <strong class="tab"></strong>      
                 <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
-                 <b class="tab"></b>    
+                    <strong class="tab"></strong>      
                  <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
                  
-                <b class="tab"></b>    
+                   <strong class="tab"></strong>    
                 <a  class = "btn btn-secondary" href = "/addPharmacist">Add pharmacist</a>    
-                <b class="tab"></b> 
+                  <strong class="tab"></strong>     
                  <a  class = "btn btn-secondary" href = "/pharmacyPharmacists">Our pharmacists</a> 
-                  <b class="tab"></b>  
+                    <strong class="tab"></strong>     
                 <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
-                <b class="tab"></b> 
+                   <strong class="tab"></strong>    
                 <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
-                        <b class="tab"></b>    
+                          <strong class="tab"></strong>      
                 <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
-                        <b class="tab"></b>    
+                           <strong class="tab"></strong>       
                 <a   class = "btn btn-secondary" href="/order">Orders</a>
             </span>
               <span  style="float:right;margin:15px">

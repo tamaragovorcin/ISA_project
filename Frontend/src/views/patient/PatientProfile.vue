@@ -37,15 +37,15 @@ ines (39 sloc)  1.61 KB
         </div>
   <div style="background-color:lightgray;  width: 100%; margin-top:30px;">
         <div style="background-color:white;  margin: auto; width: 80%;padding: 30px;">
-            <h4 style="color: #0D184F"><b>POINTS</b></h4>
+            <h4 style="color: #0D184F"><strong>POINTS</strong></h4>
              <h5 style="color: #0D184F">{{this.patient.points}}</h5>
         </div>
         <div style="background-color:white; margin: auto; width: 80%;padding: 30px;margin-top:30px;">
-            <b><h4 style="color: #0D184F"><b> CATEGORY</b></h4></b>
+            <strong><h4 style="color: #0D184F"><strong> CATEGORY</strong></h4></strong>
              <h5 style="color: #0D184F">{{this.patient.loyaltyCategory}}</h5>
         </div>
         <div style="background-color:white; margin: auto; width: 80%; padding:30px;margin-top:30px;">
-            <b><h4 style="color: #0D184F"><b>BENEFITS</b></h4></b>
+            <strong><h4 style="color: #0D184F"><strong>BENEFITS</strong></h4></strong>
              <h5 style="color: #0D184F">{{this.patient.discount}}</h5>
         </div>
          <div style="background-color:white; margin: auto; width: 80%; padding:30px;margin-top:30px;">

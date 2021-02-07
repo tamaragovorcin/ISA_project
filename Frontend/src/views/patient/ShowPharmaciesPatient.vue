@@ -151,7 +151,7 @@
           
         
  <router-link :to="{ path: '/pharmacyProfilePatient/'+dermatologistAppointment.id}" v-slot="{href, navigate}">
-<table id="table1" class="table" :href="href" @click="navigate"  elevation="1">
+<table style = "" id="table1" class="table" :href="href" @click="navigate"  elevation="1">
  
  
     <tbody>
@@ -190,7 +190,7 @@
           
         
  <router-link :to="{ path: '/pharmacyProfilePatient/'+dermatologistAppointment.id}" v-slot="{href, navigate}">
-<table id="table2" class="table" :href="href" @click="navigate"  elevation="1">
+<table style = "" id="table2" class="table" :href="href" @click="navigate"  elevation="1">
  
  
     <tbody>

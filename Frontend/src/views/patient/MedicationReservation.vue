@@ -313,9 +313,9 @@
         <div style="background-color:whitesmoke; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
         
                 <label>Already reseved medications</label>
-                    <b class="tab"></b> 
+                    <strong class="tab"></strong> 
 
-                <table class="table table-striped table-dark">
+                <table style="" class="table table-striped table-dark">
                   <thead>
                     <tr>
                       

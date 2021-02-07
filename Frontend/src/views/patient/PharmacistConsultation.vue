@@ -113,7 +113,7 @@ ines (39 sloc)  1.61 KB
                 
               </div>
              </template>
-    <table id="table1" class="table">
+    <table style = "" id="table1" class="table">
                     <thead  class="thead-dark">
                         <tr style="font-weight: bold; ">
                             <th style="width: 200px; height: 80px;" scope="col">Name of pharmacy</th>
@@ -160,7 +160,7 @@ ines (39 sloc)  1.61 KB
                     </div>
               </div>
              </template>
-    <table id="table2"  class="table">
+    <table style = "" id="table2"  class="table">
                     <thead  class="thead-dark">
                         <tr style="font-weight: bold; ">
                             <th style="width: 200px;" scope="col">Pharmacist first name</th>
