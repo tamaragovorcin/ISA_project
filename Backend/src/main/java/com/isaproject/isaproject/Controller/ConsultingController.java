@@ -212,9 +212,7 @@ public class ConsultingController {
 
 
         }
-        return consultingsFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(consultingsFrontDTOS);
+        return ResponseEntity.ok(consultingsFrontDTOS);
     }
 
 
@@ -256,9 +254,7 @@ public class ConsultingController {
 
 
         }
-        return consultingsFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(consultingsFrontDTOS);
+        return ResponseEntity.ok(consultingsFrontDTOS);
     }
 
 
@@ -299,9 +295,7 @@ public class ConsultingController {
 
 
         }
-        return consultingsFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(consultingsFrontDTOS);
+        return ResponseEntity.ok(consultingsFrontDTOS);
     }
 
 
@@ -343,9 +337,7 @@ public class ConsultingController {
 
 
         }
-        return consultingsFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(consultingsFrontDTOS);
+        return ResponseEntity.ok(consultingsFrontDTOS);
     }
 
     @GetMapping("/dateClosest")
@@ -384,9 +376,7 @@ public class ConsultingController {
 
 
         }
-        return consultingsFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(consultingsFrontDTOS);
+        return  ResponseEntity.ok(consultingsFrontDTOS);
     }
 
     @GetMapping("/dateFurthest")
@@ -426,9 +416,7 @@ public class ConsultingController {
 
 
         }
-        return consultingsFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(consultingsFrontDTOS);
+        return ResponseEntity.ok(consultingsFrontDTOS);
     }
 
 
@@ -438,7 +426,7 @@ public class ConsultingController {
 
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
-        time.plusSeconds(0);
+        time = time.plusSeconds(0);
 
         List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
         List<Pharmacy> pharmacies = new ArrayList<Pharmacy>();
@@ -465,8 +453,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
 
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
@@ -492,8 +480,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -517,8 +505,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
 
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
@@ -543,8 +531,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -568,8 +556,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -593,8 +581,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -618,8 +606,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -677,7 +665,7 @@ public class ConsultingController {
 
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
-        time.plusSeconds(0);
+        time= time.plusSeconds(0);
 
         List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
         List<Pharmacy> pharmacies = new ArrayList<Pharmacy>();
@@ -704,8 +692,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
 
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
@@ -731,8 +719,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -756,8 +744,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
 
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
@@ -782,8 +770,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -807,8 +795,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -832,8 +820,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -857,8 +845,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -916,7 +904,7 @@ public class ConsultingController {
 
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
-        time.plusSeconds(0);
+        time = time.plusSeconds(0);
 
         List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
         List<Pharmacy> pharmacies = new ArrayList<Pharmacy>();
@@ -943,8 +931,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
 
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
@@ -970,8 +958,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -995,8 +983,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
 
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
@@ -1021,8 +1009,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1046,8 +1034,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1071,8 +1059,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1096,8 +1084,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1155,7 +1143,7 @@ public class ConsultingController {
 
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
-        time.plusSeconds(0);
+        time = time.plusSeconds(0);
 
         List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
         List<Pharmacy> pharmacies = new ArrayList<Pharmacy>();
@@ -1182,8 +1170,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
 
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
@@ -1209,8 +1197,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1234,8 +1222,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
 
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
@@ -1260,8 +1248,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1285,8 +1273,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1310,8 +1298,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1335,8 +1323,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1395,7 +1383,7 @@ public class ConsultingController {
 
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
-        time.plusSeconds(0);
+        time = time.plusSeconds(0);
 
         List<PharmacistDTO> pharmacistDTOS = new ArrayList<PharmacistDTO>();
         List<Pharmacist> pharmacistsMAIN = new ArrayList<Pharmacist>();
@@ -1429,8 +1417,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
 
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
@@ -1456,8 +1444,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1481,8 +1469,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
 
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
@@ -1507,8 +1495,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1532,8 +1520,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1557,8 +1545,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1582,8 +1570,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1665,7 +1653,7 @@ public class ConsultingController {
 
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
-        time.plusSeconds(0);
+        time = time.plusSeconds(0);
 
         List<PharmacistDTO> pharmacistDTOS = new ArrayList<PharmacistDTO>();
         List<Pharmacist> pharmacistsMAIN = new ArrayList<Pharmacist>();
@@ -1699,9 +1687,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
-
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1726,8 +1713,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1751,8 +1738,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
 
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
@@ -1777,8 +1764,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1802,8 +1789,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1827,8 +1814,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1852,8 +1839,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -1935,7 +1922,7 @@ public class ConsultingController {
 
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
-        time.plusSeconds(0);
+        time=time.plusSeconds(0);
 
         List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
         List<Pharmacy> pharmacies = new ArrayList<Pharmacy>();
@@ -1962,8 +1949,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
 
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
@@ -1989,8 +1976,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -2014,8 +2001,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
 
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
@@ -2040,8 +2027,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -2065,8 +2052,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -2090,8 +2077,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -2115,8 +2102,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -2169,7 +2156,7 @@ public class ConsultingController {
 
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
-        time.plusSeconds(0);
+        time= time.plusSeconds(0);
 
         List<PharmacistDTO> pharmacistDTOS = new ArrayList<PharmacistDTO>();
         List<Pharmacist> pharmacistsMAIN = new ArrayList<Pharmacist>();
@@ -2203,8 +2190,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
 
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
@@ -2230,8 +2217,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -2255,9 +2242,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
-
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -2281,8 +2267,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -2306,8 +2292,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -2331,8 +2317,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {
@@ -2356,8 +2342,8 @@ public class ConsultingController {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
-                        start.plusSeconds(0);
-                        end.plusSeconds(0);
+                        start = start.plusSeconds(0);
+                        end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
                             if (pharmacies.size() == 0) {

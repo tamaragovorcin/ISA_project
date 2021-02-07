@@ -146,9 +146,7 @@ public class PharmacyController  {
         }
 
 
-        return pharmacyFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacyFrontDTOS);
+        return ResponseEntity.ok(pharmacyFrontDTOS);
     }
 
 
@@ -407,9 +405,7 @@ public class PharmacyController  {
             }
         }
 
-        return examinationScheduleFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(examinationScheduleFrontDTOS);
+        return ResponseEntity.ok(examinationScheduleFrontDTOS);
     }
 
     @GetMapping("dateFurthest/{id}")
@@ -455,9 +451,7 @@ public class PharmacyController  {
             }
         }
 
-        return examinationScheduleFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(examinationScheduleFrontDTOS);
+        return ResponseEntity.ok(examinationScheduleFrontDTOS);
     }
 
     @GetMapping("sortpricelowest/{id}")
@@ -505,9 +499,7 @@ public class PharmacyController  {
             }
         }
 
-        return examinationScheduleFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(examinationScheduleFrontDTOS);
+        return ResponseEntity.ok(examinationScheduleFrontDTOS);
     }
 
     @GetMapping("sortpricehighest/{id}")
@@ -554,9 +546,7 @@ public class PharmacyController  {
             }
         }
 
-        return examinationScheduleFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(examinationScheduleFrontDTOS);
+        return ResponseEntity.ok(examinationScheduleFrontDTOS);
     }
 
 
@@ -603,9 +593,7 @@ public class PharmacyController  {
             }
         }
 
-        return examinationScheduleFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(examinationScheduleFrontDTOS);
+        return ResponseEntity.ok(examinationScheduleFrontDTOS);
     }
 
 
@@ -653,9 +641,7 @@ public class PharmacyController  {
             }
         }
 
-        return examinationScheduleFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(examinationScheduleFrontDTOS);
+        return ResponseEntity.ok(examinationScheduleFrontDTOS);
     }
 
     @GetMapping("/cancelExamination/{id}")
@@ -1040,9 +1026,7 @@ public class PharmacyController  {
             }
 
 
-            return pharmacy == null ?
-                    new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                    ResponseEntity.ok(pharmacy);
+            return ResponseEntity.ok(pharmacy);
 
         } else {
             return null;
@@ -1168,9 +1152,7 @@ public class PharmacyController  {
         }
 
 
-        return pharmacyFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacyFrontDTOS);
+        return ResponseEntity.ok(pharmacyFrontDTOS);
     }
 
 
@@ -1211,9 +1193,7 @@ public class PharmacyController  {
         }
 
 
-        return pharmacyFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacyFrontDTOS);
+        return ResponseEntity.ok(pharmacyFrontDTOS);
     }
 
     @GetMapping("cityfromatoz")
@@ -1250,9 +1230,7 @@ public class PharmacyController  {
         }
 
 
-        return pharmacyFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacyFrontDTOS);
+        return ResponseEntity.ok(pharmacyFrontDTOS);
     }
 
     @GetMapping("namefromztoa")
@@ -1289,9 +1267,7 @@ public class PharmacyController  {
         }
 
 
-        return pharmacyFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacyFrontDTOS);
+        return ResponseEntity.ok(pharmacyFrontDTOS);
     }
     @GetMapping("namefromatoz")
         //@PreAuthorize("hasRole('PATIENT')")
@@ -1327,9 +1303,7 @@ public class PharmacyController  {
         }
 
 
-        return pharmacyFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacyFrontDTOS);
+        return ResponseEntity.ok(pharmacyFrontDTOS);
     }
 
     @GetMapping("filterMark/{i}")
@@ -1358,8 +1332,6 @@ public class PharmacyController  {
         }
 
 
-        return pharmacyFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacyFrontDTOS);
+        return ResponseEntity.ok(pharmacyFrontDTOS);
     }
 }

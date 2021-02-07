@@ -182,12 +182,8 @@ public class PatientController {
     @PostMapping("/update")
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> update(@RequestBody Patient person) {
-        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"+ person.getAddress().getTown());
         Patient patient = patientService.update(person);
-        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"+ patient.getName());
-        return patient == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                new ResponseEntity<>("Your profile is successfully updated!", HttpStatus.CREATED);
+        return new ResponseEntity<>("Your profile is successfully updated!", HttpStatus.CREATED);
     }
 
     @PostMapping("/addAlergies")

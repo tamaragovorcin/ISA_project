@@ -104,10 +104,8 @@ public class PatientService implements IPatientService {
     public Patient update(Patient userRequest) {
 
 
-        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"+ userRequest.getSurname());
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
-        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"+ user.getId());
         Patient patient= findById(user.getId());
         patient.setAddress(userRequest.getAddress());
         List<Authority> auth = new ArrayList<Authority>();
