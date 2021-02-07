@@ -6,23 +6,25 @@ ines (39 sloc)  1.61 KB
         <div style="background: #0D184F; height: 90px;">
             
             <span style="float: left; margin: 15px;">
-                    <a  class = "btn btn-link btn-lg" href= "/isaHomePage">Home</a>
-                    <b class="tab"></b>                
+                               
+                    <a  class = "btn btn-link btn-lg" href= "/patientProfile">Home page</a>
                     <a  class = "btn btn-link btn-lg" href= "/showPharmaciesPatient">Pharmacies</a>
-                    <b class="tab"></b>     
-                    <a  class = "btn btn-link btn-lg" href= "/myProfilePatient">My profile</a>
-                    <b class="tab"></b>                
-                    <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
-                    <b class="tab"></b>   
-                    <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
-                    <b class="tab"></b>   
-
-
-                       <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "leaveAMark">Leave a mark</button>
-                    <strong class="tab"></strong>   
-
                     <a  class = "btn btn-link btn-lg" href= "/eRecipes">ERecipes</a>
-                    <b class="tab"></b> 
+                    <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
+                     <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "leaveAMark">Leave a mark</button>
+                   
+            
+                    <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
+               
+                    
+                    
+                     <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
+                    <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
+                         <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
+                   
+
+             
+                  
 
             </span>
               <span  style="float:right;margin:15px">
@@ -33,7 +35,24 @@ ines (39 sloc)  1.61 KB
                 </span>
 
         </div>
-
+  <div style="background-color:lightgray;  width: 100%; margin-top:30px;">
+        <div style="background-color:white;  margin: auto; width: 80%;padding: 30px;">
+            <h4 style="color: #0D184F"><strong>POINTS</strong></h4>
+             <h5 style="color: #0D184F">{{this.patient.points}}</h5>
+        </div>
+        <div style="background-color:white; margin: auto; width: 80%;padding: 30px;margin-top:30px;">
+            <strong><h4 style="color: #0D184F"><strong> CATEGORY</strong></h4></strong>
+             <h5 style="color: #0D184F">{{this.patient.loyaltyCategory}}</h5>
+        </div>
+        <div style="background-color:white; margin: auto; width: 80%; padding:30px;margin-top:30px;">
+            <strong><h4 style="color: #0D184F"><strong>BENEFITS</strong></h4></strong>
+             <h5 style="color: #0D184F">{{this.patient.discount}}</h5>
+        </div>
+         <div style="background-color:white; margin: auto; width: 80%; padding:30px;margin-top:30px;">
+            <strong><h4 style="color: #0D184F"><strong>PENALTIES</strong></h4></strong>
+             <h5 style="color: #0D184F">{{this.patient.penalties}}</h5>
+        </div>
+        </div>
 
        <div>
      <b-modal ref="my-modal" hide-footer scrollable title="Write complaint" size="lg" modal-class="b-modal">
@@ -179,7 +198,7 @@ ines (39 sloc)  1.61 KB
                                         
 
                                          <div class="row">
-                                                    <div class = "tab"></div><div class = "tab"></div>
+                                                   
                                                   <button class = "btn btn-primary" v-on:click = "markAboutPharmacy">Pharmacy</button>
                                                   <div class = "tab"></div>
                                                   <button class = "btn btn-primary" v-on:click = "markAboutPharmacist">Pharmacist</button>
@@ -211,14 +230,15 @@ ines (39 sloc)  1.61 KB
                                                                        
 
 
-       
+            <div class = "row">
             <template>
-              <div class="custom-control custom-radio form-group col "  style = "background-color:lightgray; margin: auto; width: 750px; height: 80px; border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <strong class="tab"></strong>  <strong class="tab"></strong>
+                <p class="tab"></p>
+              <div class="custom-control custom-radio form-group col ">
+         
                   <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
                    <label class="custom-control-label" for="defaultGroupExample1">1</label>
                 
-              </div>   <p class="tab"></p>
+              </div>  
               <div class="custom-control custom-radio form-group col ">
 
                   <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
@@ -245,6 +265,7 @@ ines (39 sloc)  1.61 KB
                 
               </div> 
              </template>
+            </div>
                                                                  
                                                                         
                                                                     
@@ -273,13 +294,15 @@ ines (39 sloc)  1.61 KB
                                                                     </div>
                                                                     
                                                                     <hr />
+                                                                    <div class = "row">
                                                                  <template>
-              <div class="custom-control custom-radio form-group col "  style = "background-color:lightgray; margin: auto; width: 750px; height: 80px; border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <strong class="tab"></strong>  <strong class="tab"></strong>
+                                                                      <p class="tab"></p>
+              <div class="custom-control custom-radio form-group col " >
+     
                   <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
                    <label class="custom-control-label" for="defaultGroupExample1">1</label>
                 
-              </div>   <p class="tab"></p>
+              </div>  
               <div class="custom-control custom-radio form-group col ">
 
                   <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
@@ -306,6 +329,7 @@ ines (39 sloc)  1.61 KB
                 
               </div> 
              </template>
+                                                                    </div>
                                  
                                                                      <div class="modal-footer">
                                
@@ -329,14 +353,14 @@ ines (39 sloc)  1.61 KB
                                                                     </div>
                                                                     
                                                                     <hr />
-                                                                   
+              <div class = "row">                                                     
             <template>
-              <div class="custom-control custom-radio form-group col "  style = "background-color:lightgray; margin: auto; width: 750px; height: 80px; border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <strong class="tab"></strong>  <strong class="tab"></strong>
+                 <p class="tab"></p>
+              <div class="custom-control custom-radio form-group col "  >
                   <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
                    <label class="custom-control-label" for="defaultGroupExample1">1</label>
                 
-              </div>   <p class="tab"></p>
+              </div>  
               <div class="custom-control custom-radio form-group col ">
 
                   <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
@@ -363,6 +387,7 @@ ines (39 sloc)  1.61 KB
                 
               </div> 
              </template>
+              </div>
                                                                  
                                                                         
                              
@@ -387,14 +412,14 @@ ines (39 sloc)  1.61 KB
                                                                     </div>
                                                                     
                                                                     <hr />
-                                                                    
+                                                                    <div class = "row">
                                                                    <template>
-              <div class="custom-control custom-radio form-group col "  style = "background-color:lightgray; margin: auto; width: 750px; height: 80px; border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <strong class="tab"></strong>  <strong class="tab"></strong>
+                                                                        <p class="tab"></p>
+              <div class="custom-control custom-radio form-group col "  >
                   <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'1')">
                    <label class="custom-control-label" for="defaultGroupExample1">1</label>
                 
-              </div>   <p class="tab"></p>
+              </div> 
               <div class="custom-control custom-radio form-group col ">
 
                   <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'2')">
@@ -421,6 +446,7 @@ ines (39 sloc)  1.61 KB
                 
               </div> 
              </template>
+                                                                    </div>
                                                                      <div class="modal-footer">
 
                                         <button class="btn btn-primary" @click="sendMedication">Send </button>
@@ -652,6 +678,7 @@ export default {
                     })
 
             },
+             
 
 
   
@@ -659,6 +686,7 @@ export default {
 },
     mounted() {
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        
         this.axios.get('/patient/account',{ 
              headers: {
                  'Authorization': 'Bearer ' + token,

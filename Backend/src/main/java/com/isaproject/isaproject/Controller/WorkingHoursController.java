@@ -58,6 +58,7 @@ public class WorkingHoursController {
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addDermatologistWorkingHours(@RequestBody WorkingHoursDermatologistDTO userRequest) {
 
+
         WorkingHoursDermatologist workingHoursDermatologist = workingHoursDermatologistService.save(userRequest);
         return new ResponseEntity<>("Working hours for pharmacist successfully added.", HttpStatus.CREATED);
     }

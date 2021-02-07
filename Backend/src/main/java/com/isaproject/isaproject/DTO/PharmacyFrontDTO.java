@@ -18,9 +18,19 @@ public class PharmacyFrontDTO {
 
     private Double mark;
 
+    private Double price;
+
 
     public Integer getId() {
         return id;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public void setId(Integer id) {

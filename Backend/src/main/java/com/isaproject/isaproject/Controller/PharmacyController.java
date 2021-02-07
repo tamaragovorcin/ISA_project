@@ -18,6 +18,8 @@ import com.isaproject.isaproject.Service.Implementations.ActionsService;
 import com.isaproject.isaproject.Service.Implementations.ExaminationScheduleService;
 import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyService;
+import org.bouncycastle.crypto.prng.ReversedWindowGenerator;
+import org.hibernate.annotations.GeneratorType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -26,16 +28,18 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.swing.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/pharmacy")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class PharmacyController {
+public class PharmacyController  {
     @Autowired
     PharmacyService pharmacyService;
     @Autowired
@@ -121,12 +125,28 @@ public class PharmacyController {
         return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
     }
     @GetMapping("/all")
-    ResponseEntity<List<Pharmacy>> getAllPharmacies()
+    ResponseEntity<List<PharmacyFrontDTO>> getAllPharmacies()
     {
         List<Pharmacy> pharmacies = pharmacyService.findAll();
-        return pharmacies == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacies);
+        List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
+
+        for(Pharmacy pharmacy: pharmacies){
+
+            PharmacyFrontDTO pharmacyFrontDTO = new PharmacyFrontDTO();
+            pharmacyFrontDTO.setId(pharmacy.getId());
+            pharmacyFrontDTO.setPharmacyName(pharmacy.getPharmacyName());
+            pharmacyFrontDTO.setStreet(pharmacy.getAddress().getStreet());
+            pharmacyFrontDTO.setNumber(pharmacy.getAddress().getNumber());
+            pharmacyFrontDTO.setCountry(pharmacy.getAddress().getCountry());
+            pharmacyFrontDTO.setMark(pharmacy.getMark());
+            pharmacyFrontDTO.setPostalCode(pharmacy.getAddress().getPostalCode());
+            pharmacyFrontDTO.setCity(pharmacy.getAddress().getTown());
+            pharmacyFrontDTOS.add(pharmacyFrontDTO);
+
+        }
+
+
+        return ResponseEntity.ok(pharmacyFrontDTOS);
     }
 
 
@@ -230,6 +250,7 @@ public class PharmacyController {
                 System.out.println(ex.getDermatologist().getName());
 
                 FreeExaminationTermsDTO term = new FreeExaminationTermsDTO();
+                term.setId(ex.getId());
                 term.setDermatologistName(ex.getDermatologist().getName());
                 term.setDermatologistSurname(ex.getDermatologist().getSurname());
                 term.setDermatologistMark(ex.getDermatologist().getMarkDermatologist());
@@ -342,6 +363,287 @@ public class PharmacyController {
 
     }
 
+    @GetMapping("dateClosest/{id}")
+        //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<ExaminationFrontDTO>> dateClosest(@PathVariable Integer id) {
+
+
+        List<Examination> examinationSchedule = new ArrayList<Examination>();
+        examinationSchedule = examinationService.findAll();
+
+
+        Collections.sort(examinationSchedule, new Comparator<Examination>() {
+            public int compare(Examination o1, Examination o2) {
+                return o1.getExaminationSchedule().getDate().compareTo(o2.getExaminationSchedule().getDate());
+            }
+        });
+
+        List<ExaminationFrontDTO> examinationScheduleFrontDTOS = new ArrayList<ExaminationFrontDTO>();
+
+        for (Examination ex : examinationSchedule) {
+
+            if (id == ex.getPatient().getId()) {
+
+
+                ExaminationFrontDTO examinationScheduleFrontDTO = new ExaminationFrontDTO();
+                examinationScheduleFrontDTO.setId(ex.getId());
+                examinationScheduleFrontDTO.setPharmacy(ex.getExaminationSchedule().getPharmacy().getPharmacyName());
+                examinationScheduleFrontDTO.setPatientId(ex.getPatient().getId());
+                examinationScheduleFrontDTO.setDate(ex.getExaminationSchedule().getDate());
+                examinationScheduleFrontDTO.setDuration(ex.getExaminationSchedule().getDuration());
+                examinationScheduleFrontDTO.setPrice(ex.getExaminationSchedule().getPrice());
+                examinationScheduleFrontDTO.setDermatologistFirst(ex.getExaminationSchedule().getDermatologist().getName());
+                examinationScheduleFrontDTO.setDermatologistLast(ex.getExaminationSchedule().getDermatologist().getSurname());
+                examinationScheduleFrontDTO.setStartTime(ex.getExaminationSchedule().getStartTime());
+                LocalDate date5 = LocalDate.now();
+                if ((ex.getExaminationSchedule().getDate()).compareTo(date5) < 0) {
+                    examinationScheduleFrontDTO.setFinished(true);
+                } else {
+                    examinationScheduleFrontDTO.setFinished(false);
+                }
+                examinationScheduleFrontDTOS.add(examinationScheduleFrontDTO);
+            }
+        }
+
+        return ResponseEntity.ok(examinationScheduleFrontDTOS);
+    }
+
+    @GetMapping("dateFurthest/{id}")
+        //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<ExaminationFrontDTO>> dateFurthest(@PathVariable Integer id) {
+
+
+        List<Examination> examinationSchedule = new ArrayList<Examination>();
+        examinationSchedule = examinationService.findAll();
+
+
+        Collections.sort(examinationSchedule, new Comparator<Examination>() {
+            public int compare(Examination o1, Examination o2) {
+                return o1.getExaminationSchedule().getDate().compareTo(o2.getExaminationSchedule().getDate());
+            }
+        });
+        Collections.reverse(examinationSchedule);
+
+        List<ExaminationFrontDTO> examinationScheduleFrontDTOS = new ArrayList<ExaminationFrontDTO>();
+
+        for (Examination ex : examinationSchedule) {
+
+            if (id == ex.getPatient().getId()) {
+
+
+                ExaminationFrontDTO examinationScheduleFrontDTO = new ExaminationFrontDTO();
+                examinationScheduleFrontDTO.setId(ex.getId());
+                examinationScheduleFrontDTO.setPharmacy(ex.getExaminationSchedule().getPharmacy().getPharmacyName());
+                examinationScheduleFrontDTO.setPatientId(ex.getPatient().getId());
+                examinationScheduleFrontDTO.setDate(ex.getExaminationSchedule().getDate());
+                examinationScheduleFrontDTO.setDuration(ex.getExaminationSchedule().getDuration());
+                examinationScheduleFrontDTO.setPrice(ex.getExaminationSchedule().getPrice());
+                examinationScheduleFrontDTO.setDermatologistFirst(ex.getExaminationSchedule().getDermatologist().getName());
+                examinationScheduleFrontDTO.setDermatologistLast(ex.getExaminationSchedule().getDermatologist().getSurname());
+                examinationScheduleFrontDTO.setStartTime(ex.getExaminationSchedule().getStartTime());
+                LocalDate date5 = LocalDate.now();
+                if ((ex.getExaminationSchedule().getDate()).compareTo(date5) < 0) {
+                    examinationScheduleFrontDTO.setFinished(true);
+                } else {
+                    examinationScheduleFrontDTO.setFinished(false);
+                }
+                examinationScheduleFrontDTOS.add(examinationScheduleFrontDTO);
+            }
+        }
+
+        return ResponseEntity.ok(examinationScheduleFrontDTOS);
+    }
+
+    @GetMapping("sortpricelowest/{id}")
+        //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<ExaminationFrontDTO>> sortpricelowest(@PathVariable Integer id)
+    {
+
+
+
+        List<Examination> examinationSchedule = new ArrayList<Examination>();
+        examinationSchedule = examinationService.findAll();
+
+        Collections.sort(examinationSchedule, new Comparator<Examination>() {
+            @Override
+            public int compare(Examination c1, Examination c2) {
+                return Double.compare(c1.getExaminationSchedule().getPrice(), c2.getExaminationSchedule().getPrice());
+
+            }
+        });
+        List<ExaminationFrontDTO> examinationScheduleFrontDTOS = new ArrayList<ExaminationFrontDTO>();
+
+        for( Examination ex : examinationSchedule){
+
+            if(id == ex.getPatient().getId()) {
+
+
+                ExaminationFrontDTO examinationScheduleFrontDTO = new ExaminationFrontDTO();
+                examinationScheduleFrontDTO.setId(ex.getId());
+                examinationScheduleFrontDTO.setPharmacy(ex.getExaminationSchedule().getPharmacy().getPharmacyName());
+                examinationScheduleFrontDTO.setPatientId(ex.getPatient().getId());
+                examinationScheduleFrontDTO.setDate(ex.getExaminationSchedule().getDate());
+                examinationScheduleFrontDTO.setDuration(ex.getExaminationSchedule().getDuration());
+                examinationScheduleFrontDTO.setPrice(ex.getExaminationSchedule().getPrice());
+                examinationScheduleFrontDTO.setDermatologistFirst(ex.getExaminationSchedule().getDermatologist().getName());
+                examinationScheduleFrontDTO.setDermatologistLast(ex.getExaminationSchedule().getDermatologist().getSurname());
+                examinationScheduleFrontDTO.setStartTime(ex.getExaminationSchedule().getStartTime());
+                LocalDate date5 = LocalDate.now();
+                if((ex.getExaminationSchedule().getDate()).compareTo(date5)<0){
+                    examinationScheduleFrontDTO.setFinished(true);
+                }
+                else{
+                    examinationScheduleFrontDTO.setFinished(false);
+                }
+                examinationScheduleFrontDTOS.add(examinationScheduleFrontDTO);
+            }
+        }
+
+        return ResponseEntity.ok(examinationScheduleFrontDTOS);
+    }
+
+    @GetMapping("sortpricehighest/{id}")
+        //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<ExaminationFrontDTO>> sortpricehighest(@PathVariable Integer id)
+    {
+
+        List<Examination> examinationSchedule = new ArrayList<Examination>();
+        examinationSchedule = examinationService.findAll();
+
+        Collections.sort(examinationSchedule, new Comparator<Examination>() {
+            @Override
+            public int compare(Examination c1, Examination c2) {
+                return Double.compare(c1.getExaminationSchedule().getPrice(), c2.getExaminationSchedule().getPrice());
+
+            }
+        });
+        Collections.reverse(examinationSchedule);
+        List<ExaminationFrontDTO> examinationScheduleFrontDTOS = new ArrayList<ExaminationFrontDTO>();
+
+        for( Examination ex : examinationSchedule){
+
+            if(id == ex.getPatient().getId()) {
+
+
+                ExaminationFrontDTO examinationScheduleFrontDTO = new ExaminationFrontDTO();
+                examinationScheduleFrontDTO.setId(ex.getId());
+                examinationScheduleFrontDTO.setPharmacy(ex.getExaminationSchedule().getPharmacy().getPharmacyName());
+                examinationScheduleFrontDTO.setPatientId(ex.getPatient().getId());
+                examinationScheduleFrontDTO.setDate(ex.getExaminationSchedule().getDate());
+                examinationScheduleFrontDTO.setDuration(ex.getExaminationSchedule().getDuration());
+                examinationScheduleFrontDTO.setPrice(ex.getExaminationSchedule().getPrice());
+                examinationScheduleFrontDTO.setDermatologistFirst(ex.getExaminationSchedule().getDermatologist().getName());
+                examinationScheduleFrontDTO.setDermatologistLast(ex.getExaminationSchedule().getDermatologist().getSurname());
+                examinationScheduleFrontDTO.setStartTime(ex.getExaminationSchedule().getStartTime());
+                LocalDate date5 = LocalDate.now();
+                if((ex.getExaminationSchedule().getDate()).compareTo(date5)<0){
+                    examinationScheduleFrontDTO.setFinished(true);
+                }
+                else{
+                    examinationScheduleFrontDTO.setFinished(false);
+                }
+                examinationScheduleFrontDTOS.add(examinationScheduleFrontDTO);
+            }
+        }
+
+        return ResponseEntity.ok(examinationScheduleFrontDTOS);
+    }
+
+
+    @GetMapping("durationLongest/{id}")
+        //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<ExaminationFrontDTO>> durationLongest(@PathVariable Integer id)
+    {
+
+        List<Examination> examinationSchedule = new ArrayList<Examination>();
+        examinationSchedule = examinationService.findAll();
+
+        Collections.sort(examinationSchedule, new Comparator<Examination>() {
+            @Override
+            public int compare(Examination c1, Examination c2) {
+                return Double.compare(c1.getExaminationSchedule().getDuration(), c2.getExaminationSchedule().getDuration());
+
+            }
+        });
+        Collections.reverse(examinationSchedule);
+        List<ExaminationFrontDTO> examinationScheduleFrontDTOS = new ArrayList<ExaminationFrontDTO>();
+
+        for( Examination ex : examinationSchedule) {
+
+            if (id == ex.getPatient().getId()) {
+
+
+                ExaminationFrontDTO examinationScheduleFrontDTO = new ExaminationFrontDTO();
+                examinationScheduleFrontDTO.setId(ex.getId());
+                examinationScheduleFrontDTO.setPharmacy(ex.getExaminationSchedule().getPharmacy().getPharmacyName());
+                examinationScheduleFrontDTO.setPatientId(ex.getPatient().getId());
+                examinationScheduleFrontDTO.setDate(ex.getExaminationSchedule().getDate());
+                examinationScheduleFrontDTO.setDuration(ex.getExaminationSchedule().getDuration());
+                examinationScheduleFrontDTO.setPrice(ex.getExaminationSchedule().getPrice());
+                examinationScheduleFrontDTO.setDermatologistFirst(ex.getExaminationSchedule().getDermatologist().getName());
+                examinationScheduleFrontDTO.setDermatologistLast(ex.getExaminationSchedule().getDermatologist().getSurname());
+                examinationScheduleFrontDTO.setStartTime(ex.getExaminationSchedule().getStartTime());
+                LocalDate date5 = LocalDate.now();
+                if ((ex.getExaminationSchedule().getDate()).compareTo(date5) < 0) {
+                    examinationScheduleFrontDTO.setFinished(true);
+                } else {
+                    examinationScheduleFrontDTO.setFinished(false);
+                }
+                examinationScheduleFrontDTOS.add(examinationScheduleFrontDTO);
+            }
+        }
+
+        return ResponseEntity.ok(examinationScheduleFrontDTOS);
+    }
+
+
+    @GetMapping("durationShortest/{id}")
+        //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<ExaminationFrontDTO>> durationShortest(@PathVariable Integer id)
+    {
+
+
+        List<Examination> examinationSchedule = new ArrayList<Examination>();
+        examinationSchedule = examinationService.findAll();
+
+        Collections.sort(examinationSchedule, new Comparator<Examination>() {
+            @Override
+            public int compare(Examination c1, Examination c2) {
+                return Double.compare(c1.getExaminationSchedule().getDuration(), c2.getExaminationSchedule().getDuration());
+
+            }
+        });
+        List<ExaminationFrontDTO> examinationScheduleFrontDTOS = new ArrayList<ExaminationFrontDTO>();
+
+        for( Examination ex : examinationSchedule){
+
+            if(id == ex.getPatient().getId()) {
+
+
+                ExaminationFrontDTO examinationScheduleFrontDTO = new ExaminationFrontDTO();
+                examinationScheduleFrontDTO.setId(ex.getId());
+                examinationScheduleFrontDTO.setPharmacy(ex.getExaminationSchedule().getPharmacy().getPharmacyName());
+                examinationScheduleFrontDTO.setPatientId(ex.getPatient().getId());
+                examinationScheduleFrontDTO.setDate(ex.getExaminationSchedule().getDate());
+                examinationScheduleFrontDTO.setDuration(ex.getExaminationSchedule().getDuration());
+                examinationScheduleFrontDTO.setPrice(ex.getExaminationSchedule().getPrice());
+                examinationScheduleFrontDTO.setDermatologistFirst(ex.getExaminationSchedule().getDermatologist().getName());
+                examinationScheduleFrontDTO.setDermatologistLast(ex.getExaminationSchedule().getDermatologist().getSurname());
+                examinationScheduleFrontDTO.setStartTime(ex.getExaminationSchedule().getStartTime());
+                LocalDate date5 = LocalDate.now();
+                if((ex.getExaminationSchedule().getDate()).compareTo(date5)<0){
+                    examinationScheduleFrontDTO.setFinished(true);
+                }
+                else{
+                    examinationScheduleFrontDTO.setFinished(false);
+                }
+                examinationScheduleFrontDTOS.add(examinationScheduleFrontDTO);
+            }
+        }
+
+        return ResponseEntity.ok(examinationScheduleFrontDTOS);
+    }
+
     @GetMapping("/cancelExamination/{id}")
     //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<List<ExaminationFrontDTO>> ExaminationPatient(@PathVariable Integer id) {
@@ -433,8 +735,7 @@ public class PharmacyController {
         List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
 
         for (Pharmacy ph : pharmacies){
-            if(ph.getPharmacyName().equals(name)) {
-                System.out.println("Tu sammmm");
+            if(ph.getPharmacyName().contains(name)) {
                 PharmacyFrontDTO pf = new PharmacyFrontDTO();
                 pf.setId(ph.getId());
                 pf.setCountry(ph.getAddress().getCountry());
@@ -465,8 +766,7 @@ public class PharmacyController {
         List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
 
         for (Pharmacy ph : pharmacies){
-            if(ph.getAddress().getTown().equals(city)) {
-                System.out.println("Tu sammmm");
+            if(ph.getAddress().getTown().contains(city)) {
                 PharmacyFrontDTO pf = new PharmacyFrontDTO();
                 pf.setId(ph.getId());
                 pf.setCountry(ph.getAddress().getCountry());
@@ -527,7 +827,7 @@ public class PharmacyController {
     //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<Pharmacy> leaveAMark(@RequestBody MarkDTO dto) {
 
-        Boolean able = ableToRatePharmacist(dto.getPharmacist().getId(), dto.getPatient().getId());
+        Boolean able =true;//ableToRatePharmacist(dto.getPharmacist().getId(), dto.getPatient().getId());
 
         if (able) {
 
@@ -726,9 +1026,7 @@ public class PharmacyController {
             }
 
 
-            return pharmacy == null ?
-                    new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                    ResponseEntity.ok(pharmacy);
+            return ResponseEntity.ok(pharmacy);
 
         } else {
             return null;
@@ -778,4 +1076,262 @@ public class PharmacyController {
     }
 
 
+
+
+
+    @GetMapping("from1to5")
+    //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<PharmacyFrontDTO>> from1to5()
+    {
+       List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
+        List<Pharmacy> pharmacies = pharmacyService.findAll();
+       //for(Pharmacy pharmacy: pharmacies) {
+        Collections.sort(pharmacies, new Comparator<Pharmacy>() {
+            @Override
+            public int compare(Pharmacy c1, Pharmacy c2) {
+                return Double.compare(c1.getMark(), c2.getMark());
+            }
+        });
+
+
+        for (Pharmacy ph : pharmacies){
+
+                PharmacyFrontDTO pf = new PharmacyFrontDTO();
+                pf.setId(ph.getId());
+                pf.setCountry(ph.getAddress().getCountry());
+                pf.setNumber(ph.getAddress().getNumber());
+                pf.setPostalCode(ph.getAddress().getPostalCode());
+                pf.setStreet(ph.getAddress().getStreet());
+                pf.setPharmacyName(ph.getPharmacyName());
+                pf.setMark(ph.getMark());
+                pf.setCity(ph.getAddress().getTown());
+
+                pharmacyFrontDTOS.add(pf);
+
+
+        }
+
+
+        return pharmacyFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacyFrontDTOS);
+    }
+
+    @GetMapping("from5to1")
+        //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<PharmacyFrontDTO>> from5to1()
+    {
+        List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
+        List<Pharmacy> pharmacies = pharmacyService.findAll();
+        //for(Pharmacy pharmacy: pharmacies) {
+        Collections.sort(pharmacies, new Comparator<Pharmacy>() {
+            @Override
+            public int compare(Pharmacy c1, Pharmacy c2) {
+                return Double.compare(c1.getMark(), c2.getMark());
+
+            }
+        });
+
+        Collections.reverse(pharmacies);
+
+        for (Pharmacy ph : pharmacies){
+
+            PharmacyFrontDTO pf = new PharmacyFrontDTO();
+            pf.setId(ph.getId());
+            pf.setCountry(ph.getAddress().getCountry());
+            pf.setNumber(ph.getAddress().getNumber());
+            pf.setPostalCode(ph.getAddress().getPostalCode());
+            pf.setStreet(ph.getAddress().getStreet());
+            pf.setPharmacyName(ph.getPharmacyName());
+            pf.setMark(ph.getMark());
+            pf.setCity(ph.getAddress().getTown());
+
+            pharmacyFrontDTOS.add(pf);
+
+
+        }
+
+
+        return ResponseEntity.ok(pharmacyFrontDTOS);
+    }
+
+
+
+    @GetMapping("cityfromztoa")
+        //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<PharmacyFrontDTO>> cityfromztoa()
+    {
+        List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
+        List<Pharmacy> pharmacies = pharmacyService.findAll();
+        //for(Pharmacy pharmacy: pharmacies) {
+
+        Collections.sort(pharmacies, new Comparator<Pharmacy>() {
+            @Override
+            public int compare(Pharmacy c1, Pharmacy c2) {
+                return CharSequence.compare(c1.getAddress().getTown(), c2.getAddress().getTown());
+
+            }
+        });
+
+        Collections.reverse(pharmacies);
+
+        for (Pharmacy ph : pharmacies){
+
+            PharmacyFrontDTO pf = new PharmacyFrontDTO();
+            pf.setId(ph.getId());
+            pf.setCountry(ph.getAddress().getCountry());
+            pf.setNumber(ph.getAddress().getNumber());
+            pf.setPostalCode(ph.getAddress().getPostalCode());
+            pf.setStreet(ph.getAddress().getStreet());
+            pf.setPharmacyName(ph.getPharmacyName());
+            pf.setMark(ph.getMark());
+            pf.setCity(ph.getAddress().getTown());
+
+            pharmacyFrontDTOS.add(pf);
+
+
+        }
+
+
+        return ResponseEntity.ok(pharmacyFrontDTOS);
+    }
+
+    @GetMapping("cityfromatoz")
+        //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<PharmacyFrontDTO>> cityfromatoz()
+    {
+        List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
+        List<Pharmacy> pharmacies = pharmacyService.findAll();
+        //for(Pharmacy pharmacy: pharmacies) {
+        Collections.sort(pharmacies, new Comparator<Pharmacy>() {
+            @Override
+            public int compare(Pharmacy c1, Pharmacy c2) {
+                return CharSequence.compare(c1.getAddress().getTown(), c2.getAddress().getTown());
+
+            }
+        });
+
+
+        for (Pharmacy ph : pharmacies){
+
+            PharmacyFrontDTO pf = new PharmacyFrontDTO();
+            pf.setId(ph.getId());
+            pf.setCountry(ph.getAddress().getCountry());
+            pf.setNumber(ph.getAddress().getNumber());
+            pf.setPostalCode(ph.getAddress().getPostalCode());
+            pf.setStreet(ph.getAddress().getStreet());
+            pf.setPharmacyName(ph.getPharmacyName());
+            pf.setMark(ph.getMark());
+            pf.setCity(ph.getAddress().getTown());
+
+            pharmacyFrontDTOS.add(pf);
+
+
+        }
+
+
+        return ResponseEntity.ok(pharmacyFrontDTOS);
+    }
+
+    @GetMapping("namefromztoa")
+        //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<PharmacyFrontDTO>> namefromztoa()
+    {
+        List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
+        List<Pharmacy> pharmacies = pharmacyService.findAll();
+        //for(Pharmacy pharmacy: pharmacies) {
+        Collections.sort(pharmacies, new Comparator<Pharmacy>() {
+            @Override
+            public int compare(Pharmacy c1, Pharmacy c2) {
+                return CharSequence.compare(c1.getPharmacyName(), c2.getPharmacyName());
+
+            }
+        });
+        Collections.reverse(pharmacies);
+
+        for (Pharmacy ph : pharmacies){
+
+            PharmacyFrontDTO pf = new PharmacyFrontDTO();
+            pf.setId(ph.getId());
+            pf.setCountry(ph.getAddress().getCountry());
+            pf.setNumber(ph.getAddress().getNumber());
+            pf.setPostalCode(ph.getAddress().getPostalCode());
+            pf.setStreet(ph.getAddress().getStreet());
+            pf.setPharmacyName(ph.getPharmacyName());
+            pf.setMark(ph.getMark());
+            pf.setCity(ph.getAddress().getTown());
+
+            pharmacyFrontDTOS.add(pf);
+
+
+        }
+
+
+        return ResponseEntity.ok(pharmacyFrontDTOS);
+    }
+    @GetMapping("namefromatoz")
+        //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<PharmacyFrontDTO>> namefromatoz()
+    {
+        List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
+        List<Pharmacy> pharmacies = pharmacyService.findAll();
+        //for(Pharmacy pharmacy: pharmacies) {
+        Collections.sort(pharmacies, new Comparator<Pharmacy>() {
+            @Override
+            public int compare(Pharmacy c1, Pharmacy c2) {
+                return CharSequence.compare(c1.getPharmacyName(), c2.getPharmacyName());
+
+            }
+        });
+
+
+        for (Pharmacy ph : pharmacies){
+
+            PharmacyFrontDTO pf = new PharmacyFrontDTO();
+            pf.setId(ph.getId());
+            pf.setCountry(ph.getAddress().getCountry());
+            pf.setNumber(ph.getAddress().getNumber());
+            pf.setPostalCode(ph.getAddress().getPostalCode());
+            pf.setStreet(ph.getAddress().getStreet());
+            pf.setPharmacyName(ph.getPharmacyName());
+            pf.setMark(ph.getMark());
+            pf.setCity(ph.getAddress().getTown());
+
+            pharmacyFrontDTOS.add(pf);
+
+
+        }
+
+
+        return ResponseEntity.ok(pharmacyFrontDTOS);
+    }
+
+    @GetMapping("filterMark/{i}")
+        //@PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<PharmacyFrontDTO>> filterMark(@PathVariable Integer i)
+    {
+        List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
+        List<Pharmacy> pharmacies = pharmacyService.findAll();
+        //for(Pharmacy pharmacy: pharmacies) {
+
+        for (Pharmacy ph : pharmacies){
+            if(ph.getMark()>=i && ph.getMark()<=i+1) {
+                PharmacyFrontDTO pf = new PharmacyFrontDTO();
+                pf.setId(ph.getId());
+                pf.setCountry(ph.getAddress().getCountry());
+                pf.setNumber(ph.getAddress().getNumber());
+                pf.setPostalCode(ph.getAddress().getPostalCode());
+                pf.setStreet(ph.getAddress().getStreet());
+                pf.setPharmacyName(ph.getPharmacyName());
+                pf.setMark(ph.getMark());
+                pf.setCity(ph.getAddress().getTown());
+
+                pharmacyFrontDTOS.add(pf);
+            }
+
+        }
+
+
+        return ResponseEntity.ok(pharmacyFrontDTOS);
+    }
 }
