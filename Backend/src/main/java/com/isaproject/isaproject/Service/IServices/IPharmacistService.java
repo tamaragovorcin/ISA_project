@@ -16,7 +16,7 @@ public interface IPharmacistService {
     List<Pharmacist> findByName(String name, String surname);
     List<Pharmacist> findAll ();
     Pharmacist save(PharmacistDTO userRequest);
-    void delete(Pharmacist admin);
+    String delete(Pharmacist admin);
     Pharmacist update(Pharmacist pharmacist);
     Pharmacist updateMark(Pharmacist pharmacist);
 

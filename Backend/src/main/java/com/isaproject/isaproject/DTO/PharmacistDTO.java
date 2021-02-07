@@ -17,20 +17,19 @@ public class PharmacistDTO {
 
     private AddressDTO address;
 
-    private Pharmacy pharmacy;
+    private Integer pharmacyID;
 
     private double mark;
 
     public PharmacistDTO() {}
 
-    public PharmacistDTO(String email, String password, String firstname, String surname, String phonenumber, AddressDTO address, Pharmacy pharmacy) {
+    public PharmacistDTO(String email, String password, String firstname, String surname, String phonenumber, AddressDTO address) {
         this.email = email;
         this.password = password;
         this.firstname = firstname;
         this.surname = surname;
         this.phonenumber = phonenumber;
         this.address = address;
-        this.pharmacy = pharmacy;
     }
 
     public double getMark() {
@@ -49,12 +48,12 @@ public class PharmacistDTO {
         this.id = id;
     }
 
-    public Pharmacy getPharmacy() {
-        return pharmacy;
+    public Integer getPharmacyID() {
+        return pharmacyID;
     }
 
-    public void setPharmacy(Pharmacy pharmacy) {
-        this.pharmacy = pharmacy;
+    public void setPharmacyID(Integer pharmacyID) {
+        this.pharmacyID = pharmacyID;
     }
 
     public String getEmail() {

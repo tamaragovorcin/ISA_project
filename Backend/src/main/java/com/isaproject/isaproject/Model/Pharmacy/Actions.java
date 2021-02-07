@@ -3,6 +3,7 @@ package com.isaproject.isaproject.Model.Pharmacy;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,17 +32,17 @@ public class Actions implements Serializable {
 
 
     @Column(name = "expiryDate", nullable = true)
-    private Date expiryDate;
+    private LocalDate expiryDate;
 
     public Actions() {}
 
-    public Actions(Integer id, int pharmacyId, String description, Date expiryDate) {
+    public Actions(Integer id, int pharmacyId, String description, LocalDate expiryDate) {
         this.id = id;
         this.description = description;
         this.expiryDate = expiryDate;
     }
 
-    public Actions(Pharmacy pharmacy, String description, Date expiryDate) {
+    public Actions(Pharmacy pharmacy, String description, LocalDate expiryDate) {
         this.pharmacy = pharmacy;
         this.description = description;
         this.expiryDate = expiryDate;
@@ -71,11 +72,11 @@ public class Actions implements Serializable {
         this.description = description;
     }
 
-    public Date getExpiryDate() {
+    public LocalDate getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(LocalDate expiryDate) {
         this.expiryDate = expiryDate;
     }
 }
