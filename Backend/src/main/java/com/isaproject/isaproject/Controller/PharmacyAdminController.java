@@ -41,7 +41,7 @@ public class PharmacyAdminController {
     DermatologistService dermatologistService;
 
     @PostMapping("/register")
-   // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacyAdminDTO userRequest) {
         System.out.println(userRequest.getPharmacy().getPharmacyName());
 
@@ -117,15 +117,15 @@ public class PharmacyAdminController {
         List<DermatologistFrontDTO> dermatologists = new ArrayList<DermatologistFrontDTO>();
         for(Dermatologist derm : pharmacyAdmin.getPharmacy().getDermatologists()){
             if(derm.getName().toLowerCase().contains(dto.getFirstName().toLowerCase(Locale.ROOT))&& derm.getSurname().toLowerCase().contains(dto.getSurName().toLowerCase())){
-            DermatologistFrontDTO dermatologistFrontDTO = new DermatologistFrontDTO();
-            dermatologistFrontDTO.setFirstname(derm.getName());
-            dermatologistFrontDTO.setSurname(derm.getSurname());
-            dermatologistFrontDTO.setEmail(derm.getEmail());
-            dermatologistFrontDTO.setId(derm.getId());
-            dermatologistFrontDTO.setPhonenumber(derm.getPhoneNumber());
-            dermatologistFrontDTO.setMarkDermatologist(derm.getMarkDermatologist());
-            dermatologists.add(dermatologistFrontDTO);
-        }
+                DermatologistFrontDTO dermatologistFrontDTO = new DermatologistFrontDTO();
+                dermatologistFrontDTO.setFirstname(derm.getName());
+                dermatologistFrontDTO.setSurname(derm.getSurname());
+                dermatologistFrontDTO.setEmail(derm.getEmail());
+                dermatologistFrontDTO.setId(derm.getId());
+                dermatologistFrontDTO.setPhonenumber(derm.getPhoneNumber());
+                dermatologistFrontDTO.setMarkDermatologist(derm.getMarkDermatologist());
+                dermatologists.add(dermatologistFrontDTO);
+            }
 
         }
         return dermatologists == null ?
@@ -170,12 +170,12 @@ public class PharmacyAdminController {
         PersonUser user = (PersonUser)currentUser.getPrincipal();
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
         Dermatologist dermatologist =  dermatologistService.findById(id);
-       if(pharmacyAdminService.removeDermatologistFromPharmacy(pharmacyAdmin.getPharmacy().getId(),dermatologist)) {
-           return new ResponseEntity<>("Dermatologist successfully removed from pharmacy!", HttpStatus.ACCEPTED);
-       }else {
-           return new ResponseEntity<>("Dermatologist can't be removed, he's got some scheduled examinations!", HttpStatus.ACCEPTED);
+        if(pharmacyAdminService.removeDermatologistFromPharmacy(pharmacyAdmin.getPharmacy().getId(),dermatologist)) {
+            return new ResponseEntity<>("Dermatologist successfully removed from pharmacy!", HttpStatus.ACCEPTED);
+        }else {
+            return new ResponseEntity<>("Dermatologist can't be removed, he's got some scheduled examinations!", HttpStatus.ACCEPTED);
 
-       }
+        }
     }
 
     @GetMapping("/actions")

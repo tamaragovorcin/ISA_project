@@ -4,14 +4,48 @@
         
         <div style="background: #0D184F; height: 90px;">
             
-            <span style="float: left; margin: 15px;">
-                <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href = "/isaHomePage">Home page</button>
+             
+              <span style="float: left; margin: 15px;">
+                               
+                    <a  class = "btn btn-link btn-lg" href= "/patientProfile">Home page</a>
+                    <a  class = "btn btn-link btn-lg" href= "/showPharmaciesPatient">Pharmacies</a>
+                    <a  class = "btn btn-link btn-lg" href= "/eRecipes">ERecipes</a>
+                    <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
+                    <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
+                     <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
+                    <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
+                         <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
+                   
+
+             
+                  
+
             </span>
               <span  style="float:right;margin:15px">
-                    <a class = "btn btn-warning btn-lg" href = "/login">&nbsp;&nbsp;Login&nbsp;&nbsp;</a>
-                    <strong class="tab"></strong>    
-                    <a class = "btn btn-warning btn-lg" style="margin-right:20px;" href = "/registration">Register</a>
+                    
+
+                    <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
+
                 </span>
+
+        </div>
+
+        
+        <div style="background: lightgray; height: 60px;">
+            
+            <span style="float: left; margin: 15px;">
+
+                 <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/showPharmaciesPatient">Show all pharmacies</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/dermatologistAppointments">Make a new dermatologist appointmen</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/myDermatologistAppointments">My dermatologist appointments</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/PharmacistConsultation">Pharmacist consultation</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/myPharmacistsConsultation">My pharmacist consultations</a>
+ 
+                             
+                   
+            </span>
+             
+
 
         </div>
   <div class = "col md-8">
@@ -31,7 +65,7 @@
 
                           <h3 style="color:white;">Dermatologists of&nbsp; {{pharmacy.pharmacyName}}</h3>
 
-                      <table style = "" class="table table-striped table-light">
+                      <table class="table table-striped table-light">
                       <thead class="thead-light">
                         <tr>
                           <th scope="col"></th>
@@ -48,6 +82,7 @@
                                                                         <td>{{dermatologist.surname}}</td>
                                                                         <td>{{dermatologist.phoneNumber}}</td>
                                                                         <td>{{dermatologist.email}}</td>
+                                                                          
                                                                     </tr>
                       
                       </tbody>
@@ -59,7 +94,7 @@
                           <h3 style="color:white;">Pharmacists of&nbsp; {{pharmacy.pharmacyName}}</h3>
                           <h5 style="float:left;color:red;">Consulting price:&nbsp; {{pharmacy.consultingPrice}}&nbsp; din</h5>
 
-                      <table style="" class="table table-striped table-light">
+                      <table class="table table-striped table-light">
                       <thead class="thead-light">
                         <tr>
                           <th scope="col"></th>
@@ -88,7 +123,7 @@
 
                           <h3 style="color:white;">Available appointments with dermatologist  in&nbsp; {{pharmacy.pharmacyName}}</h3>
 
-                      <table  style="" class="table table-striped table-light">
+                      <table class="table table-striped table-light">
                       <thead class="thead-light">
                         <tr>
                           <th scope="col"></th>
@@ -123,7 +158,7 @@
 
                           <h3 style="color:white;">Medication in&nbsp; {{pharmacy.pharmacyName}}</h3>
 
-                      <table  style="" class="table table-striped table-light">
+                      <table class="table table-striped table-light">
                       <thead class="thead-light">
                         <tr>
                           <th scope="col"></th>
@@ -257,7 +292,9 @@ export default {
        notAvailabe : false,
        pickUpDay : "",
        patient : null,
-       selectedMedication : {}
+       selectedMedication : {},
+       reservationPage: false,
+       term: null
 
        
        
@@ -265,6 +302,19 @@ export default {
   },
   mounted() {
        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+         this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+
+             }
+         }).then(response => {
+                this.patient = response.data;
+         
+         }).catch(res => {
+                       alert("NOT OK");
+                        console.log(res);
+                 });
+  
         this.axios.get('/pharmacy/'+this.id,{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
@@ -324,6 +374,7 @@ export default {
     }
      ,
   methods:{
+
       showModal() {
         this.$refs['my-modal'].show()
       },
@@ -500,6 +551,20 @@ export default {
 
     
 
+      },
+        sendComplaint : function(){
+ 
+        },
+       showPharmacies : function(){
+            window.location.href = "/showPharmaciesPatient";
+
+      },
+ showMyProfile: function(){
+        window.location.href = "/myProfilePatient";
+      },logOut : function(){
+          window.location.href = "/login";
+      },writeComplaint() {
+        this.$refs['my-modal'].show()
       },
    
 }

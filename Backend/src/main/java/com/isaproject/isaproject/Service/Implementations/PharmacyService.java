@@ -41,6 +41,7 @@ public class PharmacyService implements IPharmacyService {
         Address address = new Address(addressDTO.getTown(),addressDTO.getStreet(),addressDTO.getNumber(),addressDTO.getPostalCode(),addressDTO.getCountry());
         pharmacy1.setAddress(address);
         pharmacy1.setConsultingPrice(pharmacy.getConsultingPrice());
+
         return pharmacyRepository.save(pharmacy1);
     }
 

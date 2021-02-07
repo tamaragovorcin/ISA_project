@@ -481,7 +481,6 @@ export default {
                             alert("NOT OK");
                             console.log(response);
                     });
-
 		},
     defineSchedule : function(event, dermatologist){
             this.selectedDermatologist2 = dermatologist;  
@@ -508,7 +507,6 @@ export default {
                     endTimeSunday : this.endTimeSaturday
           }
            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-
             this.axios.post('/workingHours/dermatologist',data,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
@@ -539,7 +537,6 @@ export default {
      },
       showByDermatologistsName : function() {
           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-
           const data = {
             firstName : this.dermatologistFirstName,
             surName : this.dermatologistLastName
@@ -589,5 +586,4 @@ body {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
-
 </style>

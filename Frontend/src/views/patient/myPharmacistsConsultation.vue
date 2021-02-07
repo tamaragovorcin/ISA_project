@@ -5,22 +5,21 @@ ines (39 sloc)  1.61 KB
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-            <span style="float: left; margin: 15px;">
-                <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
-                   <strong class="tab"></strong>               
-
-                    <button class = "btn btn-link btn-lg" v-on:click = "showPharmacies">Pharmacies</button>
-
-                  <strong class="tab"></strong>     
-                   <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
-
-                  <strong class="tab"></strong>                   
+             <span style="float: left; margin: 15px;">
+                               
+                    <a  class = "btn btn-link btn-lg" href= "/patientProfile">Home page</a>
+                    <a  class = "btn btn-link btn-lg" href= "/showPharmaciesPatient">Pharmacies</a>
+                    <a  class = "btn btn-link btn-lg" href= "/eRecipes">ERecipes</a>
+                    <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
+                    <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
+                     <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
+                    <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
+                         <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
                    
 
-   
+             
+                  
 
-                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "writeComplaint">Write complaint</button>
-                    <strong class="tab"></strong>    
             </span>
               <span  style="float:right;margin:15px">
                     
@@ -35,24 +34,20 @@ ines (39 sloc)  1.61 KB
         <div style="background: lightgray; height: 60px;">
             
             <span style="float: left; margin: 15px;">
-                <strong><button class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" v-on:click = "allPharmacies">Show all pharmacies</button></strong>
-                        
 
-                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">Make a new dermatologist appointment</button>
-
-                        
-                     <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "myDermatologistAppointments">My dermatologist appointments</button>
-
+                 <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/showPharmaciesPatient">Show all pharmacies</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/dermatologistAppointments">Make a new dermatologist appointmen</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/myDermatologistAppointments">My dermatologist appointments</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/PharmacistConsultation">Pharmacist consultation</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/myPharmacistsConsultation">My pharmacist consultations</a>
+ 
                              
-                   <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allPharmacists">Pharmacist consultation</button>
-              
-                   <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "myPharmacistsConsultation">My pharmacist consultation</button>
-                     
                    
             </span>
              
-
         </div>
+
+        
 
         <div style="background: white; height: 60px; margin-top: 20px">
             
@@ -67,6 +62,45 @@ ines (39 sloc)  1.61 KB
              
             
         </div>
+
+<template>
+              <div class="row">
+                 <div> <label> Sort by </label></div>
+              <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="from1to5">
+                   <label class="custom-control-label" for="defaultGroupExample1">Date closest</label>
+              </div>
+
+                    <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="from5to1">
+                   <label class="custom-control-label" for="defaultGroupExample2">Date furthest</label>
+
+                  </div>
+                
+                   <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample3" name="groupOfDefaultRadios" v-on:click="cityfromatoz">
+                 <label class="custom-control-label" for="defaultGroupExample3">Cheapest</label>
+                   </div>
+        
+                 
+                   <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="cityfromztoa" >
+                 <label class="custom-control-label" for="defaultGroupExample4" >Most expensive</label>
+                   </div>
+                 
+                   
+                   <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="namefromatoz" >
+                 <label class="custom-control-label" for="defaultGroupExample5" >Duration - short first</label>
+                   </div>
+
+                    <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample6" name="groupOfDefaultRadios" v-on:click="namefromztoa" >
+                 <label class="custom-control-label" for="defaultGroupExample6" >Duration - long first</label>
+                   </div>
+
+              </div>
+             </template>
 
 
  <div  v-for="pharmacist in this.pharmacists"  v-bind:key="pharmacist.id">
@@ -175,6 +209,106 @@ mounted() {
           })
 },
   methods:{
+     from1to5: function(){
+      this.axios.get('/consulting/dateClosest')
+          .then(response => {
+               console.log(response.data);
+              this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+      
+      from5to1: function(){
+   
+      this.axios.get('/consulting/dateFurthest')
+          .then(response => {
+               console.log(response.data);
+                this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+           cityfromatoz: function(){
+   
+      this.axios.get('/consulting/sortpricelowest')
+          .then(response => {
+               console.log(response.data);
+                   this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+  
+        cityfromztoa: function(){
+   
+      this.axios.get('/consulting/sortpricehighest')
+          .then(response => {
+               console.log(response.data);
+                   this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+      namefromatoz: function(){
+   
+      this.axios.get('/consulting/namefromatoz')
+          .then(response => {
+               console.log(response.data);
+                  this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
+
+            namefromztoa: function(){
+   
+      this.axios.get('/consulting/durationLongest')
+          .then(response => {
+               console.log(response.data);
+                  this.dermatologistAppointments = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                     
+                        console.log(res);
+                    })
+
+
+      },
       myDermatologistAppointments: function(){
             window.location.href = "/myDermatologistAppointments";
 
@@ -247,15 +381,19 @@ mounted() {
 
       
          reserve : function(event, pharmacist) {
-         
+          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
           this.pharmacist = pharmacist
         
-            this.axios.get('/consulting/cancel/'+ pharmacist.id)
+            this.axios.get('/consulting/cancel/'+ pharmacist.id,{ 
+       
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
             .then(response => {
                 
            alert( response.data);})
 
-
+      window.location.href = "/myPharmacistsConsultation";
       },
 
    

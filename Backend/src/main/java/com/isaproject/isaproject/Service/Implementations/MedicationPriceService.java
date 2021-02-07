@@ -79,6 +79,11 @@ public class MedicationPriceService implements IMedicationPriceService {
 
     }
 
+    @Override
+    public MedicationPrice update(MedicationPrice medicationPrice) {
+        return medicationPriceRepository.save(medicationPrice);
+    }
+
     public List<MedicationPrice> findByPharmacy(Integer id){
 
 
