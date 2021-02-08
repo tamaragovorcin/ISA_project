@@ -63,7 +63,7 @@
        <div v-if="showTable"  style="background: whitesmoke; border: 3px solid #0D184F; height: 200px; width:1000px; margin-left:300px; margin-top: 20px">
           
  <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
-<table id="table2" class="table" :href="href" @click="navigate"  elevation="1">
+<table  style="" id="table2" class="table" :href="href" @click="navigate"  elevation="1">
  
     <tbody>
     <tr>
@@ -75,7 +75,7 @@
     <tr>
       <th scope="row"></th>
       <td>Address</td>
-      <td>{{pharmacy.postalCode}} {{pharmacy.country}}, {{pharmacy.street}} {{pharmacy.number}}</td>
+      <td>{{pharmacy.postalCode}} {{pharmacy.city}} {{pharmacy.country}}, {{pharmacy.street}} {{pharmacy.number}}</td>
 
     </tr>
     <tr>
@@ -105,7 +105,7 @@
        <div id="customers" v-if="showSecondTable"  style="background: whitesmoke; border: 3px solid #0D184F; height: 200px; width:1000px; margin-left:300px; margin-top: 20px">
           
  <router-link :to="{ path: '/pharmacyProfile/'+pharmacy1.id}" v-slot="{href, navigate}">
-<table id="table1" class="table" :href="href" @click="navigate"  elevation="1">
+<table  style="" id="table1" class="table" :href="href" @click="navigate"  elevation="1">
  
     <tbody>
     <tr>
@@ -117,7 +117,7 @@
     <tr>
       <th scope="row"></th>
       <td>Address</td>
-      <td>{{pharmacy1.postalCode}} {{pharmacy1.country}}, {{pharmacy1.street}} {{pharmacy1.number}}</td>
+      <td>{{pharmacy1.postalCode}} {{pharmacy1.city}} {{pharmacy1.country}}, {{pharmacy1.street}} {{pharmacy1.number}}</td>
 
     </tr>
     <tr>
@@ -179,7 +179,6 @@ export default {
      searchName: function(pharmacyName){
            
              this.pharmacyName = pharmacyName
-               alert(this.pharmacyName)
       this.axios.get('/pharmacy/searchName/'+ this.pharmacyName)
           .then(response => {
               this.showTable = false;
@@ -197,7 +196,6 @@ export default {
       searchCity: function(pharmacyCity){
            
              this.pharmacyCity = pharmacyCity
-               alert(this.pharmacyCity)
       this.axios.get('/pharmacy/searchCity/'+ this.pharmacyCity)
           .then(response => {
               this.showTable = false;
@@ -235,6 +233,7 @@ mounted() {
         this.axios.get('/pharmacy/all')
         .then(response => {
                 this.pharmacies = response.data;
+                
                 console.log(this.admin);
          }).catch(res => {
                 alert("NOT OK");

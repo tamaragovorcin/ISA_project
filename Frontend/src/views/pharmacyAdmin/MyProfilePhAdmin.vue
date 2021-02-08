@@ -2,7 +2,7 @@
   <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-      <span style="float: left; margin: 15px;">
+             <span style="float: left; margin: 15px;">
                               <b-dropdown id="ddCommodity" name="ddCommodity" text="My profile" 
                                               class = "btn btn-link btn-lg">
                                     <b-dropdown-item href = "/pharmacyAdminProfile">Our pharmacists</b-dropdown-item>
@@ -45,71 +45,83 @@
                 
                 </span>
         </div>
+
         <div style="background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <h3 style="color: #0D184F">Add new pharmacist</h3>
-                
-                
+            <h3 style="color: #0D184F"></h3>
+                <form>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Name:</label>
-                        <input type="text" class="form-control" v-model="name2" placeholder="Enter name">
+                        <p>{{admin.name}}</p>
                         </div>
                         <div class="form-group col-md-6">
                         <label>Surname:</label>
-                        <input type="text" class="form-control" v-model = "surname" placeholder="Enter surname">
+                        <input type="text" id = "surname" name = "surname" class="form-control" v-model = "admin.surname" placeholder="Enter surname">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Email:</label>
-                        <input type="email" class="form-control" v-model="email" placeholder="Enter email">
+                        <p>{{admin.email}}</p>
                         </div>
                         <div class="form-group col-md-6">
                         <label>Phone number:</label>
-                        <input type="text" class="form-control" v-model="phoneNumber" placeholder="Enter phone number">
+                        <input type="text" id = "phone"  name = "phone" class="form-control" v-model="admin.phoneNumber" placeholder="Enter phone number">
                         </div>
                     </div>
                       <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Country:</label>
-                        <input type="text" class="form-control" v-model="country" placeholder="Enter country">
+                        <input type="text" id = "country" name = "country" class="form-control" v-model="admin.address.country" placeholder="Enter country">
                         </div>
                         <div class="form-group col-md-6">
                         <label>Town:</label>
-                        <input type="text" class="form-control" v-model="town" placeholder="Enter town">
+                        <input type="text" id = "town" name = "town" class="form-control" v-model="admin.address.town" placeholder="Enter town">
                         </div>
                     </div>
                      <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Street:</label>
-                        <input type="text" class="form-control" v-model="street" placeholder="Enter street">
+                        <input type="text" id = "street" name = "street" class="form-control" v-model="admin.address.street" placeholder="Enter street">
                         </div>
                         <div class="form-group col-md-6">
                         <label>Number:</label>
-                        <input type="number" class="form-control" v-model="number" placeholder="Enter number">
+                        <input type="number" id = "number" name = "number" class="form-control" v-model="admin.address.number" placeholder="Enter number">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Postal code:</label>
-                        <input type="text" class="form-control" v-model="postalCode" placeholder="Enter postal code">
+                        <input type="text" id = "postalCode" name = "postalCode" class="form-control" v-model="admin.address.postalCode" placeholder="Enter postal code">
                         </div>
+
+                        
                        
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Password:</label>
-                        <input type="password" class="form-control" v-model="password" placeholder="Enter password">
+                        <input type="password" id = "password" name = "password" class="form-control" v-model="admin.password" placeholder="Enter new password">
                         </div>
-                        <div class="form-group col-md-6">
-                        <label>Repeat password:</label>
-                        <input type="password" class="form-control" v-model="repeatPassword" placeholder="Repeat password">
-                        </div>
+                        
                     </div>
+                    
                    
-                    <button class="btn btn-primary btn-lg" v-on:click = "add">Add</button>
+                   
                     <div style="height:30px;"></div>
+                </form>
+
+
+
+
+
+
         </div>
+
+       
+
+       
+
     </div>
 </template>
 
@@ -118,96 +130,66 @@ export default {
 
   data() {
     return {
-          name2 : "",
-          surname : "",
-          email : "",
-          password : "",
-          repeatPassword : "",
-          phoneNumber : "",
-          town : "",
-          street : "",
-          number : "",
-          postalCode : "",
-          country : "",
-          accountInformation :null,
-          pharmacies : [],
-          pharmacy : {},
-          pharmacyName : ""
-           }
+        admin: {
+                email : "",
+                firstname : "",
+                surname : "",
+                phonenumber : "",
+                password : "",
+                address : {
+                    town : "",
+                    street : "",
+                    number : "",
+                    postalCode : "",
+                    country : ""
+                }
+    }
+    }
   },
-
-  methods:{
-      add : function(){
-            const addressInfo ={
-              town : this.town,
-              street : this.street,
-              number : this.number,
-              postalCode : this.postalCode,
-              country : this.country
-          }
-            const userInfo ={
-                email : this.email,
-                password : this.password,
-                rewritePassword : this.repeatPassword,
-                firstname : this.name2,
-                surname : this.surname,
-                phonenumber : this.phoneNumber,
-                address : addressInfo,
-                pharmacyID : this.pharmacy.id
-            }
-            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-
-            this.axios.post('/pharmacist/register',userInfo,{ 
-                         headers: {
-                                'Authorization': 'Bearer ' + token,
-                        }})
-                .then(response => {
-                       alert("Pharmacist is successfully registred!");
-                        console.log(response.data);
-                        window.location.href = "/pharmacyPharmacists";
-                })
-                .catch(response => {
-                    alert(response.response.data.message);
-                 });    
-      },
-      logOut : function(){
-            localStorage.removeItem('token');
-           window.location.href = "/login";
-      },
-     
-},
   mounted() {
-       let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
         this.axios.get('/pharmacyAdmin/account',{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
              }
          }).then(response => {
-                this.admin = response.data;
-                console.log(this.admin);
-                this.axios.get('/pharmacyAdmin/myPharmacy',{ 
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                    }
-                    }).then(response => {
-                            this.pharmacy = response.data;
-                            console.log(this.pharmacy);
-                             
-                    }).catch(res => {
-                            alert("NOT OK");
-                            console.log(res);
-                    });
-                    
-                
-         
-
+               this.admin=response.data;
          }).catch(res => {
-                alert("NOT OK");
-                console.log(res);
-        });
-        
-    }
-     
+                       alert("NOT OK");
+                        console.log(res);
+                 });
+    
+
+                            
+                 
+},
+  methods:{
+       showHomePage : function(){
+          window.location.href = "/isaHomePage";
+      },
+      showMyProfile: function(){
+
+      },
+       hideModal() {
+        this.$refs['my-modal'].hide()
+      },
+       showOrderForm : function(){
+          window.location.href = "/order";
+
+      },
+       logOut : function(){
+           window.location.href = "/login";
+      },
+      sendComplaint : function(){
+
+      },
+      showMyPharmacy : function (){
+          window.location.href = "/myPharmacy"
+      },
+      addNewPharmacist : function(){
+        window.location.href = "/addNewPharmacist";
+      }
+}
 }
 </script>
 

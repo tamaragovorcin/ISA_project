@@ -29,7 +29,7 @@ public class WorkingHoursController {
     PharmacistService pharmacistService;
 
     @PostMapping("/pharmacist")
-    //@PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addPharmacistWorkingHours(@RequestBody WorkingHoursPharmacistDTO userRequest) {
 
         WorkingHoursPharmacist workingHoursPharmacist = workingHoursPharmacistService.save(userRequest);
@@ -57,8 +57,12 @@ public class WorkingHoursController {
     @PostMapping("/dermatologist")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addDermatologistWorkingHours(@RequestBody WorkingHoursDermatologistDTO userRequest) {
-
-        WorkingHoursDermatologist workingHoursDermatologist = workingHoursDermatologistService.save(userRequest);
-        return new ResponseEntity<>("Working hours for pharmacist successfully added.", HttpStatus.CREATED);
+        System.out.println("POGODIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+        if (workingHoursDermatologistService.isAvailabilable(userRequest)) {
+            WorkingHoursDermatologist workingHoursDermatologist = workingHoursDermatologistService.save(userRequest);
+            return new ResponseEntity<>("Working hours for pharmacist successfully added.", HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>("Dermatologist is not available.", HttpStatus.CREATED);
+        }
     }
 }

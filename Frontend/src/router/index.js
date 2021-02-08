@@ -26,7 +26,6 @@ import DermatologistUpdateProfile from '../views/dermatologist/DermatologistUpda
 import PharmacyAdminProfile from '../views/pharmacyAdmin/PharmacyAdminProfile.vue'
 import Order from '../views/pharmacyAdmin/Order.vue'
 import PharmacyProfile from '../views/PharmacyProfile.vue'
-import MyProfile from '../views/patient/MyProfile.vue'
 import UpdateProfilePatient from '../views/patient/UpdateProfilePatient.vue'
 import MedicationReservation from '../views/patient/MedicationReservation.vue'
 import ShowPharmaciesPatient from '../views/patient/ShowPharmaciesPatient.vue'
@@ -66,10 +65,14 @@ import showMedicationsHome from '../views/home/showMedicationsHome.vue'
 import myPharmacistsConsultation from '../views/patient/myPharmacistsConsultation.vue'
 import PharmacyAdminMedicationSearch from '../views/pharmacyAdmin/PharmacyAdminMedicationSearch.vue'
 import HolidayRequests from '../views/pharmacyAdmin/HolidayRequests.vue'
+import ExaminationTerms from '../views/pharmacyAdmin/ExaminationTerms.vue'
 import PharmacistMedicationSearch from '../views/pharmacist/PharmacistMedicationSearch.vue'
 import DermatologistMedicationSearch from '../views/dermatologist/DermatologistMedicationSearch.vue'
 import HolidayRequestsDermatologists from '../views/systemAdmin/HolidayRequestsDermatologists.vue'
 import Pharmacists from '../views/home/Pharmacists.vue'
+import pharmacyProfilePatient from '../views/patient/pharmacyProfilePatient.vue'
+
+
 import Dermatologists from '../views/home/Dermatologists.vue'
 
 Vue.use(BootstrapVue)
@@ -205,13 +208,6 @@ const routes = [
       path: '/pharmacyProfile/:id',
       name: 'PharmacyProfile',
       component: PharmacyProfile
-    },
-    {
-
-
-      path: '/myProfilePatient',
-      name: 'MyProfile',
-      component: MyProfile
     },
     {
       path: '/updateProfilePatient',
@@ -440,9 +436,20 @@ const routes = [
       component: Pharmacists
     },
     {
+      path: '/pharmacyProfilePatient/:id',
+      name: 'pharmacyProfilePatient',
+      component: pharmacyProfilePatient
+      
+    },
+    {
       path: '/dermatologists',
       name: 'Dermatologists',
       component: Dermatologists
+    },
+    {
+      path: '/examinationTerms',
+      name: 'ExaminationTerms',
+      component: ExaminationTerms
     },
     
     

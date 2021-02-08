@@ -15,7 +15,7 @@ import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.MarkDermatologist;
 import com.isaproject.isaproject.Model.Users.PersonUser;
-
+import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
 import com.isaproject.isaproject.Service.Implementations.*;
 import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +52,9 @@ public class DermatologistController {
 
     @Autowired
     ExaminationScheduleService examinationScheduleService;
+
+    @Autowired
+    PharmacyAdminService pharmacyAdminService;
 
 
     @PostMapping("/register")
@@ -169,6 +172,52 @@ public class DermatologistController {
     }
 
 
+    @GetMapping("/allDermatologistsFront")
+    List<DermatologistFrontDTO> getDermatologists()
+    {
+        List<DermatologistFrontDTO> dermatologists = new ArrayList<DermatologistFrontDTO>();
+        for(Dermatologist derm : dermatologistService.findAll()){
+            DermatologistFrontDTO dermatologistFrontDTO = new DermatologistFrontDTO();
+            dermatologistFrontDTO.setFirstname(derm.getName());
+            dermatologistFrontDTO.setSurname(derm.getSurname());
+            dermatologistFrontDTO.setEmail(derm.getEmail());
+            dermatologistFrontDTO.setId(derm.getId());
+            dermatologistFrontDTO.setPhonenumber(derm.getPhoneNumber());
+            dermatologistFrontDTO.setMarkDermatologist(derm.getMarkDermatologist());
+            dermatologists.add(dermatologistFrontDTO);
+        }
+
+        return dermatologists;
+    }
+    @GetMapping("/notInPharmacy")
+    List<DermatologistFrontDTO> getDermatologistsNot()
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
+        List<DermatologistFrontDTO> dermatologists = new ArrayList<>();
+        List<Dermatologist> dermatologists1 = dermatologistService.findAll();
+        for(Dermatologist  dermatologist : pharmacyAdmin.getPharmacy().getDermatologists()){
+          for(Dermatologist derm : dermatologistService.findAll()){
+              if(derm.getId() == dermatologist.getId()) {
+                  dermatologists1.remove(derm);
+              }
+        }
+        }
+        for (Dermatologist dermatologist : dermatologists1){
+            DermatologistFrontDTO dermatologistFrontDTO = new DermatologistFrontDTO();
+            System.out.println("IMEEE"+dermatologist.getName());
+            dermatologistFrontDTO.setFirstname(dermatologist.getName());
+            dermatologistFrontDTO.setSurname(dermatologist.getSurname());
+            dermatologistFrontDTO.setEmail(dermatologist.getEmail());
+            dermatologistFrontDTO.setId(dermatologist.getId());
+            dermatologistFrontDTO.setPhonenumber(dermatologist.getPhoneNumber());
+            dermatologistFrontDTO.setMarkDermatologist(dermatologist.getMarkDermatologist());
+            dermatologists.add(dermatologistFrontDTO);
+        }
+
+        return dermatologists;
+    }
     @GetMapping("")
     public ResponseEntity<List<Dermatologist>> getAll()
     {
@@ -181,7 +230,7 @@ public class DermatologistController {
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addPharmacy(@RequestBody DermaotlogistPharmacyDTO dto) {
         if(dermatologistService.addPharmacy(dto)){
-            return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
+            return new ResponseEntity<>("Dermatologist is successfully added as employee in pharmacy!", HttpStatus.CREATED);
 
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

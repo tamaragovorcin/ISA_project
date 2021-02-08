@@ -186,15 +186,14 @@ public class PatientController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Patient> update(@RequestBody PersonUserDTO person) {
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<String> update(@RequestBody Patient person) {
         Patient patient = patientService.update(person);
-
-        return patient == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(patient);
+        return new ResponseEntity<>("Your profile is successfully updated!", HttpStatus.CREATED);
     }
 
     @PostMapping("/addAlergies")
+    @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<PatientsMedicationAlergy> addAlergies(@RequestBody AlergiesDTO al) {
 
         List<PatientsMedicationAlergy> alergy = new ArrayList<PatientsMedicationAlergy>();
@@ -211,8 +210,10 @@ public class PatientController {
     }
 
     @GetMapping("/getAlergies/{id}")
+    //@PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<List<AlergiesFrontDTO>> getAlergies(@PathVariable Integer id) {
-        List<PatientsMedicationAlergy> alergies = alergiesService.findAll();
+        List<PatientsMedicationAlergy> alergies = new ArrayList<PatientsMedicationAlergy>();
+        alergies = alergiesService.findAll();
         Patient patient = patientService.findById(id);
         List<AlergiesFrontDTO> patientsAlergies = new ArrayList<AlergiesFrontDTO>();
         for(PatientsMedicationAlergy patientsMedicationAlergy: alergies){
@@ -230,6 +231,7 @@ public class PatientController {
     }
 
     @GetMapping("/deleteAlergies/{id}")
+    @PreAuthorize("hasRole('PATIENT')")
     public void deleteAlergies(@PathVariable Integer id) {
         List<PatientsMedicationAlergy> alergies = alergiesService.findAll();
        for(PatientsMedicationAlergy patientsMedicationAlergy : alergies){

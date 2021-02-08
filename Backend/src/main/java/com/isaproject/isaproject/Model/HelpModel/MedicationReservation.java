@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.UUID;
+
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class MedicationReservation {
@@ -50,7 +52,7 @@ public class MedicationReservation {
 
 
     @Column(name = "reservationCode", nullable = true)
-    private long reservationCode;
+    private UUID reservationCode;
 
 
     @Column(name = "cancelled", nullable = true)
@@ -115,11 +117,11 @@ public class MedicationReservation {
         this.collected = collected;
     }
 
-    public long getReservationCode() {
+    public UUID getReservationCode() {
         return reservationCode;
     }
 
-    public void setReservationCode(long reservationCode) {
+    public void setReservationCode(UUID reservationCode) {
         this.reservationCode = reservationCode;
     }
 

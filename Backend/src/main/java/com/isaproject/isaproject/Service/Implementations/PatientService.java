@@ -99,15 +99,13 @@ public class PatientService implements IPatientService {
     }
 
     @Override
-    public Patient update(PersonUserDTO userRequest) {
-
+    public Patient update(Patient userRequest) {
 
 
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
-        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"+ user.getId());
         Patient patient= findById(user.getId());
-
+        patient.setAddress(userRequest.getAddress());
         List<Authority> auth = new ArrayList<Authority>();
         Authority authoritySupplier = authService.findByname("ROLE_PATIENT");
 
@@ -123,20 +121,17 @@ public class PatientService implements IPatientService {
         patient.setAuthorities(auth);
 
         patient.setEnabled(true);
-        patient.setName(userRequest.getFirstname());
+        patient.setName(userRequest.getName());
         patient.setSurname(userRequest.getSurname());
-        AddressDTO addressDTO = userRequest.getAddress();
-
-        Address address = new Address(addressDTO.getTown(),addressDTO.getStreet(),addressDTO.getNumber(),addressDTO.getPostalCode(),addressDTO.getCountry());
-        patient.setAddress(address);
-        patient.setPhoneNumber(userRequest.getPhonenumber());
+        patient.setPhoneNumber(userRequest.getPhoneNumber());
+        patient.setPhoneNumber(userRequest.getPhoneNumber());
         patient.setPenalties(0);
         patient.setPoints(0);
         patient.setLoyaltyCategory("REGULAR");
         patient.setEmail(userRequest.getEmail());
         patient.setPassword(patient.getPassword());
         patient.setFirstLogged(false);
-
+        patient.setLastPasswordResetDate(userRequest.getLastPasswordResetDate());
 
         return patientRepository.save(patient);
     }

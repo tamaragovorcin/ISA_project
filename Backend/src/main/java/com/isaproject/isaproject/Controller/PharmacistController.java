@@ -6,6 +6,7 @@ import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Service.Implementations.ConsultingService;
 import com.isaproject.isaproject.Service.Implementations.MarkPharmacistService;
 import com.isaproject.isaproject.Service.Implementations.PharmacistService;
+import com.isaproject.isaproject.Service.Implementations.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,11 @@ public class PharmacistController {
     @Autowired
     ConsultingService consultingService;
 
+    @Autowired
+    PharmacyService pharmacyService;
+
     @PostMapping("/register")
-    //@PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacistDTO userRequest) {
         if(userRequest.getPassword().isEmpty() || userRequest.getRewritePassword().isEmpty()) {
             throw new IllegalArgumentException("Please fill all the required fields!");
@@ -41,7 +45,6 @@ public class PharmacistController {
         if(!userRequest.getPassword().equals(userRequest.getRewritePassword())) {
             throw new IllegalArgumentException("Please make sure your password and rewrite password match!");
         }
-        System.out.println(userRequest.getPharmacy().getPharmacyName());
 
         PersonUser existUser = pharmacistService.findByEmail(userRequest.getEmail());
         if (existUser != null) {
@@ -143,8 +146,8 @@ public class PharmacistController {
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody Pharmacist pharmacist) {
         System.out.println(pharmacist.getName());
-        pharmacistService.delete(pharmacist);
-        return new ResponseEntity<>("Pharmacist is successfully removed!", HttpStatus.CREATED);
+        String answer = pharmacistService.delete(pharmacist);
+        return new ResponseEntity<>(answer, HttpStatus.CREATED);
     }
 
     @GetMapping("/account")

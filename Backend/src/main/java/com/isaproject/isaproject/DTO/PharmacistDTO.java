@@ -1,5 +1,4 @@
 package com.isaproject.isaproject.DTO;
-import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 
 public class PharmacistDTO {
 
@@ -19,13 +18,13 @@ public class PharmacistDTO {
 
     private AddressDTO address;
 
-    private Pharmacy pharmacy;
+    private Integer pharmacyID;
 
     private double mark;
 
     public PharmacistDTO() {}
 
-    public PharmacistDTO(Integer id, String email, String password, String rewritePassword, String firstname, String surname, String phonenumber, AddressDTO address, Pharmacy pharmacy, double mark) {
+    public PharmacistDTO(Integer id, String email, String password, String rewritePassword, String firstname, String surname, String phonenumber, AddressDTO address, Integer pharmacyID, double mark) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -34,23 +33,7 @@ public class PharmacistDTO {
         this.surname = surname;
         this.phonenumber = phonenumber;
         this.address = address;
-        this.pharmacy = pharmacy;
-        this.mark = mark;
-    }
-
-    public String getRewritePassword() {
-        return rewritePassword;
-    }
-
-    public void setRewritePassword(String rewritePassword) {
-        this.rewritePassword = rewritePassword;
-    }
-
-    public double getMark() {
-        return mark;
-    }
-
-    public void setMark(double mark) {
+        this.pharmacyID = pharmacyID;
         this.mark = mark;
     }
 
@@ -60,14 +43,6 @@ public class PharmacistDTO {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Pharmacy getPharmacy() {
-        return pharmacy;
-    }
-
-    public void setPharmacy(Pharmacy pharmacy) {
-        this.pharmacy = pharmacy;
     }
 
     public String getEmail() {
@@ -84,6 +59,14 @@ public class PharmacistDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRewritePassword() {
+        return rewritePassword;
+    }
+
+    public void setRewritePassword(String rewritePassword) {
+        this.rewritePassword = rewritePassword;
     }
 
     public String getFirstname() {
@@ -116,5 +99,21 @@ public class PharmacistDTO {
 
     public void setAddress(AddressDTO address) {
         this.address = address;
+    }
+
+    public Integer getPharmacyID() {
+        return pharmacyID;
+    }
+
+    public void setPharmacyID(Integer pharmacyID) {
+        this.pharmacyID = pharmacyID;
+    }
+
+    public double getMark() {
+        return mark;
+    }
+
+    public void setMark(double mark) {
+        this.mark = mark;
     }
 }

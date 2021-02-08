@@ -12,7 +12,7 @@ public class ExaminationScheduleDTO {
 
     private LocalTime startTime;
 
-    private double duration;
+    private Long duration;
 
     private Boolean finished;
 
@@ -20,7 +20,7 @@ public class ExaminationScheduleDTO {
 
     public ExaminationScheduleDTO() { }
 
-    public ExaminationScheduleDTO(Integer dermatologist, Integer pharmacy, LocalDate date, LocalTime startTime, double duration, Boolean finished, double price) {
+    public ExaminationScheduleDTO(Integer dermatologist, Integer pharmacy, LocalDate date, LocalTime startTime, Long duration, Boolean finished, double price) {
         this.dermatologist = dermatologist;
         this.pharmacy = pharmacy;
         this.date = date;
@@ -62,11 +62,11 @@ public class ExaminationScheduleDTO {
         this.startTime = startTime;
     }
 
-    public double getDuration() {
+    public Long getDuration() {
         return duration;
     }
 
-    public void setDuration(double duration) {
+    public void setDuration(Long duration) {
         this.duration = duration;
     }
 

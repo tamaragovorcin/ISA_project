@@ -7,11 +7,10 @@ import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.DTO.PharmacistDTO;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Schedule.WorkingHoursPharmacist;
 import com.isaproject.isaproject.Model.Users.*;
-import com.isaproject.isaproject.Repository.AuthorityRepository;
-import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
-import com.isaproject.isaproject.Repository.PharmacistRepository;
-import com.isaproject.isaproject.Repository.PharmacyRepository;
+import com.isaproject.isaproject.Repository.*;
 import com.isaproject.isaproject.Service.IServices.IPharmacistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -37,6 +37,10 @@ public class PharmacistService implements IPharmacistService {
     private ConfirmationTokenRepository confirmationTokenRepository;
     @Autowired
     private PharmacyRepository pharmacyRepository;
+    @Autowired
+    private WorkingHoursPharmacistRepository workingHoursPharmacistRepository;
+    @Autowired
+    private ConsultingService consultingService;
 
     @Override
     public Pharmacist findById(Integer id) {
@@ -56,6 +60,7 @@ public class PharmacistService implements IPharmacistService {
     @Override
     public Pharmacist save(PharmacistDTO userRequest) {
         Pharmacist pharmacist =  new Pharmacist();
+        Pharmacy pharmacy = pharmacyRepository.getOne(userRequest.getPharmacyID());
         pharmacist.setName(userRequest.getFirstname());
         pharmacist.setSurname(userRequest.getSurname());
         AddressDTO addressDTO = userRequest.getAddress();
@@ -76,14 +81,13 @@ public class PharmacistService implements IPharmacistService {
         }
         pharmacist.setAuthorities(auth);
         pharmacist.setEnabled(true);
-        pharmacist.setPharmacy(userRequest.getPharmacy());
+        pharmacist.setPharmacy(pharmacy);
         return pharmacistRepository.save(pharmacist);
     }
 
 
     @Override
-
-    public void delete(Pharmacist userRequest) {
+    public String delete(Pharmacist userRequest) {
         List<ConfirmationToken> confirmationTokens = confirmationTokenRepository.findAll();
         ConfirmationToken confirmationToken = new ConfirmationToken();
 
@@ -94,8 +98,18 @@ public class PharmacistService implements IPharmacistService {
             }
 
         }
-
+        for(WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacistRepository.findAll()){
+            if(workingHoursPharmacist.getPharmacist().getId() == userRequest.getId()){
+                workingHoursPharmacistRepository.delete(workingHoursPharmacist);
+            }
+        }
+        for(Consulting consulting : consultingService.findAll()){
+            if(consulting.getPharmacist().getId() == userRequest.getId() && !consulting.getCancelled() && consulting.getDate().isAfter(LocalDate.now())){
+            return "Pharmacist can't be removed. There are scheduled appointments in future.";
+            }
+        }
         pharmacistRepository.delete(userRequest);
+        return  "Pharmacist is successfully deleted";
     }
 
     public Pharmacist update(Pharmacist userRequest) {
