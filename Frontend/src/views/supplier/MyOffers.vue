@@ -83,7 +83,7 @@
 
         </div>
       </div>
-      <b-modal ref="my-modal" hide-footer scrollable title="Please change password to continue" size="lg" modal-class="b-modal">
+      <b-modal ref="my-modal" hide-footer scrollable title="My offer" size="lg" modal-class="b-modal">
             <div modal-class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content" style="background-color:whitesmoke" >
                     <div class="modal-body" v-if="choosenOfferChangable">
@@ -108,10 +108,9 @@
                         
                         <button v-on:click = "confirmChange" class="btn btn-primary">Confirm</button>        
                     </div>               
-                    <div class="modal-body" v-if="!choosenOfferChangable">
+                    <div class="modal-body" v-if="choosenOfferNotChangable">
                         <div class="form-group">
-                            <label>Offered price:</label>
-                            <input type="number" class="form-control" v-model="choosenOfferPrice" placeholder="Price..">
+                            <label>Offered price:  {{choosenOfferPrice}}</label>
                         </div>
                         <div class="form-group">
                           <div>
@@ -136,7 +135,8 @@ export default {
       choosenOfferPrice : 0,
       newDelieveryDate : null,
       choosenOfferId : 0,
-      choosenOfferChangable : false
+      choosenOfferChangable : false,
+      choosenOfferNotChangable : false
     }
   },
 
@@ -146,11 +146,21 @@ export default {
            window.location.href = "/login";
       },
       showMyOffer : function(event,offer) {
+        console.log(offer.changable)
         this.choosenOffer = offer;
         this.choosenOfferDate = offer.dateOfDelivery;
         this.choosenOfferPrice = offer.summaryPrice;
         this.choosenOfferId = offer.offerId;
-        this.choosenOfferChangable = offer.changable;
+        if(offer.changable) {
+          this.choosenOfferChangable=true;
+          this.choosenOfferNotChangable=false;
+
+        }
+        else {
+          this.choosenOfferNotChangable = true;
+          this.choosenOfferChangable=false;
+
+        }
         this.$refs['my-modal'].show();
       },
       updateFiler : function(event, filter) {
@@ -200,8 +210,7 @@ export default {
                    console.log(response);
                    alert("Offer is successfully updated!");
                 }).catch(res => {
-                       alert("Please try later.");
-                        console.log(res);
+                      alert(res.response.data.message);
                 });
       }
       
@@ -221,10 +230,3 @@ export default {
     }
 }
 </script>
-
-<style>
-
-</style>
-
-
-  

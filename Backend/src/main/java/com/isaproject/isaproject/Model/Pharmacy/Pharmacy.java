@@ -17,7 +17,6 @@ import java.util.Set;
 @Entity
 @Table(name="pharmacy_table")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Pharmacy implements Serializable{
 
     @Id
@@ -38,7 +37,6 @@ public class Pharmacy implements Serializable{
 
     @Column(name = "consultingPrice", nullable = true)
     private double consultingPrice;
-
 
     @JsonManagedReference(value="pharmacy-schedule")
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)

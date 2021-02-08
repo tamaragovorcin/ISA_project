@@ -7,6 +7,7 @@ import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Model.Users.Supplier;
 import com.isaproject.isaproject.Service.Implementations.SupplierMedicationService;
 import com.isaproject.isaproject.Service.Implementations.SupplierService;
+import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,11 @@ public class SupplierMedicationsController {
     @PostMapping("/add")
     @PreAuthorize("hasRole('SUPPLIER')")
     public ResponseEntity<String> add(@RequestBody SupplierMedicationsDTO supplierMedicationsDTO) {
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidationSupplierMedication(supplierMedicationsDTO)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
+
         SupplierMedications supplierMedications = supplierMedicationService.save(supplierMedicationsDTO);
         return supplierMedications == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

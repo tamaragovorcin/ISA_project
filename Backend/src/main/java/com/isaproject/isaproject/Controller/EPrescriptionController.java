@@ -12,6 +12,7 @@ import com.isaproject.isaproject.Service.Implementations.EPrescriptionService;
 import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
 import com.isaproject.isaproject.Service.Implementations.PatientService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyService;
+import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +25,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import javax.imageio.ImageIO;
 
 @RestController
@@ -48,7 +47,7 @@ public class EPrescriptionController {
 
     @PostMapping("/file")
     @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<List<QRcodeInformationDTO>> hello(@RequestParam("file") MultipartFile file) {
+    ResponseEntity<EPrescriptionFullInfoDTO> hello(@RequestParam("file") MultipartFile file) {
 
         if (!file.isEmpty()) {
             try {
@@ -59,18 +58,23 @@ public class EPrescriptionController {
                 String decodedText = decodeQRCode(new File("src/main/resources/qr/" + file.getOriginalFilename()));
                 System.out.println(decodedText);
                 if (decodedText == null) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    throw new IllegalArgumentException("Please upload correct QR code!");
                 } else {
                     List<QRcodeInformationDTO> medicationsInQRcode = getMedicationsInQRcode(decodedText);
-
-                    return medicationsInQRcode == null ?
+                    if(medicationsInQRcode==null) {
+                        throw new IllegalArgumentException("Please try later!");
+                    }
+                    List<PharmacyMedicationAvailabilityDTO> pharmacyAvailability = getAvailabilityInPharmacies(medicationsInQRcode);
+                    EPrescriptionFullInfoDTO ePrescriptionFullInfoDTO = new EPrescriptionFullInfoDTO(pharmacyAvailability,medicationsInQRcode);
+                    return pharmacyAvailability == null ?
                             new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                            ResponseEntity.ok(medicationsInQRcode);
+                            ResponseEntity.ok(ePrescriptionFullInfoDTO);
+
                 }
             } catch (IOException | NotFoundException e) {
-                new ResponseEntity<>(HttpStatus.NOT_FOUND);            }
+                throw new IllegalArgumentException("Please upload correct QR code!");}
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        throw new IllegalArgumentException("Please upload correct QR code!");
     }
     @PostMapping("/file/noAuthentication")
     ResponseEntity<List<QRcodeInformationDTO>> uploadFile(@RequestParam("file") MultipartFile file) {
@@ -98,16 +102,7 @@ public class EPrescriptionController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/availability")
-    @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<List<PharmacyMedicationAvailabilityDTO>> getAvailability(@RequestBody List<QRcodeInformationDTO> listMedications) {
 
-        List<PharmacyMedicationAvailabilityDTO> pharmacyAvailability = getAvailabilityInPharmacies(listMedications);
-
-        return pharmacyAvailability == null ?
-                            new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                            ResponseEntity.ok(pharmacyAvailability);
-    }
     @PostMapping("/availability/pharmacy")
     ResponseEntity<String> getAvailabilityInPharmacy(@RequestBody MedicineAvailabilityQRDTO listMedications) {
 
@@ -128,6 +123,16 @@ public class EPrescriptionController {
                 patientService.informPatientAboutEreceipt(choosenPharmacy.getMedications())==false ||
                 ePrescriptionService.save(choosenPharmacy)==null ?
 */
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        Patient patient = patientService.findById(user.getId());
+        if(patient.getPenalties()==3) {
+            throw new IllegalArgumentException("You are not able to get medicaions! You have 3 penalties");
+        }
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkEprescription(choosenPharmacy)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
         return ePrescriptionService.proccedEReceipt(choosenPharmacy) ==null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok("Successfully updated!");
@@ -154,8 +159,6 @@ public class EPrescriptionController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(ePrescriptions);
     }
-
-
 
     private List<PharmacyMedicationAvailabilityDTO> getAvailabilityInPharmacies(List<QRcodeInformationDTO> medicationsInQRcode) {
         List<PharmacyMedicationAvailabilityDTO> pharmacyList = new ArrayList<>();

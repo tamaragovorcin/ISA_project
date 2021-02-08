@@ -76,6 +76,11 @@ public class SupplierService implements ISupplierService {
         PersonUser user = (PersonUser)currentUser.getPrincipal();
 
         Supplier supplier= findById(user.getId());
+
+        if(!supplier.getEmail().equals(userRequest.getEmail())) {
+            throw new IllegalArgumentException("Email can not be changed!");
+        }
+
         supplier.setAddress(userRequest.getAddress());
         List<Authority> auth = new ArrayList<Authority>();
         Authority authoritySupplier = authService.findByname("ROLE_SUPPLIER");

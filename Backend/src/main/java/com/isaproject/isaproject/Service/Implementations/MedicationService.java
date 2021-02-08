@@ -72,6 +72,9 @@ public class MedicationService implements IMedicationService {
         return medicationRepository.findByType(type);
     }
 
+    public Medication findByCode(Long code) { return medicationRepository.findByCode(code);}
+
+
     @Override
     public List<Medication> findByMark(int markMin, int markMax) {
         return medicationRepository.findAllByMarkBetweenMinAndMax(markMin,markMax);

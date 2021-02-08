@@ -3,7 +3,6 @@ import com.isaproject.isaproject.Model.Users.Patient;
 
 public class ComplaintDTO {
 
-    private Patient patient;
     private String subject;
     private UserBasicInfoDTO dermatologist;
     private UserBasicInfoDTO pharmacist;
@@ -15,8 +14,7 @@ public class ComplaintDTO {
     public ComplaintDTO() {
     }
 
-    public ComplaintDTO(Patient patient, String subject, UserBasicInfoDTO dermatologist, UserBasicInfoDTO pharmacist, PharmacyNameDTO pharmacyName, boolean answered, String massage, String answer) {
-        this.patient = patient;
+    public ComplaintDTO(String subject, UserBasicInfoDTO dermatologist, UserBasicInfoDTO pharmacist, PharmacyNameDTO pharmacyName, boolean answered, String massage, String answer) {
         this.subject = subject;
         this.dermatologist = dermatologist;
         this.pharmacist = pharmacist;
@@ -24,14 +22,6 @@ public class ComplaintDTO {
         this.answered = answered;
         this.massage = massage;
         this.answer = answer;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
     }
 
     public String getSubject() {
