@@ -5,6 +5,7 @@ public class PersonUserDTO {
     private String email;
 
     private String password;
+    private String rewritePassword;
 
     private String firstname;
 
@@ -14,16 +15,25 @@ public class PersonUserDTO {
 
     private AddressDTO address;
 
-    public PersonUserDTO(String email, String password, String firstname, String surname, String phonenumber, AddressDTO address) {
+    public PersonUserDTO() { }
+
+    public PersonUserDTO(String email, String password, String rewritePassword, String firstname, String surname, String phonenumber, AddressDTO address) {
         this.email = email;
         this.password = password;
+        this.rewritePassword = rewritePassword;
         this.firstname = firstname;
         this.surname = surname;
         this.phonenumber = phonenumber;
         this.address = address;
     }
 
-    public PersonUserDTO() { }
+    public String getRewritePassword() {
+        return rewritePassword;
+    }
+
+    public void setRewritePassword(String rewritePassword) {
+        this.rewritePassword = rewritePassword;
+    }
 
     public String getEmail() {
         return email;

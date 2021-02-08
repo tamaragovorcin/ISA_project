@@ -92,8 +92,17 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/change-password", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACY_ADMIN', 'PHARMACIST')")
     public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
+        if(passwordChanger.newPassword.isEmpty() || passwordChanger.rewriteNewPassword.isEmpty()|| passwordChanger.oldPassword.isEmpty()) {
+            throw new IllegalArgumentException("Please fill all the required fields!");
+        }
+        if(!passwordChanger.newPassword.equals(passwordChanger.rewriteNewPassword)) {
+            throw new IllegalArgumentException("Please make sure your new password and rewrite password match!");
+        }
+        if(passwordChanger.newPassword.equals(passwordChanger.oldPassword)) {
+            throw new IllegalArgumentException("New password can not be same as old password!");
+        }
         userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
 
         Map<String, String> result = new HashMap<>();
@@ -104,6 +113,17 @@ public class AuthenticationController {
     @RequestMapping(value = "/passwordFirstLogin", method = RequestMethod.POST)
     @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACY_ADMIN', 'PHARMACIST')")
     public ResponseEntity<?> changePasswordFirstLogin(@RequestBody PasswordChanger passwordChanger) {
+
+        if(passwordChanger.newPassword.isEmpty() || passwordChanger.rewriteNewPassword.isEmpty()|| passwordChanger.oldPassword.isEmpty()) {
+            throw new IllegalArgumentException("Please fill all the required fields!");
+        }
+        if(!passwordChanger.newPassword.equals(passwordChanger.rewriteNewPassword)) {
+            throw new IllegalArgumentException("Please make sure your new password and rewrite password match!");
+        }
+        if(passwordChanger.newPassword.equals(passwordChanger.oldPassword)) {
+            throw new IllegalArgumentException("New password can not be same as old password!");
+        }
+
         userDetailsService.changePasswordFirstLogin(passwordChanger.oldPassword, passwordChanger.newPassword);
 
         Map<String, String> result = new HashMap<>();
@@ -126,5 +146,6 @@ public class AuthenticationController {
     static class PasswordChanger {
         public String oldPassword;
         public String newPassword;
+        public String rewriteNewPassword;
     }
 }

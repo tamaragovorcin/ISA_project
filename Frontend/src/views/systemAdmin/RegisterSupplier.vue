@@ -155,6 +155,7 @@ export default {
             const userInfo ={
                 email : this.email,
                 password : this.password,
+                rewritePassword : this.repeatPassword,
                 firstname : this.name2,
                 surname : this.surname,
                 phonenumber : this.phoneNumber,
@@ -171,8 +172,7 @@ export default {
                         console.log(response.data);
                 })
                 .catch(response => {
-                       alert("Please try later.");
-                        console.log(response);
+                    alert(response.response.data.message);
                  });    
       },
       logOut : function(){
@@ -204,16 +204,9 @@ export default {
                     this.notallowSystemAdminRegistration = true;
                }
          }).catch(res => {
-                       alert("NOT OK");
+                       alert("Please log in again or try later.");
                         console.log(res);
                  });
     }
 }
 </script>
-
-<style>
-
-</style>
-
-
-  

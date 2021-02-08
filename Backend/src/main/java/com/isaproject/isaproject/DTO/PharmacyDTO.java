@@ -3,7 +3,6 @@ package com.isaproject.isaproject.DTO;
 public class PharmacyDTO {
 
     private String pharmacyName;
-
     private AddressDTO address;
     private double consultingPrice;
     private String description;

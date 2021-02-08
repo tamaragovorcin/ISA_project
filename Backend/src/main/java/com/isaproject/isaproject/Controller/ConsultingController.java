@@ -80,7 +80,6 @@ public class ConsultingController {
     // @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<String> addConsulting(@RequestBody ConsultingDTO consultingDTO) {
 
-
         Consulting consulting = consultingService.save(consultingDTO);
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo(consultingDTO.getPatient().getEmail());

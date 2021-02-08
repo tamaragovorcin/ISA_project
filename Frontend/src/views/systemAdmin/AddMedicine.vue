@@ -32,63 +32,97 @@
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
              </span>
         </div>
-        <div style="background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <h3 style="color: #0D184F">Add new medicine</h3>
+        <div style="background-color:lightgray; margin: auto; width: 40%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+                     <h3 style="color: #0D184F">Add new medicine</h3>
                 
-                    <div class="form-row">
+                    <div class="form-row d-flex justify-content-center">
                         <div class="form-group col-md-6">
                         <label>Name:</label>
                         <input type="text" class="form-control" v-model="name" placeholder="Enter name">
                         </div>
+                    </div>
+                    <div class="form-row d-flex justify-content-center">
                         <div class="form-group col-md-6">
                         <label>Code:</label>
                         <input type="number" class="form-control" v-model = "code" placeholder="Enter code">
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row d-flex justify-content-center">
                         <div class="form-group col-md-6">
-                        <label>Form:</label>
-                        <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication form" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
-                              <b-dropdown-item v-for="item in this.forms"  v-on:click ="formIsSelected($event, item.form)" v-bind:key="item.form"> {{item.form }}</b-dropdown-item>
-                        </b-dropdown> 
-                        </div>
-                        <div class="form-group col-md-6">
-                        <label>Type:</label>
-                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication type" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
-                              <b-dropdown-item v-for="item in this.types"  v-on:click ="typeIsSelected($event, item.type)" v-bind:key="item.type"> {{item.type }}</b-dropdown-item>
-                        </b-dropdown> 
+                            <label>Issuance Regime:</label>
+                            <input type="text" class="form-control" v-model="issuanceRegime" placeholder="Enter issuance Regime">
                         </div>
                     </div>
-                      <div class="form-row">
+                    <div class="form-row d-flex justify-content-center">
                         <div class="form-group col-md-6">
-                        <label>Issuance Regime:</label>
-                        <input type="text" class="form-control" v-model="issuanceRegime" placeholder="Enter issuance Regime">
-                        </div>
-                        <div class="form-group col-md-6">
-                        <label>Way of selling:</label>
-                       <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose way of selling" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
-                              <b-dropdown-item v-for="item in this.waysSelling"  v-on:click ="wayOfSellingIsSelected($event, item.way)" v-bind:key="item.way"> {{item.way }}</b-dropdown-item>
-                        </b-dropdown> 
+                            <label>Loyalty Points:</label>
+                            <input type="number" class="form-control" v-model="loyaltyPoints" placeholder="Enter loyalty points">
                         </div>
                     </div>
-                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                        <label>Loyalty Points:</label>
-                        <input type="number" class="form-control" v-model="loyaltyPoints" placeholder="Enter loyalty points">
+                    <div class="form-row d-flex justify-content-center">
+                        <div class="form-group col"></div>
+                        <div class="form-group col h-50">
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication form" class = "btn btn-link btn-lg" style="float:left;margin-left:0px;">
+                                <b-dropdown-item v-for="item in this.forms"  v-on:click ="formIsSelected($event, item.form)" v-bind:key="item.form"> {{item.form }}</b-dropdown-item>
+                            </b-dropdown> 
                         </div>
+                        <div class="form-group col d-flex justify-content-start ">
+                            <span class="label label-info  text-gray">{{choosenForm}}</span>
+                        </div>
+                        <div class="form-group col"></div>
+
                     </div>
-                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <button class="btn btn-primary btn-lg" v-on:click = "showSpecificationModal">Click to add specification</button>
+                    <div class="form-row d-flex justify-content-center">
+                        <div class="form-group col"></div>
+
+                        <div class="form-group col">
+                       
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication type" class = "btn btn-link btn-lg" style="float:left;margin-left:0px;">
+                                <b-dropdown-item v-for="item in this.types"  v-on:click ="typeIsSelected($event, item.type)" v-bind:key="item.type"> {{item.type }}</b-dropdown-item>
+                            </b-dropdown> 
                         </div>
-                        <div class="form-group col-md-6">
-                            <button class="btn btn-primary btn-lg" v-on:click = "showAlternativesModal">Click to add alternatives</button>
+                         <div class="form-group col d-flex justify-content-start ">
+                            <span class="label label-info  text-gray">{{choosenType}}</span>
                         </div>
+
+                        <div class="form-group col"></div>
+
+
+                    </div>
+                  
+                    <div class="form-row d-flex justify-content-center">
+                         <div class="form-group col"></div>
+
+                        <div class="form-group col">
+
+                                <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose way of selling" class = "btn btn-link btn-lg" style="float:left;margin-left:0px;">
+                                    <b-dropdown-item v-for="item in this.waysSelling"  v-on:click ="wayOfSellingIsSelected($event, item.way)" v-bind:key="item.way"> {{item.way }}</b-dropdown-item>
+                                </b-dropdown> 
+                        </div>
+                         <div class="form-group col d-flex justify-content-start">
+                            <span class="label label-info  text-gray">{{choosenWyOfSelling}}</span>
+                        </div>
+
+                        <div class="form-group col"></div>
+
+                     </div>
+                   
+                     <div class="form-row d-flex justify-content-center">
+                         <div class="form-group col"></div>
+
+                        <div class="form-group col">
+                            <button class="btn btn-primary" v-on:click = "showSpecificationModal">Click to add specification</button>
+                        </div>
+    
+                        <div class="form-group col">
+                            <button class="btn btn-primary" v-on:click = "showAlternativesModal">Click to add alternatives</button>
+                        </div>
+                          <div class="form-group col"></div>
+
                     </div>
                    
                     <button class="btn btn-primary btn-lg" v-on:click = "add">Add medicine</button>
-                    <div style="height:30px;"></div>
-        </div>
+            </div>
        <div> 
           <b-modal ref="specification-modal" hide-footer scrollable title="Fill medicine specification" size="lg" modal-class="b-modal">
                <div modal-class="modal-dialog" role="document">
@@ -213,7 +247,7 @@ export default {
                code : this.code,
                form : this.choosenForm,
                type : this.choosenType,
-               wayOfSelling : this.wayOfSelling,
+               wayOfSelling : this.choosenWyOfSelling,
                issuanceRegime : this.issuanceRegime,
                mark : 0,
                loyaltyPoints : this.loyaltyPoints,
@@ -229,9 +263,8 @@ export default {
                        alert("Medicine is added!");
                         console.log(response.data);
                 })
-                .catch(response => {
-                       alert("Please try later");
-                        console.log(response);
+                .catch(res => {
+                    alert(res.response.data.message);
                  });    
 
       },
@@ -242,7 +275,7 @@ export default {
            this.choosenForm = form;
       },
        wayOfSellingIsSelected : function(event, way) { 
-          this.wayOfSellingIsSelected = way;
+          this.choosenWyOfSelling = way;
       },
       showSpecificationModal : function() {
           this.$refs['specification-modal'].show();
@@ -288,7 +321,7 @@ export default {
                     this.notallowSystemAdminRegistration = true;
                }
          }).catch(res => {
-                       alert("NOT OK");
+                       alert("Please log in again or try later.");
                         console.log(res);
                  });
      this.axios.get('/medication',{ 
@@ -298,16 +331,9 @@ export default {
          }).then(response => {
               this.allMedications = response.data;
          }).catch(res => {
-                       alert("NOT OK");
+                        alert("Please log in again or try later.");
                         console.log(res);
                  });
     }
 }
-</script>
-
-<style>
-
-</style>
-
-
-  
+</script>  

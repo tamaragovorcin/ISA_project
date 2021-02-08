@@ -119,6 +119,7 @@ export default {
             const userInfo ={
                 email : this.email,
                 password : this.password,
+                rewritePassword : this.repeatPassword,
                 firstname : this.name,
                 surname : this.surname,
                 phonenumber : this.phoneNumber,
@@ -130,8 +131,7 @@ export default {
                         console.log(response.data);
                 })
                 .catch(response => {
-                       alert("NIJE REGISTROVAN");
-                        console.log(response);
+                     alert(response.response.data.message);
                  });    
       },
       showRegistrationForm : function(){
@@ -146,6 +146,3 @@ export default {
 }
 }
 </script>
-
-<style>
-</style>

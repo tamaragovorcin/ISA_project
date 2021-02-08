@@ -13,8 +13,17 @@ public class ConsultingDTO {
     private double price;
     private Boolean cancelled;
 
+
+    public Pharmacist getPharmacist() {
+        return pharmacist;
+    }
+
     public void setPharmacist(Pharmacist pharmacist) {
         this.pharmacist = pharmacist;
+    }
+
+    public Patient getPatient() {
+        return patient;
     }
 
     public void setPatient(Patient patient) {
@@ -49,13 +58,6 @@ public class ConsultingDTO {
         this.information = information;
     }
 
-    public Pharmacist getPharmacist() {
-        return pharmacist;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
 
     public LocalDate getDate() {
         return date;
@@ -99,5 +101,6 @@ public class ConsultingDTO {
         this.showedUp = showedUp;
         this.information = information;
     }
+
     public ConsultingDTO(){ }
 }
