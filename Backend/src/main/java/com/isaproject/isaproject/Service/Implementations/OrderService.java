@@ -12,7 +12,10 @@ import com.isaproject.isaproject.Service.IServices.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class OrderService implements IOrderService {
@@ -67,13 +70,13 @@ public class OrderService implements IOrderService {
             medicationInOrderRepository.delete(medication);
         }
         or.setDate(order.getDate());
-        MedicationInOrder medicationInOrder = new MedicationInOrder();
-
+    Set<MedicationInOrder> medication = new HashSet<>();
 
         for(MedicationsInOrderDTO medDto : order.getMedicationsInOrderDTO()){
             MedicationInOrder medicationInOrder1 = new MedicationInOrder(medDto.getMedicine(),medDto.getQuantity());
-            medicationInOrder1.setOrder(or);
             medicationInOrderRepository.save(medicationInOrder1);
+            medication.add(medicationInOrder1);
+            or.setMedicationInOrders(medication);
         }
 
         return orderRepository.save(or);

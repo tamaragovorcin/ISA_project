@@ -1,5 +1,5 @@
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div  v-if="loggedIn"  id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
           <span style="float: left; margin: 15px;">
@@ -50,94 +50,7 @@
                      <h3 style="margin:25px;color:#0D184F;font-weight:bold;">Active tenders:</h3>
                  
 
- <b-modal ref="edit-modal" hide-footer scrollable title="Edit order" size="lg" modal-class="b-modal">
-                    <div modal-class="modal-dialog" role="document">
-                    <div class="modal-content" style="background-color:whitesmoke">
-                            <div class="modal-header">
-                                <h3 class="modal-title" id="exampleModalLabel">Medicine ordering</h3>
-                
-                            </div>
-                            <div class="modal-body">
-                                <div  class="container5">
-
-                                        <div  style="margin-top:30px">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <label >Medication:</label>
-                                                </div>
-                                                <div class="col">
-                                                                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication"
-                                        class = "btn btn-link btn-lg" style="float:left; width=200px;">
-                                            <b-dropdown-item v-for="medicine in this.medications"  v-on:click = "medicationIsSelected($event, medicine)" v-bind:key="medicine.id"> 
-                                            {{ medicine.name }}<div style="width:20px"></div>{{medicine.type }}
-                                            </b-dropdown-item>
-                                    </b-dropdown> 
-
-                                                </div>
-
-
-                                            </div>
-                                            <div class="row">
-
-                                                <div class="col">
-                                                    <label>Quantity:</label>
-                                                </div>
-                                                <div class="col">
-                                                    <input type="number" v-model="quantityEdit" placeholder="Enter quantity..">
-                                                </div>
-
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                </div>
-                                                <div class="col">
-                                                    <button class="btn btn-secondary" style="margin-left:3px" v-on:click="addNewMedicineEdit">&nbsp;&nbsp;+&nbsp;&nbsp;</button>
-                                                </div>
-                                            </div>
-
-
-
-
-
-                                        </div>
-                                        <div class="row">
-                                            <table class="table table-striped table-dark">
-                                                <thead>
-                                                <th>Medicine name</th>
-                                                <th>Quantity</th>
-                                                </thead>
-                                                <tr v-for="med in medicationQuantityListEdit" :key="med.id">
-                                                    <td>{{med.medicine.name}}</td>
-                                                    <td>{{med.quantity}}</td>
-                                                    <td><button class = "btn btn-primary" >Remove medication</button></td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <hr />
-                                        <div class="row">
-                                            <div class="col">
-                                                <label for="name">Closing date:</label>
-                                            </div>
-                                            <div class="col">
-                                                <input type="date" v-model="endDateEdit" />
-                                            </div>
-                                        </div>
-                    
-
-                                </div>
-
-
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" block @click="hideModalEdit">Close</button>
-                        <button class="btn btn-primary" @click="editOrder">Share order</button>
-                    </div>
-                    </div>
-                </div>
-    
-    </b-modal>
-
-
+ 
 
 
        <div>
@@ -153,20 +66,23 @@
  <div v-if="showConcreteTender" style = "background-color:white; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
                    
                     <hr/>
-                                                       <h4 style="color: #0D184F;margin:20px">Tender {{choosenTender.id}}</h4>
+                                                       <h3 style="color: #0D184F;margin:20pxlfont-weight:bold">Tender {{choosenTender.id}}</h3>
 
                     <hr/>
                     <div >
                         <div class="row">
                             <div class=" form-group col">
-                                <label >Medication</label>
+                                <label style="color:#0D184F"><u>Medication</u></label>
                             </div>
                             
                             <div class=" form-group col">          
-                                <label >Code</label>
+                                <label><u>Code</u></label>
                             </div>
                             <div class=" form-group col">          
-                                <label >Required quantity</label>
+                                <label><u>Required quantity</u></label>
+                            </div>
+                            <div class=" form-group col">          
+                                <label><u>Change quantity</u></label>
                             </div>
                         </div>
                         <div v-for="medication in choosenTender.medications"   v-bind:key="medication.id">
@@ -178,17 +94,29 @@
                                         <label >{{medication.code}}</label>
                                     </div>
                                      <div class=" form-group col">
-                                        <label >{{medication.quantity}}</label>
+                                   <label>{{medication.quantity}}</label>
                                     </div>
+                                 <div class=" form-group col">
+
+                                 <input type="number" v-model="quantity">
+                                 <button style="background:lightgreen;width:15px;" @click="addNewMedicine($event,medication)">✓</button>
+                                </div>
+                               
                              </div>
                          </div>
                          <div class="row"></div>
                          <div class="row"></div>
+                         <hr/>
                          <div class="row">
                             <div class=" form-group col">
-                                <label >Active until     {{choosenTender.date}}</label>
+                                <label >Active until:     {{choosenTender.date}}</label>
+
                             </div>
-                           
+                      <div class=" form-group col">
+
+                            <label>Change date:</label><input type="date"  v-model = "choosenTender.date">
+                        </div>
+                            
                         </div>
                         <hr/>
                          <div class="row justify-content-center">
@@ -227,15 +155,8 @@ export default {
        admin : {},
        pharmacy : {},
        selectedMedication : {},
-       selectedMedicationEdit : {},
        orders : [],
        medicationInOrder : [],
-       choosenOffer :{
-         id : 0,
-         supplier: {},
-         dateOfDelivery : "",
-         summaryPrice : ""
-       },
        choosenTender : {
             id : 0,
             date : null,
@@ -262,11 +183,11 @@ export default {
         supplierName : "",
         supplierSurName : "",
         offerData : "",
-        medicationQuantityListEdit : "",
         endDateEdit : "",
         quantityEdit : "",
         active : false,
-        finished :false
+        finished :false,
+        loggedIn : false
         
 
     }
@@ -279,6 +200,7 @@ export default {
              }
          }).then(response => {
                 this.admin = response.data;
+                this.loggedIn = true;
                 console.log(this.admin);
                 this.axios.get('/pharmacyAdmin/myPharmacy',{ 
                     headers: {
@@ -302,7 +224,7 @@ export default {
                             alert("NOT OK");
                             console.log(res);
                     });
-                    this.axios.get('/pharmacyAdmin/orders',{ 
+                    this.axios.get('/pharmacyAdmin/activeOrders',{ 
                     headers: {
                         'Authorization': 'Bearer ' + token,
                     }
@@ -334,10 +256,6 @@ export default {
        logOut : function(){
            window.location.href = "/login";
       },
-      showEditForm(){
-                  this.$refs['edit-modal'].show()
-
-      },
       showModal() {
         this.$refs['my-modal'].show()
       },
@@ -347,32 +265,17 @@ export default {
        hideModalEdit() {
         this.$refs['edit-modal'].hide()
       },
-     dermatologistIsSelected : function(event, medicine) {
-            this.selectedMedication = medicine;
-            console.log(event);
-      },
-        medicationIsSelected : function(event, medicine) {
-            this.selectedMedicationEdit = medicine;
-            console.log(event);
-      },
        showTender :function (event, order) {
             this.showConcreteTender = true;
             this.choosenTender = order;
            
       },
-       addNewMedicineEdit : function(){
-                const medicineWithQuantityEdit = {
-                    medicine: this.selectedMedicationEdit,
-                    quantity: this.quantityEdit,
-                };
-                this.medicationQuantityListEdit.push(medicineWithQuantityEdit)
-      },
-       editOrder : function(){
+       showEditForm : function(){
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
          const order = {
                     orderId : this.choosenTender.id,
-                    medicationsInOrderDTO: this.medicationQuantityListEdit,
-                    date: this.endDateEdit
+                    medicationsInOrderDTO: this.choosenTender.medications,
+                    date: this.choosenTender.date,
                 };
             this.axios.post('/order/update',order,{ 
                          headers: {
@@ -386,6 +289,10 @@ export default {
                        alert("Please try later.");
                         console.log(response);
                  });    
+      },
+       addNewMedicine : function(event,selectedMedication){
+                selectedMedication.quantity = this.quantity;
+
       },
     removeOrder : function(){
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
@@ -403,9 +310,7 @@ export default {
                         console.log(response);
                  });  
     }
-   
-   
-  }
+}
 }
 </script>
 
@@ -440,4 +345,5 @@ body {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
+
 </style>

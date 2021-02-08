@@ -4,6 +4,10 @@ import VueAxios from 'vue-axios'
 import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify';
+import 'chart.js'
+import 'hchs-vue-charts'
+
+Vue.use(window.VueCharts)
 
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)

@@ -1,20 +1,19 @@
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div  v-if="loggedIn"  id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-             <span style="float: left; margin: 15px;">
+             <span style="float: left; margin-top: 15px;">
                               <b-dropdown id="ddCommodity" name="ddCommodity" text="My profile" 
                                               class = "btn btn-link btn-lg">
                                     <b-dropdown-item href = "/pharmacyAdminProfile">Profile</b-dropdown-item>
                                     <b-dropdown-item href = "/phAdminProfileUpdate">Update profile</b-dropdown-item>      
                                 </b-dropdown>        
-
-                        <strong class="tab"></strong>  
+                       <strong class="tab"></strong>  
 
                                     <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
                                                 <button class = "btn btn-secondary" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
                                     </router-link>
-
+                   
                           <strong class="tab"></strong>  
 
                                   <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
@@ -35,9 +34,20 @@
                             <strong class="tab"></strong>  
                             <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
                             <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href="/order">Orders</a>
-                            <strong class="tab"></strong>  
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Orders" 
+                                                  class = "btn btn-link btn-lg">
+                                        <b-dropdown-item href = "/order">Preview orders and offers(Add new)</b-dropdown-item>
+                                        <b-dropdown-item href = "/editOrder">Edit/remove order</b-dropdown-item>      
+                                    </b-dropdown>                             
+                                    <strong class="tab"></strong>  
                             <a   class = "btn btn-secondary" href="/holidayRequests">Holiday/absence requests</a>
+                             <strong class="tab"></strong>  
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Graphical reviews" 
+                                                  class = "btn btn-link btn-lg">
+                                        <b-dropdown-item href = "/examinationGraphics">Examinations</b-dropdown-item>
+                                        <b-dropdown-item href = "/medicationGraphics">Medication consumption</b-dropdown-item> 
+                                        <b-dropdown-item href = "/incomeGraphics">Income</b-dropdown-item>      
+                                    </b-dropdown>     
             </span>
               <span  style="float:right;margin:15px">
                    
@@ -140,7 +150,8 @@ export default {
                     country : ""
                 }
     },
-    pharmacy : {}
+    pharmacy : {},
+    loggedIn : false
     }
   },
   mounted() {
@@ -150,6 +161,7 @@ export default {
                  'Authorization': 'Bearer ' + token,
              }
          }).then(response => {
+               this.loggedIn = true;
                this.admin=response.data;
                 this.axios.get('/pharmacyAdmin/myPharmacy',{ 
                     headers: {

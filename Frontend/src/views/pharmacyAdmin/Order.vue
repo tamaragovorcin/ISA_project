@@ -1,5 +1,5 @@
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div  v-if="loggedIn"  id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
           <span style="float: left; margin: 15px;">
@@ -422,7 +422,8 @@ export default {
         endDateEdit : "",
         quantityEdit : "",
         active : false,
-        finished :false
+        finished :false,
+        loggedIn : false
         
 
     }
@@ -435,6 +436,7 @@ export default {
              }
          }).then(response => {
                 this.admin = response.data;
+                this.loggedIn = true;
                 console.log(this.admin);
                 this.axios.get('/pharmacyAdmin/myPharmacy',{ 
                     headers: {
