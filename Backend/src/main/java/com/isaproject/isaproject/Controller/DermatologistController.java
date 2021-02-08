@@ -17,6 +17,7 @@ import com.isaproject.isaproject.Model.Users.MarkDermatologist;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
 import com.isaproject.isaproject.Service.Implementations.*;
+import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,12 +58,19 @@ public class DermatologistController {
 
 
     @PostMapping("/register")
-    // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody DermatologistDTO userRequest) {
 
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidationDermatologist(userRequest)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
+        if(!userRequest.getPassword().equals(userRequest.getRewritePassword())) {
+            throw new IllegalArgumentException("Please make sure your password and rewrite password match!");
+        }
         PersonUser existUser = dermatologistService.findByEmail(userRequest.getEmail());
         if (existUser != null) {
-            throw new ResourceConflictException(userRequest.getEmail(), "Email already exists");
+            throw new ResourceConflictException("Entered email already exists", "Email already exists");
         }
         PersonUser user = dermatologistService.save(userRequest);
         return new ResponseEntity<>("Dermatologist is successfully registred!", HttpStatus.CREATED);

@@ -93,4 +93,23 @@ public class ExaminationService implements IExaminationService {
         }
         return false;
     }
+
+    public boolean canMakeComplaintDermatologist(Integer dermatologistId) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        Patient patient = patientRepository.findById(user.getId()).get();
+
+        Boolean able = false;
+
+        List<Examination> examinations = findAll();
+
+        for(Examination examination: examinations){
+            if(examination.getExaminationSchedule().getDermatologist().getId() == dermatologistId && examination.getPatient().getId()== patient.getId()){
+                if(examination.getShowedUp()) {
+                    able = true;
+                }
+            }
+        }
+        return able;
+    }
 }

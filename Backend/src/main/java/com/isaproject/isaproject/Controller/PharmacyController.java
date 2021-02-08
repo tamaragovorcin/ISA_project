@@ -18,8 +18,7 @@ import com.isaproject.isaproject.Service.Implementations.ActionsService;
 import com.isaproject.isaproject.Service.Implementations.ExaminationScheduleService;
 import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyService;
-import org.bouncycastle.crypto.prng.ReversedWindowGenerator;
-import org.hibernate.annotations.GeneratorType;
+import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -28,12 +27,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.swing.*;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
@@ -70,14 +65,6 @@ public class PharmacyController  {
     @Autowired
     PatientService patientService;
 
-    @PostMapping("/add")
-    ResponseEntity<Pharmacy> add(@RequestBody PharmacyDTO ph)
-    {
-        Pharmacy pharmacy = pharmacyService.save(ph);
-        return pharmacy == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacy);
-    }
     @PostMapping("/addActions")
     ResponseEntity<String> shareActions(@RequestBody ActionsDTO action)
     {
@@ -119,13 +106,14 @@ public class PharmacyController  {
     }
 
     @PostMapping("/register")
-    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacyDTO pharmacyDTO) {
 
-        Pharmacy existedPharmacy = pharmacyService.findByPharmacyName(pharmacyDTO.getPharmacyName());
-        if (existedPharmacy != null) {
-            throw new ResourceConflictException(existedPharmacy.getPharmacyName(), "Pharmacy name already exists");
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidatioPharmacy(pharmacyDTO)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
         }
+
         Pharmacy pharmacy = pharmacyService.save(pharmacyDTO);
         return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
     }
@@ -821,8 +809,9 @@ public class PharmacyController  {
 
         for(Consulting consulting: consultings){
             if(consulting.getPharmacist().getId() == pharmacistId && consulting.getPatient().getId()== patientId){
-                able = true;
-
+                if(consulting.getShowedUp()) {
+                    able = true;
+                }
             }
         }
 
@@ -1075,18 +1064,10 @@ public class PharmacyController  {
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<String> checkPossibilityPharmacy(@PathVariable Integer pharmacyId)
     {
-        Boolean hasEreceipt = ePrescriptionService.checkEReceiptInPharmacy(pharmacyId);
-        Boolean hasConsulting = consultingService.checkIfPatientHasConsulting(pharmacyId);
-        Boolean hasExamination = examinationService.checkIfPatientHasExamination(pharmacyId);
-
-       // return (hasEreceipt == false && hasConsulting==false)?
-              //  new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-               return ResponseEntity.ok("Successfully");
+        return (pharmacyService.checkConnectionWithPharmacy(pharmacyId)==false) ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok("Successfully");
     }
-
-
-
-
 
     @GetMapping("from1to5")
     //@PreAuthorize("hasRole('PATIENT')")

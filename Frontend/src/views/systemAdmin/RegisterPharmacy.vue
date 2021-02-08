@@ -61,11 +61,15 @@
                </div>
                 <div class="form-group">
                     <label>Postal code:</label>
-                    <input type="text" class="form-control" v-model="postalCode" placeholder="Enter postal code">
+                    <input type="number" class="form-control" v-model="postalCode" placeholder="Enter postal code">
                </div>
                 <div class="form-group">
                     <label>Consulting price:</label>
-                    <input type="text" class="form-control" v-model="consultingPrice" placeholder="Enter consulting price">
+                    <input type="number" class="form-control" v-model="consultingPrice" placeholder="Enter consulting price">
+               </div>
+                <div class="form-group">
+                    <label>Pharmacy descriprion:</label>
+                    <input type="text" class="form-control" v-model="description" placeholder="Enter description">
                </div>
                 <button v-on:click = "register" class="btn btn-primary">Register</button>
            
@@ -88,7 +92,8 @@ export default {
         consultingPrice : 0,
         accountInformation :null,
         allowSystemAdminRegistration : false,
-        notallowSystemAdminRegistration : false
+        notallowSystemAdminRegistration : false,
+        description :""
     }
   },
 
@@ -126,23 +131,24 @@ export default {
                 
                 pharmacyName : this.pharmacyName,
                 address : addressInfo,
-                consultingPrice : this.consultingPrice
+                consultingPrice : this.consultingPrice,
+                description: this.description
 
             }
-            //let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
 
             this.axios.post('/pharmacy/register',pharmacyInfo,{ 
-                         //headers: {
-                                //'Authorization': 'Bearer ' + token,
-                        //}
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }
                         })
                 .then(response => {
                        alert("Pharmacy is successfully registred!");
                         console.log(response.data);
                 })
-                .catch(response => {
-                       alert("Please try later.");
-                        console.log(response);
+                .catch(res => {
+                    alert(res.response.data.message);
+
                  });    
       },
       logOut : function(){
@@ -174,16 +180,9 @@ export default {
                     this.notallowSystemAdminRegistration = true;
                }
          }).catch(res => {
-                       alert("NOT OK");
+                       alert("Please log in again or try later.");
                         console.log(res);
                  });
     }
 }
 </script>
-
-<style>
-
-</style>
-
-
-  

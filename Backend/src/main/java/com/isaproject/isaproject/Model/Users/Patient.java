@@ -15,7 +15,6 @@ import java.util.Set;
 @Entity
 @DiscriminatorValue("Patient")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Patient extends PersonUser{
 
     @JsonManagedReference(value="consulting-patient")
@@ -23,7 +22,6 @@ public class Patient extends PersonUser{
     private Set<Consulting> consulting = new HashSet<Consulting>();
 
     @JsonManagedReference(value="patient-schedule")
-
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     private Set<Examination> examinations = new HashSet<Examination>();
 
@@ -34,6 +32,7 @@ public class Patient extends PersonUser{
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Grading> gradings = new HashSet<Grading>();
 
+    @JsonManagedReference(value="eprescription-patient")
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<EPrescription> ePrescriptions = new HashSet<EPrescription>();
 
@@ -42,9 +41,9 @@ public class Patient extends PersonUser{
     private Set<Prescription> prescriptions = new HashSet<Prescription>();
 
 
-
     @ManyToMany
     @JsonIgnore
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JoinTable(name = "patients_subscriptions", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
     private Set<Pharmacy> subscribedToPharmacies = new HashSet<Pharmacy>();

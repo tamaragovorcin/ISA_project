@@ -6,7 +6,8 @@ import com.isaproject.isaproject.Model.Users.Address;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
-import com.isaproject.isaproject.Service.Implementations.ComplaintService;
+import com.isaproject.isaproject.Service.Implementations.*;
+import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +22,59 @@ import java.util.List;
 public class ComplaintController {
     @Autowired
     ComplaintService complaintService;
+    @Autowired
+    private ConsultingService consultingService;
+    @Autowired
+    private ExaminationService examinationService;
+    @Autowired
+    private PharmacyService pharmacyService;
+    @Autowired
+    private DermatologistService dermatologistService;
+    @Autowired
+    private PharmacistService pharmacistService;
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<Complaint> add(@RequestBody ComplaintDTO complaintDTO)
     {
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkComplaint(complaintDTO)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
+
+        if(complaintDTO.getPharmacyName()!=null) {
+            try {
+                Pharmacy pharmacy = pharmacyService.findById(complaintDTO.getPharmacyName().getPharmacyId());
+            }
+            catch(Exception e) {
+                throw new IllegalArgumentException("Please select pharmacy that already exists!");
+            }
+            if(!pharmacyService.checkConnectionWithPharmacy(complaintDTO.getPharmacyName().getPharmacyId())) {
+                throw new IllegalArgumentException("You are not able to write complaint to this pharmacy!");
+            }
+        } else if(complaintDTO.getDermatologist()!=null) {
+            try {
+                Dermatologist dermatologist = dermatologistService.findById(complaintDTO.getDermatologist().getUserId());
+            }
+            catch(Exception e) {
+                throw new IllegalArgumentException("Please select dermatologist that already exists!");
+            }
+            if(!examinationService.canMakeComplaintDermatologist(complaintDTO.getDermatologist().getUserId())) {
+                throw new IllegalArgumentException("You are not able to write complaint to this dermatologist!");
+            }
+        }
+        else if(complaintDTO.getPharmacist()!=null) {
+            try {
+                Pharmacist pharmacist = pharmacistService.findById(complaintDTO.getPharmacist().getUserId());
+            }
+            catch(Exception e) {
+                throw new IllegalArgumentException("Please select dermatologist that already exists!");
+            }
+            if(!consultingService.canMakeComplaintPharmacist(complaintDTO.getPharmacist().getUserId())) {
+                throw new IllegalArgumentException("You are not able to write complaint to this pharmacist!");
+            }
+        }
+        else {}
         Complaint complaint = complaintService.save(complaintDTO);
         return complaint == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -88,14 +137,14 @@ public class ComplaintController {
 
         Address patientAddress = patient.getAddress();
         AddressDTO addressDTO = new AddressDTO(patientAddress.getTown(), patientAddress.getStreet(), patientAddress.getNumber(), patientAddress.getPostalCode(), patientAddress.getCountry());
-        return new PersonUserDTO(patient.getEmail(), patient.getPassword(), patient.getName(), patient.getSurname(),
+        return new PersonUserDTO(patient.getEmail(), patient.getPassword(), "",patient.getName(), patient.getSurname(),
                 patient.getPhoneNumber(), addressDTO);
     }
     private PersonUserDTO getDermatologistUserDTO(Dermatologist dermatologist) {
 
         Address address = dermatologist.getAddress();
         AddressDTO addressDTO = new AddressDTO(address.getTown(), address.getStreet(), address.getNumber(), address.getPostalCode(), address.getCountry());
-        return new PersonUserDTO(dermatologist.getEmail(), dermatologist.getPassword(), dermatologist.getName(), dermatologist.getSurname(),
+        return new PersonUserDTO(dermatologist.getEmail(), dermatologist.getPassword(), "",dermatologist.getName(), dermatologist.getSurname(),
                 dermatologist.getPhoneNumber(), addressDTO);
     }
 
@@ -103,7 +152,7 @@ public class ComplaintController {
 
         Address address = pharmacist.getAddress();
         AddressDTO addressDTO = new AddressDTO(address.getTown(), address.getStreet(), address.getNumber(), address.getPostalCode(), address.getCountry());
-        return new PersonUserDTO(pharmacist.getEmail(), pharmacist.getPassword(), pharmacist.getName(), pharmacist.getSurname(),
+        return new PersonUserDTO(pharmacist.getEmail(), pharmacist.getPassword(),"", pharmacist.getName(), pharmacist.getSurname(),
                 pharmacist.getPhoneNumber(), addressDTO);
     }
 

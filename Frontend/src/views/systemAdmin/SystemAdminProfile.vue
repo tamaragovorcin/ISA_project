@@ -101,7 +101,7 @@ export default {
                     this.notallowSystemAdminRegistration = true;
                }
          }).catch(res => {
-                       alert("NOT OK");
+                       alert("Please log in again or try later.");
                         console.log(res);
                  });
     }

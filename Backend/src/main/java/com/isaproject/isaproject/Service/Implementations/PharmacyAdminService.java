@@ -1,9 +1,6 @@
 package com.isaproject.isaproject.Service.Implementations;
-
 import com.isaproject.isaproject.DTO.AddressDTO;
-import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.DTO.PharmacyAdminDTO;
-import com.isaproject.isaproject.DTO.PharmacyDTO;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.*;
@@ -77,13 +74,16 @@ public class PharmacyAdminService implements IPharmacyAdminService {
         }
         pharmacyAdmin.setAuthorities(auth);
         pharmacyAdmin.setEnabled(true);
-        pharmacyAdmin.setPharmacy(userRequest.getPharmacy());
+        Pharmacy pharmacy = pharmacyService.findById(userRequest.getPharmacyId());
+        pharmacyAdmin.setPharmacy(pharmacy);
         return pharmacyAdminRepository.save(pharmacyAdmin);
     }
     @Override
     public void delete(PharmacyAdmin admin) {
         pharmacyAdminRepository.delete(admin);
     }
+
+
 
     public Boolean removeDermatologistFromPharmacy(Integer pharmacyId, Dermatologist dermatologist){
         Pharmacy pharmacy = pharmacyService.findById(pharmacyId);
@@ -98,4 +98,5 @@ public class PharmacyAdminService implements IPharmacyAdminService {
         return  true;
 
     }
+
 }
