@@ -2,10 +2,7 @@ package com.isaproject.isaproject.Controller;
 
 
 
-import com.isaproject.isaproject.DTO.ConsultingDTO;
-import com.isaproject.isaproject.DTO.Prescription2DTO;
-import com.isaproject.isaproject.DTO.PrescriptionDTO;
-import com.isaproject.isaproject.DTO.PrescriptionSendDTO;
+import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Examinations.Examination;
 import com.isaproject.isaproject.Model.Examinations.Prescription;
@@ -18,6 +15,8 @@ import com.isaproject.isaproject.DTO.PrescriptionDTO;
 import com.isaproject.isaproject.DTO.PrescriptionSendDTO;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 
+import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
+import com.isaproject.isaproject.Repository.MedicationPriceRepository;
 import com.isaproject.isaproject.Service.Implementations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -53,15 +52,20 @@ public class PrescriptionController {
     @Autowired
     AlergiesService alergiesService;
     @Autowired
+    MedicationService medicationService;
+    @Autowired
+    MedicationPriceService medicationPriceService;
+    @Autowired
+    LackMedicineService lackMedicineService;
+    @Autowired
     JavaMailSenderImpl mailSender;
 
 
     @Autowired
     Environment environment;
 
-
     @Autowired
-    MedicationPriceService medicationPriceService;
+    MedicationPriceRepository medicationPriceRepository;
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('PHARMACIST')")
@@ -79,37 +83,39 @@ public class PrescriptionController {
         Boolean able = false;
         List<PatientsMedicationAlergy> patientsMedicationAlergies = alergiesService.findAll();
         for (PatientsMedicationAlergy p: patientsMedicationAlergies) {
-                if(p.getPatient().getId() == consulting.getPatient().getId() && p.getMedication().getId() == sendDTO.getMedication().getId())
+                if(p.getPatient().getId() == consulting.getPatient().getId() && p.getMedication().getId() == sendDTO.getMedicationId()) {
                 able = true;
-             return new ResponseEntity<>("Patient is alergist!", HttpStatus.CREATED);
+            throw new IllegalArgumentException("Patient is alergist on this medicine!");}
 
         }
         Boolean haveMedicine = false;
-       List<MedicationPrice> medicationPrices = new ArrayList<>();
+        MedicationPrice medicationPrice = new MedicationPrice();
+         Set<MedicationPrice> medicationPrices = consulting.getPharmacist().getPharmacy().getMedicationPrices();
         for (MedicationPrice mp: medicationPrices) {
-            if (mp.getPharmacy().getPharmacyName().equals(consulting.getPharmacist().getPharmacy()) && mp.getMedication().getId() == sendDTO.getMedication().getId() && mp.getQuantity() > 0) {
+            if (mp.getMedication().getId() == sendDTO.getMedicationId() && mp.getQuantity() > 0) {
                 haveMedicine = true;
-                mp.setQuantity(mp.getQuantity() - 1);
-            } else {
-              /*  SimpleMailMessage mail = new SimpleMailMessage();
-                mail.setTo(consulting.getPharmacist().getPharmacy());
-                mail.setSubject("Successfuly reserved pharmacist consultation!");
-                mail.setFrom(environment.getProperty("spring.mail.username"));
-                //mail.setFrom("pharmacyisa@gmail.com");
-                mail.setText("You have successfully reserved an appointment on : "
-                        + consulting1.getDate() + " at " + consulting1.getStartTime() + ". Your doctor is " + consulting1.getPharmacist().getName() + " " + consulting1.getPharmacist().getSurname());
+                medicationPrice= mp;
 
-                mailSender.send(mail);*/
+
+
+            } else {
+                LackMedicineDTO lackMedicineDTO = new LackMedicineDTO();
+                Medication medication = medicationService.findById(sendDTO.getMedicationId());
+                lackMedicineDTO.setNameMedicine(medication.getName());
+                lackMedicineDTO.setNamePharmacy(consulting.getPharmacist().getPharmacy().getPharmacyName());
+                lackMedicineService.save(lackMedicineDTO);
+
             }
         }
         Set<Medication> medications = new HashSet<Medication>();
-        medications.add(sendDTO.getMedication());
-        if(able == false)
-        prescription.setMedications(medications);
+        Medication medication = medicationService.findById(sendDTO.getMedicationId());
+        medications.add(medication);
+        if(able == false && haveMedicine ==true) {
+            prescription.setMedications(medications);
 
 
-
-        prescriptionService.save(prescription);
+            prescriptionService.save(prescription);
+        }
         return prescription == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 new ResponseEntity<>("Prescription is successfully added!", HttpStatus.CREATED);

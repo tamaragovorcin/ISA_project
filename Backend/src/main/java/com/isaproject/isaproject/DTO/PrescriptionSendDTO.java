@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class PrescriptionSendDTO {
     private Integer consultingId;
-    private Medication medication;
+    private Integer medicationId;
     private double durationOfTherapy;
 
     public PrescriptionSendDTO() {}
@@ -18,18 +18,18 @@ public class PrescriptionSendDTO {
         this.consultingId = consultingId;
     }
 
-    public PrescriptionSendDTO(Integer consultingId, Medication medication, double durationOfTherapy) {
+    public PrescriptionSendDTO(Integer consultingId, Integer medication, double durationOfTherapy) {
         this.consultingId = consultingId;
-        this.medication = medication;
+        this.medicationId = medication;
         this.durationOfTherapy = durationOfTherapy;
     }
 
-    public Medication getMedication() {
-        return medication;
+    public Integer getMedicationId() {
+        return medicationId;
     }
 
-    public void setMedication(Medication medication) {
-        this.medication = medication;
+    public void setMedication(Integer medication) {
+        this.medicationId = medication;
     }
 
     public double getDurationOfTherapy() {

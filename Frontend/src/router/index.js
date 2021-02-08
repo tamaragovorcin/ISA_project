@@ -72,7 +72,7 @@ import DermatologistMedicationSearch from '../views/dermatologist/DermatologistM
 import HolidayRequestsDermatologists from '../views/systemAdmin/HolidayRequestsDermatologists.vue'
 import Pharmacists from '../views/home/Pharmacists.vue'
 import pharmacyProfilePatient from '../views/patient/pharmacyProfilePatient.vue'
-
+import WorkingHoursDermatologist from '../views/dermatologist/WorkingHoursDermatologist.vue'
 
 import Dermatologists from '../views/home/Dermatologists.vue'
 
@@ -134,6 +134,11 @@ const routes = [
       path: '/pharmacistProfile',
       name: 'PharmacistProfile',
       component: PharmacistProfile
+    },
+    {
+      path: '/workingHoursDermatologist',
+      name: 'WorkingHoursDermatologist',
+      component: WorkingHoursDermatologist
     },
     {
       path: '/schedulingExamination',

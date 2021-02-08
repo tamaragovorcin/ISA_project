@@ -22,6 +22,25 @@ public class WorkingHoursDermatologistDTO {
 
     public WorkingHoursDermatologistDTO() { }
 
+    public WorkingHoursDermatologistDTO(Integer dermatologistId, Integer pharmacyId, LocalTime startTimeMonday, LocalTime startTimeTuesday, LocalTime startTimeWednesday, LocalTime startTimeThursday, LocalTime startTimeFriday, LocalTime startTimeSaturday, LocalTime startTimeSunday, LocalTime endTimeMonday, LocalTime endTimeTuesday, LocalTime endTimeWednesday, LocalTime endTimeThursday, LocalTime endTimeFriday, LocalTime endTimeSaturday, LocalTime endTimeSunday) {
+        this.dermatologistId = dermatologistId;
+        this.pharmacyId = pharmacyId;
+        this.startTimeMonday = startTimeMonday;
+        this.startTimeTuesday = startTimeTuesday;
+        this.startTimeWednesday = startTimeWednesday;
+        this.startTimeThursday = startTimeThursday;
+        this.startTimeFriday = startTimeFriday;
+        this.startTimeSaturday = startTimeSaturday;
+        this.startTimeSunday = startTimeSunday;
+        this.endTimeMonday = endTimeMonday;
+        this.endTimeTuesday = endTimeTuesday;
+        this.endTimeWednesday = endTimeWednesday;
+        this.endTimeThursday = endTimeThursday;
+        this.endTimeFriday = endTimeFriday;
+        this.endTimeSaturday = endTimeSaturday;
+        this.endTimeSunday = endTimeSunday;
+    }
+
     public Integer getDermatologistId() {
         return dermatologistId;
     }

@@ -166,13 +166,18 @@ export default {
          
       },
         showclients : function(){
+            window.location.href = "/pharmacistClients";
+
       },
-        workCalendar: function(){
-         
+        workCalendar : function(){
+       window.location.href = "/workingHoursPharmacist";
+
+
       },
-        vacation: function(){
-         
+      vacation: function(){
+           window.location.href = "/createRequestVacation";
       },
+     
       remove : function(event,patient){
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
         this.axios.post('patient/delete', patient,{ 

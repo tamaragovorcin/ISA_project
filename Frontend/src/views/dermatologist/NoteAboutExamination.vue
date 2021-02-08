@@ -28,7 +28,10 @@
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
                     <strong class="tab"></strong>
                     
-
+                    <button class = "btn btn-info btn-lg" v-on:click = "writeExamination">My examination</button>
+                    <b class="tab"></b>   
+        
+                   <button class = "btn btn-info btn-lg" v-on:click = "schedule">Schedule new examination</button>
                 
             </span>
               <span  style="float:right;margin:15px">
@@ -72,7 +75,7 @@
                                                     <td><button class="btn btn-primary btn-lg" v-on:click="Belezi ($event, examination)">Note exemination</button></td>
                                                    <td><button class="btn btn-success btn-lg" v-on:click="Recept ($event, examination)">Add prescription</button></td>
                                                     <td> <button class="btn btn-danger  btn-lg" v-on:click="ignored($event, examination.patientId)">Ignored, add penal</button></td>
-                                                    <td> <button class="btn btn-danger  btn-lg" v-on:click="zakazi">Schedule new consulting</button></td>
+                                                    <td> <button class="btn btn-danger  btn-lg" v-on:click="zakazi">Schedule new exemination</button></td>
                                                 </tr>
    
      </tbody>
@@ -290,9 +293,7 @@ export default {
           window.location.href = "/login";
 
       },
-      writeExamination() {
-       window.location.href = "/noteExamination";
-      },
+     
      
       workCalendar : function(){
 
@@ -394,13 +395,17 @@ export default {
         this.medication = medication;
         this.medicationName = medication.name;
       },
-       schedule : function(){
-              window.location.href = "/schedulingExamination";
-      },
-
+      
        showMedications : function() {
           window.location.href = "/dermatologistMedicationSearch";
       },
+      writeExamination() {
+        window.location.href = "/noteExamination";
+       },
+      schedule : function(){
+               window.location.href = "/schedulingExamination";
+       },
+ 
 
 }
 }

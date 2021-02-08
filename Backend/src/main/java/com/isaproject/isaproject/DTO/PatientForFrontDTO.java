@@ -3,8 +3,6 @@ package com.isaproject.isaproject.DTO;
 public class PatientForFrontDTO {
     private  Integer id;
 
-
-
     private String email;
 
     private String firstname;

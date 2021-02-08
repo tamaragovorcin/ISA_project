@@ -27,7 +27,10 @@
                     <strong class="tab"></strong>
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
                     <strong class="tab"></strong>
-                    
+                    <button class = "btn btn-info btn-lg" v-on:click = "writeExamination">My examination</button>
+             <b class="tab"></b>   
+ 
+            <button class = "btn btn-info btn-lg" v-on:click = "schedule">Schedule new examination</button>
 
                 
             </span>
@@ -44,10 +47,7 @@
         <div class="d-flex justify-content-center md-2 p-2">
              <b class="tab"></b>   
 
-			<button class = "btn btn-info btn-lg" v-on:click = "writeExamination">My examination</button>
-             <b class="tab"></b>   
- 
-            <button class = "btn btn-info btn-lg" v-on:click = "schedule">Schedule new examination</button>
+			
         </div>
     </div>
  
@@ -82,17 +82,22 @@ export default {
           window.location.href = "/login";
 
       },
-      writeExamination() {
-       window.location.href = "/noteExamination";
-      },
-     
-      workCalendar : function(){
-
-      },
-      vacation: function(){
+       vacation: function(){
           window.location.href = "/dermatologistHoliday";
 
       },
+       workCalendar : function(){
+            window.location.href = "/workingHoursDermatologist";
+      },
+     
+      writeExamination() {
+       window.location.href = "/noteExamination";
+      },
+     schedule : function(){
+              window.location.href = "/schedulingExamination";
+      },
+
+     
       scheduleConsulting : function(){
          
       },
@@ -100,10 +105,7 @@ export default {
       sendComplaint : function(){
 
       },
-       schedule : function(){
-              window.location.href = "/schedulingExamination";
-      },
-
+       
        showMedications : function() {
           window.location.href = "/dermatologistMedicationSearch";
       },

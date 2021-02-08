@@ -43,29 +43,33 @@ public class ExaminationController {
 
 
     @PostMapping("/add")
-    // @PreAuthorize("hasRole('PHARMACIST')")
+     @PreAuthorize("hasRole('DERMATOLOGIST')")
     public ResponseEntity<String> addConsulting(@RequestBody SendRequestExaminationDTO sendRequestExaminationDTO) {
 
         Patient patient = patientService.findById(sendRequestExaminationDTO.getPatientId());
         ExaminationSchedule examinationSchedule = examinationScheduleService.findById(sendRequestExaminationDTO.getExaminationTermId());
-        ExaminationDTO examinationDTO = new ExaminationDTO();
 
 
-       examinationDTO= new ExaminationDTO(patient, false, false, sendRequestExaminationDTO.getExaminationTermId(), "");
-        Examination examination = examinationService.save(examinationDTO);
-        SimpleMailMessage mail = new SimpleMailMessage();
-        mail.setTo(patient.getEmail());
-        mail.setSubject("Successfuly reserved dermatologist examination!");
 
-        mail.setFrom(environment.getProperty("spring.mail.username"));
-        mail.setText("You have successfully reserved an appointment on : "
-                + examination.getExaminationSchedule().getDate() + " at " + examination.getExaminationSchedule().getStartTime() + ". Your doctor is " + examination.getExaminationSchedule().getDermatologist().getName() + " " + examination.getExaminationSchedule().getDermatologist().getSurname());
 
-        mailSender.send(mail);
+        ExaminationDTO examinationDTO= new ExaminationDTO(patient, false, false, sendRequestExaminationDTO.getExaminationTermId(), "");
+
+            Examination examination = examinationService.save(examinationDTO);
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setTo(patient.getEmail());
+            mail.setSubject("Successfuly reserved dermatologist examination!");
+
+            mail.setFrom(environment.getProperty("spring.mail.username"));
+            mail.setText("You have successfully reserved an appointment on : "
+                    + examination.getExaminationSchedule().getDate() + " at " + examination.getExaminationSchedule().getStartTime() + ". Your doctor is " + examination.getExaminationSchedule().getDermatologist().getName() + " " + examination.getExaminationSchedule().getDermatologist().getSurname());
+
+            mailSender.send(mail);
+
         return examination == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 new ResponseEntity<>("Examination is successfully added!", HttpStatus.CREATED);
-    }
+
+        }
 
     @PostMapping("/update")
     @PreAuthorize("hasRole('DERMATOLOGIST')")

@@ -27,6 +27,14 @@
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
                     <strong class="tab"></strong>  
                     <strong class="tab"></strong>
+                     <button class = "btn btn-info btn-lg" v-on:click = "writeConsulting">Add consultings</button>
+             <b class="tab"></b>   
+
+            <button class = "btn btn-info btn-lg" v-on:click = "addMedicine">Sell reserved medicines</button>
+             <b class="tab"></b>   
+
+            <button class = "btn btn-info btn-lg" v-on:click = "scheduleConsulting">Schedule new consulting</button>
+                
              
             </span>
               <span  style="float:right;margin:15px">
@@ -158,8 +166,8 @@ export default {
       send : function() {
 
           const consulting = {
-            pharmacist : this.pharmacist,
-            patient : this.patient,
+            pharmacistId : this.pharmacist.id,
+            patientId : this.patient.id,
             date : this.date,
             startTime : this.startTime,
             duration : 15,
@@ -184,6 +192,16 @@ export default {
                  });    
       },
       sendComplaint : function(){
+
+      },
+       writeConsulting() {
+        window.location.href = "/noteConsultig";
+      },
+        scheduleConsulting : function(){
+             window.location.href = "/schedulingConsulting";
+      },
+      addMedicine : function(){
+          this.$refs['my-modal1'].show()
 
       },
       patientIsSelected : function(event, patient) {

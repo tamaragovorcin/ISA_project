@@ -28,6 +28,14 @@
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
                     <strong class="tab"></strong>  
                     <strong class="tab"></strong>
+                      <button class = "btn btn-info btn-lg" v-on:click = "writeConsulting">Add consultings</button>
+             <b class="tab"></b>   
+
+            <button class = "btn btn-info btn-lg" v-on:click = "addMedicine">Sell reserved medicines</button>
+             <b class="tab"></b>   
+
+            <button class = "btn btn-info btn-lg" v-on:click = "scheduleConsulting">Schedule new consulting</button>
+                
 
                 
             </span>
@@ -142,6 +150,16 @@ export default {
       },
       showMyProfile: function(){
          
+      },
+       writeConsulting() {
+        window.location.href = "/noteConsultig";
+      },
+        scheduleConsulting : function(){
+             window.location.href = "/schedulingConsulting";
+      },
+      addMedicine : function(){
+          this.$refs['my-modal1'].show()
+
       },
       changePersonal: function(){
           window.location.href = "/pharmacistUpdateProfile";
