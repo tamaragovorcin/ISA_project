@@ -2414,18 +2414,22 @@ public class ConsultingController {
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> reserveConsultation(@RequestBody PharmacistsConsultationDTO dto) {
 
+        System.out.println(dto.getTime());
+
         List<Consulting> consultings = consultingService.findAll();
-        Boolean bla = false;
+
+        Boolean able = true;
 
         for(Consulting consulting: consultings){
             if(consulting.getPharmacist().getId() == dto.getPharmacist().getId() && consulting.getPatient().getId()== dto.getPatient().getId() && consulting.getDate() == dto.getDate() && consulting.getStartTime()== dto.getTime()){
-                bla=true;
+               System.out.println("gsdrgdsgrs");
+                able=false;
             }
         }
 
         Patient patient = patientService.findById(dto.getPatient().getId());
 
-        Boolean able = true;
+
         if(patient.getPenalties() > 3){
             able = false;
         }

@@ -362,7 +362,7 @@ mounted() {
             }, 
 
     reserve: function (pharmacist) {
-                
+                alert(this.startTime)
          const datum = {
                 date : this.date,
                 time : this.startTime,

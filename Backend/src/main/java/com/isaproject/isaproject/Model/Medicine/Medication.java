@@ -90,6 +90,12 @@ public class Medication  {
 
     public Medication() {}
 
+    public Medication(Integer id, String name, long code) {
+        this.id = id;
+        this.name = name;
+        this.code = code;
+    }
+
     public Integer getId() {
         return id;
     }

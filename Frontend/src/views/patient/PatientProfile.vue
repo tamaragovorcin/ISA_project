@@ -595,43 +595,52 @@ export default {
             },
 
              sendMark : function() {
-
+  let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
                         const markk = {
                   patient: this.patient,
                   pharmacy: this.pharmacy,
                   mark: this.filter,
                  
                 };
-         this.axios.post('/pharmacy/leaveAMark',markk)
+         this.axios.post('/pharmacy/leaveAMark',markk,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+        
+        
         
                     .then(res => {
                        
-                        console.log(res);
+                        alert(res.data);
                     })
                     .catch(res => {
                      
-                        console.log(res);
+                        alert(res.data);
                     })
 
             },
 
              sendDermatologist : function() {
-
+  let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
                         const markk = {
                   patient: this.patient,
                   pharmacy: this.pharmacy,
                   mark: this.filter,
                  
                 };
-         this.axios.post('/pharmacy/leaveAMark',markk)
+         this.axios.post('/pharmacy/leaveAMark',markk,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+        
         
                     .then(res => {
                        
-                        console.log(res);
+                        alert(res.data);
                     })
                     .catch(res => {
                      
-                        console.log(res);
+                        alert(res.data);
                     })
 
             },
@@ -649,11 +658,11 @@ export default {
         
                     .then(res => {
                        
-                        console.log(res);
+                        alert(res.data);
                     })
                     .catch(res => {
                      
-                        console.log(res);
+                        alert(res.data);
                     })
 
             },
@@ -666,15 +675,19 @@ export default {
                   mark: this.filter,
                  
                 };
-         this.axios.post('/pharmacist/leaveAMark',markk)
+                let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+         this.axios.post('/pharmacist/leaveAMark',markk,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
         
                     .then(res => {
                        
-                        console.log(res);
+                        alert(res.data);
                     })
                     .catch(res => {
                      
-                        console.log(res);
+                        alert(res.data);
                     })
 
             },

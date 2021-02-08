@@ -234,6 +234,7 @@ mounted() {
     
 
          reserve : function(event, dermatologistAppointment) {
+            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
           this.dermatologistAppointment = dermatologistAppointment
           alert(this.patient.id)
           const examination = {
@@ -246,7 +247,10 @@ mounted() {
 
 
           }
-            this.axios.post('/pharmacy/addExamination', examination)
+            this.axios.post('/pharmacy/addExamination', examination,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
 
 
       },

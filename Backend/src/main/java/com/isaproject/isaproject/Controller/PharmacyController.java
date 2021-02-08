@@ -321,7 +321,7 @@ public class PharmacyController  {
     }
 
     @PostMapping("/addExamination")
-    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> addExamination(@RequestBody ExaminationDTO dto) {
 
         Patient patient = patientService.findById(dto.getPatient().getId());
@@ -821,9 +821,8 @@ public class PharmacyController  {
 
 
     @PostMapping("/leaveAMark")
-    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<Pharmacy> leaveAMark(@RequestBody MarkDTO dto) {
-
         Boolean able =true;//ableToRatePharmacist(dto.getPharmacist().getId(), dto.getPatient().getId());
 
         if (able) {
@@ -1015,6 +1014,7 @@ public class PharmacyController  {
 
                         double ocena = (one * 1 + two * 2 + three * 3 + four * 4 + five * 5) / (one + two + three + four + five);
                         pharmacy.setMark(ocena);
+                        pharmacy.setAddress(dto.getPharmacy().getAddress());
                         pharmacyService.update(pharmacy);
 
 
