@@ -158,8 +158,8 @@ export default {
       send : function() {
 
           const consulting = {
-            pharmacist : this.pharmacist.id,
-            patient : this.patient.id,
+            pharmacist : this.pharmacist,
+            patient : this.patient,
             date : this.date,
             startTime : this.startTime,
             duration : 15,

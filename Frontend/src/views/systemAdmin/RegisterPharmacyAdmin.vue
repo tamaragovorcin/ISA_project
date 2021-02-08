@@ -173,6 +173,10 @@ export default {
               postalCode : this.postalCode,
               country : this.country
           }
+          if(this.selectedPharmacy==null) {
+              alert("Please select pharmacy for pharmacy admin!");
+              return;
+          }
             const userInfo ={
                 email : this.email,
                 password : this.password,

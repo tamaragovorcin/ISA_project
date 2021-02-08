@@ -18,6 +18,7 @@ import com.isaproject.isaproject.Service.Implementations.ActionsService;
 import com.isaproject.isaproject.Service.Implementations.ExaminationScheduleService;
 import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyService;
+import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -105,10 +106,11 @@ public class PharmacyController {
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacyDTO pharmacyDTO) {
 
-        Pharmacy existedPharmacy = pharmacyService.findByPharmacyName(pharmacyDTO.getPharmacyName());
-        if (existedPharmacy != null) {
-            throw new ResourceConflictException(existedPharmacy.getPharmacyName(), "Pharmacy name already exists");
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidatioPharmacy(pharmacyDTO)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
         }
+
         Pharmacy pharmacy = pharmacyService.save(pharmacyDTO);
         return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
     }
@@ -504,8 +506,9 @@ public class PharmacyController {
 
         for(Consulting consulting: consultings){
             if(consulting.getPharmacist().getId() == pharmacistId && consulting.getPatient().getId()== patientId){
-                able = true;
-
+                if(consulting.getShowedUp()) {
+                    able = true;
+                }
             }
         }
 

@@ -4,6 +4,7 @@ import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Model.Users.Supplier;
 import com.isaproject.isaproject.Service.Implementations.SupplierService;
+import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +23,13 @@ public class SupplierController {
     @PostMapping("/register")
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PersonUserDTO userRequest) {
-
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidationPersonUser(userRequest)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
         PersonUser existUser = supplierService.findByEmail(userRequest.getEmail());
         if (existUser != null) {
-            throw new ResourceConflictException(userRequest.getEmail(), "Email already exists");
+            throw new ResourceConflictException("Entered email already exists", "Email already exists");
         }
         if(userRequest.getPassword().isEmpty() || userRequest.getRewritePassword().isEmpty()) {
             throw new IllegalArgumentException("Please fill all the required fields!");
@@ -53,6 +57,10 @@ public class SupplierController {
     @PreAuthorize("hasRole('SUPPLIER')")
     public ResponseEntity<String> update(@RequestBody Supplier userRequest) {
 
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidationUpdateSupplier(userRequest)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
         Supplier user = supplierService.update(userRequest);
         return user == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

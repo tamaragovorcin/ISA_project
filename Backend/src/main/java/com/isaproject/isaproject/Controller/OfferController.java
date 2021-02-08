@@ -20,6 +20,7 @@ import com.isaproject.isaproject.Model.Users.Supplier;
 import com.isaproject.isaproject.Service.Implementations.OrderService;
 import com.isaproject.isaproject.Service.Implementations.SupplierMedicationService;
 import com.isaproject.isaproject.Service.Implementations.SupplierService;
+import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -69,6 +70,10 @@ public class OfferController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(offer);*
         */
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidationOffer(offerDTO)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
         Offer offer = offerService.proccedOffer(offerDTO);
         return offer == null  ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

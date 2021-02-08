@@ -159,7 +159,6 @@ export default {
             massage : this.complaintText,
             answer : "",
             pharmacyName : this.pharmacy,
-            patient : this.patientInfo,
             dermatologist : null,
             pharmacist : null,
             subject : "PHARMACY"
@@ -185,7 +184,6 @@ export default {
             massage : this.complaintText,
             answer : "",
             pharmacyName : null,
-            patient : this.patientInfo,
             dermatologist : this.dermatologist,
             pharmacist : null,
             subject : "DERMATOLOGIST"
@@ -210,7 +208,6 @@ export default {
             massage : this.complaintText,
             answer : "",
             pharmacyName : null,
-            patient : this.patientInfo,
             dermatologist : null,
             pharmacist : this.pharmacist,
             subject : "PHARMACIST"

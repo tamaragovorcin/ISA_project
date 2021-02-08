@@ -1,12 +1,17 @@
 package com.isaproject.isaproject.Service.Implementations;
 import com.isaproject.isaproject.DTO.ComplaintDTO;
 import com.isaproject.isaproject.Model.HelpModel.Complaint;
+import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Repository.ComplaintRepository;
+import com.isaproject.isaproject.Repository.PatientRepository;
 import com.isaproject.isaproject.Service.IServices.IComplaintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +32,8 @@ public class ComplaintService implements IComplaintService {
     JavaMailSenderImpl mailSender;
     @Autowired
     private Environment environment;
+    @Autowired
+    private PatientRepository patientRepository;
 
     @Override
     public Complaint findById(Integer id) {
@@ -41,12 +48,17 @@ public class ComplaintService implements IComplaintService {
     @Override
     @Transactional(readOnly = false)
     public Complaint save(ComplaintDTO complaintDTO) {
+
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        Patient patient = patientRepository.getOne(user.getId());
+
         Complaint complaint = new Complaint();
         complaint.setAnswered(complaintDTO.isAnswered());
         complaint.setSubject(complaintDTO.getSubject());
         complaint.setMassage(complaintDTO.getMassage());
         complaint.setAnswer(complaintDTO.getAnswer());
-        complaint.setPatient(complaintDTO.getPatient());
+        complaint.setPatient(patient);
 
         if(complaintDTO.getDermatologist()==null) complaint.setDermatologist(null);
         else complaint.setDermatologist(dermatologistService.findByEmail(complaintDTO.getDermatologist().getEmail()));

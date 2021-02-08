@@ -4,6 +4,7 @@ import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Model.Users.SystemAdmin;
 import com.isaproject.isaproject.Service.Implementations.SystemAdminService;
+import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,10 @@ public class SystemAdminController {
     @PostMapping("/register")
    // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PersonUserDTO userRequest) {
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidationPersonUser(userRequest)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
 
       /*  Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser userLogged = (PersonUser)currentUser.getPrincipal();
@@ -30,9 +35,10 @@ public class SystemAdminController {
             throw new IllegalArgumentException("Only main system admin can register new system admin!");
         }
 */
+
         PersonUser existUser = systemAdminService.findByEmail(userRequest.getEmail());
         if (existUser != null) {
-            throw new ResourceConflictException(userRequest.getEmail(), "Email already exists");
+            throw new ResourceConflictException("Entered email already exists", "Email already exists");
         }
         if(userRequest.getPassword().isEmpty() || userRequest.getRewritePassword().isEmpty()) {
             throw new IllegalArgumentException("Please fill all the required fields!");

@@ -33,7 +33,7 @@
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
              </span>
         </div>
-          <div style = "background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+          <div  style = "background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
                        <h3 style="color: #0D184F;margin-bottom:20px">Define loyalty program</h3>
                 <div class="form-group">
                     <label>Points for consulting</label>
@@ -70,9 +70,10 @@
 
                         </div>
                 </div>
-                <button v-on:click = "confirm" class="btn btn-primary">Confirm</button>
+                <button v-on:click = "confirmUpdate" class="btn btn-primary">Confirm</button>
            
         </div>
+        
     </div>
 </template>
 
@@ -93,7 +94,8 @@ export default {
             regularDiscount: 0,
             silverDiscount: 0,
             goldenDiscount: 0
-      }
+      },
+ 
     }
   },
 
@@ -126,21 +128,21 @@ export default {
       medicationSearch : function() {
           window.location.href = "/systemAdminMedicationSearch";
       },
-      confirm : function() {
+      confirmUpdate : function() {
             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-           this.axios.post('/loyaltyProgram/update',this.loyaltyProgram,{ 
+           this.axios.post('/loyaltyProgram/define',this.loyaltyProgram,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                         }})
                 .then(response => {
-                       alert("Loyalty program is successfully updated!");
+                       alert("Loyalty program is successfully defined!");
                         console.log(response.data);
                 })
-                .catch(response => {
-                       alert("Please try later.");
-                        console.log(response);
+                .catch(res => {
+                    alert(res.response.data.message);
                  });    
       },
+     
        showComplaints : function() {
             window.location.href = "/complaints";
       }
@@ -181,10 +183,3 @@ export default {
     }
 }
 </script>
-
-<style>
-
-</style>
-
-
-  

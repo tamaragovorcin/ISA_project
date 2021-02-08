@@ -1,7 +1,7 @@
 package com.isaproject.isaproject.Controller;
-import com.isaproject.isaproject.DTO.LoyaltyProgramDTO;
 import com.isaproject.isaproject.Model.HelpModel.LoyaltyProgram;
 import com.isaproject.isaproject.Service.Implementations.LoyaltyProgramService;
+import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,24 +16,18 @@ public class LoyaltyProgramController {
     @Autowired
     LoyaltyProgramService loyaltyProgramService;
 
-    @PostMapping("/add")
+    @PostMapping("/define")
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
-    public ResponseEntity<String> addLoyaltyProgram(@RequestBody LoyaltyProgramDTO loyaltyProgramDTO) {
+    public ResponseEntity<String> addLoyaltyProgram(@RequestBody LoyaltyProgram loyaltyProgram) {
 
-        LoyaltyProgram program = loyaltyProgramService.save(loyaltyProgramDTO);
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidationLoyaltyProgram2(loyaltyProgram)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
+        LoyaltyProgram program = loyaltyProgramService.save(loyaltyProgram);
         return program == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 new ResponseEntity<>("Supplier is successfully registred!", HttpStatus.CREATED);
-    }
-
-    @PostMapping("/update")
-    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
-    public ResponseEntity<String> update(@RequestBody LoyaltyProgram loyaltyProgram) {
-
-        LoyaltyProgram program = loyaltyProgramService.update(loyaltyProgram);
-        return program == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                new ResponseEntity<>("Supplier is successfully updated!", HttpStatus.CREATED);
     }
 
     @GetMapping("")
@@ -41,6 +35,10 @@ public class LoyaltyProgramController {
     public ResponseEntity<LoyaltyProgram> getAll() {
 
         List<LoyaltyProgram> programs = loyaltyProgramService.findAll();
+        if(programs.size()==0) {
+            return ResponseEntity.ok(new LoyaltyProgram());
+        }
+
         return programs == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(programs.get(0));

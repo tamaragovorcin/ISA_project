@@ -37,12 +37,10 @@ public class ConsultingService implements IConsultingService {
 
     @Override
     public Consulting save(ConsultingDTO consultingDTO) {
-        Patient patient = patientRepository.findById(consultingDTO.getPatient()).get();
-        Pharmacist pharmacist = pharmacistRepository.findById(consultingDTO.getPharmacist()).get();
 
         Consulting consulting = new Consulting();
-        consulting.setPharmacist(pharmacist);
-        consulting.setPatient(patient);
+        consulting.setPharmacist(consultingDTO.getPharmacist());
+        consulting.setPatient(consultingDTO.getPatient());
         consulting.setDate(consultingDTO.getDate());
         consulting.setStartTime(consultingDTO.getStartTime());
         consulting.setDuration(consultingDTO.getDuration());

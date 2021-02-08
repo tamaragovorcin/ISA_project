@@ -12,6 +12,7 @@ import com.isaproject.isaproject.Service.Implementations.EPrescriptionService;
 import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
 import com.isaproject.isaproject.Service.Implementations.PatientService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyService;
+import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +25,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import javax.imageio.ImageIO;
 
 @RestController
@@ -124,6 +123,16 @@ public class EPrescriptionController {
                 patientService.informPatientAboutEreceipt(choosenPharmacy.getMedications())==false ||
                 ePrescriptionService.save(choosenPharmacy)==null ?
 */
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        Patient patient = patientService.findById(user.getId());
+        if(patient.getPenalties()==3) {
+            throw new IllegalArgumentException("You are not able to get medicaions! You have 3 penalties");
+        }
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkEprescription(choosenPharmacy)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
         return ePrescriptionService.proccedEReceipt(choosenPharmacy) ==null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok("Successfully updated!");
@@ -150,8 +159,6 @@ public class EPrescriptionController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(ePrescriptions);
     }
-
-
 
     private List<PharmacyMedicationAvailabilityDTO> getAvailabilityInPharmacies(List<QRcodeInformationDTO> medicationsInQRcode) {
         List<PharmacyMedicationAvailabilityDTO> pharmacyList = new ArrayList<>();

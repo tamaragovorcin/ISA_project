@@ -4,17 +4,16 @@ import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.DTO.AlergiesDTO;
 import com.isaproject.isaproject.DTO.AlergiesFrontDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
-
 import com.isaproject.isaproject.Service.Implementations.*;
-
-
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
 import com.isaproject.isaproject.Repository.PatientRepository;
+import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,9 +56,9 @@ public class PatientController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerPatient(@RequestBody PersonUserDTO person) {
-
-        if(person.getPassword().isEmpty() || person.getRewritePassword().isEmpty()) {
-            throw new IllegalArgumentException("Please fill all the required fields!");
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidationPersonUser(person)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
         }
         if(!person.getPassword().equals(person.getRewritePassword())) {
             throw new IllegalArgumentException("Please make sure your password and rewrite password match!");
@@ -69,7 +68,7 @@ public class PatientController {
 
         if(existingUser != null)
         {
-            return ResponseEntity.ok("This email already exists!");
+            throw new ResourceConflictException("Entered email already exists", "Email already exists");
         }
         else
         {

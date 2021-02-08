@@ -28,19 +28,29 @@ ines (39 sloc)  1.61 KB
             <div class = "col-4 align-top container-fluid align-left">
                 <h3 style="color: #0D184F;margin-bottom:20px">Filters</h3>
                     <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label>Average mark around:</label> 
-                        </div>
-                        <div class="form-group col-md-8">
-                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose pharmacy mark" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
-                                <b-dropdown-item v-for="item in this.marks"  v-on:click ="markIsSelected($event, item.mark)" v-bind:key="item.mark"> {{item.mark }}</b-dropdown-item>
-                            </b-dropdown> 
+                         <div class="row">
+                            <div class="form-group col d-flex justify-content-start">
+                                <label>Sort by mark:</label> 
+                            </div>
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample3" name="groupOfDefaultRadios2" v-on:click="markInreasing">
+                                <label class="custom-control-label" for="defaultGroupExample3">Increasing</label>
+                                
+                            </div> 
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios2" v-on:click="markDecreasing">
+                                <label class="custom-control-label" for="defaultGroupExample4">Decreasing</label>
+                                
+                            </div> 
                         </div>
                     </div>
                     <template>
                         <div class="row">
-                            <label>Sort price:</label> 
-                    
+                            <div class="form-group col d-flex justify-content-start">
+                                <label >Sort by price:</label> 
+                            </div>
                             <div class="custom-control custom-radio form-group col ">
 
                                 <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="priceInreasing">
@@ -57,37 +67,56 @@ ines (39 sloc)  1.61 KB
                     
                      </template>
                 <div class="form-row">
-                        <div class="form-group col">
-                                <label class="custom-control-label" for="defaultGroupExample2">Pharmacy name</label>
-                        </div>
-                        <div class="form-group col">
-                            <input type="text" class="form-control" v-model="pharmacyName" placeholder="Enter name...">
-                        </div>
-                        <div class="form-group col">
-                            <button v-on:click = "showPharmaciesByName" class="btn btn-primary">Confirm</button>
-                        </div>
+                      
+                         <div class="form-group col d-flex justify-content-start">
+                                <label>Sort by name:</label> 
+                            </div>
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios3" v-on:click="nameInreasing">
+                                <label class="custom-control-label" for="defaultGroupExample5">Increasing</label>
+                                
+                            </div> 
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample6" name="groupOfDefaultRadios3" v-on:click="nameDecreasing">
+                                <label class="custom-control-label" for="defaultGroupExample6">Decreasing</label>
+                                
+                            </div> 
                 </div>
                 <div class="form-row">
-                          <div class="form-group col">
-                                <label class="custom-control-label" for="defaultGroupExample2">Pharmacy country</label>
-                        </div>
-                        <div class="form-group col">
-                            <input type="text" class="form-control" v-model="pharmacyCountry" placeholder="Enter country...">
-                        </div>
-                        <div class="form-group col">
-                            <button v-on:click = "showPharmaciesByCountry" class="btn btn-primary">Confirm</button>
-                        </div>
+                         <div class="form-group col d-flex justify-content-start">
+                                <label>Sort by country:</label> 
+                            </div>
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample7" name="groupOfDefaultRadios4" v-on:click="countryInreasing">
+                                <label class="custom-control-label" for="defaultGroupExample7">Increasing</label>
+                                
+                            </div> 
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample8" name="groupOfDefaultRadios4" v-on:click="countryDecreasing">
+                                <label class="custom-control-label" for="defaultGroupExample8">Decreasing</label>
+                                
+                            </div> 
                 </div>
                 <div class="form-row">
-                          <div class="form-group col">
-                                <label class="custom-control-label" for="defaultGroupExample2">Pharmacy town</label>
-                        </div>
-                        <div class="form-group col">
-                            <input type="text" class="form-control" v-model="pharmacyTown" placeholder="Enter town...">
-                        </div>
-                        <div class="form-group col">
-                            <button v-on:click = "showPharmaciesByCity" class="btn btn-primary">Confirm</button>
-                        </div>
+                            <div class="form-group col d-flex justify-content-start">
+                                <label>Sort by town:</label> 
+                            </div>
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample9" name="groupOfDefaultRadios5" v-on:click="townInreasing">
+                                <label class="custom-control-label" for="defaultGroupExample9">Increasing</label>
+                                
+                            </div> 
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample10" name="groupOfDefaultRadios5" v-on:click="townDecreasing">
+                                <label class="custom-control-label" for="defaultGroupExample10">Decreasing</label>
+                                
+                            </div> 
                 </div>
             </div>
                     
@@ -161,17 +190,9 @@ export default {
        file: '',
        medications : [],
        pharmacyName : "",
-        marks: [
-          { mark: "0-1" },
-          { mark: "1-2" },
-          { mark: "2-3" },
-          { mark: "3-4" },
-          { mark: "4-5" },
-      ],
         pharmacyCountry : "",
         pharmacyTown : "",
         pharmacyListFilter : []
-
     }
   },
 
@@ -225,7 +246,7 @@ export default {
       },
       choosePharmacy($event,pharmacy) { 
             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-
+           
             const PharmacyRequest = {
               pharmacyId : pharmacy,
               medications : this.medications,
@@ -241,17 +262,19 @@ export default {
                             console.log(res);
                         });     
       },
-       markIsSelected : function(event, mark) { 
-            var marks = mark.split('-')
-            var MarkMin = parseInt(marks[0])
-            var MarkMax = parseInt(marks[1])
-            let i =0;
-            this.pharmacyListFilter=[]
-            for(i=0; i< this.pharmacyList.length;i++) {
-                if(this.pharmacyList[i].mark>=MarkMin && this.pharmacyList[i].mark<=MarkMax) {
-                    this.pharmacyListFilter.push(this.pharmacyList[i])
-                }
-            }
+    markDecreasing: function() {
+        return this.pharmacyListFilter.sort((p1,p2) => {
+                    let modifier = -1;
+                    if(p1.mark < p2.mark) return -1 * modifier; if(p1.mark > p2.mark) return 1 * modifier;
+                    return 0;
+                });
+    },
+     markInreasing : function( ) {
+      return this.pharmacyListFilter.sort((p1,p2) => {
+                    let modifier = 1;
+                    if(p1.mark < p2.mark) return -1 * modifier; if(p1.mark > p2.mark) return 1 * modifier;
+                    return 0;
+                });
      },
      priceDecreasing : function() {
              return this.pharmacyListFilter.sort((p1,p2) => {
@@ -267,36 +290,36 @@ export default {
                     return 0;
                 });
      },
-     showPharmaciesByName : function() {
-            this.pharmacyListFilter=[]
-            var name = this.pharmacyName;
-            var i =0;
-            for(i=0; i< this.pharmacyList.length;i++) {
-                if(this.pharmacyList[i].pharmacyName.startsWith(name)) {
-                    this.pharmacyListFilter.push(this.pharmacyList[i])
-                }
-            }
+     nameInreasing : function() {
+        this.pharmacyListFilter =  this.pharmacyListFilter.slice().sort(function(a, b){
+                return (a.pharmacyName > b.pharmacyName) ? 1 : -1;
+            });
      },
-     showPharmaciesByCity : function() {
-          this.pharmacyListFilter=[]
-            var town = this.pharmacyTown;
-            var i =0;
-            for(i=0; i< this.pharmacyList.length;i++) {
-                if(this.pharmacyList[i].address.town.startsWith(town)) {
-                    this.pharmacyListFilter.push(this.pharmacyList[i])
-                }
-            }
+     nameDecreasing : function() {
+         this.pharmacyListFilter =  this.pharmacyListFilter.slice().sort(function(a, b){
+                return (a.pharmacyName < b.pharmacyName) ? 1 : -1;
+            });
      },
-     showPharmaciesByCountry : function(){
-          this.pharmacyListFilter=[]
-            var country = this.pharmacyCountry;
-            var i =0;
-            for(i=0; i< this.pharmacyList.length;i++) {
-                if(this.pharmacyList[i].address.country.startsWith(country)) {
-                    this.pharmacyListFilter.push(this.pharmacyList[i])
-                }
-            }
-     }
+     countryInreasing : function() {
+        this.pharmacyListFilter =  this.pharmacyListFilter.slice().sort(function(a, b){
+                return (a.address.country > b.address.country) ? 1 : -1;
+            });
+     },
+     countryDecreasing : function() {
+         this.pharmacyListFilter =  this.pharmacyListFilter.slice().sort(function(a, b){
+                return (a.address.country < b.address.country) ? 1 : -1;
+            });  
+     },
+     townInreasing : function() {
+         this.pharmacyListFilter =  this.pharmacyListFilter.slice().sort(function(a, b){
+                return (a.address.town > b.address.town) ? 1 : -1;
+            });
+     },
+    townDecreasing : function() {
+        this.pharmacyListFilter =  this.pharmacyListFilter.slice().sort(function(a, b){
+                return (a.address.town < b.address.town) ? 1 : -1;
+            });
+     },
 }
 }
 </script>

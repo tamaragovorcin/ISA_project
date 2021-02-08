@@ -2,6 +2,7 @@ package com.isaproject.isaproject.Controller;
 
 import com.isaproject.isaproject.DTO.MarkDTO;
 import com.isaproject.isaproject.DTO.MedicationDTO;
+import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Users.*;
@@ -9,6 +10,7 @@ import com.isaproject.isaproject.Service.Implementations.*;
 import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
 import com.isaproject.isaproject.Model.Medicine.Specification;
+import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,20 @@ public class MedicationController {
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     ResponseEntity<Medication> register(@RequestBody MedicationDTO medicationDTO)
     {
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidationMedication(medicationDTO)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
+        Medication existingMedication = medicationService.findByName(medicationDTO.getName());
+        if(existingMedication != null)
+        {
+            throw new ResourceConflictException("Medication name already exists", "Medication name already exists");
+        }
+        Medication existingMedication2 = medicationService.findByCode(medicationDTO.getCode());
+        if(existingMedication2 != null)
+        {
+            throw new ResourceConflictException("Medication code already exists", "Medication code already exists");
+        }
         Medication medication = medicationService.save(medicationDTO);
         return medication == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

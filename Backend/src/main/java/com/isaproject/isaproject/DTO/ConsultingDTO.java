@@ -5,30 +5,29 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class ConsultingDTO {
-    //private Pharmacist pharmacist;
-    //private Patient patient;
-    private Integer patient;
-    private Integer pharmacist;
+    private Pharmacist pharmacist;
+    private Patient patient;
     private LocalDate date;
     private LocalTime startTime;
     private double duration;
     private double price;
     private Boolean cancelled;
 
-    public Integer getPatient() {
-        return patient;
-    }
 
-    public void setPatient(Integer patient) {
-        this.patient = patient;
-    }
-
-    public Integer getPharmacist() {
+    public Pharmacist getPharmacist() {
         return pharmacist;
     }
 
-    public void setPharmacist(Integer pharmacist) {
+    public void setPharmacist(Pharmacist pharmacist) {
         this.pharmacist = pharmacist;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
     public void setDate(LocalDate date) {
@@ -91,9 +90,9 @@ public class ConsultingDTO {
     private Boolean showedUp;
     private String information;
 
-    public ConsultingDTO(Integer patient, Integer pharmacist, LocalDate date, LocalTime startTime, double duration, double price, Boolean cancelled, Boolean showedUp, String information) {
-        this.patient = patient;
+    public ConsultingDTO(Pharmacist pharmacist, Patient patient, LocalDate date, LocalTime startTime, double duration, double price, Boolean cancelled, Boolean showedUp, String information) {
         this.pharmacist = pharmacist;
+        this.patient = patient;
         this.date = date;
         this.startTime = startTime;
         this.duration = duration;

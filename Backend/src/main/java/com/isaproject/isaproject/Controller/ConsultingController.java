@@ -78,12 +78,9 @@ public class ConsultingController {
     // @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<String> addConsulting(@RequestBody ConsultingDTO consultingDTO) {
 
-        Patient patient = patientService.findById(consultingDTO.getPatient());
-
-
         Consulting consulting = consultingService.save(consultingDTO);
         SimpleMailMessage mail = new SimpleMailMessage();
-        mail.setTo(patient.getEmail());
+        mail.setTo(consultingDTO.getPatient().getEmail());
         mail.setSubject("Successfuly reserved pharmacist consultation!");
         mail.setFrom(environment.getProperty("spring.mail.username"));
         mail.setText("You have successfully reserved an appointment on : "
@@ -684,10 +681,8 @@ public class ConsultingController {
         consulting.setCancelled(false);
         consulting.setDate(dto.getDate());
         consulting.setStartTime(dto.getTime());
-        //consulting.setPharmacist(dto.getPharmacist());
-        //consulting.setPatient(dto.getPatient());
-        consulting.setPharmacist(null);
-        consulting.setPatient(null);
+        consulting.setPharmacist(dto.getPharmacist());
+        consulting.setPatient(dto.getPatient());
         consulting.setDuration(20.0);
         consulting.setPrice(pharmacy.getConsultingPrice());
 

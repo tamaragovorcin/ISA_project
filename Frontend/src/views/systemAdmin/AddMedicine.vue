@@ -263,9 +263,8 @@ export default {
                        alert("Medicine is added!");
                         console.log(response.data);
                 })
-                .catch(response => {
-                       alert("Please try later");
-                        console.log(response);
+                .catch(res => {
+                    alert(res.response.data.message);
                  });    
 
       },
