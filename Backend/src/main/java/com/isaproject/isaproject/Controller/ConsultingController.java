@@ -141,32 +141,38 @@ public class ConsultingController {
     }
 
     @GetMapping("/getAll")
-    //@PreAuthorize("hasRole('PHARMACIST')")
-    public ResponseEntity<List<ConsultingsFrontDTO>> getAllConsultings() {
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<List<ConsultingsFrontDTO>> getAllConsultings(@PathVariable Integer id) {
+
+        if(id == null){
+            throw new IllegalArgumentException("We are unable to find your consultations.");
+        }
+
 
         List<Consulting> programs = consultingService.findAll();
         List<ConsultingsFrontDTO> consultingsFrontDTOS = new ArrayList<ConsultingsFrontDTO>();
-
+        if(consultingsFrontDTOS.size() == 0){
+            throw new IllegalArgumentException("You do not have any consultations reserved yet.");
+        }
         for(Consulting consulting: programs){
+            if(consulting.getPatient().getId()==id) {
+                ConsultingsFrontDTO consultingsFrontDTO = new ConsultingsFrontDTO();
+                consultingsFrontDTO.setId(consulting.getId());
+                consultingsFrontDTO.setDate(consulting.getDate());
+                consultingsFrontDTO.setDuration(consulting.getDuration());
+                consultingsFrontDTO.setName(consulting.getPharmacist().getName());
+                consultingsFrontDTO.setSurname(consulting.getPharmacist().getSurname());
+                consultingsFrontDTO.setTime(consulting.getStartTime());
 
-            ConsultingsFrontDTO consultingsFrontDTO = new ConsultingsFrontDTO();
-            consultingsFrontDTO.setId(consulting.getId());
-            consultingsFrontDTO.setDate(consulting.getDate());
-            consultingsFrontDTO.setDuration(consulting.getDuration());
-            consultingsFrontDTO.setName(consulting.getPharmacist().getName());
-            consultingsFrontDTO.setSurname(consulting.getPharmacist().getSurname());
-            consultingsFrontDTO.setTime(consulting.getStartTime());
+                LocalDate d = LocalDate.now();
+                if (consulting.getDate().isBefore(d)) {
+                    consultingsFrontDTO.setFinished(true);
+                } else {
+                    consultingsFrontDTO.setFinished(false);
+                }
 
-            LocalDate d = LocalDate.now();
-            if(consulting.getDate().isBefore(d)){
-                consultingsFrontDTO.setFinished(true);
+                consultingsFrontDTOS.add(consultingsFrontDTO);
             }
-            else{
-                consultingsFrontDTO.setFinished(false);
-            }
-
-            consultingsFrontDTOS.add(consultingsFrontDTO);
-
 
 
         }
@@ -424,6 +430,11 @@ public class ConsultingController {
     //@PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<List<PharmacyFrontDTO>> marklowest(@RequestBody PharmacistConsultationTimeDTO dto) {
 
+
+        if(dto.getDate() == null || dto.getTime()==null){
+            throw new IllegalArgumentException("Unable to sort right now, please try again later.");
+        }
+
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
         time = time.plusSeconds(0);
@@ -662,7 +673,9 @@ public class ConsultingController {
     @PostMapping("/markhighest")
     //@PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<List<PharmacyFrontDTO>> markhighest(@RequestBody PharmacistConsultationTimeDTO dto) {
-
+        if(dto.getDate() == null || dto.getTime()==null){
+            throw new IllegalArgumentException("Unable to sort right now, please try again later.");
+        }
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
         time= time.plusSeconds(0);
@@ -901,7 +914,9 @@ public class ConsultingController {
     @PostMapping("/pricelowest")
     //@PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<List<PharmacyFrontDTO>> pricelowest(@RequestBody PharmacistConsultationTimeDTO dto) {
-
+        if(dto.getDate() == null || dto.getTime()==null){
+            throw new IllegalArgumentException("Unable to sort right now, please try again later.");
+        }
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
         time = time.plusSeconds(0);
@@ -1140,7 +1155,9 @@ public class ConsultingController {
     @PostMapping("/pricehighest")
     //@PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<List<PharmacyFrontDTO>> pricehighest(@RequestBody PharmacistConsultationTimeDTO dto) {
-
+        if(dto.getDate() == null || dto.getTime()==null){
+            throw new IllegalArgumentException("Unable to sort right now, please try again later.");
+        }
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
         time = time.plusSeconds(0);
@@ -1380,7 +1397,9 @@ public class ConsultingController {
     //@PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<List<PharmacistDTO>> marklowestpharmacist(@RequestBody PharmacistsConsultationDTO dto) {
 
-
+        if(dto.getDate() == null || dto.getTime()==null){
+            throw new IllegalArgumentException("Unable to sort right now, please try again later.");
+        }
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
         time = time.plusSeconds(0);
@@ -1650,7 +1669,9 @@ public class ConsultingController {
     //@PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<List<PharmacistDTO>> markhighestpharmacist(@RequestBody PharmacistsConsultationDTO dto) {
 
-
+        if(dto.getDate() == null || dto.getTime()==null){
+            throw new IllegalArgumentException("Unable to sort right now, please try again later.");
+        }
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
         time = time.plusSeconds(0);
@@ -1920,6 +1941,10 @@ public class ConsultingController {
     @PostMapping("/getPharmacies")
     public ResponseEntity<List<PharmacyFrontDTO>> getPharmacies(@RequestBody PharmacistConsultationTimeDTO dto) {
 
+        if(dto.getDate() == null || dto.getTime()==null){
+            throw new IllegalArgumentException("Please insert both date and time.");
+        }
+
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
         time=time.plusSeconds(0);
@@ -2124,7 +2149,9 @@ public class ConsultingController {
 
 
         if (found == false) {
-            return null;
+
+                throw new IllegalArgumentException("There are no available consutations in this period.");
+
         }
 
 
@@ -2153,6 +2180,10 @@ public class ConsultingController {
     @PostMapping("/getPharmacists")
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<List<PharmacistDTO>> getPharmacists(@RequestBody PharmacistsConsultationDTO dto) {
+
+        if( dto.getTime()==null  || dto.getDate()==null || dto.getPharmacyId()==null){
+            throw new IllegalArgumentException("Sorry, we are missing some information, please try again.");
+        }
 
         LocalDate date = dto.getDate();
         LocalTime time = dto.getTime();
@@ -2364,7 +2395,7 @@ public class ConsultingController {
 
 
         if (found == false) {
-            return null;
+            throw new IllegalArgumentException("There are no pharmacists available.");
         }
 
 
@@ -2414,7 +2445,9 @@ public class ConsultingController {
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> reserveConsultation(@RequestBody PharmacistsConsultationDTO dto) {
 
-        System.out.println(dto.getTime());
+        if(dto.getPatient() == null || dto.getTime()==null || dto.getPharmacist()==null || dto.getDate()==null || dto.getPharmacyId()==null){
+            throw new IllegalArgumentException("Sorry, we are missing some information, please try again.");
+        }
 
         List<Consulting> consultings = consultingService.findAll();
 
@@ -2422,7 +2455,7 @@ public class ConsultingController {
 
         for(Consulting consulting: consultings){
             if(consulting.getPharmacist().getId() == dto.getPharmacist().getId() && consulting.getPatient().getId()== dto.getPatient().getId() && consulting.getDate() == dto.getDate() && consulting.getStartTime()== dto.getTime()){
-               System.out.println("gsdrgdsgrs");
+
                 able=false;
             }
         }

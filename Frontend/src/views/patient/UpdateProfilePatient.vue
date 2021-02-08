@@ -198,18 +198,22 @@ mounted() {
                 console.log(response.data);
                   this.axios.get('/patient/getAlergies/' + this.patient.id)
                         .then(response => {
-                           
                                 this.medicationQuantityList= response.data;
                             console.log(this.medicationQuantityList);
                             
+                        }).catch(res => {
+                       alert("There are no medications in the system yet, so you are not able to add allergies yet.");
+                
+                        console.log(res);
               
-          })
 
             
          }).catch(res => {
-                       alert("NOT OK");
+                       alert("Please, log in first!");
+                          window.location.href = "/login";
                         console.log(res);
                  });
+             })
 
 
   this.axios.get('/medication')
@@ -217,7 +221,12 @@ mounted() {
                 this.medications= response.data;
                console.log(this.medications);
               
-          })
+            }).catch(res => {
+                       alert("Unable to load medications for alergies, please try again later!");
+                          window.location.href = "/login";
+                        console.log(res);
+                 })
+
 
 
    
@@ -293,7 +302,7 @@ mounted() {
                     postalCode: this.patient.address.postalCode,
                 };
             const p = {
-                    id: this.patient.id,
+                  id : this.patient.id,
                     email:this.patient.email,
                     name: this.patient.name,
                     surname : this.patient.surname,
@@ -308,7 +317,7 @@ mounted() {
                 id: this.patient.id,
                 medication: this.medicationQuantityList[a]
             }
-            alert(this.patient.id)
+            
              this.arrayy.push(alergies)
 
         }
@@ -320,18 +329,18 @@ mounted() {
             }
              this.arrayy.push(alergies)
          }
-           alert("sjergfsh")
+         
                 this.axios.post('/patient/addAlergies',this.arrayy, { 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                         }})
                     .then(res => {
                        
-                        console.log(res);
+                       alert(res.data)
                     })
                     .catch(res => {
                      
-                        console.log(res);
+                        alert(res.response.data.message)
                     })
 
 
@@ -346,11 +355,11 @@ mounted() {
                         }})
                     .then(res => {
                        
-                        console.log(res);
+                       alert(res.data)
                     })
                     .catch(res => {
                      
-                        console.log(res);
+                        alert(res.response.data.message)
                     })
 
        

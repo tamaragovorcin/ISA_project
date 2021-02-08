@@ -51,14 +51,7 @@ ines (39 sloc)  1.61 KB
 
         <div style="background: white; height: 60px; margin-top: 20px">
             
-           <span  style="float:right;margin:15px">
-                    
-                    <input type="textarea" style="height:20;width:150;background-color:white;" placeholder="Search pharmacy by name">
-                     
-                   <button class = "btn btn-link btn" style="color:black; " v-on:click = "searchName">Search</button>
-
-            
-                </span>
+         
              
             
         </div>
@@ -200,13 +193,36 @@ export default {
   },
 
 mounted() {
+  let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
 
-    this.axios.get('/consulting/getAll')
+             }
+         }).then(response => {
+                this.patient = response.data;
+         
+         }).catch(res => {
+                       alert("Please log in first!");
+                                 window.location.href = "/login";
+                                 console.log(res);
+                
+                 });
+
+    this.axios.get('/consulting/getAll' + this.patient.id,{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+
+             }})
           .then(response => {
                 this.pharmacists= response.data;
                console.log(this.pharmacists);
               
-          })
+          }).catch(res => {
+                       alert(res.response.data.message);
+                               
+                
+                 });
 },
   methods:{
      from1to5: function(){

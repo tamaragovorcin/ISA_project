@@ -11,7 +11,7 @@ ines (39 sloc)  1.61 KB
                     <a  class = "btn btn-link btn-lg" href= "/showPharmaciesPatient">Pharmacies</a>
                     <a  class = "btn btn-link btn-lg" href= "/eRecipes">ERecipes</a>
                     <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
-                     <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "leaveAMark">Leave a mark</button>
+                     <button class = "btn btn-link btn-lg"  v-on:click = "leaveAMark">Leave a mark</button>
                    
             
                     <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
@@ -54,144 +54,10 @@ ines (39 sloc)  1.61 KB
         </div>
         </div>
 
-       <div>
-     <b-modal ref="my-modal" hide-footer scrollable title="Write complaint" size="lg" modal-class="b-modal">
-                    <div modal-class="modal-dialog" role="document">
-                            <div class="modal-content" style="background-color:whitesmoke">
-                                    <div class="modal-header">
-                                        
-
-                                         <div class="row">
-                                                    <div class = "tab"></div><div class = "tab"></div>
-                                                  <button class = "btn btn-primary" v-on:click = "complainAboutPharmacy">Pharmacy</button>
-                                                  <div class = "tab"></div>
-                                                  <button class = "btn btn-primary" v-on:click = "complainAboutPharmacist">Pharmacist</button>
-                                                  <div class = "tab"></div>
-                                                   <button class = "btn btn-primary" v-on:click = "complainAboutDermatologist">Dermatologist</button>
-                                        </div>
-                        
-                                    </div>
-                                    <div class="modal-body">
-                                        <div v-if = "showPharmacyComplaint">
-                                                                    <div class="row">
-
-                                                                            <div class="col">
-                                                                                <label>Choose pharmacy:</label>
-                                                                            </div>
-                                                                            <div class="col">
-                                                                                  <select v-model="pharmacy">
-                                                                                        <option v-for="ph in pharmacies" :key="ph.id">
-                                                                                            {{ph.name}}
-                                                                                        </option>
-                                                                                   </select>
-                                                                            </div>
-
-                                                                    </div>
-                                                                    
-                                                                    <hr />
-                                                                    <div class="row">
-                                                                        <div class="col">
-                                                                        <label for="name">Select a mark:</label>
-                                                                    </div> 
-                                                                        
-                                                                    </div>
-                                                                    <div class="row">
-                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" class="form-control">
-                                                                       
-                                                                    </div>
-                                                                     <div class="modal-footer">
-                                        <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" @click="sendComplaint">Send complaint</button>
-                                    </div>
-                                        </div>
-                                        <div v-if = "showPharmacistComplaint">
-                                                                    <div class="row">
-
-                                                                            <div class="col">
-                                                                                <label>Choose pharmacist:</label>
-                                                                            </div>
-                                                                            <div class="col">
-                                                                                  <select v-model="pharmacist">
-                                                                                        <option v-for="ph in pharmacists" :key="ph.id">
-                                                                                            {{ph.name}}
-                                                                                        </option>
-                                                                                   </select>
-                                                                            </div>
-
-                                                                    </div>
-                                                                    
-                                                                    <hr />
-                                                                    <div class="row">
-                                                                        <div class="col">
-                                                                        <label for="name">Enter your complaint:</label>
-                                                                    </div> 
-                                                                    </div>
-                                                                    <div class="row">
-                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" class="form-control">
-                                                                       
-                                                                    </div>
-                                                                     <div class="modal-footer">
-                                        <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" @click="sendComplaint">Send complaint</button>
-                                    </div>
-                                        </div>
-                                        <div v-if = "showDermatologistComplaint">
-                                                                    <div class="row">
-
-                                                                            <div class="col">
-                                                                                <label>Choose dermatologist:</label>
-                                                                            </div>
-                                                                            <div class="col">
-                                                                                  <select v-model="dermatologist">
-                                                                                        <option v-for="ph in dermatologists" :key="ph.id">
-                                                                                            {{ph.name}}
-                                                                                        </option>
-                                                                                   </select>
-                                                                            </div>
-
-                                                                    </div>
-                                                                    
-                                                                    <hr />
-                                                                    <div class="row">
-                                                                    <div class="col">
-                                                                        <label for="name">Enter your complaint:</label>
-                                                                    </div> 
-                                                                    </div>
-                                                                    <div class="row">
-                                                                    <input type="textarea" style="height:300px;width:750px;background-color:white;" class="form-control">
-                                                                       
-                                                                    </div>
-                                                                     <div class="modal-footer">
-                                        <button class="btn btn-secondary" block @click="hideModal">Close</button>
-                                        <button class="btn btn-primary" @click="sendComplaint">Send complaint</button>
-                                    </div>
-                                        </div>
-                                       
-
-
-                                    </div>
-
-
-                            
-                                   
-                            </div>
-                    </div>
-    
-    </b-modal>
-  </div>
-
-
-
-
-
-
-
-
-
-
+  
 
     <div>
-     <b-modal ref="my-modalMark" hide-footer scrollable title="Write complaint" size="lg" modal-class="b-modal">
+     <b-modal ref="my-modalMark" hide-footer scrollable title="Leave a mark" size="lg" modal-class="b-modal" style=" vertical-align: middle;" >
                     <div modal-class="modal-dialog" role="document">
                             <div class="modal-content" style="background-color:whitesmoke">
                                     <div class="modal-header">
@@ -511,21 +377,7 @@ export default {
        hideModalMark() {
         this.$refs['my-modalMark'].hide()
       },
-      complainAboutPharmacy : function(){
-          this.showPharmacyComplaint = true;
-          this.showPharmacistComplaint = false;
-          this.showDermatologistComplaint = false;
-      },
-      complainAboutPharmacist : function(){
-          this.showPharmacyComplaint = false;
-          this.showPharmacistComplaint = true;
-          this.showDermatologistComplaint = false;
-      },
-       complainAboutDermatologist : function(){
-          this.showPharmacyComplaint = false;
-          this.showPharmacistComplaint = false;
-          this.showDermatologistComplaint = true;
-      },
+     
        markAboutPharmacy : function(){
           this.showPharmacyMark = true;
           this.showPharmacistMark = false;
@@ -550,11 +402,7 @@ export default {
           this.showDermatologistMark = false;
           this.showMedicationMark = true;
       },
-      sendComplaint : function(){
 
-
- 
-        },
 
         pharmacySelect: function(event, pharmacy){
 
@@ -706,10 +554,10 @@ export default {
              }
          }).then(response => {
                 this.patientInfo = response.data;
-                console.log(response.data);
                 this.patient = response.data;
          }).catch(res => {
-                       alert("NOT OK");
+                       alert("Please, log in first!");
+                        window.location.href = "/login";
                         console.log(res);
                  });
 
@@ -720,7 +568,10 @@ export default {
                 this.pharmacies= response.data;
                console.log(this.pharmacies);
               
-          })
+          }).catch(res => {
+                       alert("List of pharmacies is not available at the moment!");
+                        console.log(res);
+                 });
 
              this.axios.get('/dermatologist')
           .then(response => {
@@ -728,7 +579,10 @@ export default {
                 this.dermatologists= response.data;
                console.log(this.dermatologists);
               
-          })
+              }).catch(res => {
+                       alert("List of dermatologists is not available at the moment!");
+                        console.log(res);
+                 });
 
           this.axios.get('/medication')
           .then(response => {
@@ -736,7 +590,10 @@ export default {
                 this.medications= response.data;
                console.log(this.medications);
               
-          })
+               }).catch(res => {
+                       alert("List of medications is not available at the moment!");
+                        console.log(res);
+                 });
 
                 this.axios.get('/pharmacist')
           .then(response => {
@@ -744,7 +601,10 @@ export default {
                 this.pharmacists= response.data;
                console.log(this.pharmacists);
               
-          })
+              }).catch(res => {
+                       alert("List of pharmacists is not available at the moment!");
+                        console.log(res);
+                 });
     
     }
 }

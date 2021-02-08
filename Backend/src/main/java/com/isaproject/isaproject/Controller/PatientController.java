@@ -189,13 +189,26 @@ public class PatientController {
     @PostMapping("/update")
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> update(@RequestBody Patient person) {
+        if(person.getId() == null){
+            throw new IllegalArgumentException("You are not able to update your profile right now.");
+        }
         Patient patient = patientService.update(person);
         return new ResponseEntity<>("Your profile is successfully updated!", HttpStatus.CREATED);
     }
 
     @PostMapping("/addAlergies")
     @PreAuthorize("hasRole('PATIENT')")
-    public ResponseEntity<PatientsMedicationAlergy> addAlergies(@RequestBody List<AlergiesDTO> al) {
+    public ResponseEntity<String> addAlergies(@RequestBody List<AlergiesDTO> al) {
+
+        for(AlergiesDTO alergiesDTO: al) {
+
+                if(alergiesDTO.getId() == null){
+                    throw new IllegalArgumentException("You are not able to update allergy list right now.");
+                }
+
+        }
+
+
         List<PatientsMedicationAlergy> alergy = new ArrayList<PatientsMedicationAlergy>();
         alergy = alergiesService.findAll();
         PatientsMedicationAlergy patientsMedicationAlergy = new PatientsMedicationAlergy();
@@ -207,18 +220,26 @@ public class PatientController {
         for(AlergiesDTO alergiesDTO: al) {
 
             if (alergiesDTO.getMedication() == null) {
-                return null;
+                return new ResponseEntity<>("Allergy list is successfully updated!", HttpStatus.CREATED);
             } else {
             patientsMedicationAlergy = alergiesService.save(alergiesDTO);
 
             }
         }
-        return ResponseEntity.ok(patientsMedicationAlergy);
+        return new ResponseEntity<>("Allergy list is successfully updated!", HttpStatus.CREATED);
     }
 
     @GetMapping("/getAlergies/{id}")
-    //@PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<List<AlergiesFrontDTO>> getAlergies(@PathVariable Integer id) {
+
+
+
+            if(id == null){
+                throw new IllegalArgumentException("You are not able to get allergy list right now.");
+            }
+
+
         List<PatientsMedicationAlergy> alergies = new ArrayList<PatientsMedicationAlergy>();
         alergies = alergiesService.findAll();
         Patient patient = patientService.findById(id);
@@ -237,16 +258,6 @@ public class PatientController {
                 ResponseEntity.ok(patientsAlergies);
     }
 
-    @GetMapping("/deleteAlergies/{id}")
-    @PreAuthorize("hasRole('PATIENT')")
-    public void deleteAlergies(@PathVariable Integer id) {
-        List<PatientsMedicationAlergy> alergies = alergiesService.findAll();
-       for(PatientsMedicationAlergy patientsMedicationAlergy : alergies){
-           if(id==patientsMedicationAlergy.getId()){
-               alergiesService.delete(patientsMedicationAlergy);
-           }
-       }
-    }
 
     @GetMapping("/mySubscriptions")
     @PreAuthorize("hasRole('PATIENT')")
