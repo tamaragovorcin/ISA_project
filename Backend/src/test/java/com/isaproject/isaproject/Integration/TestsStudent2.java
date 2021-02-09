@@ -86,7 +86,48 @@ public class TestsStudent2 extends  TestRepository{
                 .andExpect(jsonPath("$", isA(LinkedHashMap.class)));
     }
 
+    @Test
+    @Transactional
+    public void testSuccessfullyAddMedication() throws Exception {
 
+        JwtAuthenticationRequest loginDTO = new JwtAuthenticationRequest();
+        loginDTO.setEmail("admin@gmail.com");
+        loginDTO.setPassword("adminPassword");
+
+        String input = mapToJson(loginDTO);
+        String uri = "/api/login";
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input)).andReturn();
+
+        UserTokenState userTokenState = mapFromJson(result.getResponse().getContentAsString(), UserTokenState.class);
+
+        String input2 = mapToJson(medicationDTO);
+        System.out.println(medicationDTO);
+        String uri2 = "/api/medication/add";
+
+        mockMvc.perform(MockMvcRequestBuilders.post(uri2).header("token",  userTokenState.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input2)
+        );
+    }
+
+    @Test
+    @Transactional
+    public void testSuccessfulApprovedHolidayRequest() throws Exception {
+
+        JwtAuthenticationRequest loginDTO = new JwtAuthenticationRequest();
+        loginDTO.setEmail("pharmacyAdmin@gmail.com");
+        loginDTO.setPassword("pharmacyAdminPassword");
+
+        String input = mapToJson(loginDTO);
+        String uri = "/api/login";
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input)).andReturn();
+
+        UserTokenState userTokenState = mapFromJson(result.getResponse().getContentAsString(), UserTokenState.class);
+
+        String uri2 = "/api/holidayPharmacist/approve"+pharmacistId;
+
+        mockMvc.perform(MockMvcRequestBuilders.get(uri2).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200));
+    }
 
 
 }

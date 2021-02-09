@@ -44,6 +44,10 @@ public class TestRepository {
 
     protected Integer patientId;
 
+    protected Integer pharmacistId;
+
+    protected MedicationDTO medicationDTO;
+
 
     protected void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -241,6 +245,11 @@ public class TestRepository {
         pharmacistsConsultationDTO1.setTime(LocalTime.NOON);
         pharmacistsConsultationDTO1.setPatient(patient);
 
+        MedicationDTO medicationDTO1 = new MedicationDTO();
+        medicationDTO1.setCode(1234l);
+        medicationDTO1.setName("MedicationName");
+        medicationDTO1.setType("Type");
+        medicationDTO1.setForm("Form");
 
 
 
@@ -275,6 +284,8 @@ public class TestRepository {
         pharmacistsConsultationDTO = pharmacistsConsultationDTO1;
         markDTO = markDTO1;
         patientId = patient.getId();
+        medicationDTO = medicationDTO1;
+        pharmacistId = pharmacist.getId();
 
 
         entityManager.flush();

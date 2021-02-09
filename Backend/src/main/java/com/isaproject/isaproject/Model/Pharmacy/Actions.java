@@ -36,6 +36,13 @@ public class Actions implements Serializable {
 
     public Actions() {}
 
+    public Actions(Integer id, Pharmacy pharmacy, String description, LocalDate expiryDate) {
+        this.id = id;
+        this.pharmacy = pharmacy;
+        this.description = description;
+        this.expiryDate = expiryDate;
+    }
+
     public Actions(Integer id, int pharmacyId, String description, LocalDate expiryDate) {
         this.id = id;
         this.description = description;

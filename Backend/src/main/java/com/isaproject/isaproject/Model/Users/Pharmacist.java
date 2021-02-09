@@ -45,6 +45,28 @@ public class Pharmacist extends  PersonUser {
 
     public Pharmacist() { super();}
 
+    public Pharmacist(Integer id, String name, String surname, String email, Address address, double markPharmacist, Pharmacy pharmacy) {
+        super(id, name, surname, email, address);
+        this.markPharmacist = markPharmacist;
+        this.pharmacy = pharmacy;
+    }
+
+    public Pharmacist(Integer id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, boolean enabled, Timestamp lastPasswordResetDate, List<Authority> authorities, Address address, Set<Consulting> consulting, Set<HolidaySchedulePharmacist> holidaySchedulePharmacists, double markPharmacist, Set<MarkPharmacist> marks, Pharmacy pharmacy) {
+        super(id, name, surname, email, password, phoneNumber, firstLogged, enabled, lastPasswordResetDate, authorities, address);
+        this.consulting = consulting;
+        this.holidaySchedulePharmacists = holidaySchedulePharmacists;
+        this.markPharmacist = markPharmacist;
+        this.marks = marks;
+        this.pharmacy = pharmacy;
+    }
+
+    public Pharmacist(Set<Consulting> consulting, Set<HolidaySchedulePharmacist> holidaySchedulePharmacists, double markPharmacist, Set<MarkPharmacist> marks, Pharmacy pharmacy) {
+        this.consulting = consulting;
+        this.holidaySchedulePharmacists = holidaySchedulePharmacists;
+        this.markPharmacist = markPharmacist;
+        this.marks = marks;
+        this.pharmacy = pharmacy;
+    }
 
     public Set<Consulting> getConsulting() {
         return consulting;
