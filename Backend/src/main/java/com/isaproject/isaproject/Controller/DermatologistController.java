@@ -29,10 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/dermatologist")
@@ -102,7 +99,6 @@ public class DermatologistController {
     @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
     ResponseEntity<List<DermatologistsFrontDTO>> getAllFrontDermatologists()
     {
-        System.out.println("POGODIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         List<DermatologistsFrontDTO> dermatologists = new ArrayList<DermatologistsFrontDTO>();
         for(Dermatologist dermatologist:   dermatologistService.findAll()){
             List<String> pharmacies = new ArrayList<>();
@@ -112,7 +108,7 @@ public class DermatologistController {
             dermatologists.add(new DermatologistsFrontDTO(dermatologist.getName(),dermatologist.getSurname(),dermatologist.getMarkDermatologist(),pharmacies));
 
         }
-        return dermatologists == null ?
+        return dermatologists.equals(Collections.emptyList()) ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(dermatologists);
     }
@@ -130,7 +126,7 @@ public class DermatologistController {
             DermatologistsFrontDTO dermatologistsFrontDTO = new DermatologistsFrontDTO(dermatologist.getName(),dermatologist.getSurname(),dermatologist.getMarkDermatologist(),pharmacies);
             dermatologistsFrontDTOS.add(dermatologistsFrontDTO);
         }
-        return dermatologistsFrontDTOS == null ?
+        return dermatologistsFrontDTOS.equals(Collections.emptyList()) ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(dermatologistsFrontDTOS);
     }
@@ -149,7 +145,7 @@ public class DermatologistController {
             DermatologistsFrontDTO dermatologistsFrontDTO = new DermatologistsFrontDTO(dermatologist.getName(),dermatologist.getSurname(),dermatologist.getMarkDermatologist(),pharmacies);
             dermatologistsFrontDTOS.add(dermatologistsFrontDTO);
         }
-        return dermatologistsFrontDTOS == null ?
+        return dermatologistsFrontDTOS.equals(Collections.emptyList()) ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(dermatologistsFrontDTOS);
     }
@@ -167,7 +163,7 @@ public class DermatologistController {
             DermatologistsFrontDTO dermatologistsFrontDTO = new DermatologistsFrontDTO(dermatologist.getName(),dermatologist.getSurname(),dermatologist.getMarkDermatologist(),pharmacies);
             dermatologistsFrontDTOS.add(dermatologistsFrontDTO);
         }
-        return dermatologistsFrontDTOS == null ?
+        return dermatologistsFrontDTOS.equals(Collections.emptyList()) ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(dermatologistsFrontDTOS);
     }

@@ -247,7 +247,7 @@ public class OfferController {
         Set<Offer> offers =  supplier.getOffer();
         for (Offer offer: offers) {
             Order order = offer.getOrder();
-            if(order.getDate().isAfter(LocalDate.now()) && !order.getStatus().equals("CLOSED") && order.getDate().isAfter(LocalDate.now()))
+            if(order.getDate().isAfter(LocalDate.now()) && !order.getStatus().equals("CLOSED"))
             {
                 supplierOffersDto.add(new SupplierOffersInfoDTO(offer.getId(), order.getId(), offer.getDateOfDelivery(), offer.getSummaryPrice(),
                         order.getDate(), getMedicationsInOrder(order.getMedicationInOrders()), order.getPharmacyAdmin().getPharmacy().getPharmacyName(),true));

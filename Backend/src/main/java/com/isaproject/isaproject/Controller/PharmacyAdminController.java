@@ -19,10 +19,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/pharmacyAdmin")
@@ -134,7 +132,7 @@ public class PharmacyAdminController {
             }
 
         }
-        return dermatologists == null ?
+        return dermatologists.equals(Collections.emptyList()) ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(dermatologists);
 
@@ -161,7 +159,7 @@ public class PharmacyAdminController {
             }
 
         }
-        return dermatologists == null ?
+        return dermatologists.equals(Collections.emptyList()) ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(dermatologists);
 
@@ -243,7 +241,7 @@ public class PharmacyAdminController {
                 schedulePharmacistFrontDTOS.add(holidaySchedulePharmacistFrontDTO);
             }
         }
-        return schedulePharmacistFrontDTOS == null ?
+        return schedulePharmacistFrontDTOS.equals(Collections.emptyList()) ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(schedulePharmacistFrontDTOS);
     }
@@ -283,7 +281,7 @@ public class PharmacyAdminController {
             medicationPriceFrontDTO.setManufacturer(medicationPrice.getMedication().getSpecification().getManufacturer());
             medicationPriceFrontDTOS.add(medicationPriceFrontDTO);
         }
-        return medicationPriceFrontDTOS == null ?
+        return medicationPriceFrontDTOS.equals(Collections.emptyList()) ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medicationPriceFrontDTOS);
     }
@@ -310,7 +308,7 @@ public class PharmacyAdminController {
                 medicationPriceFrontDTOS.add(medicationPriceFrontDTO);
             }
         }
-        return medicationPriceFrontDTOS == null ?
+        return medicationPriceFrontDTOS.equals(Collections.emptyList()) ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(medicationPriceFrontDTOS);
     }
@@ -330,7 +328,7 @@ public class PharmacyAdminController {
                 pharmacists.add(pharmacist);
             }
         }
-        return pharmacists == null ?
+        return pharmacists.equals(Collections.emptyList()) ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacists);
     }
@@ -347,7 +345,7 @@ public class PharmacyAdminController {
                 pharmacists.add(pharmacist);
             }
         }
-        return pharmacists == null ?
+        return pharmacists.equals(Collections.emptyList()) ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacists);
     }
@@ -366,7 +364,7 @@ public class PharmacyAdminController {
                         order.getPharmacyAdmin().getPharmacy().getPharmacyName()));
             }
         }
-        return ordersDto == null ?
+        return ordersDto.equals(Collections.emptyList()) ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(ordersDto);
     }
@@ -384,7 +382,7 @@ public class PharmacyAdminController {
                         order.getPharmacyAdmin().getPharmacy().getPharmacyName()));
             }
         }
-        return ordersDto == null ?
+        return ordersDto.equals(Collections.emptyList()) ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(ordersDto);
     }
@@ -403,7 +401,7 @@ public class PharmacyAdminController {
                         order.getPharmacyAdmin().getPharmacy().getPharmacyName()));
             }
         }
-        return ordersDto == null ?
+        return ordersDto.equals(Collections.emptyList()) ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(ordersDto);
     }

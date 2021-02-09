@@ -75,6 +75,8 @@ import Dermatologists from '../views/home/Dermatologists.vue'
 import MedicationGraphics from '../views/pharmacyAdmin/MedicationGraphics.vue'
 import IncomeGraphics from '../views/pharmacyAdmin/IncomeGraphics.vue'
 import ExaminationGraphics from '../views/pharmacyAdmin/ExaminationGraphics.vue'
+import Location from '../views/pharmacyAdmin/Location.vue'
+
 
 
 Vue.use(BootstrapVue)
@@ -467,6 +469,11 @@ const routes = [
       path: '/examinationGraphics',
       name: 'ExaminationGraphics',
       component: ExaminationGraphics
+    },
+    {
+      path: '/location',
+      name: 'Location',
+      component: Location
     },
 
     
