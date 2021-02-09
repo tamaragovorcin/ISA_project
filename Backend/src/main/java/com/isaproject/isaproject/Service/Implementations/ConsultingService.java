@@ -119,6 +119,16 @@ public class ConsultingService implements IConsultingService {
         }
         return true;
     }
+    private  Boolean isPatientAvailable( ConsultingDTO dto){
+        for(Consulting consulting : consultingRepository.findAll()){
+            if(consulting.getPatient().getId() == dto.getPharmacist().getId()) {
+                if (dto.getDate().equals(consulting.getDate()) && dto.getStartTime().isAfter(consulting.getStartTime()) && dto.getStartTime().isBefore(consulting.getStartTime().plusMinutes((long) consulting.getDuration()))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     private Consulting createNewExaminationTerm(ConsultingDTO consultingDTO){
         System.out.println("USAO U CREATE");
 
@@ -141,7 +151,7 @@ public class ConsultingService implements IConsultingService {
         {
             System.out.println("USAO U CHECK SCHEDYLE");
 
-            if(isPharmacistAvailable(consultingDTO)){
+            if(isPharmacistAvailable(consultingDTO) && isPatientAvailable(consultingDTO)){
                 System.out.println("USAO U 2. IF");
 
                 return createNewExaminationTerm(consultingDTO);

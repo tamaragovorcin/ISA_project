@@ -14,10 +14,10 @@ public class LackMedicine {
     @Column(name="id", unique=true, nullable=false)
     private Integer id;
 
-    @Column(name = "name", nullable = true)
+    @Column(name = "nameMedicine", nullable = true)
     private String nameMedicine;
 
-    @Column(name = "name", nullable = true)
+    @Column(name = "namePharmacy", nullable = true)
     private String namePharmacy;
 
     public LackMedicine() {

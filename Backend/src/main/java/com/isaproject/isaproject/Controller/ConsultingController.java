@@ -102,6 +102,10 @@ public class ConsultingController {
 
 
             Consulting consulting = consultingService.save(consultingDTO);
+
+
+
+
             SimpleMailMessage mail = new SimpleMailMessage();
             mail.setTo(consultingDTO.getPatient().getEmail());
             mail.setSubject("Successfuly reserved pharmacist consultation!");
@@ -112,9 +116,13 @@ public class ConsultingController {
             mailSender.send(mail);
 
 
-            return consulting == null ?
-                    new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                    new ResponseEntity<>("Consulting is successfully added!", HttpStatus.CREATED);
+        if(consulting == null) {
+            return new ResponseEntity<>("Termin is not available at required time! Try in another time.", HttpStatus.CREATED);
+
+        }else{
+            return new ResponseEntity<>("Term is successfully reserved.", HttpStatus.CREATED);
+
+        }
         //}else{
            // return   new ResponseEntity<>("This period is not aveilable!", HttpStatus.CREATED);
        // }
