@@ -18,6 +18,12 @@ public class PharmacyService implements IPharmacyService {
     PharmacyRepository pharmacyRepository;
     @Autowired
     DermatologistRepository dermatologistRepository;
+    @Autowired
+    EPrescriptionService ePrescriptionService;
+    @Autowired
+    ConsultingService consultingService;
+    @Autowired
+    ExaminationService examinationService;
 
     @Override
     public Pharmacy findById(Integer id) {
@@ -60,12 +66,18 @@ public class PharmacyService implements IPharmacyService {
     }
     @Override
     public Pharmacy update(Pharmacy pharmacy) {
-
         return this.pharmacyRepository.save(pharmacy);
-
     }
 
     public List<Pharmacy> getAllPharmacyNames() {
         return this.pharmacyRepository.getAllPharmacyNames();
+    }
+
+    public boolean checkConnectionWithPharmacy(int pharmacyId) {
+        Boolean hasEreceipt = ePrescriptionService.checkEReceiptInPharmacy(pharmacyId);
+        Boolean hasConsulting = consultingService.checkIfPatientHasConsulting(pharmacyId);
+        Boolean hasExamination = examinationService.checkIfPatientHasExamination(pharmacyId);
+        Boolean hasTakenReservedMedication = false;
+        return (!hasEreceipt && !hasConsulting && !hasExamination && !hasTakenReservedMedication) ? false :true;
     }
 }

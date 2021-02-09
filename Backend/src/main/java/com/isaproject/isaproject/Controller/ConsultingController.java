@@ -90,6 +90,7 @@ public class ConsultingController {
         Patient patient = patientService.findById(newConsultingDTO.getPatientId());
         Pharmacist logPharmacist = pharmacistService.findById(user.getId());
 
+
             ConsultingDTO consultingDTO = new ConsultingDTO();
             consultingDTO.setPatient(patient);
             consultingDTO.setPharmacist(logPharmacist);
@@ -99,19 +100,15 @@ public class ConsultingController {
             consultingDTO.setShowedUp(false);
             consultingDTO.setPrice(logPharmacist.getPharmacy().getConsultingPrice());
 
+        Consulting consulting = consultingService.save(consultingDTO);
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(consultingDTO.getPatient().getEmail());
+        mail.setSubject("Successfuly reserved pharmacist consultation!");
+        mail.setFrom(environment.getProperty("spring.mail.username"));
+        mail.setText("You have successfully reserved an appointment on : "
+                + consulting.getDate() + " at " + consulting.getStartTime() + ". Your doctor is " + consulting.getPharmacist().getName() + " " + consulting.getPharmacist().getSurname());
 
 
-            Consulting consulting = consultingService.save(consultingDTO);
-
-
-
-
-            SimpleMailMessage mail = new SimpleMailMessage();
-            mail.setTo(consultingDTO.getPatient().getEmail());
-            mail.setSubject("Successfuly reserved pharmacist consultation!");
-            mail.setFrom(environment.getProperty("spring.mail.username"));
-            mail.setText("You have successfully reserved an appointment on : "
-                    + consulting.getDate() + " at " + consulting.getStartTime() + ". Your doctor is " + consulting.getPharmacist().getName() + " " + consulting.getPharmacist().getSurname());
 
             mailSender.send(mail);
 

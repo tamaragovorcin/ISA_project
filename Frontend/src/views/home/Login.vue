@@ -165,12 +165,10 @@ export default {
             return;
         }
 
-
-
-        
         const changePasswordInfo ={
                 oldPassword : this.currentPassword,
                 newPassword : this.newPassword,
+                rewriteNewPassword : this.newPasswordRepeat
             } 
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
         this.axios.post('/passwordFirstLogin',changePasswordInfo,{ 
@@ -192,18 +190,10 @@ export default {
                          window.location.href = '/pharmacistHomePage';
                     else alert("Error has occured."); 
                 }).catch(res => {
-                       alert("Please try later.");
-                        console.log(res);
+                    alert(res.response.data.message);
                 });
 
       }
 }
 }
 </script>
-
-<style>
-
-</style>
-
-
-  

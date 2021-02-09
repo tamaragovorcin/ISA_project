@@ -139,28 +139,34 @@ export default {
 
 
   methods:{
-      showClients : function(){
-        
-
+        showclients : function(){
+         window.location.href = "/pharmacistClients";
       },
       showMyProfile: function(){
-         
-      },
-      changePersonal: function(){
-          window.location.href = "/pharmacistUpdateProfile";
+         window.location.href = "/pharmacistProfile";
       },
       showHomePage : function(){
           window.location.href = "/isaHomePage";
       },
+      workCalendar : function(){
+       window.location.href = "/workingHoursPharmacist";
+
+
+      },
+      vacation: function(){
+           window.location.href = "/createRequestVacation";
+      },
+     
       logOut : function(){
         localStorage.removeItem('token');
           window.location.href = "/login";
-      },
-      vacation : function(){
 
       },
-      workCalendar : function(){
-
+      writeConsulting() {
+        window.location.href = "/noteConsultig";
+      },
+        scheduleConsulting : function(){
+             window.location.href = "/schedulingConsulting";
       },
      
       send : function() {
@@ -194,12 +200,7 @@ export default {
       sendComplaint : function(){
 
       },
-       writeConsulting() {
-        window.location.href = "/noteConsultig";
-      },
-        scheduleConsulting : function(){
-             window.location.href = "/schedulingConsulting";
-      },
+       
       addMedicine : function(){
           this.$refs['my-modal1'].show()
 

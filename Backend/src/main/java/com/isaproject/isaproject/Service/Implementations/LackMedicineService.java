@@ -30,8 +30,8 @@ public class LackMedicineService implements ILackMedicineService {
     @Override
     public LackMedicine save(LackMedicineDTO lackMedicineDTO) {
         LackMedicine lackMedicine = new LackMedicine();
-        lackMedicine.setNameMedicine(lackMedicine.getNameMedicine());
-        lackMedicine.setNamePharmacy(lackMedicine.getNamePharmacy());
+        lackMedicine.setNameMedicine(lackMedicineDTO.getNameMedicine());
+        lackMedicine.setNamePharmacy(lackMedicineDTO.getNamePharmacy());
         return this.lackMedicineRepository.save(lackMedicine);
     }
 

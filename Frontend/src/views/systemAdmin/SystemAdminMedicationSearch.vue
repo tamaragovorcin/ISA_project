@@ -529,23 +529,16 @@ export default {
                     this.notallowSystemAdminRegistration = true;
                }
          }).catch(res => {
-                       alert("NOT OK");
+                       alert("Please log in again or try later.");
                         console.log(res);
                  });
 
          this.axios.get('/medication/getAll',).then(response => {
                this.medicationSeacrhList= response.data;
          }).catch(res => {
-                       alert("Please try again later.");
+                       alert("Please log in again or try later.");
                         console.log(res);
                  });
     }
 }
 </script>
-
-<style>
-
-</style>
-
-
-  

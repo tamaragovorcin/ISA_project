@@ -154,6 +154,7 @@ mounted() {
       previousUpdateProfile : function(){
       },
     logOut : function(){
+         localStorage.removeItem('token');
           window.location.href = "/login";
       },
         hideModal() {
@@ -165,6 +166,7 @@ mounted() {
       edit : function(){
           this.showEdit = true;
       },
+      
        update : function(){
          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
            const ad = {
@@ -190,7 +192,7 @@ mounted() {
                         }})
                     .then(res => {
                         alert("Successfully updated info.")
-                      
+                        window.location.href = "/dermatologistProfile";
                         console.log(res);
                     })
                     .catch(res => {

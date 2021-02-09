@@ -2,7 +2,6 @@ package com.isaproject.isaproject.Service.Implementations;
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.DTO.QRcodeInformationDTO;
-import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
@@ -18,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -92,7 +90,7 @@ public class PatientService implements IPatientService {
         patient.setEmail(userRequest.getEmail());
         patient.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         patient.setFirstLogged(true);
-        patient.setEnabled(true);
+        patient.setEnabled(false);
         patient.setPhoneNumber(userRequest.getPhonenumber());
         Authority authorityPatient = authService.findByname("ROLE_PATIENT");
         List<Authority> auth = new ArrayList<Authority>();
@@ -156,7 +154,11 @@ public class PatientService implements IPatientService {
         PersonUser user = (PersonUser)currentUser.getPrincipal();
 
         Patient patient = patientRepository.getOne(user.getId());
-
+        for (Pharmacy pharmacyP:patient.getSubscribedToPharmacies()) {
+            if(pharmacy.getId().equals(pharmacyP.getId())) {
+                throw new IllegalArgumentException("Patient is already subscribed to this pharmacy.");
+            }
+        }
         try {
             patient.getSubscribedToPharmacies().add(pharmacy);
             patientRepository.save(patient);
@@ -170,18 +172,25 @@ public class PatientService implements IPatientService {
         PersonUser user = (PersonUser)currentUser.getPrincipal();
 
         Patient patient = patientRepository.getOne(user.getId());
-
+        boolean flag = false;
         try {
             for (Iterator<Pharmacy> iterator = patient.getSubscribedToPharmacies().iterator(); iterator.hasNext();) {
                 Pharmacy s =  iterator.next();
                 if (pharmacy.getId().equals(s.getId())) {
                     iterator.remove();
+                    flag = true;
                 }
+            }
+            if(!flag) {
+                throw new IllegalArgumentException("Patient can not unsubsribe to pharmacy because he was not subscribed.");
             }
             patientRepository.save(patient);
             return true;
         }
-        catch(Exception e) {return false;}
+        catch(Exception e) {
+            throw new IllegalArgumentException("Patient can not unsubsribe to pharmacy because he was not subscribed.");
+
+        }
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)

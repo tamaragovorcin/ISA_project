@@ -103,13 +103,10 @@ export default {
                     this.refreshInformation();
                     console.log(response)
                 }).catch(res => {
-                       alert("Please try later.");
-                        console.log(res);
-                });
+                      alert(res.response.data.message);
+             });
       },
       subrsribe : function(event, pharmacy){
-          console.log("/////")
-          console.log(pharmacy)
             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
             const pharmacyInfo = {
                 pharmacyId : pharmacy
@@ -121,8 +118,8 @@ export default {
                     this.refreshInformation();
                     console.log(response)
                 }).catch(res => {
-                       alert("Please try later.");
-                        console.log(res);
+                    alert(res.response.data.message);
+
                 });
       },
       refreshInformation : function() {

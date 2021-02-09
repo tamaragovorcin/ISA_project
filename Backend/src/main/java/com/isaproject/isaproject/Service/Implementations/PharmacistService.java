@@ -154,5 +154,4 @@ public class PharmacistService implements IPharmacistService {
         }
         return pharmacists;
     }
-
 }

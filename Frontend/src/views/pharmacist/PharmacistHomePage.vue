@@ -107,7 +107,17 @@ export default {
       showHomePage : function(){
           window.location.href = "/isaHomePage";
       },
+      workCalendar : function(){
+       window.location.href = "/workingHoursPharmacist";
+
+
+      },
+      vacation: function(){
+           window.location.href = "/createRequestVacation";
+      },
+     
       logOut : function(){
+        localStorage.removeItem('token');
           window.location.href = "/login";
 
       },
@@ -124,15 +134,7 @@ export default {
        hideModal1() {
         this.$refs['my-modal1'].hide()
       },
-      workCalendar : function(){
-       window.location.href = "/workingHoursPharmacist";
-
-
-      },
-      vacation: function(){
-           window.location.href = "/createRequestVacation";
-      },
-     
+      
       sendComplaint : function(){
 
       },

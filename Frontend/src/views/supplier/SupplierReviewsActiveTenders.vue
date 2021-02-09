@@ -154,41 +154,24 @@ export default {
       },
       sendOffer : function(){
         const offer = {
-            supplier : this.supplierAccount,
+            supplier : this.supplierAccount.id,
             orderId : this.choosenTender.id,
             dateOfDelivery : this.delieveryDate,
             summaryPrice : this.priceOffered,
         }
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
 
-        this.axios.get('/offer/checksQuantity/'+this.choosenTender.id,{ 
-             headers: {
-                 'Authorization': 'Bearer ' + token,
-             }}).then(response => {
-                        if(response.data==true) {
-
-                                this.axios.post('/offer/add',offer,{ 
-                                                headers: {
-                                                        'Authorization': 'Bearer ' + token,
-                                        }}).then(response => {
-                                            console.log(response)
-                                            alert("Successfully sent offer!")
-                                        }).catch(res => {
-                                            alert("Please try later.");
-                                                console.log(res);
-                                        });
-                        }
-                      else {
-                            alert("Sorry. You cant make offer for this tender. You dont have enough medications.");
-                      }
-
-                })
-                .catch(response => {
-                       alert("Sorry. You cant make offer for this tender. You dont have enough medications.");
-                        console.log(response);
-                 }); 
-         
-      }
+        this.axios.post('/offer/add',offer,{ 
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                }}).then(response => {
+                    console.log(response)
+                    alert("Successfully sent offer!")
+                 }).catch(res => {
+                        alert(res.response.data.message);
+                });
+        }
+      
       
 },
  mounted() {

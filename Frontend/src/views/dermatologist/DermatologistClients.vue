@@ -161,16 +161,20 @@ export default {
     },
  
      methods:{
+        showClients : function(){
+            window.location.href = "/dermatologistClients";
+      },
       showMyProfile: function(){
-         
+           window.location.href = "/dermatologistProfile";
       },
-        showclients : function(){
+      
+    
+       vacation: function(){
+          window.location.href = "/dermatologistHoliday";
+
       },
-        workCalendar: function(){
-         
-      },
-        vacation: function(){
-         
+       workCalendar : function(){
+            window.location.href = "/workingHoursDermatologist";
       },
       remove : function(event,patient){
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
@@ -229,6 +233,7 @@ export default {
           window.location.href = "/isaHomePage";
       },
       logOut : function(){
+        localStorage.removeItem('token');
           window.location.href = "/login";
       },
       showMedications : function() {

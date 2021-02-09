@@ -135,15 +135,16 @@ export default {
    },
   methods:{
       showclients : function(){
-         window.location.href = "/pharmacistClients";
+         window.location.href = "/dermatologistClients";
       },
       showMyProfile: function(){
-         window.location.href = "/pharmacistProfile";
+         window.location.href = "/dermatologistProfile";
       },
       showHomePage : function(){
           window.location.href = "/isaHomePage";
       },
       logOut : function(){
+         localStorage.removeItem('token');
           window.location.href = "/login";
 
       },

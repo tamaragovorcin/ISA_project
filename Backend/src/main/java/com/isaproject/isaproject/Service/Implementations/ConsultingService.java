@@ -30,12 +30,16 @@ public class ConsultingService implements IConsultingService {
     @Autowired
     PatientRepository patientRepository;
 
+
     @Autowired
     PharmacistRepository pharmacistRepository;
     @Autowired
     WorkingHoursPharmacistService workingHoursPharmacistService;
     @Autowired
     HolidayScheduleDermatologistService holidayScheduleDermatologistService;
+
+
+
     @Override
     public Consulting findById(Integer id) {
         return consultingRepository.findById(id).get();
@@ -48,6 +52,7 @@ public class ConsultingService implements IConsultingService {
 
     @Override
     public Consulting save(ConsultingDTO consultingDTO) {
+
 
 
         Pharmacist pharmacist = pharmacistRepository.findById(consultingDTO.getPharmacist().getId()).get();
@@ -121,7 +126,7 @@ public class ConsultingService implements IConsultingService {
     }
     private  Boolean isPatientAvailable( ConsultingDTO dto){
         for(Consulting consulting : consultingRepository.findAll()){
-            if(consulting.getPatient().getId() == dto.getPharmacist().getId()) {
+            if(consulting.getPatient().getId() == dto.getPatient().getId()) {
                 if (dto.getDate().equals(consulting.getDate()) && dto.getStartTime().isAfter(consulting.getStartTime()) && dto.getStartTime().isBefore(consulting.getStartTime().plusMinutes((long) consulting.getDuration()))) {
                     return false;
                 }
@@ -200,5 +205,24 @@ public class ConsultingService implements IConsultingService {
             }
         }
         return false;
+    }
+
+    public boolean canMakeComplaintPharmacist(Integer pharmacistId) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        Patient patient = patientRepository.findById(user.getId()).get();
+
+        Boolean able = false;
+
+        List<Consulting> consultings = findAll();
+
+        for(Consulting consulting: consultings){
+            if(consulting.getPharmacist().getId() == pharmacistId && consulting.getPatient().getId()== patient.getId()){
+                if(consulting.getShowedUp()) {
+                    able = true;
+                }
+            }
+        }
+        return able;
     }
 }

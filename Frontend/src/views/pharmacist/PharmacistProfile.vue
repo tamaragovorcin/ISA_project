@@ -144,14 +144,25 @@ export default {
 
 
   methods:{
-      showClients : function(){
-        
-
+      showclients : function(){
+         window.location.href = "/pharmacistClients";
       },
       showMyProfile: function(){
-         
+         window.location.href = "/pharmacistProfile";
       },
-       writeConsulting() {
+      showHomePage : function(){
+          window.location.href = "/isaHomePage";
+      },
+      workCalendar : function(){
+       window.location.href = "/workingHoursPharmacist";
+
+
+      },
+      vacation: function(){
+           window.location.href = "/createRequestVacation";
+      },
+     
+      writeConsulting() {
         window.location.href = "/noteConsultig";
       },
         scheduleConsulting : function(){
@@ -164,20 +175,12 @@ export default {
       changePersonal: function(){
           window.location.href = "/pharmacistUpdateProfile";
       },
-      showHomePage : function(){
-          window.location.href = "/isaHomePage";
-      },
+      
       logOut : function(){
         localStorage.removeItem('token');
           window.location.href = "/login";
       },
-      vacation : function(){
-
-      },
-      workCalendar : function(){
-
-      },
-     
+      
       sendComplaint : function(){
 
       },

@@ -15,6 +15,8 @@ public interface MedicationRepository extends JpaRepository<Medication, Integer>
 
     List<Medication> findByType(String type);
 
+    Medication findByCode(Long code);
+
     @Query(value = "SELECT * from Medication t where t.mark BETWEEN ?1 AND ?2", nativeQuery=true)
     List<Medication> findAllByMarkBetweenMinAndMax(int markMin, int markMax);
 }

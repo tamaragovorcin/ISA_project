@@ -4,17 +4,16 @@ import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.DTO.AlergiesDTO;
 import com.isaproject.isaproject.DTO.AlergiesFrontDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
+import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
-
 import com.isaproject.isaproject.Service.Implementations.*;
-
-
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.ConfirmationTokenRepository;
 import com.isaproject.isaproject.Repository.PatientRepository;
+import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,12 +56,19 @@ public class PatientController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerPatient(@RequestBody PersonUserDTO person) {
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidationPersonUser(person)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
+        if(!person.getPassword().equals(person.getRewritePassword())) {
+            throw new IllegalArgumentException("Please make sure your password and rewrite password match!");
+        }
 
         Patient existingUser = patientService.findByEmail(person.getEmail());
 
         if(existingUser != null)
         {
-            return ResponseEntity.ok("This email already exists!");
+            throw new ResourceConflictException("Entered email already exists", "Email already exists");
         }
         else
         {
@@ -90,7 +96,7 @@ public class PatientController {
             user.setEnabled(true);
             patientRepository.save(user);
             RedirectView redirect = new RedirectView();
-            redirect.setUrl("http://localhost:8085/patientProfile");
+            redirect.setUrl("http://localhost:8085/login");
             return redirect;
         } else {
             return "The link is invalid or broken!!";
@@ -257,22 +263,32 @@ public class PatientController {
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> subsribe(@RequestBody PharmacyIdDTO pharmacyId)
     {
-
-        Pharmacy pharmacy =pharmacyService.findById(pharmacyId.getPharmacyId());
+        Pharmacy pharmacy;
+        try {
+            pharmacy= pharmacyService.findById(pharmacyId.getPharmacyId());
+        }
+        catch(Exception e) {
+            throw new IllegalArgumentException("This pharmacy does not exist.");
+        }
         return patientService.subsribeToPharmacy(pharmacy) == false ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
+                    new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                    ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
     }
 
     @PostMapping("/unsubscribeToPharmacy")
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> unsubsribe(@RequestBody PharmacyIdDTO pharmacyId)
     {
-        Pharmacy pharmacy =pharmacyService.findById(pharmacyId.getPharmacyId());
-
+        Pharmacy pharmacy;
+        try {
+            pharmacy= pharmacyService.findById(pharmacyId.getPharmacyId());
+        }
+        catch(Exception e) {
+            throw new IllegalArgumentException("This pharmacy does not exist.");
+        }
         return patientService.unsubsribeToPharmacy(pharmacy) == false ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok("Patient is now subscribed to pharmacy   " + pharmacy.getPharmacyName());
+                ResponseEntity.ok("Patient is now unsubscribed to pharmacy   " + pharmacy.getPharmacyName());
     }
 
 

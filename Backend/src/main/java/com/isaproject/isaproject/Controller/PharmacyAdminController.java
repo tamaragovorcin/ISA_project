@@ -11,6 +11,7 @@ import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Service.Implementations.*;
+import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,13 +42,20 @@ public class PharmacyAdminController {
     DermatologistService dermatologistService;
 
     @PostMapping("/register")
-    // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacyAdminDTO userRequest) {
-        System.out.println(userRequest.getPharmacy().getPharmacyName());
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidationPharmacyAdmin(userRequest)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
+
+        if(!userRequest.getPassword().equals(userRequest.getRewritePassword())) {
+            throw new IllegalArgumentException("Please make sure your password and rewrite password match!");
+        }
 
         PersonUser existUser = pharmacyAdminService.findByEmail(userRequest.getEmail());
         if (existUser != null) {
-            throw new ResourceConflictException(userRequest.getEmail(), "Email already exists");
+            throw new ResourceConflictException("Entered email already exists", "Email already exists");
         }
         PersonUser user = pharmacyAdminService.save(userRequest);
         return new ResponseEntity<>("Supplier is successfully registred!", HttpStatus.CREATED);
