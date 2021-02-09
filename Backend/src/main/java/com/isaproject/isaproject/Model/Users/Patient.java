@@ -94,7 +94,9 @@ public class Patient extends PersonUser{
 
     public Patient() {super();}
 
-
+    public Patient(Integer id, String name, String surname, String email, Address address) {
+        super(id, name, surname, email, address);
+    }
 
     public Patient(Integer id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, boolean enabled, Timestamp lastPasswordResetDate, List<Authority> authorities, Address address, Set<Consulting> consulting, Set<Examination> examinations, Set<Complaint> complaints, Set<Grading> gradings, Set<EPrescription> ePrescriptions, Set<Prescription> prescriptions, Set<PatientsMedicationAlergy> patientsMedicationAlergy, Set<MedicationReservation> medicationReservations, int penalties, int points, String loyaltyCategory, double discount) {
         super(id, name, surname, email, password, phoneNumber, firstLogged, enabled, lastPasswordResetDate, authorities, address);

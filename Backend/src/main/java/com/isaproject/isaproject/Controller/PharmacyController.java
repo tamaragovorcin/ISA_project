@@ -118,6 +118,7 @@ public class PharmacyController  {
         return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
     }
     @GetMapping("/all")
+
     ResponseEntity<List<PharmacyFrontDTO>> getAllPharmacies()
     {
         List<Pharmacy> pharmacies = pharmacyService.findAll();
@@ -297,10 +298,13 @@ public class PharmacyController  {
     //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<List<ExaminationScheduleFrontDTO>> ExaminationSchedule() {
 
+
         List<ExaminationSchedule> examinationSchedule = new ArrayList<ExaminationSchedule>();
         examinationSchedule = examinationScheduleService.findAll();
         List<ExaminationScheduleFrontDTO> examinationScheduleFrontDTOS = new ArrayList<ExaminationScheduleFrontDTO>();
-
+        if(examinationSchedule.size() == 0){
+            throw new IllegalArgumentException("There are no appointments available at the moment.");
+        }
         for( ExaminationSchedule ex : examinationSchedule){
             if(ex.getFinished()==false){
             ExaminationScheduleFrontDTO examinationScheduleFrontDTO = new ExaminationScheduleFrontDTO();
@@ -325,7 +329,7 @@ public class PharmacyController  {
     }
 
     @PostMapping("/addExamination")
-    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> addExamination(@RequestBody ExaminationDTO dto) {
 
         Patient patient = patientService.findById(dto.getPatient().getId());
@@ -646,12 +650,14 @@ public class PharmacyController  {
     }
 
     @GetMapping("/cancelExamination/{id}")
-    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<List<ExaminationFrontDTO>> ExaminationPatient(@PathVariable Integer id) {
 
         List<Examination> examinationSchedule = new ArrayList<Examination>();
         examinationSchedule = examinationService.findAll();
-
+        if(examinationSchedule.size() == 0){
+            throw new IllegalArgumentException("You do not have any appointments yet.");
+        }
 
         List<ExaminationFrontDTO> examinationScheduleFrontDTOS = new ArrayList<ExaminationFrontDTO>();
 
@@ -689,6 +695,7 @@ public class PharmacyController  {
 
 
     @GetMapping("/cancel/{id}")
+    @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> cancel(@PathVariable Integer id)
     {
         LocalDate date = LocalDate.now().plusDays(1);
@@ -728,6 +735,9 @@ public class PharmacyController  {
     @GetMapping("/searchName/{name}")
     ResponseEntity<List<PharmacyFrontDTO>>  searchPharmaciesByName(@PathVariable String name)
     {
+        if(name == null){
+            throw new IllegalArgumentException("Please try searching again.");
+        }
 
         List<Examination> examinationSchedule = new ArrayList<Examination>();
         examinationSchedule = examinationService.findAll();
@@ -759,7 +769,9 @@ public class PharmacyController  {
     @GetMapping("/searchCity/{city}")
     ResponseEntity<List<PharmacyFrontDTO>>  searchPharmaciesByCity(@PathVariable String city)
     {
-
+        if(city == null){
+            throw new IllegalArgumentException("Please try searching again.");
+        }
         List<Examination> examinationSchedule = new ArrayList<Examination>();
         examinationSchedule = examinationService.findAll();
 
@@ -826,9 +838,8 @@ public class PharmacyController  {
 
 
     @PostMapping("/leaveAMark")
-    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<Pharmacy> leaveAMark(@RequestBody MarkDTO dto) {
-
         Boolean able =true;//ableToRatePharmacist(dto.getPharmacist().getId(), dto.getPatient().getId());
 
         if (able) {
@@ -1020,6 +1031,7 @@ public class PharmacyController  {
 
                         double ocena = (one * 1 + two * 2 + three * 3 + four * 4 + five * 5) / (one + two + three + four + five);
                         pharmacy.setMark(ocena);
+                        pharmacy.setAddress(dto.getPharmacy().getAddress());
                         pharmacyService.update(pharmacy);
 
 

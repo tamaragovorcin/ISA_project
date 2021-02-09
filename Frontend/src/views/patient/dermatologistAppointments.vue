@@ -3,17 +3,16 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-               <span style="float: left; margin: 15px;">
+              <span style="float: left; margin: 15px;">
                                
                     <a  class = "btn btn-link btn-lg" href= "/patientProfile">Home page</a>
                     <a  class = "btn btn-link btn-lg" href= "/showPharmaciesPatient">Pharmacies</a>
                     <a  class = "btn btn-link btn-lg" href= "/eRecipes">ERecipes</a>
                     <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
                     <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
-               
                      <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
-                     <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
-            
+                    <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
+                         <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
                    
 
              
@@ -32,7 +31,7 @@
         
         <div style="background: lightgray; height: 60px;">
             
-           <span style="float: left; margin: 15px;">
+            <span style="float: left; margin: 15px;">
 
                  <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/showPharmaciesPatient">Show all pharmacies</a>
                     <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/dermatologistAppointments">Make a new dermatologist appointmen</a>
@@ -44,26 +43,50 @@
                    
             </span>
              
+             
 
         </div>
 
         <div style="background: white; height: 60px; margin-top: 20px">
             
-           <span  style="float:right;margin:15px">
-                    
-                    <input type="textarea" style="height:20;width:150;background-color:white;" placeholder="Search pharmacy by name">
-                     
-                   <button class = "btn btn-link btn" style="color:black; " v-on:click = "searchName">Search</button>
-
-            
-                </span>
+        
              
             
         </div>
 
+<template>
+              <div class="row">
+                 <div> <label> Sort by </label></div>
+              <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="pricelowest">
+                   <label class="custom-control-label" for="defaultGroupExample1">Price - lowest</label>
+              </div>
 
-      <div style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px"  v-for="dermatologistAppointment in this.dermatologistAppointments"  v-bind:key="dermatologistAppointment.id">
+                    <div class="custom-control custom-radio form-group col ">
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="pricehighest">
+                   <label class="custom-control-label" for="defaultGroupExample2">Price - highest</label>
 
+                  </div>
+                
+                   <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample3" name="groupOfDefaultRadios" v-on:click="dermmarklowest">
+                 <label class="custom-control-label" for="defaultGroupExample3">Dermatologist mark - lowest</label>
+                   </div>
+        
+                 
+                   <div class="custom-control custom-radio form-group col ">  
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="dermmarkhighest" >
+                 <label class="custom-control-label" for="defaultGroupExample4" >Dermatologist mark - highest</label>
+                   </div>
+                 
+                   
+              </div>
+             </template>
+      
+
+ <div  v-for="dermatologistAppointment in this.dermatologistAppointments"  v-bind:key="dermatologistAppointment.id">
+       <div id="customers" v-if="showTable"  style="background: whitesmoke; border: 3px solid #0D184F; height: 350px; width:1000px; margin-left:300px; margin-top: 20px">
+          
 
 <table style="" class="table table-dark">
  
@@ -117,7 +140,7 @@
 
   
 </table>
-       
+       </div>
       
 
 
@@ -144,7 +167,8 @@ export default {
        showDermatologistComplaint : false,
        dermatologistAppointment: null,
        dermatologistAppointments : [],
-       patient: null
+       patient: null,
+       showTable : true
 
     }
   },
@@ -155,7 +179,10 @@ mounted() {
                 this.dermatologistAppointments= response.data;
                console.log(this.dermatologistAppointments);
               
-          })
+          }).catch(res => {
+                       alert(res.response.data.message);
+                
+                 });
 
           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
         this.axios.get('/patient/account',{ 
@@ -167,8 +194,10 @@ mounted() {
                 this.patient = response.data;
          
          }).catch(res => {
-                       alert("NOT OK");
-                        console.log(res);
+                       alert("Please log in first!");
+                                 window.location.href = "/login";
+                                 console.log(res);
+                
                  });
 
 
@@ -209,24 +238,7 @@ mounted() {
        hideModal() {
         this.$refs['my-modal'].hide()
       },
-      complainAboutPharmacy : function(){
-          this.showPharmacyComplaint = true;
-          this.showPharmacistComplaint = false;
-          this.showDermatologistComplaint = false;
-      },
-      complainAboutPharmacist : function(){
-          this.showPharmacyComplaint = false;
-          this.showPharmacistComplaint = true;
-          this.showDermatologistComplaint = false;
-      },
-       complainAboutDermatologist : function(){
-          this.showPharmacyComplaint = false;
-          this.showPharmacistComplaint = false;
-          this.showDermatologistComplaint = true;
-      },
-      sendComplaint : function(){
- 
-        },
+    
        showPharmacies : function(){
             window.location.href = "/showPharmaciesPatient";
 
@@ -234,8 +246,9 @@ mounted() {
     
 
          reserve : function(event, dermatologistAppointment) {
+            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
           this.dermatologistAppointment = dermatologistAppointment
-          alert(this.patient.id)
+         
           const examination = {
               patient: this.patient,
               cancelled : false,
@@ -246,10 +259,91 @@ mounted() {
 
 
           }
-            this.axios.post('/pharmacy/addExamination', examination)
+            this.axios.post('/pharmacy/addExamination', examination,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }   }).then(response => {
+                        alert(response.data)
+                         }).catch(res => {
+                       alert(res.data);
+                               
+                                 console.log(res);
+                
+                 });
+
 
 
       },
+
+   pricelowest: function(){
+          
+      this.axios.get('/examination/pricelowest')
+          .then(response => {
+               console.log(response.data);
+              this.dermatologistAppointment = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                       alert(res.response.data.message)
+                        console.log(res);
+                    })
+
+
+      },
+       pricehighest: function(){
+          
+      this.axios.get('/examination/pricehighest')
+          .then(response => {
+               console.log(response.data);
+              this.dermatologistAppointment = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                       alert(res.response.data.message)
+                        console.log(res);
+                    })
+
+
+      },
+
+        dermmarklowest: function(){
+          
+      this.axios.get('/examination/dermmarklowest')
+          .then(response => {
+               console.log(response.data);
+              this.dermatologistAppointment = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                       alert(res.response.data.message)
+                        console.log(res);
+                    })
+
+
+      },
+
+        dermmarkhighest: function(){
+          
+      this.axios.get('/examination/dermmarkhighest')
+          .then(response => {
+               console.log(response.data);
+              this.dermatologistAppointment = response.data;
+              this.showTable = false;
+              this.showTable = true;
+               })
+                .catch(res => {
+                       alert(res.response.data.message)
+                        console.log(res);
+                    })
+
+
+      },
+
+
+
       }
 
 }

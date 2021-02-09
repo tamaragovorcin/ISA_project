@@ -61,6 +61,14 @@ public class PersonUser implements UserDetails, Serializable {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Address address;
 
+    public PersonUser(Integer id, String name, String surname, String email, Address address) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.address = address;
+    }
+
     public PersonUser(Integer id, String name, String surname, String email, String password, String phoneNumber, Boolean firstLogged, boolean enabled, Timestamp lastPasswordResetDate, List<Authority> authorities, Address address) {
         this.id = id;
         this.name = name;
