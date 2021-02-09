@@ -101,8 +101,9 @@ public class DermatologistController {
     }
     @GetMapping("/front")
     @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
-    ResponseEntity<List<DermatologistsFrontDTO>> getAllFront()
+    ResponseEntity<List<DermatologistsFrontDTO>> getAllFrontDermatologists()
     {
+        System.out.println("POGODIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         List<DermatologistsFrontDTO> dermatologists = new ArrayList<DermatologistsFrontDTO>();
         for(Dermatologist dermatologist:   dermatologistService.findAll()){
             List<String> pharmacies = new ArrayList<>();
@@ -220,6 +221,7 @@ public class DermatologistController {
         return dermatologists;
     }
     @GetMapping("")
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<List<Dermatologist>> getAll()
     {
         List<Dermatologist> dermatologists = dermatologistService.findAll();

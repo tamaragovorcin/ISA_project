@@ -6,6 +6,7 @@ import com.isaproject.isaproject.DTO.AlergiesFrontDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
+import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
 import com.isaproject.isaproject.Model.HelpModel.PatientsMedicationAlergy;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +27,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.servlet.view.RedirectView;
+
+import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -53,6 +57,9 @@ public class PatientController {
 
     @Autowired
     JavaMailSenderImpl mailSender;
+
+    @Autowired
+    MedicationReservationService medicationReservationService;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerPatient(@RequestBody PersonUserDTO person) {
@@ -188,30 +195,57 @@ public class PatientController {
     @PostMapping("/update")
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> update(@RequestBody Patient person) {
+        if(person.getId() == null){
+            throw new IllegalArgumentException("You are not able to update your profile right now.");
+        }
         Patient patient = patientService.update(person);
         return new ResponseEntity<>("Your profile is successfully updated!", HttpStatus.CREATED);
     }
 
     @PostMapping("/addAlergies")
     @PreAuthorize("hasRole('PATIENT')")
-    public ResponseEntity<PatientsMedicationAlergy> addAlergies(@RequestBody AlergiesDTO al) {
+    public ResponseEntity<String> addAlergies(@RequestBody List<AlergiesDTO> al) {
+
+        for(AlergiesDTO alergiesDTO: al) {
+
+                if(alergiesDTO.getId() == null){
+                    throw new IllegalArgumentException("You are not able to update allergy list right now.");
+                }
+
+        }
+
 
         List<PatientsMedicationAlergy> alergy = new ArrayList<PatientsMedicationAlergy>();
         alergy = alergiesService.findAll();
+        PatientsMedicationAlergy patientsMedicationAlergy = new PatientsMedicationAlergy();
         for(PatientsMedicationAlergy pa : alergy){
-            if(pa.getPatient().getId()==al.getPatient().getId()){
+
                 alergiesService.delete(pa);
+
+        }
+        for(AlergiesDTO alergiesDTO: al) {
+
+            if (alergiesDTO.getMedication() == null) {
+                return new ResponseEntity<>("Allergy list is successfully updated!", HttpStatus.CREATED);
+            } else {
+            patientsMedicationAlergy = alergiesService.save(alergiesDTO);
+
             }
         }
-        PatientsMedicationAlergy patientsMedicationAlergy = alergiesService.save(al);
-        return patientsMedicationAlergy == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(patientsMedicationAlergy);
+        return new ResponseEntity<>("Allergy list is successfully updated!", HttpStatus.CREATED);
     }
 
     @GetMapping("/getAlergies/{id}")
-    //@PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<List<AlergiesFrontDTO>> getAlergies(@PathVariable Integer id) {
+
+
+
+            if(id == null){
+                throw new IllegalArgumentException("You are not able to get allergy list right now.");
+            }
+
+
         List<PatientsMedicationAlergy> alergies = new ArrayList<PatientsMedicationAlergy>();
         alergies = alergiesService.findAll();
         Patient patient = patientService.findById(id);
@@ -230,16 +264,6 @@ public class PatientController {
                 ResponseEntity.ok(patientsAlergies);
     }
 
-    @GetMapping("/deleteAlergies/{id}")
-    @PreAuthorize("hasRole('PATIENT')")
-    public void deleteAlergies(@PathVariable Integer id) {
-        List<PatientsMedicationAlergy> alergies = alergiesService.findAll();
-       for(PatientsMedicationAlergy patientsMedicationAlergy : alergies){
-           if(id==patientsMedicationAlergy.getId()){
-               alergiesService.delete(patientsMedicationAlergy);
-           }
-       }
-    }
 
     @GetMapping("/mySubscriptions")
     @PreAuthorize("hasRole('PATIENT')")
@@ -330,5 +354,49 @@ public class PatientController {
     }
 
 
+
+    @Scheduled(fixedRate = 3000000)
+    public void penalties() {
+
+            List<Patient> patients = patientService.findAll();
+            LocalDate localDate = LocalDate.now();
+            if(localDate.getDayOfMonth() == 1) {
+                for (Patient patient : patients) {
+
+                        patient.setPenalties(0);
+                }
+            }
+
+
+
+            System.out.println("Checked if penalties had expired");
+
+
+    }
+
+
+    @Scheduled(fixedRate = 3000000)
+    public void medicationPendalties() {
+
+        List<MedicationReservation> medicationReservations = medicationReservationService.findAll();
+
+        LocalDate localDate = LocalDate.now();
+
+            for (MedicationReservation medicationReservation : medicationReservations) {
+
+                if(medicationReservation.getDateOfReservation().isAfter(localDate) && medicationReservation.getCancelled()==false && medicationReservation.getCollected()==false){
+
+                    Patient patient = patientService.findById(medicationReservation.getPatient().getId());
+                    patient.setPenalties(patient.getPenalties()+1);
+                    Patient patient1 = patientService.update(patient);
+
+                }
+
+            }
+
+        System.out.println("Medication penalties");
+
+
+    }
 
 }

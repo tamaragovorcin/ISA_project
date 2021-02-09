@@ -58,7 +58,7 @@ public class MedicationReservationController {
     {
 
         Patient patient = patientService.findById(medicationReservationDTO.getPatient().getId());
-        Pharmacy pharmacy = pharmacyService.findById(medicationReservationDTO.getMedicationId());
+        Pharmacy pharmacy = pharmacyService.findById(medicationReservationDTO.getPharmacyId());
         List<MedicationPrice> medicationPrices = medicationPriceService.findAll();
         Boolean able = true;
         if(patient.getPenalties() > 3){
@@ -88,7 +88,8 @@ public class MedicationReservationController {
             mail.setFrom(environment.getProperty("spring.mail.username"));
             //mail.setFrom("pharmacyisa@gmail.com");
             mail.setText("You have successfully reserved a medication : "
-                    + medication.getMedicine().getName() + " until " + medicationReservationDTO.getDateOfTakeOver()+ "A code is "+ uuid+".");
+                    + medication.getMedicine().getName() + " until " + medicationReservationDTO.getDateOfTakeOver()+
+                    ". \n Reservation code is "+ uuid+".");
 
             mailSender.send(mail);
 

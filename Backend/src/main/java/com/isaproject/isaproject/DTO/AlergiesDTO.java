@@ -3,17 +3,17 @@ import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Users.Patient;
 
 public class AlergiesDTO {
-    private Patient patient;
+    private Integer id;
     private Medication medication;
 
     public AlergiesDTO() {}
 
-    public Patient getPatient() {
-        return patient;
+    public Integer getId() {
+        return id;
     }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Medication getMedication() {

@@ -1,7 +1,6 @@
 package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.MedicationsInOrderDTO;
-import com.isaproject.isaproject.DTO.OfferUpdateDTO;
 import com.isaproject.isaproject.DTO.OrderDTO;
 import com.isaproject.isaproject.DTO.OrderUpdateDTO;
 import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
@@ -13,7 +12,10 @@ import com.isaproject.isaproject.Service.IServices.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class OrderService implements IOrderService {
@@ -21,6 +23,8 @@ public class OrderService implements IOrderService {
     OrderRepository orderRepository;
     @Autowired
     MedicationInOrderRepository medicationInOrderRepository;
+    @Autowired
+    OfferService offerService;
 
     @Override
     public Order findById(Integer id) {
@@ -50,8 +54,14 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public void delete(Order order) {
-
+    public Boolean delete(Order order) {
+        for(Offer offer : offerService.findAll()){
+            if(offer.getOrder().getId() == order.getId()){
+                return  false;
+            }
+        }
+        orderRepository.delete(order);
+        return true;
     }
     @Override
     public Order update(OrderUpdateDTO order) {
@@ -60,13 +70,13 @@ public class OrderService implements IOrderService {
             medicationInOrderRepository.delete(medication);
         }
         or.setDate(order.getDate());
-        MedicationInOrder medicationInOrder = new MedicationInOrder();
-
+    Set<MedicationInOrder> medication = new HashSet<>();
 
         for(MedicationsInOrderDTO medDto : order.getMedicationsInOrderDTO()){
             MedicationInOrder medicationInOrder1 = new MedicationInOrder(medDto.getMedicine(),medDto.getQuantity());
-            medicationInOrder1.setOrder(or);
             medicationInOrderRepository.save(medicationInOrder1);
+            medication.add(medicationInOrder1);
+            or.setMedicationInOrders(medication);
         }
 
         return orderRepository.save(or);

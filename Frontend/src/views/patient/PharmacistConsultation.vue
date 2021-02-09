@@ -50,14 +50,7 @@ ines (39 sloc)  1.61 KB
 
         <div style="background: white; height: 60px; margin-top: 20px">
             
-           <span  style="float:right;margin:15px">
-                    
-                    <input type="textarea" style="height:20;width:150;background-color:white;" placeholder="Search pharmacy by name">
-                     
-                   <button class = "btn btn-link btn" style="color:black; " v-on:click = "searchName">Search</button>
-
-            
-                </span>
+          
              
             
         </div>
@@ -226,8 +219,9 @@ mounted() {
                   
             
          }).catch(res => {
-                       alert("NOT OK");
+                       alert("Please, log in first!");
                         console.log(res);
+                                  window.location.href = "/login";
                  });
 },
 
@@ -270,38 +264,7 @@ mounted() {
        hideModal() {
         this.$refs['my-modal'].hide()
       },
-      complainAboutPharmacy : function(){
-          this.showPharmacyComplaint = true;
-          this.showPharmacistComplaint = false;
-          this.showDermatologistComplaint = false;
-      },
-      complainAboutPharmacist : function(){
-          this.showPharmacyComplaint = false;
-          this.showPharmacistComplaint = true;
-          this.showDermatologistComplaint = false;
-      },
-       complainAboutDermatologist : function(){
-          this.showPharmacyComplaint = false;
-          this.showPharmacistComplaint = false;
-          this.showDermatologistComplaint = true;
-      },
-      sendComplaint : function(){
-
-
- 
-        },
-            makeAReservation : function(){
-
-      window.location.href = "/showReservationPharmacies/";
- 
-        },
-       showPharmacies : function(){
-
-         
-            window.location.href = "/showPharmaciesPatient";
-
-      },
-
+  
       showAvailability: function (date, startTime) {
                    let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
                   
@@ -322,7 +285,8 @@ mounted() {
                     this.pharmacies= response.data;
                     console.log(response);                
                 }).catch(res => {
-                       alert("Please try later.");
+                    alert(res.response.data.message)
+                   
                         console.log(res);
                 });
 
@@ -351,7 +315,7 @@ mounted() {
                   
                     console.log(response);                
                 }).catch(res => {
-                       alert("Please try later.");
+                         alert(res.response.data.message)
                         console.log(res);
                 });
 
@@ -362,7 +326,7 @@ mounted() {
             }, 
 
     reserve: function (pharmacist) {
-                
+             
          const datum = {
                 date : this.date,
                 time : this.startTime,
@@ -381,7 +345,7 @@ mounted() {
                     alert("Successfully reserved consultation!.");
                     console.log(response);                
                 }).catch(res => {
-                       alert("Please try later.");
+                       alert(res.response.data.message)
                         console.log(res);
                 });
 
@@ -391,37 +355,30 @@ mounted() {
               
             }, 
 
-              marklowest: function(){
-
-            
-
+              
+              
+        marklowest: function(){
             const datum = {
                 date : this.date,
                 time : this.startTime
 
            }
-
-
-
-
-      this.axios.post('/consulting/marklowest', datum)
-          .then(response => {
-               console.log(response.data);
-              this.pharmacies = response.data;
-              this.showTable = false;
-              this.showTable = true;
-               })
-                .catch(res => {
-                     
-                        console.log(res);
-                    })
+                    this.axios.post('/consulting/marklowest', datum)
+                        .then(response => {
+                            console.log(response.data);
+                            this.pharmacies = response.data;
+                            this.showTable = false;
+                            this.showTable = true;
+                            })
+                                .catch(res => {
+                                      alert(res.response.data.message)
+                                        console.log(res);
+                                    })
 
 
       },
 
        markhighest: function(){
-           alert(this.date)
-           alert(this.startTime)
             const datum = {
                 date : this.date,
                 time : this.startTime
@@ -436,7 +393,7 @@ mounted() {
               this.showTable = true;
                })
                 .catch(res => {
-                     
+                       alert(res.response.data.message)
                         console.log(res);
                     })
 
@@ -459,7 +416,7 @@ mounted() {
               this.showTable = true;
                })
                 .catch(res => {
-                     
+                       alert(res.response.data.message)
                         console.log(res);
                     })
 
@@ -482,7 +439,7 @@ mounted() {
               this.showTable = true;
                })
                 .catch(res => {
-                     
+                       alert(res.response.data.message)
                         console.log(res);
                     })
 
@@ -508,7 +465,7 @@ mounted() {
 
                })
                 .catch(res => {
-                     
+                       alert(res.response.data.message)
                         console.log(res);
                     })
 
@@ -534,7 +491,7 @@ mounted() {
 
                })
                 .catch(res => {
-                     
+                       alert(res.response.data.message)
                         console.log(res);
                     })
 

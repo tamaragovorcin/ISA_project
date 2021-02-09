@@ -49,6 +49,18 @@ public class MarkMedication {
     public MarkMedication() {
     }
 
+    public MarkMedication(Integer id, int markOne, int markTwo, int markThree, int markFour, int markFive, Medication medication, Patient patient, int patientsMark) {
+        this.id = id;
+        this.markOne = markOne;
+        this.markTwo = markTwo;
+        this.markThree = markThree;
+        this.markFour = markFour;
+        this.markFive = markFive;
+        this.medication = medication;
+        this.patient = patient;
+        this.patientsMark = patientsMark;
+    }
+
     public Integer getId() {
         return id;
     }

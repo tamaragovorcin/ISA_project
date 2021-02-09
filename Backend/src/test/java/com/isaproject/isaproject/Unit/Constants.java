@@ -1,6 +1,10 @@
 package com.isaproject.isaproject.Unit;
+import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Address;
 import com.isaproject.isaproject.Model.Users.Authority;
+import com.isaproject.isaproject.Model.Users.Patient;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +29,11 @@ public class Constants {
 
     public static final Address ADDRESS = new Address(1,"Town","Street", 5,5,"Country");
     public static final Address ADDRESS2 = new Address(2,"Town2","Street2", 52,52,"Country2");
+
+    public static final Patient PATIENT = new Patient(1, "Name", "Surname", "patient@gmail.com", ADDRESS);
+    public static final Patient PATIENT2 = new Patient(1, "Name2", "Surname2", "patient2@gmail.com", ADDRESS2);
+    public  static final Pharmacy PHARMACY = new Pharmacy(1, "PharmacyName", 3.5, ADDRESS2);
+    public static final Medication MEDICATION = new Medication(1, "Medication" ,  1234l);
 
     public static final String DESCRIPTION = "Description";
 

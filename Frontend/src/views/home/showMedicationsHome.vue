@@ -3,21 +3,26 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-            <span style="float: left; margin: 15px;">
+             <span style="float: left; margin: 15px;">
                 <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Pharmacies</button>
-                   <b class="tab"></b>                
+                   <strong class="tab"></strong>                
                    
                 <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showMedications">Medications</button>
-                  
+                   <strong class="tab"></strong>                
+                <a class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href="/pharmacists">Pharmacists</a>
+                   <strong class="tab"></strong>                
+                <a class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href="/dermatologists">Dermatologists</a>
+       
+
             </span>
-            <span  style="float:right;margin:15px">
+              <span  style="float:right;margin:15px">
                     <button class = "btn btn-warning btn-lg" v-on:click = "showLoginForm">&nbsp;&nbsp;Login&nbsp;&nbsp;</button>
 
-                    <b class="tab"></b>                
+                   <strong class="tab"></strong>                
                    
 
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "showRegistrationForm">Register</button>
-            </span>
+                </span>
 
         </div>
         <div style="background: white; height: 60px; margin-top: 20px">
