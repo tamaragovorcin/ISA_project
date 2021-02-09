@@ -27,6 +27,14 @@
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
                     <strong class="tab"></strong>  
                     <strong class="tab"></strong>
+                     <button class = "btn btn-info btn-lg" v-on:click = "writeConsulting">Add consultings</button>
+             <b class="tab"></b>   
+
+            <button class = "btn btn-info btn-lg" v-on:click = "addMedicine">Sell reserved medicines</button>
+             <b class="tab"></b>   
+
+            <button class = "btn btn-info btn-lg" v-on:click = "scheduleConsulting">Schedule new consulting</button>
+                
              
             </span>
               <span  style="float:right;margin:15px">
@@ -131,35 +139,41 @@ export default {
 
 
   methods:{
-      showClients : function(){
-        
-
+        showclients : function(){
+         window.location.href = "/pharmacistClients";
       },
       showMyProfile: function(){
-         
-      },
-      changePersonal: function(){
-          window.location.href = "/pharmacistUpdateProfile";
+         window.location.href = "/pharmacistProfile";
       },
       showHomePage : function(){
           window.location.href = "/isaHomePage";
       },
+      workCalendar : function(){
+       window.location.href = "/workingHoursPharmacist";
+
+
+      },
+      vacation: function(){
+           window.location.href = "/createRequestVacation";
+      },
+     
       logOut : function(){
         localStorage.removeItem('token');
           window.location.href = "/login";
-      },
-      vacation : function(){
 
       },
-      workCalendar : function(){
-
+      writeConsulting() {
+        window.location.href = "/noteConsultig";
+      },
+        scheduleConsulting : function(){
+             window.location.href = "/schedulingConsulting";
       },
      
       send : function() {
 
           const consulting = {
-            pharmacist : this.pharmacist,
-            patient : this.patient,
+            pharmacistId : this.pharmacist.id,
+            patientId : this.patient.id,
             date : this.date,
             startTime : this.startTime,
             duration : 15,
@@ -184,6 +198,11 @@ export default {
                  });    
       },
       sendComplaint : function(){
+
+      },
+       
+      addMedicine : function(){
+          this.$refs['my-modal1'].show()
 
       },
       patientIsSelected : function(event, patient) {

@@ -5,6 +5,7 @@ import com.isaproject.isaproject.Model.Examinations.Examination;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Schedule.*;
 import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
 import com.isaproject.isaproject.Repository.*;
 import com.isaproject.isaproject.Service.Implementations.*;
@@ -19,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -76,9 +79,26 @@ public class ConsultingController {
     @Autowired
     ConsultingRepository consultingRepository;
 
+
+
     @PostMapping("/add")
     // @PreAuthorize("hasRole('PHARMACIST')")
-    public ResponseEntity<String> addConsulting(@RequestBody ConsultingDTO consultingDTO) {
+    public ResponseEntity<String> addConsulting(@RequestBody NewConsultingDTO newConsultingDTO) {
+        Boolean free = true;
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser) currentUser.getPrincipal();
+        Patient patient = patientService.findById(newConsultingDTO.getPatientId());
+        Pharmacist logPharmacist = pharmacistService.findById(user.getId());
+
+
+            ConsultingDTO consultingDTO = new ConsultingDTO();
+            consultingDTO.setPatient(patient);
+            consultingDTO.setPharmacist(logPharmacist);
+            consultingDTO.setDate(newConsultingDTO.getDate());
+            consultingDTO.setStartTime(newConsultingDTO.getStartTime());
+            consultingDTO.setDuration(10);
+            consultingDTO.setShowedUp(false);
+            consultingDTO.setPrice(logPharmacist.getPharmacy().getConsultingPrice());
 
         Consulting consulting = consultingService.save(consultingDTO);
         SimpleMailMessage mail = new SimpleMailMessage();
@@ -88,10 +108,21 @@ public class ConsultingController {
         mail.setText("You have successfully reserved an appointment on : "
                 + consulting.getDate() + " at " + consulting.getStartTime() + ". Your doctor is " + consulting.getPharmacist().getName() + " " + consulting.getPharmacist().getSurname());
 
-        mailSender.send(mail);
-        return consulting == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                new ResponseEntity<>("Consulting is successfully added!", HttpStatus.CREATED);
+
+
+            mailSender.send(mail);
+
+
+        if(consulting == null) {
+            return new ResponseEntity<>("Termin is not available at required time! Try in another time.", HttpStatus.CREATED);
+
+        }else{
+            return new ResponseEntity<>("Term is successfully reserved.", HttpStatus.CREATED);
+
+        }
+        //}else{
+           // return   new ResponseEntity<>("This period is not aveilable!", HttpStatus.CREATED);
+       // }
     }
 
     @PostMapping("/update")
