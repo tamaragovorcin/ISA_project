@@ -134,7 +134,7 @@ export default {
 
 
   methods:{
-       showclients : function(){
+       showClients : function(){
          window.location.href = "/dermatologistClients";
       },
       showMyProfile: function(){

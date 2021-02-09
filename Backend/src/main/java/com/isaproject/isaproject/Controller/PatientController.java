@@ -154,7 +154,7 @@ public class PatientController {
     }
 
     @GetMapping("penals/{id}")
-    //@PreAuthorize("hasRole('PHARMACIST')")
+    @PreAuthorize("hasAnyRole('DERMATOLOGIST', 'PHARMACIST')")
     public ResponseEntity<Patient> getByPatientId(@PathVariable Integer id)
     {
         Patient patient = patientService.findById(id);

@@ -165,7 +165,7 @@ export default {
       showMyProfile: function(){
          
       },
-        showclients : function(){
+      showclients : function(){
             window.location.href = "/pharmacistClients";
 
       },
