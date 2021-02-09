@@ -31,12 +31,17 @@ public class OrderController {
 
 
     @PostMapping("/add")
-    ResponseEntity<Order> register(@RequestBody OrderDTO orderDTO)
+    ResponseEntity<String> register(@RequestBody OrderDTO orderDTO)
     {
-        Order order = orderService.save(orderDTO);
-        return order == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(order);
+        if(orderDTO.getDate().isAfter(LocalDate.now())){
+            Order order = orderService.save(orderDTO);
+            if(order != null) {
+                return new ResponseEntity<>("Order is successfully published!", HttpStatus.CREATED);
+            }else {
+                return new ResponseEntity<>("Please try later.", HttpStatus.CREATED);
+            }
+        }
+        return new ResponseEntity<>("Date has to be in future.", HttpStatus.CREATED);
     }
     @PostMapping("/update")
     ResponseEntity<Order> updateOrder(@RequestBody OrderUpdateDTO orderDTO)
@@ -56,7 +61,18 @@ public class OrderController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(orders);
     }
+    @GetMapping("/remove/{id}")
+    ResponseEntity<String> remove(@PathVariable Integer id)
+    {
+        Order order  = orderService.findById(id);
+        if(orderService.delete(order)){
+            return new ResponseEntity<>("Order is successfully removed.", HttpStatus.CREATED);
 
+        }else{
+            return new ResponseEntity<>("Order can not be removed, suppliers have already send their offers.", HttpStatus.CREATED);
+
+        }
+    }
     @GetMapping("active")
     @PreAuthorize("hasRole('SUPPLIER')")
     ResponseEntity<List<OrderReviewDTO>> getAllActiveForSupplier()

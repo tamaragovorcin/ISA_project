@@ -155,6 +155,7 @@ public class TestRepository {
         pharmacy.setAddress(address5);
         pharmacy.setConsultingPrice(100);
 
+
         //PharmacyMark
         MarkDTO markDTO1 = new MarkDTO();
         markDTO1.setMark(5);
@@ -184,6 +185,53 @@ public class TestRepository {
         auth5.add(authority5);
         pharmacist.setAuthorities(auth5);
         pharmacist.setEnabled(true);
+        pharmacist.setPharmacy(pharmacy);
+
+        //PHARMACY ADMIN
+        PharmacyAdmin pharmacyAdmin = new PharmacyAdmin();
+        pharmacyAdmin.setSurname("Surname");
+        pharmacyAdmin.setPassword(passwordEncoder.encode("pharmacyAdminPassword"));
+        pharmacyAdmin.setName("Name");
+        pharmacyAdmin.setEmail("pharmacyAdmin@gmail.com");
+        Address addressPharmacyAdmin = new Address();
+        AddressDTO addressDTOPharmacyAdmin= new AddressDTO("Town","Street",125,76328,"Country");
+        addressPharmacyAdmin.setPostalCode(addressDTOPharmacyAdmin.getPostalCode());
+        addressPharmacyAdmin.setTown(addressDTOPharmacyAdmin.getTown());
+        addressPharmacyAdmin.setStreet(addressDTOPharmacyAdmin.getStreet());
+        addressPharmacyAdmin.setNumber(addressDTOPharmacyAdmin.getNumber());
+        addressPharmacyAdmin.setCountry(addressDTOPharmacyAdmin.getCountry());
+        pharmacyAdmin.setAddress(address);
+        pharmacyAdmin.setPhoneNumber("5623");
+        pharmacyAdmin.setEnabled(true);
+        pharmacyAdmin.setPharmacy(pharmacy);
+        List<Authority> authPharmacyAdmin = new ArrayList<>();
+        Authority authorityPharmacyAdmin = new Authority("ROLE_PHARMACY_ADMIN");
+        authPharmacyAdmin.add(authorityPharmacyAdmin);
+        pharmacyAdmin.setAuthorities(authPharmacyAdmin);
+
+        //Dermatologist
+        Dermatologist dermatologist =  new Dermatologist();
+        dermatologist.setName("FirstName");
+        dermatologist.setSurname("Surname");
+
+        Address addressDermatologist= new Address();
+        AddressDTO addressDTODermatologist= new AddressDTO("Town2","Street2",123,123456,"Country2");
+        addressDermatologist.setPostalCode(addressDTODermatologist.getPostalCode());
+        addressDermatologist.setTown(addressDTODermatologist.getTown());
+        addressDermatologist.setStreet(addressDTODermatologist.getStreet());
+        addressDermatologist.setNumber(addressDTODermatologist.getNumber());
+        addressDermatologist.setCountry(addressDTODermatologist.getCountry());
+        dermatologist.setAddress(addressDermatologist);
+
+        dermatologist.setEmail("dermatologist@gmail.com");
+        dermatologist.setPassword(passwordEncoder.encode("dermatologistPassword"));
+        dermatologist.setFirstLogged(false);
+        dermatologist.setPhoneNumber("063789123");
+        List<Authority> authDermatologist = new ArrayList<Authority>();
+        Authority authorityDermatologist = new Authority("ROLE_DERMATOLOGIST");
+        authDermatologist.add(authorityDermatologist);
+        dermatologist.setAuthorities(authDermatologist);
+        dermatologist.setEnabled(true);
 
 
         //ConsultingDTO
@@ -212,9 +260,12 @@ public class TestRepository {
         entityManager.persist(patient);
         entityManager.persist(authority4);
         entityManager.persist(pharmacy);
+        entityManager.persist(pharmacist);
         entityManager.persist(loyaltyProgram);
         entityManager.persist(authority2);
         entityManager.persist(systemAdmin);
+        entityManager.persist(pharmacyAdmin);
+        entityManager.persist(dermatologist);
         entityManager.persist(supplier);
         entityManager.persist(authority);
         entityManager.persist(authority5);

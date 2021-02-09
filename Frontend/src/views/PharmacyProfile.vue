@@ -19,15 +19,25 @@
 
 
         <div class = "container" v-if="welcomePageShow">
-                  <h1 style="color:#0D184F;font-size:75px;font-weight:bold;" align = "center"><u>{{pharmacy.pharmacyName}}</u></h1>
+                          <h1 style="color:#0D184F;font-size:55px;font-weight:bold;" align = "center"><u>{{pharmacy.pharmacyName}}</u></h1>
 
-                <h3 style="color:#0D184F;font-size:55px;font-weight:bold;margin-top:30px;" align = "center">About us:</h3>
-            <div style="color:#0D184F;font-size:40px;font-style:italic;font-weight:bold;">{{pharmacy.description}}</div>
-             <h3 style="color:green;font-size:55px;font-weight:bold;margin-top:30px;" align = "center">Visit us at address:</h3>
+      <div class="row" style = "background-color:whitesmoke;margin: auto;width: 10%;border: 3px solid gray;padding: 10px;margin-top:30px;">
+                    <div style="color:#0D184F;font-size:25px;font-style:italic;font-weight:bold;" class="row">Our mark: {{pharmacy.mark}}</div>
+        </div>
+        <div class="row" style = "background-color:whitesmoke;margin: auto;width: 60%;border: 3px solid gray;padding: 10px;margin-top:30px;">
+                        <h3 style="color:green;font-size:25px;font-weight:bold;margin-top:30px;" align = "center">About us:</h3>
+                    <div style="color:#0D184F;font-size:25px;font-style:italic;font-weight:bold;">{{pharmacy.description}}</div>
+        </div>
+              <div class="row" style = "background-color:whitesmoke;margin: auto;width: 60%;border: 3px solid gray;padding: 10px;margin-top:30px;">
 
-            <div style="color:green;font-size:40px;font-style:italic;font-weight:bold;">{{pharmacy.address.street}}&nbsp; {{pharmacy.address.number}},&nbsp; {{pharmacy.address.town}}</div>
-      </div>
-        <div v-if="dermatologistsShow" class="container justify-content-center" id ="table">
+                    <div style="color:#0D184F;font-size:25px;font-style:italic;font-weight:bold;">Visit us at: {{pharmacy.address.street}}&nbsp; {{pharmacy.address.number}},&nbsp; {{pharmacy.address.town}}</div>
+        
+         </div>
+        </div>
+
+
+
+        <div v-if="dermatologistsShow" class="container justify-content-center" style="width:70%" id ="table">
 
                           <h3 style="color:white;">Dermatologists of&nbsp; {{pharmacy.pharmacyName}}</h3>
 
@@ -37,24 +47,22 @@
                           <th scope="col"></th>
                           <th scope="col">Name</th>
                           <th scope="col">Surname</th>
-                          <th scope="col">Phone number</th>
-                          <th scope="col">Email</th>
+                          <th scope="col">Mark</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr v-for="dermatologist in ourDermatologists" :key="dermatologist.id">
                                                                         <td></td>
-                                                                        <td>{{dermatologist.name}}</td>
+                                                                        <td>{{dermatologist.firstname}}</td>
                                                                         <td>{{dermatologist.surname}}</td>
-                                                                        <td>{{dermatologist.phoneNumber}}</td>
-                                                                        <td>{{dermatologist.email}}</td>
+                                                                        <td>{{dermatologist.markDermatologist}}</td>
                                                                     </tr>
                       
                       </tbody>
                     </table>
 
       </div>
-       <div v-if="pharmacistsShow" class="container justify-content-center" id ="table" align="center">
+       <div v-if="pharmacistsShow" class="container justify-content-center" style="width:70%" id ="table" align="center">
 
                           <h3 style="color:white;">Pharmacists of&nbsp; {{pharmacy.pharmacyName}}</h3>
                           <h5 style="float:left;color:red;">Consulting price:&nbsp; {{pharmacy.consultingPrice}}&nbsp; din</h5>
@@ -65,8 +73,6 @@
                           <th scope="col"></th>
                           <th scope="col">Name</th>
                           <th scope="col">Surname</th>
-                          <th scope="col">Phone number</th>
-                          <th scope="col">Email</th>
                           <th scope="col">Mark</th>
                         </tr>
                       </thead>
@@ -75,8 +81,6 @@
                                                                         <td></td>
                                                                         <td>{{pharmacist.name}}</td>
                                                                         <td>{{pharmacist.surname}}</td>
-                                                                        <td>{{pharmacist.phoneNumber}}</td>
-                                                                        <td>{{pharmacist.email}}</td>
                                                                         <td>{{pharmacist.markPharmacist}}</td>
                                                                     </tr>
                       
@@ -84,7 +88,7 @@
                     </table>
 
       </div>
-        <div v-if="termsShow" class="container justify-content-center" id ="table">
+        <div v-if="termsShow" class="container justify-content-center" style="width:70%" id ="table">
 
                           <h3 style="color:white;">Available appointments with dermatologist  in&nbsp; {{pharmacy.pharmacyName}}</h3>
 
@@ -119,7 +123,7 @@
 
       </div>
 
-       <div v-if="medicationShow" class="container" id ="table">
+       <div v-if="medicationShow" class="container" id ="table" style="width:70%">
 
                           <h3 style="color:white;">Medication in&nbsp; {{pharmacy.pharmacyName}}</h3>
 
@@ -205,10 +209,8 @@
 
 
 </div>
-<div class="col md-2"></div>
 
-
-    <div class = "col md-4 align-top container-fluid">
+    <div class ="container-fluid" style="height:100%;width:20%;vertical-align:top;background:whitesmoke;">
 
                 <div class="sidenav">
                 <hr/>
@@ -221,8 +223,6 @@
                 <a @click = "showMedication">Medications</a>
                 <hr/>
                 <a v-on:click = "showTerms">Appointments with a dermatologists </a>
-                <hr/>
-                <a href = "/">Pricelist</a>
                 <hr/>
                 <a v-on:click = "showAvailability">Check medication availability </a>
 
@@ -271,7 +271,7 @@ export default {
              }
          }).then(response => {
                 this.pharmacy = response.data;
-                 this.axios.get('pharmacy/dermatologists/'+this.id,{ 
+                 this.axios.get('pharmacy/dermatologistsFront/'+this.id,{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
              }

@@ -3,7 +3,7 @@
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
              
-            <span style="float: left; margin: 15px;">
+              <span style="float: left; margin: 15px;">
                 <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Pharmacies</button>
                    <strong class="tab"></strong>                
                    
@@ -11,7 +11,7 @@
                    <strong class="tab"></strong>                
                 <a class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href="/pharmacists">Pharmacists</a>
                    <strong class="tab"></strong>                
-                <a class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href="/pharmacists">Dermatologists</a>
+                <a class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href="/dermatologists">Dermatologists</a>
        
 
             </span>
@@ -24,7 +24,7 @@
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "showRegistrationForm">Register</button>
                 </span>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid" v-if ="loggedIn">
 
        
     <div style="height:25px"></div>
@@ -131,6 +131,7 @@ export default {
       pharmacistName : "",
       phrmacistSurname : "",
       pharmacies : [],
+      loggedIn : false
     
 
 
@@ -220,9 +221,11 @@ export default {
              }
          }).then(response => {
                 this.pharmacists = response.data;
+                this.loggedIn = true;
 
          }).catch(res => {
                 alert("Please log in.");
+                window.location.href = "/login";
                 console.log(res);
         });
         this.axios.get('/pharmacy/all',{ 

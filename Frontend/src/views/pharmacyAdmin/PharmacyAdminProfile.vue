@@ -1,20 +1,19 @@
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div  v-if="loggedIn"  id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-             <span style="float: left; margin: 15px;">
+             <span style="float: left; margin-top: 15px;">
                               <b-dropdown id="ddCommodity" name="ddCommodity" text="My profile" 
                                               class = "btn btn-link btn-lg">
-                                    <b-dropdown-item href = "/pharmacyAdminProfile">Our pharmacists</b-dropdown-item>
+                                    <b-dropdown-item href = "/pharmacyAdminProfile">Profile</b-dropdown-item>
                                     <b-dropdown-item href = "/phAdminProfileUpdate">Update profile</b-dropdown-item>      
                                 </b-dropdown>        
-
-                        <strong class="tab"></strong>  
+                       <strong class="tab"></strong>  
 
                                     <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
                                                 <button class = "btn btn-secondary" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
                                     </router-link>
-
+                   
                           <strong class="tab"></strong>  
 
                                   <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
@@ -35,9 +34,20 @@
                             <strong class="tab"></strong>  
                             <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
                             <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href="/order">Orders</a>
-                            <strong class="tab"></strong>  
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Orders" 
+                                                  class = "btn btn-link btn-lg">
+                                        <b-dropdown-item href = "/order">Preview orders and offers(Add new)</b-dropdown-item>
+                                        <b-dropdown-item href = "/editOrder">Edit/remove order</b-dropdown-item>      
+                                    </b-dropdown>                             
+                                    <strong class="tab"></strong>  
                             <a   class = "btn btn-secondary" href="/holidayRequests">Holiday/absence requests</a>
+                             <strong class="tab"></strong>  
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Graphical reviews" 
+                                                  class = "btn btn-link btn-lg">
+                                        <b-dropdown-item href = "/examinationGraphics">Examinations</b-dropdown-item>
+                                        <b-dropdown-item href = "/medicationGraphics">Medication consumption</b-dropdown-item> 
+                                        <b-dropdown-item href = "/incomeGraphics">Income</b-dropdown-item>      
+                                    </b-dropdown>     
             </span>
               <span  style="float:right;margin:15px">
                    
@@ -45,6 +55,9 @@
                 
                 </span>
         </div>
+       <h5 style="color:#0D184F;font-size:25px;font-weight:bold;background:whitesmoke;width:15%;" align = "left">Mark of your pharmacy:<div style="font-size:35px;"> {{pharmacy.mark}}</div></h5>
+        <h3 style="color:#0D184F;font-size:45px;font-weight:bold;" align = "center"><u>Admin of {{pharmacy.pharmacyName}}</u></h3>
+
 
         <div style="background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
             <h3 style="color: #0D184F"></h3>
@@ -52,58 +65,51 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Name:</label>
-                        <p>{{admin.name}}</p>
+                        <p style="font-size:25px;font-weight:bold;">{{admin.name}}</p>
                         </div>
                         <div class="form-group col-md-6">
                         <label>Surname:</label>
-                        <input type="text" id = "surname" name = "surname" class="form-control" v-model = "admin.surname" placeholder="Enter surname">
+                        <p style="font-size:25px;font-weight:bold;">{{admin.surname}}</p>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Email:</label>
-                        <p>{{admin.email}}</p>
+                        <p style="font-size:25px;font-weight:bold;">{{admin.email}}</p>
                         </div>
                         <div class="form-group col-md-6">
                         <label>Phone number:</label>
-                        <input type="text" id = "phone"  name = "phone" class="form-control" v-model="admin.phoneNumber" placeholder="Enter phone number">
+                        <p style="font-size:25px;font-weight:bold;">{{admin.phoneNumber}}</p>
                         </div>
                     </div>
                       <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Country:</label>
-                        <input type="text" id = "country" name = "country" class="form-control" v-model="admin.address.country" placeholder="Enter country">
+                        <p style="font-size:25px;font-weight:bold;">{{admin.address.country}}</p>
                         </div>
                         <div class="form-group col-md-6">
                         <label>Town:</label>
-                        <input type="text" id = "town" name = "town" class="form-control" v-model="admin.address.town" placeholder="Enter town">
+                        <p style="font-size:25px;font-weight:bold;">{{admin.address.town}}</p>
                         </div>
                     </div>
                      <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Street:</label>
-                        <input type="text" id = "street" name = "street" class="form-control" v-model="admin.address.street" placeholder="Enter street">
+                        <p style="font-size:25px;font-weight:bold;">{{admin.address.street}}</p>
                         </div>
                         <div class="form-group col-md-6">
                         <label>Number:</label>
-                        <input type="number" id = "number" name = "number" class="form-control" v-model="admin.address.number" placeholder="Enter number">
+                        <p style="font-size:25px;font-weight:bold;">{{admin.address.number}}</p>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Postal code:</label>
-                        <input type="text" id = "postalCode" name = "postalCode" class="form-control" v-model="admin.address.postalCode" placeholder="Enter postal code">
+                        <p style="font-size:25px;font-weight:bold;">{{admin.address.postalCode}}</p>
                         </div>
 
                         
                        
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                        <label>Password:</label>
-                        <input type="password" id = "password" name = "password" class="form-control" v-model="admin.password" placeholder="Enter new password">
-                        </div>
-                        
                     </div>
                     
                    
@@ -144,7 +150,8 @@ export default {
                     country : ""
                 }
     },
-    pharmacy : {}
+    pharmacy : {},
+    loggedIn : false
     }
   },
   mounted() {
@@ -154,6 +161,7 @@ export default {
                  'Authorization': 'Bearer ' + token,
              }
          }).then(response => {
+               this.loggedIn = true;
                this.admin=response.data;
                 this.axios.get('/pharmacyAdmin/myPharmacy',{ 
                     headers: {

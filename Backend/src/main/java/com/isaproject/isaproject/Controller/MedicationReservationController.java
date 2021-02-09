@@ -58,7 +58,7 @@ public class MedicationReservationController {
     {
 
         Patient patient = patientService.findById(medicationReservationDTO.getPatient().getId());
-        Pharmacy pharmacy = pharmacyService.findById(medicationReservationDTO.getMedicationId());
+        Pharmacy pharmacy = pharmacyService.findById(medicationReservationDTO.getPharmacyId());
         List<MedicationPrice> medicationPrices = medicationPriceService.findAll();
         Boolean able = true;
         if(patient.getPenalties() > 3){
