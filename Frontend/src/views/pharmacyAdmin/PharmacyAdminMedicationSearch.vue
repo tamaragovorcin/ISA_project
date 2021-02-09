@@ -386,7 +386,7 @@ export default {
         showMedicationPharmacyAvailabilityDiv : false,
         showMedicationPharmacyAvailabilityListDiv : false,
         choosenMedicationForAvailability : 0,
-        loggedIn : false
+        loggedIn : true
     }
   },
   mounted() {

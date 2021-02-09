@@ -220,6 +220,7 @@ public class DermatologistController {
         return dermatologists;
     }
     @GetMapping("")
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<List<Dermatologist>> getAll()
     {
         List<Dermatologist> dermatologists = dermatologistService.findAll();
