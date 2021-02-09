@@ -61,6 +61,18 @@ public class MedicationReservation {
     public MedicationReservation() {
     }
 
+    public MedicationReservation(Integer id, Patient patient, Medication medicine, Pharmacy pharmacy, LocalDate dateOfReservation, LocalDate dateOfTakeOver, Boolean collected, UUID reservationCode, Boolean cancelled) {
+        this.id = id;
+        this.patient = patient;
+        this.medicine = medicine;
+        this.pharmacy = pharmacy;
+        this.dateOfReservation = dateOfReservation;
+        this.dateOfTakeOver = dateOfTakeOver;
+        this.collected = collected;
+        this.reservationCode = reservationCode;
+        this.cancelled = cancelled;
+    }
+
     public Medication getMedicine() {
         return medicine;
     }

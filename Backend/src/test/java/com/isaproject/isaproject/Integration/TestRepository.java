@@ -3,20 +3,24 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.isaproject.isaproject.DTO.AddressDTO;
-import com.isaproject.isaproject.DTO.PharmacyIdDTO;
-import com.isaproject.isaproject.DTO.PharmacyNameDTO;
+import com.isaproject.isaproject.DTO.*;
+import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.HelpModel.Complaint;
 import com.isaproject.isaproject.Model.HelpModel.LoyaltyProgram;
+import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.*;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import javax.persistence.EntityManager;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +37,13 @@ public class TestRepository {
 
 
     protected PharmacyIdDTO pharmacyIdDTO;
+
+    protected MarkDTO markDTO;
+
+    protected PharmacistsConsultationDTO pharmacistsConsultationDTO;
+
+    protected Integer patientId;
+
 
     protected void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -144,6 +155,60 @@ public class TestRepository {
         pharmacy.setAddress(address5);
         pharmacy.setConsultingPrice(100);
 
+        //PharmacyMark
+        MarkDTO markDTO1 = new MarkDTO();
+        markDTO1.setMark(5);
+        markDTO1.setPatient(patient);
+        markDTO1.setPharmacy(pharmacy);
+
+        //Pharmacist
+        Pharmacist pharmacist =  new Pharmacist();
+        pharmacist.setName("FisrtName");
+        pharmacist.setSurname("Surname");
+
+        Address address6 = new Address();
+        AddressDTO addressDTO6= new AddressDTO("Town2","Street2",255,257,"Country2");
+        address6.setPostalCode(addressDTO6.getPostalCode());
+        address6.setTown(addressDTO6.getTown());
+        address6.setStreet(addressDTO6.getStreet());
+        address6.setNumber(addressDTO6.getNumber());
+        addressDTO6.setCountry(addressDTO6.getCountry());
+        patient.setAddress(address6);
+
+        pharmacist.setEmail("pharmacist@gmail.com");
+        pharmacist.setPassword(passwordEncoder.encode("pharmacistPassword"));
+        pharmacist.setFirstLogged(false);
+        pharmacist.setPhoneNumber("7456123");
+        List<Authority> auth5 = new ArrayList<Authority>();
+        Authority authority5 = new Authority("ROLE_PHARMACIST");
+        auth5.add(authority5);
+        pharmacist.setAuthorities(auth5);
+        pharmacist.setEnabled(true);
+
+
+        //ConsultingDTO
+        PharmacistsConsultationDTO pharmacistsConsultationDTO1 = new PharmacistsConsultationDTO();
+        pharmacistsConsultationDTO1.setDate(LocalDate.now().plusDays(2));
+        pharmacistsConsultationDTO1.setPharmacist(pharmacist);
+        pharmacistsConsultationDTO1.setTime(LocalTime.NOON);
+        pharmacistsConsultationDTO1.setPatient(patient);
+
+
+
+
+        //Consultation
+       /* Consulting consulting = new Consulting();
+        consulting.setCancelled(false);
+        consulting.setDate(LocalDate.now());
+        consulting.setDuration(20.0);
+        consulting.setPrice(550);
+        consulting.setStartTime(LocalTime.now());
+        consulting.setPatient(patient);
+        consulting.setShowedUp(false);
+        consulting.setPharmacist(pharmacist);*/
+
+        entityManager.persist(address4);
+        entityManager.persist(address5);
         entityManager.persist(patient);
         entityManager.persist(authority4);
         entityManager.persist(pharmacy);
@@ -152,7 +217,14 @@ public class TestRepository {
         entityManager.persist(systemAdmin);
         entityManager.persist(supplier);
         entityManager.persist(authority);
+        entityManager.persist(authority5);
+        entityManager.persist(pharmacist);
         pharmacyIdDTO = new PharmacyIdDTO(pharmacy.getId());
+        pharmacistsConsultationDTO1.setPharmacyId(pharmacyIdDTO.getPharmacyId());
+        pharmacistsConsultationDTO = pharmacistsConsultationDTO1;
+        markDTO = markDTO1;
+        patientId = patient.getId();
+
 
         entityManager.flush();
     }

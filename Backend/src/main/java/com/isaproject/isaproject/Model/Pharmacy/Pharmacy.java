@@ -106,6 +106,13 @@ public class Pharmacy implements Serializable{
         this.medicationPrices = medicationPrices;
     }
 
+    public Pharmacy(Integer id, String pharmacyName, double mark, Address address) {
+        this.id = id;
+        this.pharmacyName = pharmacyName;
+        this.mark = mark;
+        this.address = address;
+    }
+
     public Pharmacy(Integer id, String pharmacyName, double mark, String description, double consultingPrice, Address address) {
         this.id = id;
         this.pharmacyName = pharmacyName;
@@ -114,6 +121,8 @@ public class Pharmacy implements Serializable{
         this.consultingPrice = consultingPrice;
         this.address = address;
     }
+
+
 
     public String getDescription() {
         return description;

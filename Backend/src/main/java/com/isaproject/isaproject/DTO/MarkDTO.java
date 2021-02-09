@@ -68,4 +68,16 @@ public class MarkDTO {
     public void setDermatologist(Dermatologist dermatologist) {
         this.dermatologist = dermatologist;
     }
+
+    @Override
+    public String toString() {
+        return "MarkDTO{" +
+                "pharmacy=" + pharmacy.getAddress().getTown() +
+                ", medication=" + medication +
+                ", pharmacist=" + pharmacist +
+                ", dermatologist=" + dermatologist +
+                ", patient=" + patient.getName() +
+                ", mark=" + mark +
+                '}';
+    }
 }

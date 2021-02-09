@@ -19,6 +19,11 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/examination")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -55,11 +60,13 @@ public class ExaminationController {
         Examination examination = examinationService.save(examinationDTO);
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo(patient.getEmail());
-        mail.setSubject("Successfuly reserved dermatologist examination!");
+        mail.setSubject("Successfuly reserved examination!");
 
         mail.setFrom(environment.getProperty("spring.mail.username"));
         mail.setText("You have successfully reserved an appointment on : "
-                + examination.getExaminationSchedule().getDate() + " at " + examination.getExaminationSchedule().getStartTime() + ". Your doctor is " + examination.getExaminationSchedule().getDermatologist().getName() + " " + examination.getExaminationSchedule().getDermatologist().getSurname());
+                + examination.getExaminationSchedule().getDate() + " at " + examination.getExaminationSchedule().getStartTime() + ".\n" +
+                " Your doctor is " + examination.getExaminationSchedule().getDermatologist().getName() + " " + examination.getExaminationSchedule().getDermatologist().getSurname()
+        +"\n Pharmacy where the examination will be held is " + examination.getExaminationSchedule().getPharmacy().getPharmacyName() + ".");
 
         mailSender.send(mail);
         return examination == null ?
@@ -79,6 +86,192 @@ public class ExaminationController {
         return examination1 == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 new ResponseEntity<>("Examination is successfully updated!", HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/pricelowest")
+    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    public ResponseEntity<List<ExaminationScheduleFrontDTO>> pricelowest() {
+
+
+        List<ExaminationSchedule> examinationSchedule = new ArrayList<ExaminationSchedule>();
+        examinationSchedule = examinationScheduleService.findAll();
+        List<ExaminationScheduleFrontDTO> examinationScheduleFrontDTOS = new ArrayList<ExaminationScheduleFrontDTO>();
+        if(examinationSchedule.size() == 0){
+            throw new IllegalArgumentException("There are no appointments available at the moment.");
+        }
+
+
+
+        Collections.sort(examinationSchedule, new Comparator<ExaminationSchedule>() {
+            @Override
+            public int compare(ExaminationSchedule c1, ExaminationSchedule c2) {
+                return Double.compare(c1.getPrice(), c2.getPrice());
+
+            }
+        });
+
+        for( ExaminationSchedule ex : examinationSchedule){
+            if(ex.getFinished()==false){
+                ExaminationScheduleFrontDTO examinationScheduleFrontDTO = new ExaminationScheduleFrontDTO();
+                examinationScheduleFrontDTO.setId(ex.getId());
+                examinationScheduleFrontDTO.setPharmacy(ex.getPharmacy().getPharmacyName());
+                examinationScheduleFrontDTO.setDate(ex.getDate());
+                examinationScheduleFrontDTO.setDuration(ex.getDuration());
+                examinationScheduleFrontDTO.setPrice(ex.getPrice());
+                examinationScheduleFrontDTO.setDermatologistFirst(ex.getDermatologist().getName());
+                examinationScheduleFrontDTO.setDermatologistLast(ex.getDermatologist().getSurname());
+                examinationScheduleFrontDTO.setStartTime(ex.getStartTime());
+
+                examinationScheduleFrontDTOS.add(examinationScheduleFrontDTO);
+
+            }}
+
+
+        return examinationScheduleFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(examinationScheduleFrontDTOS);
+
+    }
+
+    @GetMapping("/pricehighest")
+    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    public ResponseEntity<List<ExaminationScheduleFrontDTO>> pricehighest() {
+
+
+        List<ExaminationSchedule> examinationSchedule = new ArrayList<ExaminationSchedule>();
+        examinationSchedule = examinationScheduleService.findAll();
+        List<ExaminationScheduleFrontDTO> examinationScheduleFrontDTOS = new ArrayList<ExaminationScheduleFrontDTO>();
+        if(examinationSchedule.size() == 0){
+            throw new IllegalArgumentException("There are no appointments available at the moment.");
+        }
+
+
+
+        Collections.sort(examinationSchedule, new Comparator<ExaminationSchedule>() {
+            @Override
+            public int compare(ExaminationSchedule c1, ExaminationSchedule c2) {
+                return Double.compare(c1.getPrice(), c2.getPrice());
+
+            }
+        });
+
+        Collections.reverse(examinationSchedule);
+
+        for( ExaminationSchedule ex : examinationSchedule){
+            if(ex.getFinished()==false){
+                ExaminationScheduleFrontDTO examinationScheduleFrontDTO = new ExaminationScheduleFrontDTO();
+                examinationScheduleFrontDTO.setId(ex.getId());
+                examinationScheduleFrontDTO.setPharmacy(ex.getPharmacy().getPharmacyName());
+                examinationScheduleFrontDTO.setDate(ex.getDate());
+                examinationScheduleFrontDTO.setDuration(ex.getDuration());
+                examinationScheduleFrontDTO.setPrice(ex.getPrice());
+                examinationScheduleFrontDTO.setDermatologistFirst(ex.getDermatologist().getName());
+                examinationScheduleFrontDTO.setDermatologistLast(ex.getDermatologist().getSurname());
+                examinationScheduleFrontDTO.setStartTime(ex.getStartTime());
+
+                examinationScheduleFrontDTOS.add(examinationScheduleFrontDTO);
+
+            }}
+
+
+        return examinationScheduleFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(examinationScheduleFrontDTOS);
+
+    }
+
+
+    @GetMapping("/dermmarklowest")
+    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    public ResponseEntity<List<ExaminationScheduleFrontDTO>> dermmarklowest() {
+
+
+        List<ExaminationSchedule> examinationSchedule = new ArrayList<ExaminationSchedule>();
+        examinationSchedule = examinationScheduleService.findAll();
+        List<ExaminationScheduleFrontDTO> examinationScheduleFrontDTOS = new ArrayList<ExaminationScheduleFrontDTO>();
+        if(examinationSchedule.size() == 0){
+            throw new IllegalArgumentException("There are no appointments available at the moment.");
+        }
+
+
+
+        Collections.sort(examinationSchedule, new Comparator<ExaminationSchedule>() {
+            @Override
+            public int compare(ExaminationSchedule c1, ExaminationSchedule c2) {
+                return Double.compare(c1.getDermatologist().getMarkDermatologist(), c2.getDermatologist().getMarkDermatologist());
+
+            }
+        });
+
+
+        for( ExaminationSchedule ex : examinationSchedule){
+            if(ex.getFinished()==false){
+                ExaminationScheduleFrontDTO examinationScheduleFrontDTO = new ExaminationScheduleFrontDTO();
+                examinationScheduleFrontDTO.setId(ex.getId());
+                examinationScheduleFrontDTO.setPharmacy(ex.getPharmacy().getPharmacyName());
+                examinationScheduleFrontDTO.setDate(ex.getDate());
+                examinationScheduleFrontDTO.setDuration(ex.getDuration());
+                examinationScheduleFrontDTO.setPrice(ex.getPrice());
+                examinationScheduleFrontDTO.setDermatologistFirst(ex.getDermatologist().getName());
+                examinationScheduleFrontDTO.setDermatologistLast(ex.getDermatologist().getSurname());
+                examinationScheduleFrontDTO.setStartTime(ex.getStartTime());
+
+                examinationScheduleFrontDTOS.add(examinationScheduleFrontDTO);
+
+            }}
+
+
+        return examinationScheduleFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(examinationScheduleFrontDTOS);
+
+    }
+
+    @GetMapping("/dermmarkhighest")
+    //@PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    public ResponseEntity<List<ExaminationScheduleFrontDTO>> dermmarkhighest() {
+
+
+        List<ExaminationSchedule> examinationSchedule = new ArrayList<ExaminationSchedule>();
+        examinationSchedule = examinationScheduleService.findAll();
+        List<ExaminationScheduleFrontDTO> examinationScheduleFrontDTOS = new ArrayList<ExaminationScheduleFrontDTO>();
+        if(examinationSchedule.size() == 0){
+            throw new IllegalArgumentException("There are no appointments available at the moment.");
+        }
+
+
+
+        Collections.sort(examinationSchedule, new Comparator<ExaminationSchedule>() {
+            @Override
+            public int compare(ExaminationSchedule c1, ExaminationSchedule c2) {
+                return Double.compare(c1.getDermatologist().getMarkDermatologist(), c2.getDermatologist().getMarkDermatologist());
+
+            }
+        });
+
+        Collections.reverse(examinationSchedule);
+        for( ExaminationSchedule ex : examinationSchedule){
+            if(ex.getFinished()==false){
+                ExaminationScheduleFrontDTO examinationScheduleFrontDTO = new ExaminationScheduleFrontDTO();
+                examinationScheduleFrontDTO.setId(ex.getId());
+                examinationScheduleFrontDTO.setPharmacy(ex.getPharmacy().getPharmacyName());
+                examinationScheduleFrontDTO.setDate(ex.getDate());
+                examinationScheduleFrontDTO.setDuration(ex.getDuration());
+                examinationScheduleFrontDTO.setPrice(ex.getPrice());
+                examinationScheduleFrontDTO.setDermatologistFirst(ex.getDermatologist().getName());
+                examinationScheduleFrontDTO.setDermatologistLast(ex.getDermatologist().getSurname());
+                examinationScheduleFrontDTO.setStartTime(ex.getStartTime());
+
+                examinationScheduleFrontDTOS.add(examinationScheduleFrontDTO);
+
+            }}
+
+
+        return examinationScheduleFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(examinationScheduleFrontDTOS);
+
     }
 
 }

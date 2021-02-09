@@ -5,22 +5,21 @@ ines (39 sloc)  1.61 KB
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-            <span style="float: left; margin: 15px;">
-                <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
-                     <strong class="tab"></strong>                 
-
-                    <button class = "btn btn-link btn-lg" v-on:click = "showPharmacies">Pharmacies</button>
-
-                    <strong class="tab"></strong>     
-                   <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
-
-                      <strong class="tab"></strong>                  
+          <span style="float: left; margin: 15px;">
+                               
+                    <a  class = "btn btn-link btn-lg" href= "/patientProfile">Home page</a>
+                    <a  class = "btn btn-link btn-lg" href= "/showPharmaciesPatient">Pharmacies</a>
+                    <a  class = "btn btn-link btn-lg" href= "/eRecipes">ERecipes</a>
+                    <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
+                    <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
+                     <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
+                    <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
+                         <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
                    
 
-   
+             
+                  
 
-                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "writeComplaint">Write complaint</button>
-                   
             </span>
               <span  style="float:right;margin:15px">
                     
@@ -35,18 +34,14 @@ ines (39 sloc)  1.61 KB
         <div style="background: lightgray; height: 60px;">
             
             <span style="float: left; margin: 15px;">
-                <strong><button class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" v-on:click = "allPharmacies">Show all pharmacies</button></strong>
-                      <strong class="tab"></strong>                 
 
-                    <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allDermatologists">Make a new dermatologist appointment</button>
-
-                    <strong class="tab"></strong>            
-                     <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "myDermatologistAppointments">My dermatologist appointments</button>
-
-                      <strong class="tab"></strong>             
-                   <button class = "btn btn-link btn-lg" style="color:black; " v-on:click = "allPharmacists">Pharmacist consultation</button>
-
-                               
+                 <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/showPharmaciesPatient">Show all pharmacies</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/dermatologistAppointments">Make a new dermatologist appointmen</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/myDermatologistAppointments">My dermatologist appointments</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/PharmacistConsultation">Pharmacist consultation</a>
+                    <a  class = "btn btn-link btn-lg" style=" color:black; float:left; margin-left:20px; margin-top:0px;" href= "/myPharmacistsConsultation">My pharmacist consultations</a>
+ 
+                             
                    
             </span>
              
@@ -222,15 +217,30 @@ mounted() {
              }
          }).then(response => {
                 this.patient = response.data;
-           console.log( this.patient);
-                 this.axios.get('/pharmacy/cancelExamination/'+this.patient.id)
+                 console.log( this.patient);
+                 this.axios.get('/pharmacy/cancelExamination/'+this.patient.id,{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,}
+
+             })
                     .then(response => {
                 this.dermatologistAppointments= response.data;
                console.log(this.dermatologistAppointments);
               
-          })
-
-         })
+                          }).catch(res => {
+                                      alert(res.data.message);
+                                              
+                                                console.log(res);
+                
+               
+                          })
+         }).catch(res => {
+                       alert("Please log in first!");
+                                 window.location.href = "/login";
+                                 console.log(res);
+                
+                 })
+                 
 
 
       
@@ -398,9 +408,21 @@ mounted() {
       },
 
          reserve : function(event, dermatologistAppointment) {
+                     let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
           this.dermatologistAppointment = dermatologistAppointment
         
-            this.axios.get('/pharmacy/cancel/'+dermatologistAppointment.id)
+            this.axios.get('/pharmacy/cancel/'+dermatologistAppointment.id,{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,}
+
+             }).then(response => {
+               alert(response.data);
+               
+               })
+                .catch(res => {
+                     
+                       alert(res.data);
+                    })
 
 
       },

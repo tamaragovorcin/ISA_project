@@ -254,12 +254,34 @@ export default {
   },
 mounted() {
 
+   let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }})
+             .then(response => {
+                this.patient = response.data;
+              
+            
+         }).catch(res => {
+                       alert("Please, log in first!");
+                          window.location.href = "/login";
+                        console.log(res);
+                 });
+        
+
     this.axios.get('/pharmacy/all')
           .then(response => {
                 this.dermatologistAppointments= response.data;
                console.log(this.dermatologistAppointments);
               
           })
+          .catch(res => {
+                     
+                        alert("There are no pharmacies in the system yet.")
+                         console.log(res);
+                    })
+
 },
 
   methods:{
@@ -276,7 +298,8 @@ medicationReservation : function(){
                })
                 .catch(res => {
                      
-                        console.log(res);
+                        alert("Unable to apply filter right now.");
+                        console.log(res)
                     })
 
       },
@@ -295,7 +318,12 @@ medicationReservation : function(){
                      this.showSecondTable = false;
                 }
               
-          })
+           })
+                .catch(res => {
+                     
+                       alert(res.response.data.message);
+                        console.log(res)
+                    })
       },
 
       searchCity: function(pharmacyCity){
@@ -312,7 +340,12 @@ medicationReservation : function(){
                      this.showSecondTable = false;
                 }
               
-          })
+           })
+                .catch(res => {
+                     
+                       alert(res.response.data.message);
+                        console.log(res)
+                    })
       },
        
     
@@ -332,24 +365,7 @@ medicationReservation : function(){
        hideModal() {
         this.$refs['my-modal'].hide()
       },
-      complainAboutPharmacy : function(){
-          this.showPharmacyComplaint = true;
-          this.showPharmacistComplaint = false;
-          this.showDermatologistComplaint = false;
-      },
-      complainAboutPharmacist : function(){
-          this.showPharmacyComplaint = false;
-          this.showPharmacistComplaint = true;
-          this.showDermatologistComplaint = false;
-      },
-       complainAboutDermatologist : function(){
-          this.showPharmacyComplaint = false;
-          this.showPharmacistComplaint = false;
-          this.showDermatologistComplaint = true;
-      },
-      sendComplaint : function(){
- 
-        },
+     
      
       from1to5: function(){
       this.axios.get('/pharmacy/from1to5')
@@ -358,10 +374,11 @@ medicationReservation : function(){
               this.dermatologistAppointments = response.data;
               this.showTable = false;
               this.showTable = true;
-               })
+                })
                 .catch(res => {
                      
-                        console.log(res);
+                        alert("Unable to apply filter right now.");
+                        console.log(res)
                     })
 
 
@@ -379,7 +396,8 @@ medicationReservation : function(){
                })
                 .catch(res => {
                      
-                        console.log(res);
+                        alert("Unable to apply filter right now.");
+                        console.log(res)
                     })
 
 
@@ -396,7 +414,8 @@ medicationReservation : function(){
                })
                 .catch(res => {
                      
-                        console.log(res);
+                      alert("Unable to apply filter right now.");
+                        console.log(res)
                     })
 
 
@@ -410,12 +429,12 @@ medicationReservation : function(){
                    this.dermatologistAppointments = response.data;
               this.showTable = false;
               this.showTable = true;
-               })
+                })
                 .catch(res => {
                      
-                        console.log(res);
+                       alert("Unable to apply filter right now.");
+                        console.log(res)
                     })
-
 
       },
       namefromatoz: function(){
@@ -429,7 +448,8 @@ medicationReservation : function(){
                })
                 .catch(res => {
                      
-                        console.log(res);
+                        alert("Unable to apply filter right now.");
+                        console.log(res)
                     })
 
 
@@ -443,10 +463,11 @@ medicationReservation : function(){
                   this.dermatologistAppointments = response.data;
               this.showTable = false;
               this.showTable = true;
-               })
+                })
                 .catch(res => {
                      
-                        console.log(res);
+                        alert("Unable to apply filter right now.");
+                        console.log(res)
                     })
 
 

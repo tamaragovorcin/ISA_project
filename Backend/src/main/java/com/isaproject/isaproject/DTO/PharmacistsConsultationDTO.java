@@ -55,4 +55,15 @@ public class PharmacistsConsultationDTO {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "PharmacistsConsultationDTO{" +
+                "pharmacyId=" + pharmacyId +
+                ", time=" + time +
+                ", date=" + date +
+                ", pharmacist=" + pharmacist.getName() +
+                ", patient=" + patient.getEmail() +
+                '}';
+    }
 }
