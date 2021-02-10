@@ -12,7 +12,7 @@
                         <strong class="tab"></strong>  
 
                                     <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
-                                                <button class = "btn btn-secondary" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
+                                                <button class = "btn btn-link" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
                                     </router-link>
 
                           <strong class="tab"></strong>  
@@ -29,15 +29,15 @@
                                         <b-dropdown-item href = "/examinationTerms">Examination terms</b-dropdown-item>      
                                     </b-dropdown>                 
                             <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
+                            <a   class = "btn btn-link" href = "/pharmacyMedications">Medications</a>
                             <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
+                            <a   class = "btn btn-link" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
                             <strong class="tab"></strong>  
-                            <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
+                            <a  class = "btn btn-link" href = "/actionsAndBenefits">Actions and benefits</a>
                             <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href="/order">Orders</a>
+                            <a   class = "btn btn-link" href="/order">Orders</a>
                             <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href="/holidayRequests">Holiday/absence requests</a>
+                            <a   class = "btn btn-link" href="/holidayRequests">Holiday/absence requests</a>
             </span>
               <span  style="float:right;margin:15px">
                    

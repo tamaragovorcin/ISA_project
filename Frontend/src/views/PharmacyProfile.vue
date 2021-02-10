@@ -5,7 +5,7 @@
         <div style="background: #0D184F; height: 90px;">
             
             <span style="float: left; margin: 15px;">
-                <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href = "/isaHomePage">Home page</button>
+                <button class = "btn btn-link btn-lg" style="float:left;color:white" href = "/isaHomePage">←</button>
             </span>
               <span  style="float:right;margin:15px">
                     <a class = "btn btn-warning btn-lg" href = "/login">&nbsp;&nbsp;Login&nbsp;&nbsp;</a>
@@ -19,13 +19,13 @@
 
 
         <div class = "container" v-if="welcomePageShow">
-                          <h1 style="color:#0D184F;font-size:55px;font-weight:bold;" align = "center"><u>{{pharmacy.pharmacyName}}</u></h1>
+                          <h1 style="color:#0D184F;font-size:55px;font-weight:bold;" align = "center">{{pharmacy.pharmacyName}}</h1>
 
-      <div class="row" style = "background-color:whitesmoke;margin: auto;width: 10%;border: 3px solid gray;padding: 10px;margin-top:30px;">
+      <div class="row" style = "background-color:whitesmoke;margin: auto;width: 60%;border: 3px solid gray;padding: 10px;margin-top:30px;">
                     <div style="color:#0D184F;font-size:25px;font-style:italic;font-weight:bold;" class="row">Our mark: {{pharmacy.mark}}</div>
         </div>
         <div class="row" style = "background-color:whitesmoke;margin: auto;width: 60%;border: 3px solid gray;padding: 10px;margin-top:30px;">
-                        <h3 style="color:green;font-size:25px;font-weight:bold;margin-top:30px;" align = "center">About us:</h3>
+                        <h3 style="color:#0D184F;font-size:25px;font-weight:bold;margin-top:30px;" align = "center">About us:</h3>
                     <div style="color:#0D184F;font-size:25px;font-style:italic;font-weight:bold;">{{pharmacy.description}}</div>
         </div>
               <div class="row" style = "background-color:whitesmoke;margin: auto;width: 60%;border: 3px solid gray;padding: 10px;margin-top:30px;">
@@ -115,7 +115,7 @@
                                                                         <td>{{term.startTime}}</td>
                                                                         <td>{{term.duration}}</td>
                                                                         <td>{{term.price}}</td>
-                                                                        <td><button class = "btn btn-info" v-click = "schedule(term)">Schedule</button></td>
+                                                                        <td><button class ="btn btn-info" @click = "schedule($event,term)">Schedule</button></td>
                                                                     </tr>
                       
                       </tbody>
@@ -210,21 +210,23 @@
 
 </div>
 
-    <div class ="container-fluid" style="height:100%;width:20%;vertical-align:top;background:whitesmoke;">
+    <div class ="container-fluid" style="height:100%;width:20%;vertical-align:top;">
 
                 <div class="sidenav">
                 <hr/>
-                <a  v-on:click = "showWelcomePage">Home</a>
+                <a style="color:white"  v-on:click = "showWelcomePage">Home</a>
                 <hr/>
-                <a  v-on:click = "showDermatologists"> Dermatologists</a>
+                <a style="color:white"  v-on:click = "showDermatologists"> Dermatologists</a>
                 <hr/>
-                <a @click = "showPharmacists">Pharmacists</a>
+                <a style="color:white"  @click = "showPharmacists">Pharmacists</a>
                 <hr/>
-                <a @click = "showMedication">Medications</a>
+                <a style="color:white"  @click = "showMedication">Medications</a>
                 <hr/>
-                <a v-on:click = "showTerms">Appointments with a dermatologists </a>
+                <a style="color:white"  v-on:click = "showTerms">Appointments with a dermatologists </a>
                 <hr/>
-                <a v-on:click = "showAvailability">Check medication availability </a>
+                <a style="color:white"  v-on:click = "showAvailability">Check medication availability </a>
+                <hr/>
+                <a style="color:white"  v-on:click = "showMap">Show our location on map</a>
 
                 </div>
     </div>
@@ -257,7 +259,10 @@ export default {
        notAvailabe : false,
        pickUpDay : "",
        patient : null,
-       selectedMedication : {}
+       selectedMedication : {},
+       xCoordinate : 0,
+       yCoordinate : 0,
+       map : ""
 
        
        
@@ -271,6 +276,9 @@ export default {
              }
          }).then(response => {
                 this.pharmacy = response.data;
+                this.$nextTick(function() {
+                    this.initMap();
+                })
                  this.axios.get('pharmacy/dermatologistsFront/'+this.id,{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
@@ -392,12 +400,10 @@ export default {
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                 }}).then(response => {
-
                     alert("Successfully subrsribed.")
                     console.log(response)
                 }).catch(res => {
-                       alert("Please log in.");
-                       window.location.href="/login"
+                       alert("You must be logged in as patient.");
                        console.log(res);
                 });
       },
@@ -454,7 +460,7 @@ export default {
                 }
               }). then(response => {
                     const data = {
-                      pharmacy : this.pharmacy,
+                      pharmacy : this.pharmacy.id,
                       listMedications : response.data
                     }
                     this.axios.post( '/erecipes/availability/pharmacy', data,{
@@ -462,14 +468,11 @@ export default {
                               'Authorization': 'Bearer ' + token
                           }
                         }). then(response => {
-                          this.availabe = true;
-                          this.notAvailabe = false;
+                          alert(response.data);
 
                           console.log(response);
                         }).catch(response => {
-                          this.notAvailabe = true;
-                          this.availabe = false;
-                          console.log(response);
+                          alert(response.data);
                         });     
 
                 }).catch(res => {
@@ -482,25 +485,43 @@ export default {
       handleFileUpload(){
         this.file = this.$refs.file.files[0];
       },
-      schedule  : function( term) {
-          this.term = term;
-          alert(this.term)
+      schedule(event,term) {
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+         }).then(response => {
+                this.patient = response.data;
+        
+
           const examination = {
               patient: this.patient,
               cancelled : false,
               showedUp: false,
-              examinationId: this.term.id,
+              examinationId: term.id,
               information: null
-
-
-
           }
-            this.axios.post('/pharmacy/addExamination', examination)
+            this.axios.post('/pharmacy/addExamination', examination,{
+                          headers: {
+                              'Authorization': 'Bearer ' + token
+                          }
+                        }). then(response => {
+                          alert(response.data);
 
+                          console.log(response);
+                        }).catch(response => {
+                          alert(response.data);
+                        });     
 
-    
-
+      });
+      }
+      ,
+      initMap : function(){
+       
+        
       },
+      showMap : function(){}
    
 }
 }

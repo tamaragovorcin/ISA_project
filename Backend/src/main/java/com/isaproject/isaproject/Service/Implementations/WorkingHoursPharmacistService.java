@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.WorkingHoursPharmacistDTO;
+import com.isaproject.isaproject.DTO.WorkingScheduleDTO;
 import com.isaproject.isaproject.Model.Schedule.*;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
@@ -29,6 +30,8 @@ public class WorkingHoursPharmacistService implements IWorkingHoursPharmacist {
     SaturdayScheduleRepository saturdayScheduleRepository;
     @Autowired
     SundayScheduleRepository sundayScheduleRepository;
+    @Autowired
+    PharmacistService pharmacistService;
 
 
 
@@ -44,15 +47,15 @@ public class WorkingHoursPharmacistService implements IWorkingHoursPharmacist {
     }
 
     @Override
-    public WorkingHoursPharmacist save(WorkingHoursPharmacistDTO userRequest) {
+    public WorkingHoursPharmacist save(WorkingScheduleDTO userRequest) {
         System.out.println("------------------------------------------------------------------");
         System.out.println("----POGODIO SERVIS---");
-
-        if(getByPharmacist(userRequest.getPharmacist())== null){
+        Pharmacist pharmacist = pharmacistService.findById(userRequest.getPharmacistId());
+        if(getByPharmacist(pharmacist)== null){
             System.out.println("---------------------PRAVI NOVI--------------------------------");
 
             WorkingHoursPharmacist workingHoursPharmacist = new WorkingHoursPharmacist();
-            workingHoursPharmacist.setPharmacist(userRequest.getPharmacist());
+            workingHoursPharmacist.setPharmacist(pharmacist);
 
             MondaySchedule mondaySchedule = new MondaySchedule();
             mondaySchedule.setStartTime(userRequest.getStartTimeMonday());
@@ -103,8 +106,9 @@ public class WorkingHoursPharmacistService implements IWorkingHoursPharmacist {
             return updateWorkingHours(userRequest);
         }
     }
-    private WorkingHoursPharmacist updateWorkingHours(WorkingHoursPharmacistDTO userRequest){
-        WorkingHoursPharmacist workingHoursPharmacist = getByPharmacist(userRequest.getPharmacist());
+    private WorkingHoursPharmacist updateWorkingHours(WorkingScheduleDTO userRequest){
+        Pharmacist pharmacist = pharmacistService.findById(userRequest.getPharmacistId());
+        WorkingHoursPharmacist workingHoursPharmacist = getByPharmacist(pharmacist);
         System.out.println("---------------------USAO U UPDATE--------------------------------");
         mondayScheduleRepository.delete(workingHoursPharmacist.getMondaySchedule());
         MondaySchedule mondaySchedule = new MondaySchedule();

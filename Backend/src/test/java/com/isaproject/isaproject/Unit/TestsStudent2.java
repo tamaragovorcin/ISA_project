@@ -4,6 +4,7 @@ import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Pharmacy.Actions;
 import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
+import com.isaproject.isaproject.Model.Users.Supplier;
 import com.isaproject.isaproject.Repository.*;
 import com.isaproject.isaproject.Service.Implementations.*;
 import org.junit.Test;
@@ -87,14 +88,13 @@ public class TestsStudent2 {
     }
     @Test
     public void testFindOneActionById() {
-        // 1. Definisanje ponašanja
         when(actionsRepositoryMock.findById(ID)).thenReturn(Optional.of(actionMock));
 
         // 2. Akcija
-        Actions dbAction = actionsServiceMock.findById(ID);
+        Actions dbActions = actionsServiceMock.findById(ID);
 
         // 3. Verifikacija
-        assertEquals(actionMock, dbAction);
+        assertEquals(actionMock, dbActions);
         verify(actionsRepositoryMock, times(1)).findById(ID);
         verifyNoMoreInteractions(actionsRepositoryMock);
     }

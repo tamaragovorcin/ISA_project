@@ -47,7 +47,6 @@ public class Constants {
     public static final String DESCRIPTION = "Description";
     public static final String NEW_DESCRIPTION = "New Action Description";
 
-    public static final Actions ACTIONS = new Actions(1,PHARMACY,"DESCRIPTION", LocalDate.now().plusDays(10));
 
 
     public static final List<Authority> AUTHORITIES = new ArrayList<>();

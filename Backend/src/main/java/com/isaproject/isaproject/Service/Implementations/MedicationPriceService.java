@@ -58,16 +58,19 @@ public class MedicationPriceService implements IMedicationPriceService {
     public MedicationPrice updatePrice(MedicationPriceDTO medicationDTO) {
 
         MedicationPrice medicationPrice = findByMedicationID(medicationDTO.getMedication().getId());
-        if(medicationDTO.getDate().isAfter(LocalDate.now())) {
-            medicationPrice.setPrice(medicationDTO.getPrice());
-            medicationPrice.setDate(medicationDTO.getDate());
-            return this.medicationPriceRepository.save(medicationPrice);
-        }
-        return null;
+        System.out.println(medicationDTO.getMedication().getId());
+        System.out.println(medicationDTO.getPrice());
+        System.out.println(medicationPrice);
+        medicationPrice.setPrice(medicationDTO.getPrice());
+        medicationPrice.setDate(medicationDTO.getDate());
+        return this.medicationPriceRepository.save(medicationPrice);
+
+
     }
     public MedicationPrice findByMedicationID(Integer id){
+        System.out.println(id);
         for(MedicationPrice medicationPrice : medicationPriceRepository.findAll()){
-            if(medicationPrice.getMedication().getId() == id){
+            if(medicationPrice.getMedication().getId().toString().equals(id.toString())){
                 return medicationPrice;
             }
         }

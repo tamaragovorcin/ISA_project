@@ -51,10 +51,11 @@ public class PharmacistController {
             throw new ResourceConflictException(userRequest.getEmail(), "Email already exists");
         }
         Pharmacist user = pharmacistService.save(userRequest);
-        return new ResponseEntity<>("Supplier is successfully registred!", HttpStatus.CREATED);
+        return new ResponseEntity<>("Pharmacist is successfully registred!", HttpStatus.CREATED);
     }
 
     @GetMapping("")
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     ResponseEntity<List<Pharmacist>> getAll() {
         List<Pharmacist> pharmacists = pharmacistService.findAll();
         return pharmacists == null ?
@@ -142,10 +143,10 @@ public class PharmacistController {
         return able;
     }
 
-    @PostMapping("/delete")
+    @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    public ResponseEntity<String> addUser(@RequestBody Pharmacist pharmacist) {
-        System.out.println(pharmacist.getName());
+    public ResponseEntity<String> deletePharmacist(@PathVariable Integer id) {
+        Pharmacist pharmacist = pharmacistService.findById(id);
         String answer = pharmacistService.delete(pharmacist);
         return new ResponseEntity<>(answer, HttpStatus.CREATED);
     }

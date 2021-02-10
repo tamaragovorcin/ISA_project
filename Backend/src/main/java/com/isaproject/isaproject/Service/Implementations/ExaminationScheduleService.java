@@ -147,6 +147,9 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
                 if (dto.getDate().equals(examinationSchedule.getDate()) && dto.getStartTime().isAfter(examinationSchedule.getStartTime()) && dto.getStartTime().isBefore(examinationSchedule.getStartTime().plusMinutes(examinationSchedule.getDuration()))) {
                     return false;
                 }
+                if(dto.getDate().equals(examinationSchedule.getDate()) &&  dto.getStartTime()==examinationSchedule.getStartTime()){
+                    return false;
+                }
             }
         }
         return true;

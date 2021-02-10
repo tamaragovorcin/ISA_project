@@ -20,7 +20,7 @@ public class ActionsService implements IActionsService {
 
     @Override
     public Actions findById(Integer id) {
-        return actionsRepository.getOne(id);
+        return actionsRepository.findById(id).get();
     }
 
     @Override

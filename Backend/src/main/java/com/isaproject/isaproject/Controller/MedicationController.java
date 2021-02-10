@@ -67,26 +67,40 @@ public class MedicationController {
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<String> addInPharmacy(@RequestBody MedicationPriceDTO medicationPriceDTO)
     {
-        if(medicationPriceDTO.getDate().isAfter(LocalDate.now())) {
-            MedicationPrice medicationPrice = medicationPriceService.save(medicationPriceDTO);
-            if (medicationPrice != null) {
-                return new ResponseEntity<>("Medication  is successfully added in pharmacy.", HttpStatus.CREATED);
-
-
+        if(medicationPriceDTO.getDate() != null) {
+            if (medicationPriceDTO.getDate().isBefore(LocalDate.now())) {
+                return new ResponseEntity<>("Price expiry date has to be in future.", HttpStatus.CREATED);
             }
         }
-        return new ResponseEntity<>("Price expiry date has to be in future.", HttpStatus.CREATED);
+
+
+        MedicationPrice medicationPrice = medicationPriceService.save(medicationPriceDTO);
+            if (medicationPrice != null) {
+                return new ResponseEntity<>("Medication  is successfully added in pharmacy.", HttpStatus.CREATED);
+            }else{
+                return new ResponseEntity<>("Medication can not be added in pharmacy.", HttpStatus.CREATED);
+
+            }
+
 
 
     }
     @PostMapping("/priceInPharmacy")
     ResponseEntity<String> addToPharmacy(@RequestBody MedicationPriceDTO medicationPriceDTO)
     {
+        if(medicationPriceDTO.getDate() ==null){
+            return new ResponseEntity<>("Expiry date has to be defined.", HttpStatus.CREATED);
+
+        }
+        if(medicationPriceDTO.getDate().isBefore(LocalDate.now())){
+            return new ResponseEntity<>("Date has to be in future.", HttpStatus.CREATED);
+
+        }
         MedicationPrice medicationPrice = medicationPriceService.updatePrice(medicationPriceDTO);
         if(medicationPrice != null)
              return new ResponseEntity<>("Medication price is successfully updated.", HttpStatus.CREATED);
         else
-             return new ResponseEntity<>("Date has to be in future.", HttpStatus.CREATED);
+             return new ResponseEntity<>("Please, try later.", HttpStatus.CREATED);
     }
 
     @PostMapping("/remove")

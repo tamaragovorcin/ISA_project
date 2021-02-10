@@ -8,46 +8,39 @@
                                     <b-dropdown-item href = "/pharmacyAdminProfile">Profile</b-dropdown-item>
                                     <b-dropdown-item href = "/phAdminProfileUpdate">Update profile</b-dropdown-item>      
                                 </b-dropdown>        
-                       <strong class="tab"></strong>  
 
                                     <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
-                                                <button class = "btn btn-secondary" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
+                                                <button class = "btn btn-link" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
                                     </router-link>
                    
-                          <strong class="tab"></strong>  
 
                                   <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
                                                 class = "btn btn-link btn-lg">
                                       <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
                                       <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
                                   </b-dropdown> 
-                          <strong class="tab"></strong>  
                                   <b-dropdown id="ddCommodity" name="ddCommodity" text="Dermatologists" 
                                                   class = "btn btn-link btn-lg">
                                         <b-dropdown-item href = "/pharmacyDermatologists">Our dermatologists(Add new)</b-dropdown-item>
                                         <b-dropdown-item href = "/examinationTerms">Examination terms</b-dropdown-item>      
                                     </b-dropdown>                 
-                            <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
-                            <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
-                            <strong class="tab"></strong>  
-                            <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
-                            <strong class="tab"></strong>  
+                            <a   class = "btn btn-link" href = "/pharmacyMedications">Medications</a>
+                            <a   class = "btn btn-link" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
+                            <a  class = "btn btn-link" href = "/actionsAndBenefits">Actions and benefits</a>
                             <b-dropdown id="ddCommodity" name="ddCommodity" text="Orders" 
                                                   class = "btn btn-link btn-lg">
                                         <b-dropdown-item href = "/order">Preview orders and offers(Add new)</b-dropdown-item>
                                         <b-dropdown-item href = "/editOrder">Edit/remove order</b-dropdown-item>      
                                     </b-dropdown>                             
-                                    <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href="/holidayRequests">Holiday/absence requests</a>
-                             <strong class="tab"></strong>  
+                            <a   class = "btn btn-link" href="/holidayRequests">Holiday/absence requests</a>
                             <b-dropdown id="ddCommodity" name="ddCommodity" text="Graphical reviews" 
                                                   class = "btn btn-link btn-lg">
                                         <b-dropdown-item href = "/examinationGraphics">Examinations</b-dropdown-item>
                                         <b-dropdown-item href = "/medicationGraphics">Medication consumption</b-dropdown-item> 
                                         <b-dropdown-item href = "/incomeGraphics">Income</b-dropdown-item>      
                                     </b-dropdown>     
+                             <a   class = "btn btn-link" href="/medicationInquires">Inquires for missing medication</a>
+
             </span>
               <span  style="float:right;margin:15px">
                    
@@ -55,13 +48,16 @@
                 
                 </span>
         </div>
-       <h5 style="color:#0D184F;font-size:25px;font-weight:bold;background:whitesmoke;width:15%;" align = "left">Mark of your pharmacy:<div style="font-size:35px;"> {{pharmacy.mark}}</div></h5>
-        <h3 style="color:#0D184F;font-size:45px;font-weight:bold;" align = "center"><u>Admin of {{pharmacy.pharmacyName}}</u></h3>
+
+        <h3 style="color:#0D184F;font-size:45px;font-weight:bold;" align = "center"><u>Admin of pharmacy {{pharmacy.pharmacyName}}</u></h3>
+       <h5 style="color:#0D184F;font-size:25px;font-weight:bold;background:whitesmoke;">Mark of your pharmacy:<div style="font-size:35px;"> {{pharmacy.mark}}</div></h5>
 
 
         <div style="background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
             <h3 style="color: #0D184F"></h3>
                 <form>
+                        <h3 style="color:#0D184F;font-size:25px;font-weight:bold;" align = "center">About you:</h3>
+
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Name:</label>
@@ -175,8 +171,9 @@ export default {
                             console.log(res);
                     });
          }).catch(res => {
-                       alert("NOT OK");
-                        console.log(res);
+                       alert("Please, log in.");
+                       window.location.href ="/login";
+                       console.log(res);
                  });
     
 
@@ -198,7 +195,8 @@ export default {
 
       },
        logOut : function(){
-           window.location.href = "/login";
+         localStorage.removeItem('token');
+         window.location.href = "/login";
       },
       sendComplaint : function(){
 
@@ -214,6 +212,9 @@ export default {
 </script>
 
 <style>
+.tab{
+    width : 5px;
+}
 
 </style>
 

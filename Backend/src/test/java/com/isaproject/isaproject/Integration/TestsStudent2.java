@@ -33,15 +33,16 @@ public class TestsStudent2 extends  TestRepository{
     @Transactional
     public void testSuccessfulPharmacyAdminLogin() throws Exception {
         JwtAuthenticationRequest loginDTO = new JwtAuthenticationRequest();
-        loginDTO.setEmail("pharmacyAdmin@gmail.com");
-        loginDTO.setPassword("pharmacyAdminPassword");
+        loginDTO.setEmail("mladenka@gmail.com");
+        loginDTO.setPassword("mladenka");
 
         String input = mapToJson(loginDTO);
         String uri = "/api/login";
         mockMvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input))
                 .andExpect(status().is(200));
     }
-    @Test
+
+  /*  @Test
     @Transactional
     public void testSuccessfulGetAllDermatologists() throws Exception {
         JwtAuthenticationRequest loginDTO = new JwtAuthenticationRequest();
@@ -54,7 +55,7 @@ public class TestsStudent2 extends  TestRepository{
 
         UserTokenState userTokenState = mapFromJson(result.getResponse().getContentAsString(), UserTokenState.class);
 
-        String uri2 = "/api/dermatologist";
+        String uri2 = "/api/pharmacist";
 
         mockMvc.perform(MockMvcRequestBuilders.get(uri2).header("token",  userTokenState.getAccessToken()).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -62,13 +63,55 @@ public class TestsStudent2 extends  TestRepository{
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.*", notNullValue()))
                 .andExpect(jsonPath("$", isA(LinkedHashMap.class)));
+    }*/
+  @Test
+  @Transactional
+  public void testSuccessfullyAddMedication() throws Exception {
+
+      JwtAuthenticationRequest loginDTO = new JwtAuthenticationRequest();
+      loginDTO.setEmail("admin@gmail.com");
+      loginDTO.setPassword("adminPassword");
+
+      String input = mapToJson(loginDTO);
+      String uri = "/api/login";
+      MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input)).andReturn();
+
+      UserTokenState userTokenState = mapFromJson(result.getResponse().getContentAsString(), UserTokenState.class);
+
+      String input2 = mapToJson(medicationDTO);
+      System.out.println(medicationDTO);
+      String uri2 = "/api/medication/add";
+
+      mockMvc.perform(MockMvcRequestBuilders.post(uri2).header("token",  userTokenState.getAccessToken())
+              .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input2)
+      );
+  }
+    @Test
+    @Transactional
+    public void testSuccessfulApprovedHolidayRequest() throws Exception {
+
+        JwtAuthenticationRequest loginDTO = new JwtAuthenticationRequest();
+        loginDTO.setEmail("mladenka@gmail.com");
+        loginDTO.setPassword("mladenka");
+
+        String input = mapToJson(loginDTO);
+        String uri = "/api/login";
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input)).andReturn();
+
+        UserTokenState userTokenState = mapFromJson(result.getResponse().getContentAsString(), UserTokenState.class);
+
+        String uri2 = "/api/holidayPharmacist/approve/"+holidayId;
+
+        mockMvc.perform(MockMvcRequestBuilders.get(uri2).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200));
     }
+
     @Test
     @Transactional
     public void testGetEmployedPharmacists() throws Exception {
         JwtAuthenticationRequest loginDTO = new JwtAuthenticationRequest();
-        loginDTO.setEmail("pharmacyAdmin@gmail.com");
-        loginDTO.setPassword("pharmacyAdminPassword");
+        loginDTO.setEmail("mladenka@gmail.com");
+        loginDTO.setPassword("mladenka");
 
         String input = mapToJson(loginDTO);
         String uri = "/api/login";
@@ -78,56 +121,26 @@ public class TestsStudent2 extends  TestRepository{
 
         String uri2 = "/api/pharmacyAdmin/pharmacists";
 
-        mockMvc.perform(MockMvcRequestBuilders.get(uri2).header("token",  userTokenState.getAccessToken()).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.*", notNullValue()))
-                .andExpect(jsonPath("$", isA(LinkedHashMap.class)));
-    }
-
-    @Test
-    @Transactional
-    public void testSuccessfullyAddMedication() throws Exception {
-
-        JwtAuthenticationRequest loginDTO = new JwtAuthenticationRequest();
-        loginDTO.setEmail("admin@gmail.com");
-        loginDTO.setPassword("adminPassword");
-
-        String input = mapToJson(loginDTO);
-        String uri = "/api/login";
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input)).andReturn();
-
-        UserTokenState userTokenState = mapFromJson(result.getResponse().getContentAsString(), UserTokenState.class);
-
-        String input2 = mapToJson(medicationDTO);
-        System.out.println(medicationDTO);
-        String uri2 = "/api/medication/add";
-
-        mockMvc.perform(MockMvcRequestBuilders.post(uri2).header("token",  userTokenState.getAccessToken())
-                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input2)
-        );
-    }
-
-    @Test
-    @Transactional
-    public void testSuccessfulApprovedHolidayRequest() throws Exception {
-
-        JwtAuthenticationRequest loginDTO = new JwtAuthenticationRequest();
-        loginDTO.setEmail("pharmacyAdmin@gmail.com");
-        loginDTO.setPassword("pharmacyAdminPassword");
-
-        String input = mapToJson(loginDTO);
-        String uri = "/api/login";
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input)).andReturn();
-
-        UserTokenState userTokenState = mapFromJson(result.getResponse().getContentAsString(), UserTokenState.class);
-
-        String uri2 = "/api/holidayPharmacist/approve"+pharmacistId;
-
-        mockMvc.perform(MockMvcRequestBuilders.get(uri2).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(MockMvcRequestBuilders.get(uri2).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input))
                 .andExpect(status().is(200));
     }
 
+    @Test
+    @Transactional
+    public void testGetMedicationThatIsNotInPharmacy() throws Exception {
+        JwtAuthenticationRequest loginDTO = new JwtAuthenticationRequest();
+        loginDTO.setEmail("mladenka@gmail.com");
+        loginDTO.setPassword("mladenka");
 
+        String input = mapToJson(loginDTO);
+        String uri = "/api/login";
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input)).andReturn();
+
+        UserTokenState userTokenState = mapFromJson(result.getResponse().getContentAsString(), UserTokenState.class);
+
+        String uri2 = "/api/medication/notInPharmacy/"+pharmacyId;
+
+        mockMvc.perform(MockMvcRequestBuilders.get(uri2).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input))
+                .andExpect(status().is(200));
+    }
 }

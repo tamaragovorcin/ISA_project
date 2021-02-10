@@ -41,6 +41,7 @@ public class PharmacyAdminController {
     @Autowired
     DermatologistService dermatologistService;
 
+
     @PostMapping("/register")
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PharmacyAdminDTO userRequest) {
@@ -60,6 +61,7 @@ public class PharmacyAdminController {
         PersonUser user = pharmacyAdminService.save(userRequest);
         return new ResponseEntity<>("Supplier is successfully registred!", HttpStatus.CREATED);
     }
+
 
     @GetMapping("/account")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
@@ -122,7 +124,7 @@ public class PharmacyAdminController {
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
         List<DermatologistFrontDTO> dermatologists = new ArrayList<DermatologistFrontDTO>();
         for(Dermatologist derm : pharmacyAdmin.getPharmacy().getDermatologists()){
-            if(derm.getName().toLowerCase().contains(dto.getFirstName().toLowerCase(Locale.ROOT))&& derm.getSurname().toLowerCase().contains(dto.getSurName().toLowerCase())){
+            if(derm.getName().toLowerCase().startsWith(dto.getFirstName().toLowerCase(Locale.ROOT))&& derm.getSurname().toLowerCase().startsWith(dto.getSurName().toLowerCase())){
                 DermatologistFrontDTO dermatologistFrontDTO = new DermatologistFrontDTO();
                 dermatologistFrontDTO.setFirstname(derm.getName());
                 dermatologistFrontDTO.setSurname(derm.getSurname());
@@ -232,6 +234,7 @@ public class PharmacyAdminController {
         List<HolidaySchedulePharmacistFrontDTO> schedulePharmacistFrontDTOS = new ArrayList<HolidaySchedulePharmacistFrontDTO>();
         for(HolidaySchedulePharmacist holiday :  pharmacistHolidayService.findAll()){
             if(holiday.getPharmacist().getPharmacy().getId() == pharmacyAdmin.getPharmacy().getId() && holiday.getApproved().equals("WAIT_FOR_RESPONSE")) {
+                System.out.println("UDJE U IFFFFFFFFFFFFFFFFFFFFFFF");
                 HolidaySchedulePharmacistFrontDTO holidaySchedulePharmacistFrontDTO = new HolidaySchedulePharmacistFrontDTO();
                 holidaySchedulePharmacistFrontDTO.setPharmacist(holiday.getPharmacist().getName() + " " + holiday.getPharmacist().getSurname());
                 holidaySchedulePharmacistFrontDTO.setScheduleId(holiday.getId());
@@ -241,6 +244,7 @@ public class PharmacyAdminController {
                 holidaySchedulePharmacistFrontDTO.setEndDate(holiday.getEndDate());
                 holidaySchedulePharmacistFrontDTO.setType(holiday.getType());
                 schedulePharmacistFrontDTOS.add(holidaySchedulePharmacistFrontDTO);
+                System.out.println(holidaySchedulePharmacistFrontDTO.getPharmacist());
             }
         }
         return schedulePharmacistFrontDTOS == null ?
@@ -297,7 +301,7 @@ public class PharmacyAdminController {
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
         List<MedicationPriceFrontDTO> medicationPriceFrontDTOS = new ArrayList<MedicationPriceFrontDTO>();
         for(MedicationPrice medicationPrice : medicationPriceService.findByPharmacy(pharmacyAdmin.getPharmacy().getId())){
-            if(medicationPrice.getMedication().getName().toLowerCase().equals(searchField.toLowerCase()) || String.valueOf(medicationPrice.getMedication().getCode()).equals(searchField)) {
+            if(medicationPrice.getMedication().getName().toLowerCase().startsWith(searchField.toLowerCase()) || String.valueOf(medicationPrice.getMedication().getCode()).equals(searchField)) {
                 MedicationPriceFrontDTO medicationPriceFrontDTO = new MedicationPriceFrontDTO();
                 medicationPriceFrontDTO.setId(medicationPrice.getMedication().getId());
                 medicationPriceFrontDTO.setQuantity(medicationPrice.getQuantity());
@@ -343,7 +347,7 @@ public class PharmacyAdminController {
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
         List<Pharmacist> pharmacists = new ArrayList<>();
         for(Pharmacist pharmacist : pharmacyAdmin.getPharmacy().getPharmacists()){
-            if(pharmacist.getName().toLowerCase().contains(dto.getFirstName().toLowerCase()) && pharmacist.getSurname().toLowerCase().contains(dto.getSurName().toLowerCase())){
+            if(pharmacist.getName().toLowerCase().startsWith(dto.getFirstName().toLowerCase()) && pharmacist.getSurname().toLowerCase().startsWith(dto.getSurName().toLowerCase())){
                 pharmacists.add(pharmacist);
             }
         }

@@ -282,8 +282,27 @@ public class PharmacyController  {
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addSchedule(@RequestBody ExaminationScheduleDTO dto) {
 
+        if(dto.getDate() == null){
+            return new ResponseEntity<>("You have to define date.", HttpStatus.CREATED);
+
+        }
+        if(dto.getDate().isBefore(LocalDate.now())){
+            return new ResponseEntity<>("You can not schedule examination term in past.", HttpStatus.CREATED);
+
+        }
+        if(dto.getStartTime() == null){
+            return new ResponseEntity<>("You have to define time.", HttpStatus.CREATED);
+
+        }
+        if(dto.getDermatologist() == null){
+            return new ResponseEntity<>("You have to define dermatologist.", HttpStatus.CREATED);
+
+        }
+        if(dto.getDuration() == null || dto.getPrice() ==0){
+            return new ResponseEntity<>("You have to define duration and price.", HttpStatus.CREATED);
+
+        }
         ExaminationSchedule examinationSchedule = examinationScheduleService.save(dto);
-        System.out.println(examinationSchedule);
          if(examinationSchedule == null) {
             return new ResponseEntity<>("Dermatologist is not available at required time! Try in another time.", HttpStatus.CREATED);
 

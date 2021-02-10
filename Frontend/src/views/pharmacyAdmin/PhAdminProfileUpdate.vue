@@ -2,42 +2,43 @@
   <div  v-if="loggedIn"  id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-            <span style="float: left; margin: 15px;">
+             <span style="float: left; margin-top: 15px;">
                               <b-dropdown id="ddCommodity" name="ddCommodity" text="My profile" 
                                               class = "btn btn-link btn-lg">
                                     <b-dropdown-item href = "/pharmacyAdminProfile">Profile</b-dropdown-item>
                                     <b-dropdown-item href = "/phAdminProfileUpdate">Update profile</b-dropdown-item>      
                                 </b-dropdown>        
 
-                        <strong class="tab"></strong>  
-
                                     <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
-                                                <button class = "btn btn-secondary" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
+                                                <button class = "btn btn-link" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
                                     </router-link>
-
-                          <strong class="tab"></strong>  
+                   
 
                                   <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
                                                 class = "btn btn-link btn-lg">
                                       <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
                                       <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
                                   </b-dropdown> 
-                          <strong class="tab"></strong>  
                                   <b-dropdown id="ddCommodity" name="ddCommodity" text="Dermatologists" 
                                                   class = "btn btn-link btn-lg">
                                         <b-dropdown-item href = "/pharmacyDermatologists">Our dermatologists(Add new)</b-dropdown-item>
                                         <b-dropdown-item href = "/examinationTerms">Examination terms</b-dropdown-item>      
                                     </b-dropdown>                 
-                            <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
-                            <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
-                            <strong class="tab"></strong>  
-                            <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
-                            <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href="/order">Orders</a>
-                            <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href="/holidayRequests">Holiday/absence requests</a>
+                            <a   class = "btn btn-link" href = "/pharmacyMedications">Medications</a>
+                            <a   class = "btn btn-link" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
+                            <a  class = "btn btn-link" href = "/actionsAndBenefits">Actions and benefits</a>
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Orders" 
+                                                  class = "btn btn-link btn-lg">
+                                        <b-dropdown-item href = "/order">Preview orders and offers(Add new)</b-dropdown-item>
+                                        <b-dropdown-item href = "/editOrder">Edit/remove order</b-dropdown-item>      
+                                    </b-dropdown>                             
+                            <a   class = "btn btn-link" href="/holidayRequests">Holiday/absence requests</a>
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Graphical reviews" 
+                                                  class = "btn btn-link btn-lg">
+                                        <b-dropdown-item href = "/examinationGraphics">Examinations</b-dropdown-item>
+                                        <b-dropdown-item href = "/medicationGraphics">Medication consumption</b-dropdown-item> 
+                                        <b-dropdown-item href = "/incomeGraphics">Income</b-dropdown-item>      
+                                    </b-dropdown>     
             </span>
               <span  style="float:right;margin:15px">
                    
@@ -179,7 +180,8 @@ mounted() {
 
             
          }).catch(res => {
-                       alert("NOT OK");
+                       alert("Please, log in.");
+                       window.location.href="/login";
                         console.log(res);
                  });
 
@@ -194,7 +196,8 @@ mounted() {
       previousUpdateProfile : function(){
       },
     logOut : function(){
-          window.location.href = "/login";
+        localStorage.remove.item('token');
+        window.location.href = "/login";
       },
         hideModal() {
         this.$refs['my-modal'].hide()
@@ -245,6 +248,7 @@ mounted() {
       },
       changePassword : function(){
           
+        
         if(this.newPassword != this.newPasswordRepeat) {
             alert("New passwords must be equal.")
             return;
@@ -253,19 +257,19 @@ mounted() {
         const changePasswordInfo ={
                 oldPassword : this.currentPassword,
                 newPassword : this.newPassword,
+                rewriteNewPassword : this.newPasswordRepeat
             } 
         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
         this.axios.post('/passwordFirstLogin',changePasswordInfo,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                 }}).then(response => {
-                  alert("Password successfully changed");
-                  console.log(response);
+                    console.log(response);
+                    alert("Password successfully changed.") 
+                    this.hideModal()
                 }).catch(res => {
-                       alert("Please try later.");
-                        console.log(res);
+                    alert(res.response.data.message);
                 });
-
 
       }
 }
