@@ -10,6 +10,7 @@ import com.isaproject.isaproject.Service.IServices.IWorkingHoursPharmacist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -51,6 +52,48 @@ public class WorkingHoursPharmacistService implements IWorkingHoursPharmacist {
         System.out.println("------------------------------------------------------------------");
         System.out.println("----POGODIO SERVIS---");
         Pharmacist pharmacist = pharmacistService.findById(userRequest.getPharmacistId());
+        if(userRequest.getStartTimeMonday()==null){
+            userRequest.setStartTimeMonday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getEndTimeMonday()==null){
+            userRequest.setEndTimeMonday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getStartTimeTuesday()==null){
+            userRequest.setStartTimeTuesday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getEndTimeTuesday()==null){
+            userRequest.setEndTimeTuesday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getStartTimeWednesday()==null){
+            userRequest.setStartTimeWednesday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getEndTimeWednesday()==null){
+            userRequest.setEndTimeWednesday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getStartTimeThursday()==null){
+            userRequest.setStartTimeThursday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getEndTimeThursday()==null){
+            userRequest.setEndTimeThursday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getStartTimeFriday()==null){
+            userRequest.setStartTimeFriday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getEndTimeFriday()==null){
+            userRequest.setEndTimeFriday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getStartTimeSaturday()==null){
+            userRequest.setStartTimeSaturday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getEndTimeSaturday()==null){
+            userRequest.setEndTimeSaturday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getStartTimeSunday()==null){
+            userRequest.setStartTimeSunday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getEndTimeSunday()==null){
+            userRequest.setEndTimeSunday(LocalTime.MIDNIGHT);
+        }
         if(getByPharmacist(pharmacist)== null){
             System.out.println("---------------------PRAVI NOVI--------------------------------");
 

@@ -72,13 +72,17 @@ public class MedicationController {
                 return new ResponseEntity<>("Price expiry date has to be in future.", HttpStatus.CREATED);
             }
         }
+        if(medicationPriceDTO.getPrice()<0){
+            return new ResponseEntity<>("Price has to be positive number.", HttpStatus.CREATED);
+
+        }
 
 
         MedicationPrice medicationPrice = medicationPriceService.save(medicationPriceDTO);
             if (medicationPrice != null) {
                 return new ResponseEntity<>("Medication  is successfully added in pharmacy.", HttpStatus.CREATED);
             }else{
-                return new ResponseEntity<>("Medication can not be added in pharmacy.", HttpStatus.CREATED);
+                return new ResponseEntity<>("Medication can not be added in pharmacy.", HttpStatus.NOT_FOUND);
 
             }
 
@@ -104,7 +108,7 @@ public class MedicationController {
     }
 
     @PostMapping("/remove")
-    ResponseEntity<String> remove(@RequestBody MedicationPriceDTO medicationPriceDTO)
+    ResponseEntity<String> remove(@RequestBody MedicationForRemovingDTO medicationPriceDTO)
     {
         Boolean deleted = medicationPriceService.remove(medicationPriceDTO);
 

@@ -39,6 +39,8 @@
                                         <b-dropdown-item href = "/medicationGraphics">Medication consumption</b-dropdown-item> 
                                         <b-dropdown-item href = "/incomeGraphics">Income</b-dropdown-item>      
                                     </b-dropdown>     
+                             <a   class = "btn btn-link" href="/medicationInquires">Inquires for medication</a>
+
             </span>
               <span  style="float:right;margin:15px">
                    

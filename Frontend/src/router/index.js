@@ -75,7 +75,7 @@ import Dermatologists from '../views/home/Dermatologists.vue'
 import MedicationGraphics from '../views/pharmacyAdmin/MedicationGraphics.vue'
 import IncomeGraphics from '../views/pharmacyAdmin/IncomeGraphics.vue'
 import ExaminationGraphics from '../views/pharmacyAdmin/ExaminationGraphics.vue'
-import AppMaps from '../views/maps/AppMaps.vue'
+import Mapa from '../views/systemAdmin/Mapa.vue'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -469,9 +469,9 @@ const routes = [
       component: ExaminationGraphics
     },
     {
-      path: '/appMaps',
-      name: 'AppMaps',
-      component: AppMaps
+      path: '/mapa/:id',
+      name: 'Mapa',
+      component: Mapa
     },
 
     

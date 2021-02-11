@@ -93,7 +93,36 @@ public class ConsultingController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 new ResponseEntity<>("Consulting is successfully added!", HttpStatus.CREATED);
     }
+    @PostMapping("/scheduleFromPharmacyProfile")
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<String> scheduleConsultingFromPharmacyProfile(@RequestBody ScheduleConsultingDTO consultingDTO) {
+        if(consultingDTO.getDate() ==  null || consultingDTO.getStartTime() == null){
+           return  new ResponseEntity<>("You have to define date and time!", HttpStatus.CREATED);
 
+        }
+        if(consultingDTO.getDate().isBefore(LocalDate.now())){
+          return   new ResponseEntity<>("You can not schedule consulting in past!", HttpStatus.CREATED);
+        }
+        Patient patient = patientService.findById(consultingDTO.getPatient());
+        ConsultingDTO consultingDTO1 = new ConsultingDTO();
+        consultingDTO1.setDate(consultingDTO.getDate());
+        consultingDTO1.setDuration(15);
+        consultingDTO1.setInformation("");
+        consultingDTO1.setCancelled(false);
+        consultingDTO1.setShowedUp(false);
+        Consulting consulting = consultingService.save(consultingDTO1);
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(patient.getEmail());
+        mail.setSubject("Successfuly reserved pharmacist consultation!");
+        mail.setFrom(environment.getProperty("spring.mail.username"));
+        mail.setText("You have successfully reserved an appointment on : "
+                + consulting.getDate() + " at " + consulting.getStartTime() + ". Your doctor is " + consulting.getPharmacist().getName() + " " + consulting.getPharmacist().getSurname());
+
+        mailSender.send(mail);
+        return consulting == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                new ResponseEntity<>("Consulting is successfully added!", HttpStatus.CREATED);
+    }
     @PostMapping("/update")
     @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<String> update(@RequestBody ConsultingForBackDTO consulting) {

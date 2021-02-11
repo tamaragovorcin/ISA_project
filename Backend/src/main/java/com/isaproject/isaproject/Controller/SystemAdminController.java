@@ -28,12 +28,12 @@ public class SystemAdminController {
             throw new IllegalArgumentException("Please fill in all the fields correctly!");
         }
 
-        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+       /* Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser userLogged = (PersonUser)currentUser.getPrincipal();
         SystemAdmin systemAdmin = systemAdminService.findById(userLogged.getId());
         if(!systemAdmin.getMainAdmin()) {
             throw new IllegalArgumentException("Only main system admin can register new system admin!");
-        }
+        }*/
 
 
         PersonUser existUser = systemAdminService.findByEmail(userRequest.getEmail());

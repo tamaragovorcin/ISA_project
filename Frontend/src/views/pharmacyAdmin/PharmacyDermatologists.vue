@@ -2,7 +2,7 @@
   <div  v-if="loggedIn"  id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-                <span style="float: left; margin-top: 15px;">
+               <span style="float: left; margin-top: 15px;">
                               <b-dropdown id="ddCommodity" name="ddCommodity" text="My profile" 
                                               class = "btn btn-link btn-lg">
                                     <b-dropdown-item href = "/pharmacyAdminProfile">Profile</b-dropdown-item>
@@ -39,13 +39,14 @@
                                         <b-dropdown-item href = "/medicationGraphics">Medication consumption</b-dropdown-item> 
                                         <b-dropdown-item href = "/incomeGraphics">Income</b-dropdown-item>      
                                     </b-dropdown>     
+                             <a   class = "btn btn-link" href="/medicationInquires">Inquires for medication</a>
+
             </span>
               <span  style="float:right;margin:15px">
                    
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
                 
                 </span>
-
         </div>
         
        
@@ -484,7 +485,7 @@ export default {
                           
                              
                     }).catch(response => {
-                            alert("NOT OK");
+                          alert(response.response.data.message);
                             console.log(response);
                     });
 		},

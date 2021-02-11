@@ -31,7 +31,10 @@
               <div class="row" style = "background-color:whitesmoke;margin: auto;width: 60%;border: 3px solid gray;padding: 10px;margin-top:30px;">
 
                     <div style="color:#0D184F;font-size:25px;font-style:italic;font-weight:bold;">Visit us at: {{pharmacy.address.street}}&nbsp; {{pharmacy.address.number}},&nbsp; {{pharmacy.address.town}}</div>
-        
+             <router-link :to="{ path: '/mapa/'+pharmacy.id}" v-slot="{href, navigate}">
+                                  <button class = "btn btn-success" style="margin-left:25px;" :href="href" @click="navigate"  elevation="1">Show on map</button>
+                              </router-link>
+
          </div>
         </div>
 
@@ -74,6 +77,7 @@
                           <th scope="col">Name</th>
                           <th scope="col">Surname</th>
                           <th scope="col">Mark</th>
+                          <th scope="col">Schedule consulting</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -82,10 +86,32 @@
                                                                         <td>{{pharmacist.name}}</td>
                                                                         <td>{{pharmacist.surname}}</td>
                                                                         <td>{{pharmacist.markPharmacist}}</td>
+                                                                        <td><button class ="btn btn-info" @click = "consulting($event,pharmacist)">Schedule</button></td>
+
                                                                     </tr>
                       
                       </tbody>
                     </table>
+                     <b-modal ref="my-modal3" hide-footer scrollable title="Schedule consulting" size="lg" modal-class="b-modal">
+                    <div modal-class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content" style="background-color:whitesmoke">
+                            <div class="modal-body">
+                               
+                            
+                               <div class="form-row">
+                                  <label>Date:</label>
+                                  <input type="date" class="form-control" v-model="dateConsulting" placeholder="Enter a date">
+                                </div>
+                                <div class="form-row">
+                                  <label>Time:</label>
+                                  <input type="time" class="form-control" v-model="timeConsulting" placeholder="Enter time">
+                                </div>
+                                 <p class="tab2"></p>     
+                                  <p><button class="btn btn-primary btn-lg" v-on:click = "scheduleConsulting">Schedule</button></p>       
+                            </div>                
+                        </div>
+                    </div>
+          </b-modal>
 
       </div>
         <div v-if="termsShow" class="container justify-content-center" style="width:70%" id ="table">
@@ -103,6 +129,7 @@
                           <th scope="col">Time</th>
                           <th scope="col">Duration</th>
                           <th scope="col">Price</th>
+                          <th scope="col">Scheduling</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -113,8 +140,8 @@
                                                                         <td>{{term.dermatologisMark}}</td>
                                                                         <td>{{term.date}}</td>
                                                                         <td>{{term.startTime}}</td>
-                                                                        <td>{{term.duration}}</td>
-                                                                        <td>{{term.price}}</td>
+                                                                        <td>{{term.duration}} min</td>
+                                                                        <td>{{term.price}} din</td>
                                                                         <td><button class ="btn btn-info" @click = "schedule($event,term)">Schedule</button></td>
                                                                     </tr>
                       
@@ -178,6 +205,9 @@
                     </div>
           </b-modal>
 
+          
+
+
       </div>
 
       <div v-if="availabilityShow">
@@ -210,6 +240,19 @@
 
 </div>
 
+<div v-if="mapShow">
+                <div class="d-flex justify-content-center mt-3">
+                    <h2>Lokacija na mapi:</h2>
+                </div>
+
+ 
+       
+
+
+
+
+
+</div>
     <div class ="container-fluid" style="height:100%;width:20%;vertical-align:top;">
 
                 <div class="sidenav">
@@ -218,25 +261,29 @@
                 <hr/>
                 <a style="color:white"  v-on:click = "showDermatologists"> Dermatologists</a>
                 <hr/>
-                <a style="color:white"  @click = "showPharmacists">Pharmacists</a>
+                <a style="color:white"  @click = "showPharmacists">Pharmacists(Schedule consulting)</a>
                 <hr/>
-                <a style="color:white"  @click = "showMedication">Medications</a>
+                <a style="color:white"  @click = "showMedication">Medications(Prices and reservation)</a>
                 <hr/>
                 <a style="color:white"  v-on:click = "showTerms">Appointments with a dermatologists </a>
                 <hr/>
                 <a style="color:white"  v-on:click = "showAvailability">Check medication availability </a>
                 <hr/>
-                <a style="color:white"  v-on:click = "showMap">Show our location on map</a>
-
+                
                 </div>
     </div>
     </div>
 </template>
 
 <script>
+
+
 export default {
   data() {
     return {
+       olMap: null,
+      vectorLayer: null,
+      selectedFeature: null,
        id : this.$route.params.id,
        pharmacy : {
          address:{
@@ -262,58 +309,48 @@ export default {
        selectedMedication : {},
        xCoordinate : 0,
        yCoordinate : 0,
-       map : ""
+       map : null,
+       selectedPharmacist : {},
+       timeConsulting : "",
+       dateConsulting : "",
+       mapShow : false,
 
        
        
     }
   },
   mounted() {
-       let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-        this.axios.get('/pharmacy/'+this.id,{ 
-             headers: {
-                 'Authorization': 'Bearer ' + token,
-             }
-         }).then(response => {
+        this.axios.get('/pharmacy/'+this.id)
+        .then(response => {
                 this.pharmacy = response.data;
                 this.$nextTick(function() {
                     this.initMap();
                 })
-                 this.axios.get('pharmacy/dermatologistsFront/'+this.id,{ 
-             headers: {
-                 'Authorization': 'Bearer ' + token,
-             }
-         }).then(response => {
+                 this.axios.get('pharmacy/dermatologistsFront/'+this.id)
+         .then(response => {
                this.ourDermatologists=response.data;
          }).catch(res => {
                        alert("Please try again later.");
                         console.log(res);
                  });
-                  this.axios.get('pharmacy/pharmacists/'+this.id,{ 
-             headers: {
-                 'Authorization': 'Bearer ' + token,
-             }
-         }).then(response => {
+                  this.axios.get('pharmacy/pharmacists/'+this.id)
+                  .then(response => {
                this.ourPharmacists=response.data;
          }).catch(res => {
                        alert("Please try again later.");
                         console.log(res);
                  });
-       this.axios.get('pharmacy/freeExaminationTerms/'+this.id,{ 
-             headers: {
-                 'Authorization': 'Bearer ' + token,
-             }
-         }).then(response => {
+       this.axios.get('pharmacy/freeExaminationTerms/'+this.id)
+             
+         .then(response => {
                this.ourTerms=response.data;
          }).catch(res => {
                        alert("Please try again later.");
                         console.log(res);
                  });
-             this.axios.get('pharmacy/medication/'+this.id,{ 
-             headers: {
-                 'Authorization': 'Bearer ' + token,
-             }
-         }).then(response => {
+             this.axios.get('pharmacy/medication/'+this.id)
+            
+         .then(response => {
                this.ourMedications=response.data;
          }).catch(res => {
                        alert("Please try again later.");
@@ -329,6 +366,7 @@ export default {
         });
        
         
+    
     }
      ,
   methods:{
@@ -345,6 +383,7 @@ export default {
             this.termsShow = false;
             this.medicationShow = false;
             this.availabilityShow = false;
+            this.mapShow = false;
       },
       showPharmacists : function(){
         this.welcomePageShow = false;
@@ -353,6 +392,7 @@ export default {
           this.termsShow = false;
           this.medicationShow = false;
           this.availabilityShow = false;
+          this.mapShow = false;
 
      },
         showTerms : function(){
@@ -362,6 +402,7 @@ export default {
           this.termsShow = true;
           this.medicationShow = false;
           this.availabilityShow = false;
+          this.mapShow = false;
 
      }
       ,
@@ -372,6 +413,7 @@ export default {
           this.termsShow = false;
           this.medicationShow = true;
           this.availabilityShow = false;
+          this.mapShow = false;
           
       },
       showWelcomePage : function(){
@@ -381,6 +423,7 @@ export default {
           this.medicationShow = false;
           this.welcomePageShow = true;
           this.availabilityShow = false;
+          this.mapShow = false;
       },
       showAvailability : function(){
           this.dermatologistsShow = false;
@@ -389,7 +432,17 @@ export default {
           this.medicationShow = false;
           this.welcomePageShow = false;
           this.availabilityShow = true;
+          this.mapShow = false;
 
+      },
+      showMap : function(){
+        this.mapShow = true;
+        this.dermatologistsShow = false;
+        this.pharmacistsShow = false;
+        this.termsShow = false;
+        this.medicationShow = false;
+        this.welcomePageShow = false;
+        this.availabilityShow = false;
       },
       subscribe :  function(){
          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
@@ -511,17 +564,52 @@ export default {
 
                           console.log(response);
                         }).catch(response => {
-                          alert(response.data);
+                          alert("You have to be logged in as patient.");
+                          console.log(response);
                         });     
 
       });
-      }
-      ,
-      initMap : function(){
-       
-        
       },
-      showMap : function(){}
+
+      consulting(event,pharmacist){
+        this.selectedPharmacist  = pharmacist;
+        this.$refs['my-modal3'].show()
+      },
+      scheduleConsulting : function(){
+         let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }
+         }).then(response => {
+                this.patient = response.data;
+                
+          const consulting = {
+            pharmacist : this.selectedPharmacist.id,
+            patient : this.patient.id,
+            date : this.dateConsulting,
+            startTime : this.timeConsulting,
+          }
+           this.axios.post('/consulting/scheduleFromPharmacyProfile',consulting,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+                .then(response => {
+                       alert("Consulting is successfully created!");
+                        console.log(response.data);
+                })
+                .catch(response => {
+                       alert("Please try later.");
+                        console.log(response);
+                 });    
+                
+          }).catch(res => {
+                       alert("Please log in!");
+                       window.location.href="/login"
+                       console.log(res);
+                 });
+
+      }
    
 }
 }

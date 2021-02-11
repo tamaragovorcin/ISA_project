@@ -37,7 +37,7 @@ public class ConsultingService implements IConsultingService {
 
     @Override
     public Consulting save(ConsultingDTO consultingDTO) {
-
+System.out.println("USAOOOOO U SAVEEEEEEEEEEEEEEE");
         Consulting consulting = new Consulting();
         consulting.setPharmacist(consultingDTO.getPharmacist());
         consulting.setPatient(consultingDTO.getPatient());

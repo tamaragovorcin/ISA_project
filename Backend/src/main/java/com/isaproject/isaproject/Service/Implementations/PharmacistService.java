@@ -91,6 +91,12 @@ public class PharmacistService implements IPharmacistService {
         List<ConfirmationToken> confirmationTokens = confirmationTokenRepository.findAll();
         ConfirmationToken confirmationToken = new ConfirmationToken();
 
+
+        for(Consulting consulting : consultingService.findAll()){
+            if(consulting.getPharmacist().getId() == userRequest.getId() && !consulting.getCancelled() && consulting.getDate().isAfter(LocalDate.now())){
+            return "Pharmacist can't be removed. There are scheduled appointments in future.";
+            }
+        }
         for(ConfirmationToken confirmationToken1 : confirmationTokens){
 
             if (confirmationToken1.getPersonUser().getId()==userRequest.getId()){
@@ -101,11 +107,6 @@ public class PharmacistService implements IPharmacistService {
         for(WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacistRepository.findAll()){
             if(workingHoursPharmacist.getPharmacist().getId() == userRequest.getId()){
                 workingHoursPharmacistRepository.delete(workingHoursPharmacist);
-            }
-        }
-        for(Consulting consulting : consultingService.findAll()){
-            if(consulting.getPharmacist().getId() == userRequest.getId() && !consulting.getCancelled() && consulting.getDate().isAfter(LocalDate.now())){
-            return "Pharmacist can't be removed. There are scheduled appointments in future.";
             }
         }
         pharmacistRepository.delete(userRequest);

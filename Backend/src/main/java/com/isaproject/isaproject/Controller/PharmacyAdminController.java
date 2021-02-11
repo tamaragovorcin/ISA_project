@@ -78,6 +78,10 @@ public class PharmacyAdminController {
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<PharmacyAdmin> update(@RequestBody PharmacyAdminDTO person)
     {
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidationPharmacyAdminUpdate(person)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
 
         PharmacyAdmin patient = pharmacyAdminService.update(person);
         return patient == null ?
@@ -181,7 +185,7 @@ public class PharmacyAdminController {
         if(pharmacyAdminService.removeDermatologistFromPharmacy(pharmacyAdmin.getPharmacy().getId(),dermatologist)) {
             return new ResponseEntity<>("Dermatologist successfully removed from pharmacy!", HttpStatus.ACCEPTED);
         }else {
-            return new ResponseEntity<>("Dermatologist can't be removed, he's got some scheduled examinations!", HttpStatus.ACCEPTED);
+            throw new IllegalArgumentException("Dermatologist can't be removed, he's got some scheduled examinations!");
 
         }
     }

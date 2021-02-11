@@ -32,6 +32,7 @@ public class Address extends AddressDTO implements Serializable {
     @Column(name = "postalCode", nullable = true)
     private int postalCode;
 
+
     @Column(name = "country", nullable = true)
     private String country;
 
@@ -43,6 +44,7 @@ public class Address extends AddressDTO implements Serializable {
         this.postalCode = postalCode;
         this.country = country;
     }
+
 
     public Address(String town, String street, int number, int postalCode, String country) {
 
