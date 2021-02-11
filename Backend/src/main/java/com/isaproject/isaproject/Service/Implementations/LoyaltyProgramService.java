@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.io.ObjectInputFilter;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 
@@ -33,9 +33,11 @@ public class LoyaltyProgramService implements ILoyaltyProgramService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public LoyaltyProgram save(LoyaltyProgram loyaltyProgram) {
         return this.loyaltyProgramRepository.save(loyaltyProgram);
     }
+
     public void updatePatientsLoyaltyPoints(int points) {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
