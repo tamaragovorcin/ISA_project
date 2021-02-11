@@ -1,10 +1,13 @@
 package com.isaproject.isaproject.Service.Implementations;
+import antlr.ASTNULLType;
 import com.isaproject.isaproject.DTO.AddressDTO;
 import com.isaproject.isaproject.DTO.PersonUserDTO;
 import com.isaproject.isaproject.DTO.QRcodeInformationDTO;
+import com.isaproject.isaproject.Model.HelpModel.LoyaltyProgram;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Repository.AuthorityRepository;
+import com.isaproject.isaproject.Repository.LoyaltyProgramRepository;
 import com.isaproject.isaproject.Repository.PatientRepository;
 import com.isaproject.isaproject.Service.IServices.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,8 @@ public class PatientService implements IPatientService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private Environment environment;
+    @Autowired
+    private LoyaltyProgramRepository loyaltyProgramRepository;
 
     @Autowired
     JavaMailSenderImpl mailSender;
@@ -78,7 +83,16 @@ public class PatientService implements IPatientService {
 
     @Override
     public Patient save(PersonUserDTO userRequest) {
+
         Patient patient =  new Patient();
+
+        try {
+            LoyaltyProgram loyaltyProgram = loyaltyProgramRepository.findAll().get(0);
+            patient.setDiscount(loyaltyProgram.getRegularDiscount());
+        }
+        catch(Exception e) {
+            patient.setDiscount(0);
+        }
         patient.setName(userRequest.getFirstname());
         patient.setSurname(userRequest.getSurname());
         AddressDTO addressDTO = userRequest.getAddress();

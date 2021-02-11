@@ -4,12 +4,14 @@ import java.util.List;
 public class ChoosenPharmacyDTO {
     private Integer pharmacyId;
     private List<QRcodeInformationDTO> medications;
+    private String code;
 
     public ChoosenPharmacyDTO() {}
 
-    public ChoosenPharmacyDTO(Integer pharmacyId, List<QRcodeInformationDTO> medications) {
+    public ChoosenPharmacyDTO(Integer pharmacyId, List<QRcodeInformationDTO> medications, String code) {
         this.pharmacyId = pharmacyId;
         this.medications = medications;
+        this.code = code;
     }
 
     public Integer getPharmacyId() {
@@ -26,5 +28,13 @@ public class ChoosenPharmacyDTO {
 
     public void setMedications(List<QRcodeInformationDTO> medications) {
         this.medications = medications;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div v-if="isAuthorized" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             <span style="float: left; margin: 15px;">
@@ -102,7 +102,8 @@ export default {
         myMedications : [],
         choosenMedication : {},
         choosenMedicationQuantity : 0,
-        choosenMedicationId : null
+        choosenMedicationId : null,
+        isAuthorized : false
     
     }
   },
@@ -149,11 +150,14 @@ export default {
                  'Authorization': 'Bearer ' + token,
              }
          }).then(response => {
+             this.isAuthorized = true;
              this.myMedications=response.data;
          }).catch(res => {
-                       alert("NOT OK");
-                        console.log(res);
-                 });
+                this.isAuthorized = false;
+                alert("Please, log in first!");
+                window.location.href = "/login";
+                console.log(res);
+            });
       }
       
       

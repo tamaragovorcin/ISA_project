@@ -95,7 +95,7 @@ public class CommonValidatior {
         if(complaintDTO.getMassage().isEmpty() || complaintDTO.getSubject().isEmpty()) {
             throw new IllegalArgumentException("Please fill all the required fields correctly!");
         }
-        if(complaintDTO.getPharmacist()==null && complaintDTO.getDermatologist()==null && complaintDTO.getPharmacist()==null) {
+        if(complaintDTO.getPharmacist()==null && complaintDTO.getDermatologist()==null && complaintDTO.getPharmacyName()==null) {
             throw new IllegalArgumentException("Please choose subject of complaint!");
         }
         return true;
