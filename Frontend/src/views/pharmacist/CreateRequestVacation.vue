@@ -66,7 +66,7 @@ export default {
       },
         sendRequest : function() {
             const holiday = {
-            pharmacist : this.pharmacist.id,
+            pharmacistId : this.pharmacist.id,
             startDate : this.startDate,
             endDate  :this.endDate,
             type : this.type

@@ -134,12 +134,11 @@ export default {
 
 
   methods:{
-      showClients : function(){
-        
-
+       showClients : function(){
+         window.location.href = "/dermatologistClients";
       },
       showMyProfile: function(){
-         
+         window.location.href = "/dermatologistProfile";
       },
       changePersonal: function(){
           window.location.href = "/dermatologistUpdateProfile";
@@ -151,11 +150,12 @@ export default {
         localStorage.removeItem('token');
           window.location.href = "/login";
       },
-      vacation : function(){
+         vacation: function(){
+          window.location.href = "/dermatologistHoliday";
 
       },
-      workCalendar : function(){
-
+       workCalendar : function(){
+            window.location.href = "/workingHoursDermatologist";
       },
      
       sendComplaint : function(){

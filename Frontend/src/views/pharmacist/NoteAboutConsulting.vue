@@ -30,6 +30,14 @@
                     <strong class="tab"></strong>  
                     <strong class="tab"></strong>
                     
+                    <button class = "btn btn-info btn-lg" v-on:click = "writeConsulting">Add consultings</button>
+             <b class="tab"></b>   
+
+            <button class = "btn btn-info btn-lg" v-on:click = "addMedicine">Sell reserved medicines</button>
+             <b class="tab"></b>   
+
+            <button class = "btn btn-info btn-lg" v-on:click = "scheduleConsulting">Schedule new consulting</button>
+                
 
                 
             </span>
@@ -59,6 +67,7 @@
                                             <th scope="col">Note:</th>
                                             <th scope="col">Prescription:</th>
                                             <th scope="col">Ignored:</th>
+                                            <th scope="col">New:</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -71,7 +80,7 @@
                                                     <td><button class="btn btn-primary btn-lg" v-on:click="Belezi ($event, consulting)">Note Consulting</button></td>
                                                    <td><button class="btn btn-success btn-lg" v-on:click="Recept ($event, consulting)">Add prescription</button></td>
                                                     <td> <button class="btn btn-danger  btn-lg" v-on:click="ignored($event, consulting.patientId)">Ignored, add penal</button></td>
-
+                                                     <td> <button class="btn btn-danger  btn-lg" v-on:click="zakazi">Schedule new consulting</button></td>
                                                 </tr>
    
   </tbody>
@@ -308,21 +317,27 @@ export default {
       },
         showclients : function(){
       },
-        workCalendar: function(){
-         
+      workCalendar : function(){
+       window.location.href = "/workingHoursPharmacist";
+
+
       },
-        vacation: function(){
-         
+      vacation: function(){
+           window.location.href = "/createRequestVacation";
+      },
+     
+       zakazi : function(){
+           window.location.href = "/schedulingConsulting";
       },
        search: function(){
          
       },
       praviRecept: function(){
-         this.medicationList.push(this.medication)
+        
          const pres ={
               
                consultingId : this.selectedConsulting.consultingId,
-               medicationList : this.medicationList,
+               medicationId : this.medication.id,
                durationOfTherapy : this.durationOfTherapy,
               
             }
@@ -335,10 +350,9 @@ export default {
                        alert("Your prescription are successfully updated!");
                         console.log(response.data);
                 })
-                .catch(response => {
-                       alert("Please try later.");
-                        console.log(response);
-                 });    
+                .catch(res => {
+                    alert(res.response.data.message);
+                 });
       },
       Recept: function(event, consulting) {
             this.selectedConsulting = consulting;  
@@ -411,6 +425,16 @@ export default {
       },
       showMedications : function() {
           window.location.href = "/pharmacistMedicationSearch";
+      },
+       writeConsulting() {
+        window.location.href = "/noteConsultig";
+      },
+        scheduleConsulting : function(){
+             window.location.href = "/schedulingConsulting";
+      },
+      addMedicine : function(){
+          this.$refs['my-modal1'].show()
+
       },
        patientIsSelected : function(event, medication) {
         this.medication = medication;

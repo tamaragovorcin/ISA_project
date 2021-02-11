@@ -18,6 +18,7 @@ import CreateRequestVacation from '../views/pharmacist/CreateRequestVacation.vue
 import PharmacistUpdateProfile from '../views/pharmacist/PharmacistUpdateProfile.vue'
 import WorkingHoursPharmacist from '../views/pharmacist/WorkingHoursPharmacist.vue'
 import DermatologistHomePage from '../views/dermatologist/DermatologistHomePage.vue'
+import DermatologistClients from '../views/dermatologist/DermatologistClients.vue'
 import NoteAboutExamination from '../views/dermatologist/NoteAboutExamination.vue'
 import DermatologistProfile from '../views/dermatologist/DermatologistProfile.vue'
 import CreateRequestHoliday from '../views/dermatologist/CreateRequestHoliday.vue'
@@ -70,7 +71,12 @@ import DermatologistMedicationSearch from '../views/dermatologist/DermatologistM
 import HolidayRequestsDermatologists from '../views/systemAdmin/HolidayRequestsDermatologists.vue'
 import Pharmacists from '../views/home/Pharmacists.vue'
 import pharmacyProfilePatient from '../views/patient/pharmacyProfilePatient.vue'
+
+import WorkingHoursDermatologist from '../views/dermatologist/WorkingHoursDermatologist.vue'
+
+
 import EditOrder from '../views/pharmacyAdmin/EditOrder.vue'
+
 import Dermatologists from '../views/home/Dermatologists.vue'
 import MedicationGraphics from '../views/pharmacyAdmin/MedicationGraphics.vue'
 import IncomeGraphics from '../views/pharmacyAdmin/IncomeGraphics.vue'
@@ -137,6 +143,11 @@ const routes = [
       component: PharmacistProfile
     },
     {
+      path: '/workingHoursDermatologist',
+      name: 'WorkingHoursDermatologist',
+      component: WorkingHoursDermatologist
+    },
+    {
       path: '/schedulingExamination',
       name: 'SchedulingExamination',
       component: SchedulingExamination
@@ -170,6 +181,11 @@ const routes = [
       path: '/noteConsultig',
       name: 'NoteAboutConsulting',
       component: NoteAboutConsulting
+    },
+    {
+      path: '/dermatologistClients',
+      name: 'DermatologistClients',
+      component: DermatologistClients
     },
     {
       path: '/workingHoursPharmacist',

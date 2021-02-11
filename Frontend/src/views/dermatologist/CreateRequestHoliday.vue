@@ -4,7 +4,19 @@
         <div style="background: #0D184F; height: 90px;">
             <span style="float: left; margin: 15px;">
                   <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
-                  <b class="tab"></b>              
+                  <b class="tab"></b>     
+                  
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showClients">My patients</button>
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>  
+
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "workCalendar">Work calendar</button>
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>
+
+                    <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "vacation">Create a vacation</button>
+                    <strong class="tab"></strong>  
+                    <strong class="tab"></strong>         
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
                     <strong class="tab"></strong>  
             </span>
@@ -61,8 +73,11 @@ export default {
            localStorage.removeItem('token');
            window.location.href = "/login";
       },
-      showMyProfile : function() {
-         
+      showclients : function(){
+         window.location.href = "/dermatologistClients";
+      },
+      showMyProfile: function(){
+         window.location.href = "/dermatologistProfile";
       },
         sendRequest : function() {
             const holiday = {
@@ -91,6 +106,14 @@ export default {
       typeIsSelected : function(event, type) {
         this.type = type;
       },
+         vacation: function(){
+          window.location.href = "/dermatologistHoliday";
+
+      },
+       workCalendar : function(){
+            window.location.href = "/workingHoursDermatologist";
+      },
+     
         showMedications : function() {
           window.location.href = "/dermatologistMedicationSearch";
       },

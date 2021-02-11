@@ -119,33 +119,17 @@ public class DermatologistService implements IDermatologistService {
     }
 
     @Override
-    public Dermatologist update(Dermatologist userRequest) {
-        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        PersonUser user = (PersonUser)currentUser.getPrincipal();
-
-        Dermatologist supplier= findById(user.getId());
-        supplier.setAddress(userRequest.getAddress());
-        List<Authority> auth = new ArrayList<Authority>();
-        Authority authoritySupplier = authService.findByname("ROLE_DERMATOLOGISTT");
-
-        if(authoritySupplier==null) {
-            authorityRepository.save(new Authority("ROLE_DERMATOLOGISTT"));
-            auth.add(authService.findByname("ROLE_DERMATOLOGISTT"));
-        }
-        else {
-            auth.add(authoritySupplier);
-        }
-        supplier.setAuthorities(auth);
-        supplier.setEmail(userRequest.getEmail());
-        supplier.setEnabled(true);
-        supplier.setFirstLogged(userRequest.getFirstLogged());
-        supplier.setName(userRequest.getName());
-        supplier.setSurname(userRequest.getSurname());
-        supplier.setPhoneNumber(userRequest.getPhoneNumber());
-        supplier.setPassword(supplier.getPassword());
-        supplier.setLastPasswordResetDate(userRequest.getLastPasswordResetDate());
-        return this.dermatologistRepository.save(supplier);
-
+    public Dermatologist update(DermatologistDTO dto) {
+        Dermatologist admin = findByEmail(dto.getEmail());
+        Integer id = admin.getId();
+        Dermatologist per = dermatologistRepository.getOne(id);
+        per.setName(dto.getFirstname());
+        per.setPhoneNumber(dto.getPhonenumber());
+        per.setSurname(dto.getSurname());
+        AddressDTO addressDTO = dto.getAddress();
+        Address address = new Address(addressDTO.getTown(),addressDTO.getStreet(),addressDTO.getNumber(),addressDTO.getPostalCode(),addressDTO.getCountry());
+        per.setAddress(address);
+        return this.dermatologistRepository.save(per);
     }
 
     public Boolean addPharmacy(DermaotlogistPharmacyDTO dto) {

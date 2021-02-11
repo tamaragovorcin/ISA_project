@@ -109,12 +109,13 @@ public class PharmacistController {
 
     @PostMapping("/update")
     @PreAuthorize("hasRole('PHARMACIST')")
-    public ResponseEntity<String> update(@RequestBody Pharmacist userRequest) {
+    ResponseEntity<Pharmacist> update(@RequestBody PharmacistDTO person)
+    {
 
-        Pharmacist user = pharmacistService.update(userRequest);
-        return user.getSurname() == null ?
+        Pharmacist patient = pharmacistService.update(person);
+        return patient == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                new ResponseEntity<>("Pharmacist is successfully updated!", HttpStatus.CREATED);
+                ResponseEntity.ok(patient);
     }
 
 
@@ -408,19 +409,27 @@ public class PharmacistController {
 
     @GetMapping("/myPatients")
     @PreAuthorize("hasRole('PHARMACIST')")
-    ResponseEntity<Set<PatientForFrontDTO>> getOurPatients() {
+    ResponseEntity<List<PatientForFrontDTO>> getOurPatients() {
+        PatientForFrontDTO newP = new PatientForFrontDTO();
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser) currentUser.getPrincipal();
         Pharmacist pharmacist = pharmacistService.findById(user.getId());
-        HashSet<PatientForFrontDTO> persons = new HashSet<>();
+        List<PatientForFrontDTO> persons = new ArrayList<>();
 
         for (Consulting c : consultingService.findAll()) {
-            if (c.getPharmacist().getId() == pharmacist.getId())
-                persons.add(new PatientForFrontDTO(c.getPatient().getId(),c.getPatient().getEmail(), c.getPatient().getName(), c.getPatient().getSurname(), c.getPatient().getPhoneNumber()));
+            if (c.getPharmacist().getId() == pharmacist.getId()) {
+
+
+                persons.add(new PatientForFrontDTO(c.getPatient().getId(), c.getPatient().getEmail(), c.getPatient().getName(), c.getPatient().getSurname(), c.getPatient().getPhoneNumber()));
+            }
         }
+
+
         return persons== null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(persons);
     }
+
+
 
 }

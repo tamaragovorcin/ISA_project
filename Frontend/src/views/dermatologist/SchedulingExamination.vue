@@ -28,7 +28,10 @@
                       <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
                     <strong class="tab"></strong>
                     
-
+  <button class = "btn btn-info btn-lg" v-on:click = "writeExamination">My examination</button>
+             <b class="tab"></b>   
+ 
+            <button class = "btn btn-info btn-lg" v-on:click = "schedule">Schedule new examination</button>
                 
             </span>
               <span  style="float:right;margin:15px">
@@ -167,21 +170,27 @@ export default {
     },
  
      methods:{
-      showMyProfile: function(){
-         
-      },
         showclients : function(){
+            window.location.href = "/dermatologistClients";
+      },
+      showMyProfile: function(){
+           window.location.href = "/dermatologistProfile";
+      },
+    
+       vacation: function(){
+          window.location.href = "/dermatologistHoliday";
 
       },
-        workCalendar: function(){
-         
+       workCalendar : function(){
+            window.location.href = "/workingHoursDermatologist";
       },
-        vacation: function(){
-         
+      writeExamination() {
+       window.location.href = "/noteExamination";
       },
-       search: function(){
-         
+     schedule : function(){
+              window.location.href = "/schedulingExamination";
       },
+
        Add: function(event, examinationSchedule){
          this.selectedTerm = examinationSchedule;
          this.$refs['my-modal1'].show()
@@ -215,6 +224,7 @@ export default {
           window.location.href = "/isaHomePage";
       },
       logOut : function(){
+         localStorage.removeItem('token');
           window.location.href = "/login";
 
       },
