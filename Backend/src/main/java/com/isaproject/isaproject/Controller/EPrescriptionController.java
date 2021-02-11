@@ -105,13 +105,13 @@ public class EPrescriptionController {
 
     @PostMapping("/availability/pharmacy")
     ResponseEntity<String> getAvailabilityInPharmacy(@RequestBody MedicineAvailabilityQRDTO listMedications) {
-
+        Pharmacy pharmacy = pharmacyService.findById(listMedications.getPharmacy());
         for(PharmacyMedicationAvailabilityDTO dto : getAvailabilityInPharmacies(listMedications.getListMedications())) {
-            if(dto.getPharmacyName().equals(listMedications.getPharmacy().getPharmacyName()))
+            if(dto.getPharmacyName().equals(pharmacy.getPharmacyName()))
                 return new ResponseEntity<>("Requested medication is available in our pharmacy.", HttpStatus.CREATED);
 
         }
-        return new ResponseEntity<>("Requested medication is not available in our pharmacy.", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Requested medication is not available in our pharmacy.", HttpStatus.CREATED);
 
     }
 

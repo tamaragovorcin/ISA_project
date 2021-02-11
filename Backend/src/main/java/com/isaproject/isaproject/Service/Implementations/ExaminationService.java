@@ -60,7 +60,7 @@ public class ExaminationService implements IExaminationService {
         }
 
         Examination examination = new Examination();
-
+        examinationSchedule.setFinished(true);
         examination.setExaminationSchedule(examinationSchedule);
         examination.setInformation(examinationDTO.getInformation());
         examination.setCancelled(examinationDTO.getCancelled());

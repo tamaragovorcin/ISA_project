@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Controller;
 import com.isaproject.isaproject.DTO.WorkingHoursDermatologistDTO;
 import com.isaproject.isaproject.DTO.WorkingHoursPharmacistDTO;
+import com.isaproject.isaproject.DTO.WorkingScheduleDTO;
 import com.isaproject.isaproject.Model.Schedule.WorkingHoursDermatologist;
 import com.isaproject.isaproject.Model.Schedule.WorkingHoursPharmacist;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
@@ -35,8 +36,9 @@ public class WorkingHoursController {
 
     @PostMapping("/pharmacist")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    public ResponseEntity<String> addPharmacistWorkingHours(@RequestBody WorkingHoursPharmacistDTO userRequest) {
-
+    public ResponseEntity<String> addPharmacistWorkingHours(@RequestBody WorkingScheduleDTO userRequest) {
+        System.out.println("--------------------------------------------------------------");
+        System.out.println(userRequest.getPharmacistId());
         WorkingHoursPharmacist workingHoursPharmacist = workingHoursPharmacistService.save(userRequest);
         return new ResponseEntity<>("Working hours for pharmacist successfully added.", HttpStatus.CREATED);
     }
@@ -82,8 +84,7 @@ public class WorkingHoursController {
     @PostMapping("/dermatologist")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addDermatologistWorkingHours(@RequestBody WorkingHoursDermatologistDTO userRequest) {
-        System.out.println("POGODIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-        if (workingHoursDermatologistService.isAvailabilable(userRequest)) {
+        if (workingHoursDermatologistService.isDermatologistsAvailable(userRequest)) {
             WorkingHoursDermatologist workingHoursDermatologist = workingHoursDermatologistService.save(userRequest);
             return new ResponseEntity<>("Working hours for pharmacist successfully added.", HttpStatus.CREATED);
         } else {

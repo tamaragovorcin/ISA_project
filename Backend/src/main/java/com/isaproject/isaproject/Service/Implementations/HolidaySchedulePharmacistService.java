@@ -3,6 +3,7 @@ package com.isaproject.isaproject.Service.Implementations;
 import com.isaproject.isaproject.DTO.HolidaySchedulePharmacistDTO;
 import com.isaproject.isaproject.DTO.RefuseHolidayScheduleDTO;
 import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
+import com.isaproject.isaproject.Model.Users.Pharmacist;
 import com.isaproject.isaproject.Repository.HolidaySchedulePharmacistRepository;
 import com.isaproject.isaproject.Service.IServices.IHolidaySchedulePharmacistsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class HolidaySchedulePharmacistService implements IHolidaySchedulePharmac
     private Environment environment;
     @Autowired
     JavaMailSenderImpl mailSender;
+    @Autowired
+    PharmacistService pharmacistService;
 
     @Override
     public HolidaySchedulePharmacist findById(Integer id) {
@@ -35,8 +38,9 @@ public class HolidaySchedulePharmacistService implements IHolidaySchedulePharmac
 
     @Override
     public HolidaySchedulePharmacist save(HolidaySchedulePharmacistDTO scheduleDTO) {
+        Pharmacist pharmacist = pharmacistService.findById(scheduleDTO.getPharmacist());
         HolidaySchedulePharmacist offer = new HolidaySchedulePharmacist();
-        offer.setPharmacist(scheduleDTO.getPharmacist());
+        offer.setPharmacist(pharmacist);
         offer.setStartDate(scheduleDTO.getStartDate());
         offer.setEndDate(scheduleDTO.getEndDate());
         offer.setType(scheduleDTO.getType());

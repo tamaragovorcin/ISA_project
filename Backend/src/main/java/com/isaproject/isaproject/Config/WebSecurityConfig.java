@@ -75,8 +75,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             //    .antMatchers("/api/patient/email/{id}").permitAll()
               //  .antMatchers("/api/medication/add").permitAll()
                // .antMatchers("/api/medication").permitAll()
-                .antMatchers("/api/pharmacy/addActions").permitAll()
-                .antMatchers("/api/pharmacy/actions/{id}").permitAll()
                // .antMatchers("/api/patient/confirm-account").permitAll()
                .antMatchers("/api/systemAdmin/register") .permitAll()
 
@@ -90,21 +88,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/api/medicationReservation/add") .permitAll()
 
-             //   .antMatchers("/api/pharmacist/register") .permitAll()
-                .antMatchers("/api/pharmacy/addExamination") .permitAll()
-
-                .antMatchers("/api/pharmacyAdmin/register") .permitAll()
 
                 .antMatchers("/api/pharmacy/{id}") .permitAll()
-                .antMatchers("/api/order/add") .permitAll()
+                .antMatchers("/api/pharmacy/address/{id}") .permitAll()
                 .antMatchers("/api/pharmacy/dermatologists/{id}") .permitAll()
+                .antMatchers("/api/pharmacy/dermatologistsFront/{id}") .permitAll()
                 .antMatchers("/api/pharmacy/pharmacists/{id}") .permitAll()
-
                // .antMatchers("/api/consulting/add") .permitAll()
                 .antMatchers("/api/dermatologist/examination") .permitAll()
                 .antMatchers("/api/pharmacy/medication/{id}") .permitAll()
                 .antMatchers("/api/pharmacy/freeExaminationTerms/{id}") .permitAll()
-                .antMatchers("/api/medication/priceInPharmacy") .permitAll()
 
                 .antMatchers("/api/consulting/getPharmacies") .permitAll()
                // .antMatchers("/api/pharmacyAdmin/medication") .permitAll()
@@ -138,32 +131,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       //  web.ignoring().antMatchers(HttpMethod.GET, "/api/patient/email/{id}");
       //  web.ignoring().antMatchers(HttpMethod.POST, "/api/medication/add");
      //   web.ignoring().antMatchers(HttpMethod.GET, "/api/medication");
-        web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/addActions");
      //   web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/add");
-        web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/actions/{id}");
      //   web.ignoring().antMatchers(HttpMethod.POST, "/api/patient/confirm-account");
       //  web.ignoring().antMatchers(HttpMethod.POST, "/api/systemAdmin/register");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/medicationReservation/add");
 
+
       //  web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacist/register");
 
      //   web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacyAdmin/register");
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacist/register");
-
         web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacy/addExamination");
 
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/dermatologist/register");
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacyAdmin/register");
 
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/{id}");
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/order/add");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/pharmacists/{id}");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/dermatologists/{id}");
+        web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/dermatologistsFront/{id}");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/erecipes/availability/pharmacy");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/erecipes/file/noAuthetication");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/medication/{id}");
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/medication/priceInPharmacy");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacy/freeExaminationTerms/{id}");
+        web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacy/address/{id}");
 
 
 
