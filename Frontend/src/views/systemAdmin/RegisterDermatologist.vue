@@ -79,7 +79,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Postal code:</label>
-                        <input type="text" class="form-control" v-model="postalCode" placeholder="Enter postal code">
+                        <input type="number" class="form-control" v-model="postalCode" placeholder="Enter postal code">
                         </div>
                        
                     </div>

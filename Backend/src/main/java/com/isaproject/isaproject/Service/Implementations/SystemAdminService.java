@@ -66,7 +66,7 @@ public class SystemAdminService implements ISystemAdminService {
         }
         systemAdmin.setAuthorities(auth);
         systemAdmin.setEnabled(true);
-        systemAdmin.setMainAdmin(true);
+        systemAdmin.setMainAdmin(false);
         return systemAdminRepository.save(systemAdmin);
     }
 }

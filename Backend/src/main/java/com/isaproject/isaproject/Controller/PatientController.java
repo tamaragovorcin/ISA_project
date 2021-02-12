@@ -252,14 +252,10 @@ public class PatientController {
     @GetMapping("/getAlergies/{id}")
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<List<AlergiesFrontDTO>> getAlergies(@PathVariable Integer id) {
-            System.out.println("SDGRSDRDGRDGRGRD");
-
 
             if(id == null){
                 throw new IllegalArgumentException("You are not able to get allergy list right now, please log in first.");
             }
-
-
 
         List<PatientsMedicationAlergy> alergies = new ArrayList<PatientsMedicationAlergy>();
         alergies = alergiesService.findAll();
@@ -269,7 +265,7 @@ public class PatientController {
         for(PatientsMedicationAlergy patientsMedicationAlergy: alergies){
             if(patientsMedicationAlergy.getPatient().getId()==id){
                 AlergiesFrontDTO alergiesFrontDTO = new AlergiesFrontDTO();
-                alergiesFrontDTO.setId(patientsMedicationAlergy.getId());
+                alergiesFrontDTO.setId(patientsMedicationAlergy.getMedication().getId());
                 alergiesFrontDTO.setPatient_id(patientsMedicationAlergy.getPatient().getId());
                 alergiesFrontDTO.setName(patientsMedicationAlergy.getMedication().getName());
                 patientsAlergies.add(alergiesFrontDTO);

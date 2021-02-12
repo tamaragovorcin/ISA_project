@@ -21,7 +21,7 @@ public class SystemAdminController {
     SystemAdminService systemAdminService;
 
     @PostMapping("/register")
-    // @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<String> addUser(@RequestBody PersonUserDTO userRequest) {
         CommonValidatior commonVlidatior = new CommonValidatior();
         if(!commonVlidatior.checkValidationPersonUser(userRequest)) {
@@ -31,11 +31,11 @@ public class SystemAdminController {
 
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 
-    /*    PersonUser userLogged = (PersonUser)currentUser.getPrincipal();
+       PersonUser userLogged = (PersonUser)currentUser.getPrincipal();
         SystemAdmin systemAdmin = systemAdminService.findById(userLogged.getId());
         if(!systemAdmin.getMainAdmin()) {
             throw new IllegalArgumentException("Only main system admin can register new system admin!");
-        }*/
+        }
 
 
         PersonUser existUser = systemAdminService.findByEmail(userRequest.getEmail());

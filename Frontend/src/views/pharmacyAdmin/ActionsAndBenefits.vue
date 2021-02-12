@@ -220,14 +220,17 @@ export default {
         this.$refs['my-modal'].hide()
       },
       share : function(){
+            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
              const action = {
                     pharmacy : this.pharmacy.id,
                     description: this.description,
                     expiryDate : this.expiryDate,
                   
                 };
-                this.axios.post('pharmacy/addActions', action)
-                    .then(res => {
+                this.axios.post('pharmacy/addActions', action,{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }}).then(res => {
                         alert(res.data);
                         console.log(res);
                         window.location.href = "/actionsAndBenefits";

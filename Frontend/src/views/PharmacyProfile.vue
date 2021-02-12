@@ -83,9 +83,9 @@
                       <tbody>
                         <tr v-for="pharmacist in ourPharmacists" :key="pharmacist.id">
                                                                         <td></td>
-                                                                        <td>{{pharmacist.firstname}}</td>
+                                                                        <td>{{pharmacist.name}}</td>
                                                                         <td>{{pharmacist.surname}}</td>
-                                                                        <td>{{pharmacist.mark}}</td>
+                                                                        <td>{{pharmacist.markPharmacist}}</td>
                                                                         <td><button class ="btn btn-info" @click = "consulting($event,pharmacist)">Schedule</button></td>
 
                                                                     </tr>
