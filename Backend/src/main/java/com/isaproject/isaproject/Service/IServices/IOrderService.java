@@ -11,5 +11,5 @@ public interface IOrderService {
     List<Order> findAll ();
     Order save(OrderDTO orderDTO);
     Boolean delete(Order order);
-    Order update(OrderUpdateDTO orderDTO);
+    Boolean update(OrderUpdateDTO orderDTO);
 }

@@ -31,6 +31,9 @@ public class HolidaySchedulePharmacist {
     @Column(name = "endDate", nullable = true)
     private LocalDate endDate;
 
+    @Version
+    @Column(name = "version", nullable = true)
+    private Integer version;
 
     @Column(name = "approved", nullable = true)
     private String approved;//APPROVED or REFUSED or WAITING_FOR_RESPONSE
@@ -61,6 +64,13 @@ public class HolidaySchedulePharmacist {
         this.type = type;
     }
 
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
     public HolidaySchedulePharmacist() {
         super();

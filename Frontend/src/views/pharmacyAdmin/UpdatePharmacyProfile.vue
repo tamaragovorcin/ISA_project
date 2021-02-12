@@ -8,7 +8,9 @@
                                     <b-dropdown-item href = "/pharmacyAdminProfile">Profile</b-dropdown-item>
                                     <b-dropdown-item href = "/phAdminProfileUpdate">Update profile</b-dropdown-item>      
                                 </b-dropdown>        
-<a   class = "btn btn-link" href="/updatePharmacyProfile">Update pharmacy</a>
+                       <a   class = "btn btn-link" href="/updatePharmacyProfile">Update pharmacy</a>
+
+
                                     <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
                                                 <button class = "btn btn-link" :href="href" @click="navigate"  elevation="1">My pharmacy</button>
                                     </router-link>
@@ -52,87 +54,53 @@
       <b-button class = "btn btn-warning btn-lg" @click="showModal">Change password</b-button>
 
     
-        <div  style="background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
-            <h3 style="color: #0D184F">Update your personal informations</h3>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                        <label>Name:</label>
-                        <input type="text" class="form-control" v-model = "patient.name"  placeholder="Enter name">
-                        </div>
-                        <div class="form-group col-md-6">
-                        <label>Surname:</label>
-                        <input type="text"  class="form-control" v-model = "patient.surname" placeholder="Enter surname">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                        <label>Email:</label>
-                        
-                        <p><input v-model = "patient.email" readonly></p>
-                        </div>
-                        <div class="form-group col-md-6">
-                        <label>Phone number:</label>
-                        <input type="text"  class="form-control" v-model="patient.phoneNumber" placeholder="Enter phone number">
-                        </div>
-                    </div>
-                      <div class="form-row">
-                        <div class="form-group col-md-6">
-                        <label>Country:</label>
-                        <input type="text"  class="form-control" v-model="patient.address.country" placeholder="Enter country">
-                        </div>
-                        <div class="form-group col-md-6">
-                        <label>Town:</label>
-                        <input type="text" class="form-control" v-model="patient.address.town" placeholder="Enter town">
-                        </div>
-                    </div>
-                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                        <label>Street:</label>
-                        <input type="text"  class="form-control" v-model="patient.address.street" placeholder="Enter street">
-                        </div>
-                        <div class="form-group col-md-6">
-                        <label>Number:</label>
-                        <input type="number" class="form-control" v-model="patient.address.number" placeholder="Enter number">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                        <label>Postal code:</label>
-                        <input type="text"  class="form-control" v-model="patient.address.postalCode" placeholder="Enter postal code">
-                        </div>
+         <div style = "background-color:lightgray; margin: auto; width: 50%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+                       <h3 style="color: #0D184F;margin-bottom:20px">Update your pharmacy data</h3>
 
-                        
-                       
-                    </div>
-                                        <button class="btn btn-primary btn-lg" v-on:click = "update">Update</button>
-
-            </div>
+                <div class="form-group">
+                    <label>Pharmacy name:</label>
+                    <input type="email" class="form-control" v-model="pharmacy.pharmacyName" placeholder="Enter name">
+                </div>
+                <div class="form-group">
+                    <label>Address:</label>
+                </div>
+                <div class="form-group">
+                    <label>Country:</label>
+                    <input type="text" class="form-control" v-model="pharmacy.country" placeholder="Enter country">
+                </div>
+                <div class="form-group">
+                    <label>Town:</label>
+                    <input type="text" class="form-control" v-model="pharmacy.city" placeholder="Enter town">
+               </div>
+                <div class="form-group">
+                    <label>Street:</label>
+                    <input type="text" class="form-control" v-model="pharmacy.street" placeholder="Enter street">
+               </div>
+                <div class="form-group">
+                    <label>Number:</label>
+                    <input type="number" class="form-control" v-model="pharmacy.number" placeholder="Enter number">
+               </div>
+                <div class="form-group">
+                    <label>Postal code:</label>
+                    <input type="number" class="form-control" v-model="pharmacy.postalCode" placeholder="Enter postal code">
+               </div>
+                <div class="form-group">
+                    <label>Consulting price:</label>
+                    <input type="number" class="form-control" v-model="pharmacy.price" placeholder="Enter consulting price">
+               </div>
+                <div class="form-group">
+                    <label>Pharmacy descriprion:</label>
+                    <input type="text" class="form-control" v-model="pharmacy.description" placeholder="Enter description">
+               </div>
+                <button v-on:click = "update" class="btn btn-primary">Update</button>
+           
+        </div>
                    
                     <div style="height:30px;"></div>
 
 
 
-     <b-modal ref="my-modal" hide-footer scrollable title="Change your password" size="lg" modal-class="b-modal">
-            <div modal-class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content" style="background-color:whitesmoke">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Current Password:</label>
-                            <input type="password" class="form-control" v-model="currentPassword" placeholder="Password">
-                        </div>
-                        <div class="form-group">
-                            <label>New password:</label>
-                            <input type="password" class="form-control" v-model="newPassword" placeholder=" New Password">
-                        </div>
-                        <div class="form-group">
-                            <label>Repeat new password:</label>
-                            <input type="password" class="form-control" v-model="newPasswordRepeat" placeholder="Repeat new Password">
-                        </div>
-                        <button v-on:click = "changePassword" class="btn btn-primary">Confirm</button>        
-                    </div>                
-                </div>
-            </div>
-        </b-modal>
+    
   
 
 
@@ -164,7 +132,7 @@ export default {
         currentPassword : "",
         newPassword : "",
         newPasswordRepeat : "",
-        loggedIn : false
+        loggedIn : false,
 
     }
   },
@@ -179,6 +147,18 @@ mounted() {
                 this.patient = response.data;
                 console.log(response.data);
              
+                     this.axios.get('/pharmacyAdmin/myPharmacyFront',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            this.pharmacy = response.data;
+                            console.log(this.pharmacy);
+                             
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
 
             
          }).catch(res => {
@@ -213,29 +193,24 @@ mounted() {
 
        update : function(){
          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-           const ad = {
-                   
-                    country: this.patient.address.country,
-                    town: this.patient.address.town,
-                    street: this.patient.address.street,
-                    number:this.patient.address.number,
-                    postalCode: this.patient.address.postalCode,
-                };
             const p = {
-                    id: this.patient.id,
-                    email:this.patient.email,
-                    firstname: this.patient.name,
-                    surname : this.patient.surname,
-                    phonenumber: this.patient.phoneNumber,
-                    address: ad,
+                    id: this.pharmacy.id,
+                    pharmacyName : this.pharmacy.pharmacyName,
+                    country: this.pharmacy.country,
+                    city: this.pharmacy.city,
+                    street: this.pharmacy.street,
+                    number:this.pharmacy.number,
+                    postalCode: this.pharmacy.postalCode,
+                    description : this.pharmacy.description,
+                    price : this.pharmacy.price
                 };
 
        
-                this.axios.post('/pharmacyAdmin/update',p,{ 
+                this.axios.post('/pharmacy/updatePharmacy',p,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                     }}).then(response => {
-                    alert("Your data is successfully updated.");
+                    alert("Pharmacy info is successfully updated.");
                     console.log(response);
                 }).catch(response => {
                     alert(response.response.data.message);

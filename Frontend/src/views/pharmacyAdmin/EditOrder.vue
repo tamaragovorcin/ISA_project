@@ -8,9 +8,9 @@
                                     <b-dropdown-item href = "/pharmacyAdminProfile">Profile</b-dropdown-item>
                                     <b-dropdown-item href = "/phAdminProfileUpdate">Update profile</b-dropdown-item>      
                                 </b-dropdown>        
-
+<a   class = "btn btn-link" href="/updatePharmacyProfile">Update pharmacy</a>
                                     <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
-                                                <button class = "btn btn-link" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
+                                                <button class = "btn btn-link" :href="href" @click="navigate"  elevation="1">My pharmacy</button>
                                     </router-link>
                    
 
@@ -257,7 +257,9 @@ export default {
        showOrderForm : function(){
       },
        logOut : function(){
+           localStorage.removeItem('token');
            window.location.href = "/login";
+        
       },
       showModal() {
         this.$refs['my-modal'].show()
@@ -289,7 +291,7 @@ export default {
                        window.location.href = "/order";
                 })
                 .catch(response => {
-                       alert("Please try later.");
+                       alert(response.response.data.message);
                         console.log(response);
                  });    
       },

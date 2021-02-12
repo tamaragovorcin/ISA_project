@@ -8,9 +8,9 @@
                                     <b-dropdown-item href = "/pharmacyAdminProfile">Profile</b-dropdown-item>
                                     <b-dropdown-item href = "/phAdminProfileUpdate">Update profile</b-dropdown-item>      
                                 </b-dropdown>        
-
+<a   class = "btn btn-link" href="/updatePharmacyProfile">Update pharmacy</a>
                                     <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
-                                                <button class = "btn btn-link" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
+                                                <button class = "btn btn-link" :href="href" @click="navigate"  elevation="1">My pharmacy</button>
                                     </router-link>
                    
 
@@ -223,11 +223,11 @@
   <tbody>
     <tr v-for="pharmacist in pharmacists" :key="pharmacist.id">
       <td></td>
-      <td>{{pharmacist.name}}</td>
+      <td>{{pharmacist.firstname}}</td>
       <td>{{pharmacist.surname}}</td>
       <td>{{pharmacist.email}}</td>
-      <td>{{pharmacist.phoneNumber}}</td>
-      <td>{{pharmacist.markPharmacist}}</td>
+      <td>{{pharmacist.phonenumber}}</td>
+      <td>{{pharmacist.mark}}</td>
       <td><button  v-on:click ="defineSchedule($event, pharmacist)" class="btn btn-info">Define schedule</button></td>
       <td><button  v-on:click ="remove($event, pharmacist)" class="btn btn-info">Remove</button></td>
     </tr>
@@ -312,12 +312,11 @@ export default {
                     }
                     }).then(response => {
                             console.log(response);
-                            alert(response.data);
+                            alert("Pharmacists successfully removed.")
                     }).catch(response => {
                             alert("NOT OK");
                             console.log(response);
                     });
-          window.location.href = "/pharmacyPharmacists";
 
 		},
     defineSchedule : function(event, pharmacist){

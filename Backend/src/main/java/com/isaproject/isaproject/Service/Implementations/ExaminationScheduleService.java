@@ -55,8 +55,6 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
     public ExaminationSchedule save(ExaminationScheduleDTO examinationScheduleDTO) {
         Dermatologist dermatologist = dermatologistRepository.findById(examinationScheduleDTO.getDermatologist()).get();
         Pharmacy pharmacy = pharmacyRepository.findById(examinationScheduleDTO.getPharmacy()).get();
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println(examinationScheduleDTO.getDate().getDayOfWeek());
         for(WorkingHoursDermatologist workingHoursDermatologist : workingHoursDermatologistService.findAll()){
             if(workingHoursDermatologist.getDermatologist().getId() == examinationScheduleDTO.getDermatologist() && workingHoursDermatologist.getPharmacy().getId() == examinationScheduleDTO.getPharmacy()){
                 if(examinationScheduleDTO.getDate().getDayOfWeek() == DayOfWeek.MONDAY){
@@ -99,20 +97,10 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
             }
         }
 
-      /*  ExaminationSchedule examinationSchedule = new ExaminationSchedule();
-        examinationSchedule.setPharmacy(pharmacy);
-        examinationSchedule.setDate(examinationScheduleDTO.getDate());
-        examinationSchedule.setDermatologist(dermatologist);
-        examinationSchedule.setDuration(examinationScheduleDTO.getDuration());
-        examinationSchedule.setPrice(examinationSchedule.getPrice());
-        examinationSchedule.setStartTime(examinationScheduleDTO.getStartTime());
-        examinationSchedule.setFinished(false);*/
         return  null;
     }
 
     private ExaminationSchedule createNewExaminationTerm(ExaminationScheduleDTO examinationScheduleDTO){
-        System.out.println("USAO U CREATE");
-
         ExaminationSchedule examinationSchedule = new ExaminationSchedule();
         examinationSchedule.setPharmacy(pharmacyRepository.getOne(examinationScheduleDTO.getPharmacy()));
         examinationSchedule.setDermatologist(dermatologistRepository.getOne(examinationScheduleDTO.getDermatologist()));
@@ -130,14 +118,18 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
                 &&  examinationScheduleDTO.getStartTime().plusMinutes(examinationScheduleDTO.getDuration()).isBefore(shiftEnds))
         {
             System.out.println(examinationScheduleDTO.getDate().getDayOfWeek());
-            System.out.println("USAO U CHECK SCHEDYLE");
 
             if(isDermatologistAvailable(examinationScheduleDTO) && !isDermatologistOnHoliday(examinationScheduleDTO)){
-                System.out.println("USAO U 2. IF");
 
                 return createNewExaminationTerm(examinationScheduleDTO);
             }
 
+        }else if(examinationScheduleDTO.getStartTime().equals(shiftStarts)){
+            System.out.println(examinationScheduleDTO.getDate().getDayOfWeek());
+
+            if(isDermatologistAvailable(examinationScheduleDTO) && !isDermatologistOnHoliday(examinationScheduleDTO)){
+                return createNewExaminationTerm(examinationScheduleDTO);
+            }
         }
         return null;
     }
@@ -149,7 +141,7 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
                         return false;
                     }
                 }
-                if(dto.getDate().equals(examinationSchedule.getDate()) &&  dto.getStartTime()==examinationSchedule.getStartTime()){
+                if(dto.getDate().equals(examinationSchedule.getDate()) &&  dto.getStartTime().equals(examinationSchedule.getStartTime())){
                     return false;
                 }
             }
@@ -160,6 +152,10 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
         for(HolidayScheduleDermatologist holiday : holidayScheduleDermatologistService.findAll()){
             if(holiday.getDermatologist().getId() == dto.getDermatologist() &&
                     dto.getDate().isAfter(holiday.getStartDate()) && dto.getDate().isBefore(holiday.getEndDate())){
+                return true;
+            }
+            if(holiday.getDermatologist().getId() == dto.getDermatologist())
+                  if(dto.getDate().isEqual(holiday.getStartDate()) || dto.getDate().isEqual(holiday.getEndDate())){
                 return true;
             }
         }

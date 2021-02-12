@@ -52,6 +52,9 @@ public class ConsultingService implements IConsultingService {
 
     @Override
     public Consulting save(ConsultingDTO consultingDTO) {
+        System.out.println("FARMACEUUT");
+        System.out.println(consultingDTO.getPharmacist());
+
         Pharmacist pharmacist = pharmacistRepository.findById(consultingDTO.getPharmacist().getId()).get();
 
 
@@ -132,8 +135,6 @@ public class ConsultingService implements IConsultingService {
         return true;
     }
     private Consulting createNewExaminationTerm(ConsultingDTO consultingDTO){
-        System.out.println("USAO U CREATE");
-
         Consulting consulting = new Consulting();
         consulting.setPharmacist(consultingDTO.getPharmacist());
         consulting.setPatient(consultingDTO.getPatient());
@@ -151,11 +152,7 @@ public class ConsultingService implements IConsultingService {
         if(consultingDTO.getStartTime().isAfter(shiftStarts) && consultingDTO.getStartTime().isBefore(shiftEnds)
                 &&  consultingDTO.getStartTime().plusMinutes((long) consultingDTO.getDuration()).isBefore(shiftEnds))
         {
-            System.out.println("USAO U CHECK SCHEDYLE");
-
             if(isPharmacistAvailable(consultingDTO) && isPatientAvailable(consultingDTO)){
-                System.out.println("USAO U 2. IF");
-
                 return createNewExaminationTerm(consultingDTO);
             }
 

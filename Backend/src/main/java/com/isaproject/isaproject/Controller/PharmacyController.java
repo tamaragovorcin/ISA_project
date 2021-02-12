@@ -64,6 +64,7 @@ public class PharmacyController  {
     PatientService patientService;
 
     @PostMapping("/addActions")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<String> shareActions(@RequestBody ActionsDTO action)
     {
         if(action.getExpiryDate() == null){
@@ -105,8 +106,21 @@ public class PharmacyController  {
 
         }
     }
+    @PostMapping("/updatePharmacy")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<String> update(@RequestBody PharmacyFrontDTO pharmacyFrontDTO)
+    {
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidatioPharmacyUpdate(pharmacyFrontDTO)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
+        Pharmacy pharmacy = pharmacyService.updateInfo(pharmacyFrontDTO);
+        return new ResponseEntity<>("Pharmacy data is successfully updated!", HttpStatus.CREATED);
+
+    }
 
     @GetMapping("/actions/{id}")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<List<Actions>> getActions(@PathVariable Integer id)
     {
         List<Actions> actions = actionsService.findAll();
@@ -162,6 +176,21 @@ public class PharmacyController  {
         return pharmacy == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacy);
+    }
+    @GetMapping("front/{id}")
+    ResponseEntity<PharmacyFrontDTO> getPharmacyByIdFront(@PathVariable Integer id) {
+        Pharmacy pharmacy = pharmacyService.findById(id);
+        PharmacyFrontDTO pharmacyFrontDTO = new PharmacyFrontDTO();
+        pharmacyFrontDTO.setId(pharmacy.getId());
+        pharmacyFrontDTO.setPharmacyName(pharmacy.getPharmacyName());
+        pharmacyFrontDTO.setDescription(pharmacy.getDescription());
+        pharmacyFrontDTO.setStreet(pharmacy.getAddress().getStreet());
+        pharmacyFrontDTO.setCity(pharmacy.getAddress().getTown());
+        pharmacyFrontDTO.setPostalCode(pharmacy.getAddress().getPostalCode());
+        pharmacyFrontDTO.setMark(pharmacy.getMark());
+        return pharmacy == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacyFrontDTO);
     }
     @GetMapping("address/{id}")
     ResponseEntity<AddressDTO> getPharmacyAddress(@PathVariable Integer id) {
@@ -241,11 +270,23 @@ public class PharmacyController  {
 
     }
     @GetMapping("/pharmacists/{id}")
-    public ResponseEntity<Set<Pharmacist>> getPharmacists(@PathVariable Integer id) {
+    public ResponseEntity<Set<PharmacistDTO>> getPharmacists(@PathVariable Integer id) {
         Set<Pharmacist> pharmacists = pharmacyService.findById(id).getPharmacists();
+        Set<PharmacistDTO> pharmacistDTOS = new HashSet<>();
+        for(Pharmacist pharmacist : pharmacists){
+            PharmacistDTO pharmacistDTO = new PharmacistDTO();
+            pharmacistDTO.setFirstname(pharmacist.getName());
+            System.out.println(pharmacist.getSurname());
+            pharmacistDTO.setSurname(pharmacist.getSurname());
+            pharmacistDTO.setMark(pharmacist.getMarkPharmacist());
+            pharmacistDTO.setId(pharmacist.getId());
+            pharmacistDTO.setEmail(pharmacist.getEmail());
+            pharmacistDTO.setPhonenumber(pharmacist.getPhoneNumber());
+            pharmacistDTOS.add(pharmacistDTO);
+        }
         return pharmacists == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacists);
+                ResponseEntity.ok(pharmacistDTOS);
 
     }
     @GetMapping("/medication/{id}")
@@ -281,8 +322,7 @@ public class PharmacyController  {
         Set<ExaminationSchedule> examinationTerms = pharmacyService.findById(id).getExaminationSchedules();
         List<FreeExaminationTermsDTO> freeExaminationTerms = new ArrayList<FreeExaminationTermsDTO>();
         for(ExaminationSchedule ex :  examinationTerms){
-                System.out.println(ex.getDermatologist().getName());
-
+            if(!ex.getFinished()) {
                 FreeExaminationTermsDTO term = new FreeExaminationTermsDTO();
                 term.setId(ex.getId());
                 term.setDermatologistName(ex.getDermatologist().getName());
@@ -294,8 +334,8 @@ public class PharmacyController  {
                 term.setStartTime(ex.getStartTime());
                 term.setPrice(ex.getPrice());
                 term.setPharmacyId(ex.getPharmacy().getId());
-            freeExaminationTerms.add(term);
-
+                freeExaminationTerms.add(term);
+            }
         }
         return freeExaminationTerms == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -416,6 +456,46 @@ public class PharmacyController  {
         return able == true ?
                 new ResponseEntity<>("Appointment is successfully reserved! You will soon receive a confirmation email.", HttpStatus.CREATED) :
                 new ResponseEntity<>("You are not able to reserve an examination because you have 3 or more penalties!", HttpStatus.CREATED);
+
+    }
+    @PostMapping("/addExaminationPharmacy")
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<String> addExaminationFromPharmacyProfile(@RequestBody NewExaminationDTO dto) {
+
+        Patient patient = patientService.findById(dto.getPatient());
+        Boolean able = true;
+        if(patient.getPenalties() > 3){
+            able = false;
+        }
+
+
+        if(able) {
+            Examination examination = examinationService.savePharmacy(dto);
+            List<ExaminationSchedule> examinationSchedule = new ArrayList<ExaminationSchedule>();
+            examinationSchedule = examinationScheduleService.findAll();
+            ExaminationSchedule examinationSchedule1 = new ExaminationSchedule();
+
+            for(ExaminationSchedule es: examinationSchedule){
+                if(es.getId()==dto.getExaminationId()){
+                    examinationSchedule1 = es;
+                    examinationScheduleService.update(es, true);
+
+                }
+            }
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setTo(patient.getEmail());
+            mail.setSubject("Successfuly reserved dermatologist apointment!");
+            mail.setFrom(environment.getProperty("spring.mail.username"));
+            //mail.setFrom("pharmacyisa@gmail.com");
+            mail.setText("You have successfully reserved an appointment on : "
+                    + examinationSchedule1.getDate() + " at " + examinationSchedule1.getStartTime() + ". Your doctor is " + examinationSchedule1.getDermatologist().getName() + " " + examinationSchedule1.getDermatologist().getSurname());
+
+            mailSender.send(mail);
+        }
+
+        return able == true ?
+                new ResponseEntity<>("Consulting is successfully reserved!", HttpStatus.CREATED) :
+                new ResponseEntity<>("You are not able to reserve a medication because you have 3 or more penalties!", HttpStatus.CREATED);
 
     }
 

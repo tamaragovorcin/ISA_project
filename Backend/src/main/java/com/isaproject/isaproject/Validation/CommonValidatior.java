@@ -108,6 +108,24 @@ public class CommonValidatior {
         }
         return true;
     }
+    public boolean checkValidatioPharmacyUpdate(PharmacyFrontDTO pharmacyDTO) {
+        if(pharmacyDTO.getPharmacyName().isEmpty() ||
+                pharmacyDTO.getCountry().isEmpty() || pharmacyDTO.getCity().isEmpty() ||
+                pharmacyDTO.getStreet().isEmpty() || pharmacyDTO.getDescription().isEmpty()) {
+            throw new IllegalArgumentException("Please fill all the required fields!");
+        }
+
+        if(pharmacyDTO.getNumber() !=(int)pharmacyDTO.getNumber()
+                ||pharmacyDTO.getPostalCode() !=(int)pharmacyDTO.getPostalCode()
+                || pharmacyDTO.getPrice()!=(double)pharmacyDTO.getPrice()) {
+            throw new IllegalArgumentException("Please fill all the required fields correctly!");
+        }
+        if(pharmacyDTO.getNumber()<=0 || pharmacyDTO.getPostalCode()<=0 ||
+                pharmacyDTO.getPrice()<=0) {
+            throw new IllegalArgumentException("Please fill all the required fields correctly!");
+        }
+        return true;
+    }
 
     public boolean checkComplaint(ComplaintDTO complaintDTO) {
         if(complaintDTO.getMassage().isEmpty() || complaintDTO.getSubject().isEmpty()) {

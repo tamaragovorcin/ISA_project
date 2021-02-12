@@ -174,6 +174,7 @@ public class DermatologistController {
 
 
     @GetMapping("/allDermatologistsFront")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST','PHARMACY_ADMIN')")
     List<DermatologistFrontDTO> getDermatologists()
     {
         List<DermatologistFrontDTO> dermatologists = new ArrayList<DermatologistFrontDTO>();
@@ -191,6 +192,7 @@ public class DermatologistController {
         return dermatologists;
     }
     @GetMapping("/notInPharmacy")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     List<DermatologistFrontDTO> getDermatologistsNot()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();

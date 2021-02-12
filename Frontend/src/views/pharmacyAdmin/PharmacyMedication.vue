@@ -8,9 +8,9 @@
                                     <b-dropdown-item href = "/pharmacyAdminProfile">Profile</b-dropdown-item>
                                     <b-dropdown-item href = "/phAdminProfileUpdate">Update profile</b-dropdown-item>      
                                 </b-dropdown>        
-
+<a   class = "btn btn-link" href="/updatePharmacyProfile">Update pharmacy</a>
                                     <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
-                                                <button class = "btn btn-link" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
+                                                <button class = "btn btn-link" :href="href" @click="navigate"  elevation="1">My pharmacy</button>
                                     </router-link>
                    
 
@@ -352,11 +352,11 @@ export default {
                 .then(response => {
                        alert(response.data);
                        window.location.href= "/pharmacyMedications";
-
-                        console.log(response.data);
+                       console.log(response.data);
                 })
                 .catch(response => {
-                       alert("Please try later.");
+                       alert(response.response.data.message);
+
                         console.log(response);
                  });    
       },
@@ -380,9 +380,10 @@ export default {
                         }})
                 .then(response => {
                        alert(response.data);
+                       window.location.href="/pharmacyMedications";
                 })
                 .catch(response => {
-                       alert("Please try later.");
+                       alert(response.response.data.message);
                         console.log(response);
                  });    
       },

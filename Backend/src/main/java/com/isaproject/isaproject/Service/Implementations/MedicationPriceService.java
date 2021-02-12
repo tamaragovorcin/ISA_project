@@ -1,10 +1,8 @@
 package com.isaproject.isaproject.Service.Implementations;
 
-import com.isaproject.isaproject.DTO.ChoosenPharmacyDTO;
-import com.isaproject.isaproject.DTO.MedicationForRemovingDTO;
-import com.isaproject.isaproject.DTO.MedicationPriceDTO;
-import com.isaproject.isaproject.DTO.QRcodeInformationDTO;
+import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
+import com.isaproject.isaproject.Model.HelpModel.MedicationPriceHistory;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
@@ -42,6 +40,8 @@ public class MedicationPriceService implements IMedicationPriceService {
     LoyaltyProgramService loyaltyProgramService;
     @Autowired
     MedicationService medicationService;
+    @Autowired
+    MedicationPriceHistoryService medicationPriceHistoryService;
 
     @Override
     public MedicationPrice findById(Integer id) {
@@ -62,6 +62,15 @@ public class MedicationPriceService implements IMedicationPriceService {
         medicationPrice1.setPrice(medicationDTO.getPrice());
         medicationPrice1.setDate(medicationDTO.getDate());
         medicationPrice1.setPharmacy(pharmacy);
+        MedicationPriceHistoryDTO dto = new MedicationPriceHistoryDTO();
+        dto.setMedication(medicationDTO.getMedication().getId());
+        dto.setPharmacy(medicationDTO.getPharmacy());
+        dto.setStartDate(LocalDate.now());
+        dto.setEndDate(medicationDTO.getDate());
+        dto.setPrice(medicationDTO.getPrice());
+        medicationPriceHistoryService.save(dto);
+
+
         return medicationPriceRepository.save(medicationPrice1);
 
     }
@@ -70,11 +79,24 @@ public class MedicationPriceService implements IMedicationPriceService {
     public MedicationPrice updatePrice(MedicationPriceDTO medicationDTO) {
 
         MedicationPrice medicationPrice = findByMedicationID(medicationDTO.getMedication().getId());
-        System.out.println(medicationDTO.getMedication().getId());
-        System.out.println(medicationDTO.getPrice());
-        System.out.println(medicationPrice);
         medicationPrice.setPrice(medicationDTO.getPrice());
         medicationPrice.setDate(medicationDTO.getDate());
+        MedicationPriceHistoryDTO medicationPriceHistoryDTO = new MedicationPriceHistoryDTO();
+        medicationPriceHistoryDTO.setMedication(medicationDTO.getMedication().getId());
+        medicationPriceHistoryDTO.setPharmacy(medicationDTO.getPharmacy());
+        medicationPriceHistoryDTO.setPrice(medicationDTO.getPrice());
+        medicationPriceHistoryDTO.setStartDate(LocalDate.now());
+        medicationPriceHistoryDTO.setEndDate(medicationDTO.getDate());
+        for(MedicationPriceHistory medicationPriceHistory : medicationPriceHistoryService.findAll()){
+            if(medicationPriceHistory.getMedication_id() == medicationDTO.getMedication().getId()){
+                if(medicationPriceHistory.getStartDate().isBefore(LocalDate.now().plusDays(1))) {
+                    if (medicationPriceHistory.getEndDate().isBefore(medicationDTO.getDate()) || medicationPriceHistory.getEndDate().isEqual(medicationDTO.getDate())) {
+                        medicationPriceHistoryService.delete(medicationPriceHistory);
+                    }
+                }
+            }
+        }
+        medicationPriceHistoryService.save(medicationPriceHistoryDTO);
         return this.medicationPriceRepository.save(medicationPrice);
 
 
@@ -183,8 +205,6 @@ public class MedicationPriceService implements IMedicationPriceService {
             if (medicationPrice.getMedication().getCode() == medication.getCode() && medicationPrice.getMedication().getName().equals(medication.getName())){
                 if( medicationPrice.getPharmacy().getId() == dto.getPharmacy()) {
                         if (!isMedicationReserved(dto)) {
-                            System.out.println("Prosao if");
-
                             medicationPriceRepository.delete(medicationPrice);
                             return true;
                         }
@@ -196,15 +216,20 @@ public class MedicationPriceService implements IMedicationPriceService {
 
     public Boolean isMedicationReserved(MedicationForRemovingDTO dto){
         Medication medication = medicationService.findById(dto.getMedication());
-        for(MedicationReservation medicationReservation : medicationReservationService.findAll()){
-            if(medicationReservation.getMedicine().getCode() == medication.getCode() && medicationReservation.getMedicine().getName().equals(medication.getName())
-            && medicationReservation.getPharmacy().getId() == dto.getPharmacy() && medicationReservation.getCollected()==null){
-                System.out.println("RezervisaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAn");
+        for(MedicationReservation medicationReservation : medicationReservationService.findAll()) {
+            if (medicationReservation.getMedicine().getCode() == medication.getCode() && medicationReservation.getMedicine().getName().equals(medication.getName())
+                    && medicationReservation.getPharmacy().getId() == dto.getPharmacy() && medicationReservation.getCollected() == null) {
 
                 return true;
             }
+            if (medicationReservation.getCollected() != null){
+                if (medicationReservation.getMedicine().getCode() == medication.getCode() && medicationReservation.getMedicine().getName().equals(medication.getName())
+                        && medicationReservation.getPharmacy().getId() == dto.getPharmacy() && !medicationReservation.getCollected()) {
+
+                    return true;
+                }
         }
-        System.out.println("Slobodan");
+        }
 
         return false;
     }

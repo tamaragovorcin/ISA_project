@@ -91,6 +91,7 @@ public class OfferController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<List<Offer>> getByOrderId(@PathVariable Integer id)
     {
         List<Offer> offers = new ArrayList<Offer>();
@@ -105,6 +106,7 @@ public class OfferController {
                 ResponseEntity.ok(offers);
     }
     @GetMapping("/data/{id}")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<OfferReviewDTO> getData(@PathVariable Integer id)
     {
         OfferReviewDTO offerReviewDTO = new OfferReviewDTO();
