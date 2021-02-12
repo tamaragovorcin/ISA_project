@@ -1,49 +1,49 @@
-ISA
+ISA<br />
 
-[![Build Status](https://travis-ci.com/tamaragovorcin/ISA_project.svg?branch=develop)](https://travis-ci.com/tamaragovorcin/ISA_project)
+[![Build Status](https://travis-ci.com/tamaragovorcin/ISA_project.svg?branch=develop)](https://travis-ci.com/tamaragovorcin/ISA_project)<br />
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=tamaragovorcin_ISA_project&metric=alert_status)](https://sonarcloud.io/dashboard?id=tamaragovorcin_ISA_project)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=tamaragovorcin_ISA_project&metric=alert_status)](https://sonarcloud.io/dashboard?id=tamaragovorcin_ISA_project)<br />
 
 
-Fakultet tehnickih nauka Novi Sad
-Primenjene racunarske nauke
-Projekat iz predmeta Internet softverske arhitekture
+Fakultet tehnickih nauka Novi Sad<br />
+Primenjene racunarske nauke<br />
+Projekat iz predmeta Internet softverske arhitekture<br />
 
-Travis: https://travis-ci.com/github/tamaragovorcin/ISA_project
+Travis: https://travis-ci.com/github/tamaragovorcin/ISA_project<br />
 
-Autori:
+Autori:<br />
   Luna Zivkovic- Student 1<br />
-  Mladenka Kokanovic- Student 2\n
-  Lidija Vukovic-Student 3\n
-  Tamara Govorcin-Student 4\n
+  Mladenka Kokanovic- Student 2<br />
+  Lidija Vukovic-Student 3<br />
+  Tamara Govorcin-Student 4<br />
 
-Veb aplikacija apotekarskog sistema cija je osnovna namena predstavljanje apoteka, online zakazivanje pregleda i savetovanja, kao i rezervacija lijekova.\n
+Veb aplikacija apotekarskog sistema cija je osnovna namena predstavljanje apoteka, online zakazivanje pregleda i savetovanja, kao i rezervacija lijekova.<br />
 
-Tehnologije koje korisimo:\n
-  -Backend: Java + Spring Boot\n
-  -Frontend: Vue.js + Axios\n
-  -RDBMS: PostgreSQL\n
-  -Integracioni server: TravisCI\n
-  -Platforma for deployment: Heroku\n
-  -Alat za analizu kvaliteta koda: SonarCloud\n
-  -Application building tool: Maven\n
+Tehnologije koje korisimo:<br />
+  -Backend: Java + Spring Boot<br />
+  -Frontend: Vue.js + Axios<br />
+  -RDBMS: PostgreSQL<br />
+  -Integracioni server: TravisCI<br />
+  -Platforma for deployment: Heroku<br />
+  -Alat za analizu kvaliteta koda: SonarCloud<br />
+  -Application building tool: Maven<br />
 
 
-Za uspesno pokretanje potrebno je instalirati:\n
-  -Java SDK v1.8\n
-  -Apache Maven v3.6.3 (npr Eclipse)\n
-  -NodeJS v12.13.0\n
-  -PostgreSQL v13.0\n
-  -VueJS v4.5.9\n
-  -axios\n
-  -vue-bootstrap\n
+Za uspesno pokretanje potrebno je instalirati:<br />
+  -Java SDK v1.8<br />
+  -Apache Maven v3.6.3 (npr Eclipse)<br />
+  -NodeJS v12.13.0<br />
+  -PostgreSQL v13.0<br />
+  -VueJS v4.5.9<br />
+  -axios<br />
+  -vue-bootstrap<br />
 
 Pokretanje projekta
-  -Prvo je potrebno napraviti kopiju ovog repozitorijuma sa git clone\n
-  -Pre pokretanja projekta potrebno je imati instaliranu PostgreSQL bazu verzije 13\n
-  -Importovati projekat kao Maven project\n
-  -Pokretanje front-enda:\n
-    -pozicioniranje na FrontEnd folder u CommandWindow konzoli\n
-    -npm install\n
-    -npm run serve  \n
-  -Desni klik na klasu IsaProjectApplication.java -> run\n
+  -Prvo je potrebno napraviti kopiju ovog repozitorijuma sa git clone<br />
+  -Pre pokretanja projekta potrebno je imati instaliranu PostgreSQL bazu verzije 13<br />
+  -Importovati projekat kao Maven project<br />
+  -Pokretanje front-enda:<br />
+    -pozicioniranje na FrontEnd folder u CommandWindow konzoli<br />
+    -npm install<br />
+    -npm run serve  <br />
+  -Desni klik na klasu IsaProjectApplication.java -> run<br />
