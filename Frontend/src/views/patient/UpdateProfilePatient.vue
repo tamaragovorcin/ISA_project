@@ -1,18 +1,24 @@
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div v-if="auth" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
            <span style="float: left; margin: 15px;">
                                
-                    <a  class = "btn btn-link btn-lg" href= "/patientProfile">Home page</a>
+                              
+                        <a  class = "btn btn-link btn-lg" href= "/patientProfile">Home page</a>
                     <a  class = "btn btn-link btn-lg" href= "/showPharmaciesPatient">Pharmacies</a>
                     <a  class = "btn btn-link btn-lg" href= "/eRecipes">ERecipes</a>
                     <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
+                   
+            
                     <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
                
+                    
+                    
                      <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
-                     <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
+                         <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
+            
             
                    
 
@@ -84,15 +90,30 @@
                        
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                        <label>Password:</label>
-                        <input type="password"  class="form-control" v-model="password" placeholder="Enter new password">
-                        </div>
-                        <div class="form-group col-md-6">
-                        <label>Repeat password:</label>
-                        <input type="password" class="form-control" v-model="repeatPassword" placeholder="Repeat new password">
+
+                        <div class="form-group  col-md-6">
+                            <label>Current Password:</label>
+                            <input type="password" class="form-control" v-model="currentPassword" placeholder="Current Password">
                         </div>
                     </div>
+                       <div class="form-row">
+                        <div class="form-group  col-md-6">
+                            <label>New password:</label>
+                            <input type="password" class="form-control" v-model="newPassword" placeholder=" New Password">
+                        </div>
+                       </div>
+                          <div class="form-row">
+                        <div class="form-group  col-md-6">
+                            <label>Repeat new password:</label>
+                            <input type="password" class="form-control" v-model="newPasswordRepeat" placeholder="Repeat new Password">
+                        </div>
+                          </div>
+                         
+                        <button v-on:click = "changePasswordConfirm" class="btn btn-primary">Change password</button>     
+                          
+              
+
+                    
                      <div class="form-row">
                         <div class="form-group col-md-6">
                         <label>Alergies:</label>
@@ -147,12 +168,9 @@
                 </form>
 
 
-
-     
-
+ 
 
         </div>
-
 
     </div>
 </template>
@@ -161,7 +179,6 @@
 export default {
   data() {
     return {
-        id : this.$route.params.id,
         patient: null,
         name : "",
         surname : "",
@@ -184,7 +201,11 @@ export default {
         alergies: [],
         helparray : [],
         showSecondTable: false,
-        arrayy: []
+        arrayy: [],
+        currentPassword : "",
+        newPassword : "",
+        newPasswordRepeat : "",
+        auth:false
     }
   },
 mounted() {
@@ -192,28 +213,36 @@ mounted() {
         this.axios.get('/patient/account',{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
-             }})
-             .then(response => {
+
+             }
+         }).then(response => {
                 this.patient = response.data;
-                console.log(response.data);
-                  this.axios.get('/patient/getAlergies/' + this.patient.id)
+                this.auth = true;
+                 console.log( this.patient);
+                 
+                 this.axios.get('/patient/getAlergies/' + this.patient.id,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
                         .then(response => {
                                 this.medicationQuantityList= response.data;
                             console.log(this.medicationQuantityList);
                             
                         }).catch(res => {
-                       alert("There are no medications in the system yet, so you are not able to add allergies yet.");
-                
+                      
                         console.log(res);
               
-
-            
+                
+               
+                          })
          }).catch(res => {
-                       alert("Please, log in first!");
-                          window.location.href = "/login";
-                        console.log(res);
-                 });
-             })
+                       alert("Please log in first!");
+                       this.auth = false
+                                 window.location.href = "/login";
+                                 console.log(res);
+                
+                 })
+                 
 
 
   this.axios.get('/medication')
@@ -228,7 +257,6 @@ mounted() {
                  })
 
 
-
    
   
      
@@ -238,6 +266,7 @@ mounted() {
       previousUpdateProfile : function(){
       },
     logOut : function(){
+           localStorage.removeItem('token');
           window.location.href = "/login";
       },
         remove : function(med){
@@ -273,6 +302,35 @@ mounted() {
 
       },
 
+       changePassword : function() {
+            this.$refs['my-modalMark'].show();
+      },
+      
+      changePasswordConfirm : function() {
+           if(this.newPassword != this.newPasswordRepeat) {
+            alert("New passwords must be equal.")
+            return;
+        }
+
+        const changePasswordInfo ={
+                oldPassword : this.currentPassword,
+                newPassword : this.newPassword,
+                rewriteNewPassword : this.newPasswordRepeat
+            } 
+        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.post('/change-password',changePasswordInfo,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                }}).then(response => {
+                    console.log(response);
+                    alert("Successfully changed password!.");
+                
+                }).catch(res => {
+                     alert(res.response.data.message);
+                });
+      },
+  
+
        addNewAlergie: function (medicine) {
                 this.showTable = true;
                 this.medicine = medicine;
@@ -293,6 +351,7 @@ mounted() {
 
        update : function(){
          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        
            const ad = {
                    
                     country: this.patient.address.country,
@@ -330,24 +389,7 @@ mounted() {
              this.arrayy.push(alergies)
          }
          
-                this.axios.post('/patient/addAlergies',this.arrayy, { 
-                         headers: {
-                                'Authorization': 'Bearer ' + token,
-                        }})
-                    .then(res => {
-                       
-                       alert(res.data)
-                    })
-                    .catch(res => {
-                     
-                        alert(res.response.data.message)
-                    })
-
-
-
-
-        
-                
+               
             
                 this.axios.post('/patient/update',p, { 
                          headers: {
@@ -356,13 +398,24 @@ mounted() {
                     .then(res => {
                        
                        alert(res.data)
+                         this.axios.post('/patient/addAlergies',this.arrayy, { 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
+                    .then(res => {
+                       
+                       alert(res.data)
+                    })
+                    .catch(res => {
+                     
+                        alert(res.response.data.message)
+                    })
                     })
                     .catch(res => {
                      
                         alert(res.response.data.message)
                     })
 
-       
       
 }}
 }

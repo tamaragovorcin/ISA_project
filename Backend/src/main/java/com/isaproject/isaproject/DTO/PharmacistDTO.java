@@ -1,5 +1,7 @@
 package com.isaproject.isaproject.DTO;
 
+import java.time.LocalTime;
+
 public class PharmacistDTO {
 
     private Integer id;
@@ -20,6 +22,8 @@ public class PharmacistDTO {
 
     private Integer pharmacyID;
 
+    private LocalTime localTime;
+
     private double mark;
 
     public PharmacistDTO() {}
@@ -35,6 +39,14 @@ public class PharmacistDTO {
         this.address = address;
         this.pharmacyID = pharmacyID;
         this.mark = mark;
+    }
+
+    public LocalTime getLocalTime() {
+        return localTime;
+    }
+
+    public void setLocalTime(LocalTime localTime) {
+        this.localTime = localTime;
     }
 
     public Integer getId() {

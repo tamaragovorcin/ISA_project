@@ -6,9 +6,11 @@ import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.HelpModel.LoyaltyProgram;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
+import com.isaproject.isaproject.Model.Medicine.MedicationEPrescription;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
+import com.isaproject.isaproject.Repository.MedicationEPrescriptionRepository;
 import com.isaproject.isaproject.Repository.LoyaltyProgramRepository;
 import com.isaproject.isaproject.Service.Implementations.EPrescriptionService;
 import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
@@ -48,6 +50,9 @@ public class EPrescriptionController {
     EPrescriptionService ePrescriptionService;
     @Autowired
     LoyaltyProgramRepository loyaltyProgramRepository;
+
+    @Autowired
+    MedicationEPrescriptionRepository medicationEPrescriptionRepository;
 
     @PostMapping("/file")
     @PreAuthorize("hasRole('PATIENT')")
@@ -141,6 +146,28 @@ public class EPrescriptionController {
         return ePrescriptionService.proccedEReceipt(choosenPharmacy) ==null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok("Successfully updated!");
+    }
+
+    @GetMapping("/all/{id}")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<EPrescriptionDTO>> getall(@PathVariable Integer id) {
+        List<EPrescription> ePrescriptions = ePrescriptionService.findAll();
+        List<MedicationEPrescription> medicationEPrescriptions = medicationEPrescriptionRepository.findAll();
+        List<EPrescriptionDTO> ePrescriptionDTOS = new ArrayList<EPrescriptionDTO>();
+        for(MedicationEPrescription medicationEPrescription: medicationEPrescriptions) {
+            if (medicationEPrescription.getePrescription().getPatient().getId() == id) {
+                EPrescriptionDTO ePrescriptionDTO = new EPrescriptionDTO();
+                ePrescriptionDTO.setDate(medicationEPrescription.getePrescription().getDate());
+                Pharmacy pharmacy = pharmacyService.findById(medicationEPrescription.getePrescription().getPharmacyId());
+                ePrescriptionDTO.setPharmacyName(pharmacy.getPharmacyName());
+                ePrescriptionDTO.setMedName(medicationEPrescription.getName());
+                ePrescriptionDTO.setQuantity(medicationEPrescription.getQuantity());
+                ePrescriptionDTOS.add(ePrescriptionDTO);
+            }
+        }
+        return ePrescriptionDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(ePrescriptionDTOS);
     }
 
     @GetMapping("/myEprescriptions")

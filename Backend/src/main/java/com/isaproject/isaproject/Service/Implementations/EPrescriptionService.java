@@ -67,7 +67,7 @@ public class EPrescriptionService implements IEPrescriptionService {
                 MedicationEPrescription medicationEPrescription = new MedicationEPrescription();
                 medicationEPrescription.setCode(medication.getMedicationCode());
                 medicationEPrescription.setName(medication.getMedicationName());
-                medicationEPrescription.setQuantity(medicationEPrescription.getQuantity());
+                medicationEPrescription.setQuantity(medication.getQuantity());
                 medicationEPrescription.setePrescription(ePrescription1);
                 medicationEPrescriptionRepository.save(medicationEPrescription);
             }

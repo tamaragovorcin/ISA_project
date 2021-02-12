@@ -198,6 +198,20 @@ public class PatientController {
         if(person.getId() == null){
             throw new IllegalArgumentException("You are not able to update your profile right now.");
         }
+        if(person.getPassword().isEmpty() || person.getSurname().isEmpty()
+                || person.getName().isEmpty() || person.getPhoneNumber().isEmpty() ||
+                person.getAddress().getCountry().isEmpty() || person.getAddress().getTown().isEmpty() ||
+                person.getAddress().getStreet().isEmpty()) {
+            throw new IllegalArgumentException("Please fill all the required fields!");
+        }
+        if(person.getAddress().getNumber() !=(int)person.getAddress().getNumber()
+                ||person.getAddress().getPostalCode() !=(int)person.getAddress().getPostalCode() ) {
+            throw new IllegalArgumentException("Please fill all the required fields correctly!");
+        }
+        if(person.getAddress().getNumber()<=0 || person.getAddress().getPostalCode()<=0) {
+            throw new IllegalArgumentException("Please fill all the required fields correctly!");
+        }
+
         Patient patient = patientService.update(person);
         return new ResponseEntity<>("Your profile is successfully updated!", HttpStatus.CREATED);
     }
@@ -238,16 +252,18 @@ public class PatientController {
     @GetMapping("/getAlergies/{id}")
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<List<AlergiesFrontDTO>> getAlergies(@PathVariable Integer id) {
-
+            System.out.println("SDGRSDRDGRDGRGRD");
 
 
             if(id == null){
-                throw new IllegalArgumentException("You are not able to get allergy list right now.");
+                throw new IllegalArgumentException("You are not able to get allergy list right now, please log in first.");
             }
+
 
 
         List<PatientsMedicationAlergy> alergies = new ArrayList<PatientsMedicationAlergy>();
         alergies = alergiesService.findAll();
+
         Patient patient = patientService.findById(id);
         List<AlergiesFrontDTO> patientsAlergies = new ArrayList<AlergiesFrontDTO>();
         for(PatientsMedicationAlergy patientsMedicationAlergy: alergies){

@@ -206,7 +206,7 @@ public class TestRepository {
         pharmacistsConsultationDTO1.setDate(LocalDate.now().plusDays(2));
         pharmacistsConsultationDTO1.setPharmacist(pharmacist);
         pharmacistsConsultationDTO1.setTime(LocalTime.NOON);
-        pharmacistsConsultationDTO1.setPatient(patient);
+        pharmacistsConsultationDTO1.setPatient(patient.getId());
 
 
 
