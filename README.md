@@ -48,6 +48,7 @@ Pokretanje projekta
     -npm run serve  <br />
   -Desni klik na klasu IsaProjectApplication.java -> run<br />
   
+  Podaci za bazu se nalaze u folderu SQL skripta, u fajlu skripta.<br />
   Svi prvi put prijavljeni korisnici imaju šifru 1234. Za sve one koje nismo prvi put prijavili šifra je 123. <br />
 
 Zaposleni<br /> 
@@ -65,3 +66,14 @@ lidija@gmail.com -> Jankovic<br />
 nikola@gmail.com -> Benu<br />
 pavle@gmail.com -> Expera<br />
 jovana@gmail.com -> NovaMed<br />
+
+
+Mejlovi i šifre neophodni za proveru pristiglih obaveštenja:<br />
+1.   email: ivic506@gmail.com<br />
+     šifra: ivanivic506<br />
+2.   email: anaanic774@gmail.com<br />
+     šifra: anic774.<br />
+3.   email: savicpetar774@gmail.com<br />
+     šifra: savic774<br />
+4.   email: ourhospital9@gmail.com<br />
+     šifra: hospital.9<br />
