@@ -45,7 +45,7 @@ ines (39 sloc)  1.61 KB
         </div>
         <div style="background-color:white; margin: auto; width: 80%; padding:30px;margin-top:30px;">
             <strong><h4 style="color: #0D184F"><strong>BENEFITS</strong></h4></strong>
-             <h5 style="color: #0D184F">{{this.patient.discount}}</h5>
+             <h5 style="color: #0D184F">{{this.patient.discount}} % discount</h5>
         </div>
          <div style="background-color:white; margin: auto; width: 80%; padding:30px;margin-top:30px;">
             <strong><h4 style="color: #0D184F"><strong>PENALTIES</strong></h4></strong>

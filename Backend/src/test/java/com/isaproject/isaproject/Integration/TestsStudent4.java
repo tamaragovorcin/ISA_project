@@ -48,19 +48,6 @@ public class TestsStudent4 extends TestRepository {
 
     @Test
     @Transactional
-    @Rollback(true)
-    public void testSuccesfullPatientRegistration() throws Exception {
-
-        String input = mapToJson(personuserDTO);
-        String uri = "/api/patient/register";
-        mockMvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input))
-                .andExpect(status().is(200));
-    }
-
-
-
-    @Test
-    @Transactional
     public void testGetSupplierProfileInformation() throws Exception {
 
         JwtAuthenticationRequest loginDTO = new JwtAuthenticationRequest();

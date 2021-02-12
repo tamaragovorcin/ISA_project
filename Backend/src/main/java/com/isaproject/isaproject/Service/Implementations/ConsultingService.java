@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -51,16 +52,16 @@ public class ConsultingService implements IConsultingService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public Consulting save(ConsultingDTO consultingDTO) {
-        System.out.println("FARMACEUUT");
         System.out.println(consultingDTO.getPharmacist());
 
-        Pharmacist pharmacist = pharmacistRepository.findById(consultingDTO.getPharmacist().getId()).get();
+        Pharmacist pharmacist = pharmacistRepository.findOneById(consultingDTO.getPharmacist().getId());
 
 
 
         for(WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacistService.findAll()){
-            if(workingHoursPharmacist.getPharmacist().getId() == consultingDTO.getPharmacist().getId()){
+            if(workingHoursPharmacist.getPharmacist().getId().equals(consultingDTO.getPharmacist().getId())){
                 if(consultingDTO.getDate().getDayOfWeek() == DayOfWeek.MONDAY){
                     LocalTime shiftStarts = workingHoursPharmacist.getMondaySchedule().getStartTime();
                     LocalTime shiftEnds = workingHoursPharmacist.getMondaySchedule().getEndTime();
@@ -112,11 +113,11 @@ public class ConsultingService implements IConsultingService {
         consulting.setCancelled(false);
         consulting.setShowedUp(false);
         consulting.setInformation("");*/
-        return  null;
+        return null;
     }
     private  Boolean isPharmacistAvailable( ConsultingDTO dto){
         for(Consulting consulting : consultingRepository.findAll()){
-            if(consulting.getPharmacist().getId() == dto.getPharmacist().getId()) {
+            if(consulting.getPharmacist().getId().equals(dto.getPharmacist().getId())) {
                 if (dto.getDate().equals(consulting.getDate()) && dto.getStartTime().isAfter(consulting.getStartTime()) && dto.getStartTime().isBefore(consulting.getStartTime().plusMinutes((long) consulting.getDuration()))) {
                     return false;
                 }
@@ -126,7 +127,7 @@ public class ConsultingService implements IConsultingService {
     }
     private  Boolean isPatientAvailable( ConsultingDTO dto){
         for(Consulting consulting : consultingRepository.findAll()){
-            if(consulting.getPatient().getId() == dto.getPatient().getId()) {
+            if(consulting.getPatient().getId().equals(dto.getPatient().getId())) {
                 if (dto.getDate().equals(consulting.getDate()) && dto.getStartTime().isAfter(consulting.getStartTime()) && dto.getStartTime().isBefore(consulting.getStartTime().plusMinutes((long) consulting.getDuration()))) {
                     return false;
                 }
@@ -194,7 +195,7 @@ public class ConsultingService implements IConsultingService {
 
         Set<Consulting> consultings = patient.getConsulting();
         for (Consulting consulting : consultings) {
-            if(consulting.getShowedUp()==true && consulting.getPharmacist().getPharmacy().getId()==pharmacyId) {
+            if(consulting.getShowedUp() && consulting.getPharmacist().getPharmacy().getId().equals(pharmacyId)) {
                 return true;
             }
         }
@@ -211,7 +212,7 @@ public class ConsultingService implements IConsultingService {
         List<Consulting> consultings = findAll();
 
         for(Consulting consulting: consultings){
-            if(consulting.getPharmacist().getId() == pharmacistId && consulting.getPatient().getId()== patient.getId()){
+            if(consulting.getPharmacist().getId().equals(pharmacistId) && consulting.getPatient().getId().equals(patient.getId())){
                 if(consulting.getShowedUp()) {
                     able = true;
                 }

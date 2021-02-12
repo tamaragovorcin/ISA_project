@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -52,8 +53,9 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public ExaminationSchedule save(ExaminationScheduleDTO examinationScheduleDTO) {
-        Dermatologist dermatologist = dermatologistRepository.findById(examinationScheduleDTO.getDermatologist()).get();
+        Dermatologist dermatologist = dermatologistRepository.findOneById(examinationScheduleDTO.getDermatologist());
         Pharmacy pharmacy = pharmacyRepository.findById(examinationScheduleDTO.getPharmacy()).get();
         for(WorkingHoursDermatologist workingHoursDermatologist : workingHoursDermatologistService.findAll()){
             if(workingHoursDermatologist.getDermatologist().getId() == examinationScheduleDTO.getDermatologist() && workingHoursDermatologist.getPharmacy().getId() == examinationScheduleDTO.getPharmacy()){

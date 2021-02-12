@@ -5,12 +5,12 @@ import java.time.LocalDate;
 
 public class MedicationPriceDTO {
 
-    private Medication medication;
+    private Integer medication;
     private double price;
     private LocalDate date;
     private Integer pharmacy;
 
-    public MedicationPriceDTO(Medication medication, double price, LocalDate date, Integer pharmacy) {
+    public MedicationPriceDTO(Integer medication, double price, LocalDate date, Integer pharmacy) {
         this.medication = medication;
         this.price = price;
         this.date = date;
@@ -19,11 +19,11 @@ public class MedicationPriceDTO {
 
     public MedicationPriceDTO() {}
 
-    public Medication getMedication() {
+    public Integer getMedication() {
         return medication;
     }
 
-    public void setMedication(Medication medication) {
+    public void setMedication(Integer medication) {
         this.medication = medication;
     }
 

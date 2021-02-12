@@ -57,6 +57,9 @@ public class MedicationReservationController {
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<String> register(@RequestBody MedicationReservationDTO medicationReservationDTO)
     {
+        if(medicationReservationDTO.getMedicationId() == null || medicationReservationDTO.getPatient()==null || medicationReservationDTO.getPharmacyId()==null || medicationReservationDTO.getDateOfTakeOver()==null){
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+         }
 
         Patient patient = patientService.findById(medicationReservationDTO.getPatient());
         List<MedicationPrice> medicationPrices = medicationPriceService.findAll();
@@ -106,7 +109,7 @@ public class MedicationReservationController {
         List<MedicationReservation> medications = medicationReservationService.findAll();
         List<MedicationReservationFrontDTO> medicationReservationFrontDTOS = new ArrayList<MedicationReservationFrontDTO>();
         for( MedicationReservation med : medications){
-                if(med.getPatient().getId() == id){
+                if(med.getPatient().getId().equals(id)){
                     MedicationReservationFrontDTO medicationReservationFrontDTO = new MedicationReservationFrontDTO();
                     medicationReservationFrontDTO.setId(med.getId());
                     medicationReservationFrontDTO.setCode(med.getMedicine().getCode());

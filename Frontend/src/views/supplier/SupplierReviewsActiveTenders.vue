@@ -168,6 +168,7 @@ export default {
                 }}).then(response => {
                     console.log(response)
                     alert("Successfully sent offer!")
+                     window.location.href = "/supplierReviewsActiveTenders";
                  }).catch(res => {
                         alert(res.response.data.message);
                 });

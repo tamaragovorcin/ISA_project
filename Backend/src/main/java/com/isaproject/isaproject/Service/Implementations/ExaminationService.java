@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +58,8 @@ public class ExaminationService implements IExaminationService {
         es = examinationScheduleRepository.findAll();
 
         for (ExaminationSchedule e : es){
-            if(examinationDTO.getExaminationId() == e.getId()){
+            if(examinationDTO.getExaminationId().equals(e.getId())){
                 examinationSchedule = e;
-                System.out.println(examinationSchedule);
             }
         }
 
@@ -82,7 +82,7 @@ public class ExaminationService implements IExaminationService {
         es = examinationScheduleRepository.findAll();
 
         for (ExaminationSchedule e : es){
-            if(examinationDTO.getExaminationId() == e.getId()){
+            if(examinationDTO.getExaminationId().equals(e.getId())){
                 examinationSchedule = e;
                 System.out.println(examinationSchedule);
             }
@@ -117,7 +117,7 @@ public class ExaminationService implements IExaminationService {
 
         Set<Examination> examinations = patient.getExaminations();
         for (Examination examination : examinations) {
-            if(examination.getShowedUp()==true && examination.getExaminationSchedule().getPharmacy().getId()==pharmacyId) {
+            if(examination.getShowedUp() && examination.getExaminationSchedule().getPharmacy().getId().equals(pharmacyId)) {
                 return true;
             }
         }
@@ -134,7 +134,7 @@ public class ExaminationService implements IExaminationService {
         List<Examination> examinations = findAll();
 
         for(Examination examination: examinations){
-            if(examination.getExaminationSchedule().getDermatologist().getId() == dermatologistId && examination.getPatient().getId()== patient.getId()){
+            if(examination.getExaminationSchedule().getDermatologist().getId().equals(dermatologistId) && examination.getPatient().getId().equals(patient.getId())){
                 if(examination.getShowedUp()) {
                     able = true;
                 }

@@ -74,7 +74,7 @@ public class PharmacyController  {
         if(!(action.getExpiryDate().toString().matches("\\d{4}-\\d{2}-\\d{2}"))) {
             return new ResponseEntity<>("Date has to be in format YYYY-MM-DD.", HttpStatus.CREATED);
         }
-        if(action.getDescription()==""){
+        if(action.getDescription().equals("")){
             return new ResponseEntity<>("You have to describe action or benefit.", HttpStatus.CREATED);
         }
 
@@ -303,7 +303,7 @@ public class PharmacyController  {
         List<MedicationFrontDTO> medicationFrontDTOS = new ArrayList<MedicationFrontDTO>();
         List<MedicationPrice> medicationPrices = medicationPriceService.findAll();
         for (MedicationPrice med : medicationPrices) {
-            if (med.getPharmacy().getId() == id) {
+            if (med.getPharmacy().getId().equals( id)) {
                 MedicationFrontDTO medicationFrontDTO = new MedicationFrontDTO();
                 medicationFrontDTO.setId(med.getMedication().getId());
                 medicationFrontDTO.setName(med.getMedication().getName());
@@ -443,7 +443,7 @@ public class PharmacyController  {
         ExaminationSchedule examinationSchedule1 = new ExaminationSchedule();
 
         for(ExaminationSchedule es: examinationSchedule){
-            if(es.getId()==dto.getExaminationId()){
+            if(es.getId().equals(dto.getExaminationId())){
                 examinationSchedule1 = es;
                 examinationScheduleService.update(es, true);
 
@@ -485,7 +485,7 @@ public class PharmacyController  {
             ExaminationSchedule examinationSchedule1 = new ExaminationSchedule();
 
             for(ExaminationSchedule es: examinationSchedule){
-                if(es.getId()==dto.getExaminationId()){
+                if(es.getId().equals(dto.getExaminationId())){
                     examinationSchedule1 = es;
                     examinationScheduleService.update(es, true);
 
@@ -527,7 +527,7 @@ public class PharmacyController  {
 
         for (Examination ex : examinationSchedule) {
 
-            if (id == ex.getPatient().getId()) {
+            if (id .equals( ex.getPatient().getId())) {
 
 
                 ExaminationFrontDTO examinationScheduleFrontDTO = new ExaminationFrontDTO();
@@ -667,7 +667,7 @@ public class PharmacyController  {
 
         for( Examination ex : examinationSchedule){
 
-            if(id == ex.getPatient().getId()) {
+            if(id.equals(ex.getPatient().getId())) {
 
 
                 ExaminationFrontDTO examinationScheduleFrontDTO = new ExaminationFrontDTO();
@@ -715,7 +715,7 @@ public class PharmacyController  {
 
         for( Examination ex : examinationSchedule) {
 
-            if (id == ex.getPatient().getId()) {
+            if (id.equals(ex.getPatient().getId())) {
 
 
                 ExaminationFrontDTO examinationScheduleFrontDTO = new ExaminationFrontDTO();
@@ -762,7 +762,7 @@ public class PharmacyController  {
 
         for( Examination ex : examinationSchedule){
 
-            if(id == ex.getPatient().getId()) {
+            if(id.equals(ex.getPatient().getId())) {
 
 
                 ExaminationFrontDTO examinationScheduleFrontDTO = new ExaminationFrontDTO();
@@ -803,7 +803,7 @@ public class PharmacyController  {
 
         for( Examination ex : examinationSchedule){
 
-                            if(id == ex.getPatient().getId()) {
+                            if(id.equals(ex.getPatient().getId())) {
 
 
                                 ExaminationFrontDTO examinationScheduleFrontDTO = new ExaminationFrontDTO();
@@ -846,7 +846,7 @@ public class PharmacyController  {
         examinationSchedule = examinationService.findAll();
         Examination examination = new Examination();
         for( Examination ex : examinationSchedule){
-            if(ex.getId() == id){
+            if(ex.getId().equals(id)){
                 examination = ex;
                 LocalTime time = examination.getExaminationSchedule().getStartTime();
                 if(examination.getExaminationSchedule().getDate().isBefore(date) && LocalTime.now().isBefore(time)) {
@@ -860,7 +860,7 @@ public class PharmacyController  {
 
         if(able) {
             for (ExaminationSchedule es : examinationSchedule1) {
-                if (es.getId() == examination.getExaminationSchedule().getId()) {
+                if (es.getId().equals(examination.getExaminationSchedule().getId()) ){
 
                     examinationScheduleService.update(es, false);
 
@@ -966,7 +966,7 @@ public class PharmacyController  {
 
 
         for(Consulting consulting: consultings){
-            if(consulting.getPharmacist().getId() == pharmacistId && consulting.getPatient().getId()== patientId){
+            if(consulting.getPharmacist().getId().equals(pharmacistId) && consulting.getPatient().getId()== patientId){
                 if(consulting.getShowedUp()) {
                     able = true;
                 }
@@ -984,9 +984,10 @@ public class PharmacyController  {
     public ResponseEntity<String> leaveAMark(@RequestBody MarkDTO dto) {
         Boolean able =true;//ableToRatePharmacist(dto.getPharmacist().getId(), dto.getPatient().getId());
 
-        checkPossibilityPharmacy(dto.getPharmacy().getId());
-
-
+        if(!pharmacyService.checkConnectionWithPharmacy(dto.getPharmacy().getId())) {
+            able = false;
+            throw new IllegalArgumentException("You are not able to leave a mark for this pharmacy!");
+        }
 
         if (able) {
 
@@ -1006,10 +1007,10 @@ public class PharmacyController  {
             Boolean hasPatient = false;
 
             for (Mark mark1 : markList) {
-                if (mark1.getPharmacy().getId() == dto.getPharmacy().getId() && mark1.getPatient().getId() == dto.getPatient()) {
+                if (mark1.getPharmacy().getId().equals( dto.getPharmacy().getId()) && mark1.getPatient().getId() .equals( dto.getPatient())) {
                     hasPharmacy = false;
 
-                    if (mark1.getPatient().getId() != dto.getPatient() && mark1.getPharmacy().getId() == dto.getPharmacy().getId()) {
+                    if (!mark1.getPatient().getId().equals( dto.getPatient()) && mark1.getPharmacy().getId().equals(dto.getPharmacy().getId()) ){
                         hasPatient = true;
                     }
                 }
@@ -1215,14 +1216,6 @@ public class PharmacyController  {
         }
 
 
-    @GetMapping("checkForPharmacy/{pharmacyId}")
-    @PreAuthorize("hasRole('PATIENT')")
-    ResponseEntity<String> checkPossibilityPharmacy(@PathVariable Integer pharmacyId)
-    {
-        return (pharmacyService.checkConnectionWithPharmacy(pharmacyId)==false) ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok("Successfully");
-    }
 
     @GetMapping("from1to5")
     //@PreAuthorize("hasRole('PATIENT')")

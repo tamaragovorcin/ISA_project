@@ -1,0 +1,15 @@
+*Za svaki QR kod je navedeno koji lekovi se nalaze na tom eReceptu u formi: naziv leka - količina
+*Ako je QR kod prethodno upotrebljen, piše da je nevalidan
+
+1 - Nevalidan QR kod
+2 - Panadol - 4
+3 - Defrinol - 5; Kosili - 7; Razadyne - 7; Buspirone - 8
+4 - Defrinol - 5;Kosili - 7;Razadyne - 7;Buspirone - 8;Cough - 7;Analgin - 3
+5 - Paracetamol - 2;Cough - 7;Analgin - 3
+6 - Paracetamol - 5;Buspirone - 3
+7 - Brufen - 5;Buspirone - 3
+8 - Pancef - 5;Razadyne - 3;Kosili - 7;Panadol - 2;Paracetamol - 4
+9 - Kosili - 7
+10 - Kosili - 7;Defrinol - 11;Razadyne - 2
+11 - Defrinol - 11;Brufen - 1
+12 - Paracetamol - 1;Cough - 1

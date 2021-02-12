@@ -6,9 +6,9 @@ public class MedicationReservationDTO {
 
     private Integer patient;
 
-    private int pharmacyId;
+    private Integer pharmacyId;
 
-    private int medicationId;
+    private Integer medicationId;
 
     private LocalDate dateOfTakeOver;
 
@@ -21,7 +21,6 @@ public class MedicationReservationDTO {
         this.dateOfTakeOver = dateOfTakeOver;
     }
 
-
     public Integer getPatient() {
         return patient;
     }
@@ -30,19 +29,19 @@ public class MedicationReservationDTO {
         this.patient = patient;
     }
 
-    public int getPharmacyId() {
+    public Integer getPharmacyId() {
         return pharmacyId;
     }
 
-    public void setPharmacyId(int pharmacyId) {
+    public void setPharmacyId(Integer pharmacyId) {
         this.pharmacyId = pharmacyId;
     }
 
-    public int getMedicationId() {
+    public Integer getMedicationId() {
         return medicationId;
     }
 
-    public void setMedicationId(int medicationId) {
+    public void setMedicationId(Integer medicationId) {
         this.medicationId = medicationId;
     }
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
+import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.HelpModel.Complaint;
 import com.isaproject.isaproject.Model.HelpModel.LoyaltyProgram;
 import com.isaproject.isaproject.Model.Medicine.Medication;
@@ -208,9 +209,38 @@ public class TestRepository {
         pharmacistsConsultationDTO1.setTime(LocalTime.NOON);
         pharmacistsConsultationDTO1.setPatient(patient.getId());
 
+        //Dermatologist
+        Dermatologist dermatologist =  new Dermatologist();
+        dermatologist.setName("FisrtName");
+        dermatologist.setSurname("Surname");
 
+        Address address10 = new Address();
+        AddressDTO addressDTO10= new AddressDTO("Town2","Street2",255,257,"Country2");
+        address10.setPostalCode(addressDTO10.getPostalCode());
+        address10.setTown(addressDTO10.getTown());
+        address10.setStreet(addressDTO10.getStreet());
+        address10.setNumber(addressDTO10.getNumber());
+        address10.setCountry(addressDTO10.getCountry());
+        patient.setAddress(address10);
 
+        dermatologist.setEmail("dermatologist@gmail.com");
+        dermatologist.setPassword(passwordEncoder.encode("dermatologistPassword"));
+        dermatologist.setFirstLogged(false);
+        dermatologist.setPhoneNumber("7456123");
+        List<Authority> auth10 = new ArrayList<Authority>();
+        Authority authority10 = new Authority("ROLE_DERMATOLOGIST");
+        auth10.add(authority10);
+        dermatologist.setAuthorities(auth10);
+        dermatologist.setEnabled(true);
 
+        ExaminationSchedule examinationSchedule =  new ExaminationSchedule();
+        examinationSchedule.setPrice(250);
+        examinationSchedule.setFinished(false);
+        examinationSchedule.setStartTime(LocalTime.now());
+        examinationSchedule.setDermatologist(dermatologist);
+        examinationSchedule.setDate(LocalDate.now());
+        examinationSchedule.setPharmacy(pharmacy);
+        examinationSchedule.setDuration(20l);
         //Consultation
        /* Consulting consulting = new Consulting();
         consulting.setCancelled(false);
@@ -316,6 +346,10 @@ public class TestRepository {
         entityManager.persist(pharmacyAdmin);
         entityManager.persist(holidaySchedulePharmacist);
         entityManager.persist(medication1);
+        entityManager.persist(address10);
+        entityManager.persist(authority10);
+        entityManager.persist(dermatologist);
+        entityManager.persist(examinationSchedule);
         pharmacyIdDTO = new PharmacyIdDTO(pharmacy.getId());
         pharmacistsConsultationDTO1.setPharmacyId(pharmacyIdDTO.getPharmacyId());
         pharmacistsConsultationDTO = pharmacistsConsultationDTO1;

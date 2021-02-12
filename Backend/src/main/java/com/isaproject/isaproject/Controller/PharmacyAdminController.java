@@ -91,7 +91,7 @@ public class PharmacyAdminController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patient);
     }
-  /*  @GetMapping("/myPharmacy")
+   @GetMapping("/myPharmacy")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<Pharmacy> getMyPharmacy()
     {
@@ -101,7 +101,8 @@ public class PharmacyAdminController {
         return pharmacyAdmin.getPharmacy() == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacyAdmin.getPharmacy());
-    }*/
+    }
+    /*
     @GetMapping("/myPharmacy")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<PharmacyFrontDTO> getMyPharmacy()
@@ -122,7 +123,7 @@ public class PharmacyAdminController {
         return pharmacyAdmin.getPharmacy() == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacyFrontDTO);
-    }
+    }*/
     @GetMapping("/myPharmacyFront")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<PharmacyFrontDTO> getMyPharmacyFront()

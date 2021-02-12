@@ -367,7 +367,7 @@ export default {
       definePrice() {
         const data ={
               pharmacy : this.pharmacy.id,
-              medication : this.selectedMed,
+              medication : this.selectedMed.id,
               date : this.date1,
               price : this.price1
           }

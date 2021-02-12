@@ -44,7 +44,7 @@ public class PharmacistService implements IPharmacistService {
 
     @Override
     public Pharmacist findById(Integer id) {
-        return pharmacistRepository.getOne(id);
+        return pharmacistRepository.findById(id).get();
     }
 
     @Override

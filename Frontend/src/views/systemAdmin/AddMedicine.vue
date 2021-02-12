@@ -263,6 +263,7 @@ export default {
              }}).then(response => {
                        alert("Medicine is added!");
                         console.log(response.data);
+                        window.location.href = "/addMedicine";
                 })
                 .catch(res => {
                     alert(res.response.data.message);
