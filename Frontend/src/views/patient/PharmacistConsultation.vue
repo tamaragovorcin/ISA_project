@@ -288,7 +288,7 @@ mounted() {
                     this.pharmacies= response.data;
                     console.log(response);                
                 }).catch(res => {
-                    alert(res.response.data.message)
+                    alert("There are no available appointments at this time!")
                    
                         console.log(res);
                 });

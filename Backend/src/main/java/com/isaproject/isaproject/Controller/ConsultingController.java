@@ -220,7 +220,7 @@ public class ConsultingController {
             throw new IllegalArgumentException("You do not have any consultations reserved yet.");
         }
         for(Consulting consulting: programs){
-            if(consulting.getPatient().getId()==id) {
+            if(consulting.getPatient().getId().equals(id)) {
                 ConsultingsFrontDTO consultingsFrontDTO = new ConsultingsFrontDTO();
                 consultingsFrontDTO.setId(consulting.getId());
                 consultingsFrontDTO.setDate(consulting.getDate());
@@ -606,7 +606,7 @@ public class ConsultingController {
         if (day == DayOfWeek.MONDAY) {
             for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
                 for (MondaySchedule mondaySchedule : mondaySchedules) {
-                    if (mondaySchedule.getId() == workingHoursPharmacist.getMondaySchedule().getId()) {
+                    if (mondaySchedule.getId() .equals( workingHoursPharmacist.getMondaySchedule().getId())) {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
@@ -619,7 +619,7 @@ public class ConsultingController {
                                 pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                             } else {
                                 for (Pharmacy pharmacy : pharmacies) {
-                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                    if (!pharmacy.getId() .equals( workingHoursPharmacist.getPharmacist().getPharmacy().getId())) {
                                         pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                                     }
                                 }
@@ -2117,7 +2117,7 @@ public class ConsultingController {
         if (day == DayOfWeek.MONDAY) {
             for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
                 for (MondaySchedule mondaySchedule : mondaySchedules) {
-                    if (mondaySchedule.getId() == workingHoursPharmacist.getMondaySchedule().getId()) {
+                    if (mondaySchedule.getId().equals(workingHoursPharmacist.getMondaySchedule().getId())) {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
@@ -2130,7 +2130,7 @@ public class ConsultingController {
                                 pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                             } else {
                                 for (Pharmacy pharmacy : pharmacies) {
-                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                    if (!pharmacy.getId().equals(workingHoursPharmacist.getPharmacist().getPharmacy().getId())) {
                                         pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                                     }
                                 }
@@ -2144,7 +2144,7 @@ public class ConsultingController {
 
             for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
                 for (TuesdaySchedule mondaySchedule : tuesdaySchedules) {
-                    if (mondaySchedule.getId() == workingHoursPharmacist.getTuesdaySchedule().getId()) {
+                    if (mondaySchedule.getId().equals(workingHoursPharmacist.getTuesdaySchedule().getId())) {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
@@ -2152,11 +2152,11 @@ public class ConsultingController {
                         end = end.plusSeconds(0);
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
-                            if (pharmacies.size() == 0) {
+                            if (pharmacies.size()==0) {
                                 pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                             } else {
                                 for (Pharmacy pharmacy : pharmacies) {
-                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                    if (!pharmacy.getId().equals(workingHoursPharmacist.getPharmacist().getPharmacy().getId())) {
                                         pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                                     }
                                 }
@@ -2169,20 +2169,20 @@ public class ConsultingController {
         } else if (day == DayOfWeek.WEDNESDAY) {
             for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
                 for (WednesdaySchedule mondaySchedule : wednesdaySchedules) {
-                    if (mondaySchedule.getId() == workingHoursPharmacist.getWednesdaySchedule().getId()) {
+                    if (mondaySchedule.getId().equals(workingHoursPharmacist.getWednesdaySchedule().getId())) {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
                         start = start.plusSeconds(0);
                         end = end.plusSeconds(0);
-
+                        System.out.println("APOTEKE " + pharmacies.size());
                         if (start.isBefore(time) && end.isAfter(time)) {
                             found = true;
-                            if (pharmacies.size() == 0) {
+                            if (pharmacies.size()==0) {
                                 pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                             } else {
                                 for (Pharmacy pharmacy : pharmacies) {
-                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                    if (!pharmacy.getId().equals(workingHoursPharmacist.getPharmacist().getPharmacy().getId())) {
                                         pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                                     }
                                 }
@@ -2195,7 +2195,7 @@ public class ConsultingController {
         } else if (day == DayOfWeek.THURSDAY) {
             for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
                 for (ThursdaySchedule mondaySchedule : thursdaySchedules) {
-                    if (mondaySchedule.getId() == workingHoursPharmacist.getThursdaySchedule().getId()) {
+                    if (mondaySchedule.getId().equals(workingHoursPharmacist.getThursdaySchedule().getId())) {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
@@ -2207,7 +2207,7 @@ public class ConsultingController {
                                 pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                             } else {
                                 for (Pharmacy pharmacy : pharmacies) {
-                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                    if (!pharmacy.getId().equals(workingHoursPharmacist.getPharmacist().getPharmacy().getId())) {
                                         pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                                     }
                                 }
@@ -2220,7 +2220,7 @@ public class ConsultingController {
         } else if (day == DayOfWeek.FRIDAY) {
             for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
                 for (FridaySchedule mondaySchedule : fridaySchedules) {
-                    if (mondaySchedule.getId() == workingHoursPharmacist.getFridaySchedule().getId()) {
+                    if (mondaySchedule.getId().equals(workingHoursPharmacist.getFridaySchedule().getId())) {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
@@ -2232,7 +2232,7 @@ public class ConsultingController {
                                 pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                             } else {
                                 for (Pharmacy pharmacy : pharmacies) {
-                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                    if (!pharmacy.getId().equals(workingHoursPharmacist.getPharmacist().getPharmacy().getId())) {
                                         pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                                     }
                                 }
@@ -2245,7 +2245,7 @@ public class ConsultingController {
         } else if (day == DayOfWeek.SATURDAY) {
             for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
                 for (SaturdaySchedule mondaySchedule : saturdaySchedules) {
-                    if (mondaySchedule.getId() == workingHoursPharmacist.getSaturdaySchedule().getId()) {
+                    if (mondaySchedule.getId().equals(workingHoursPharmacist.getSaturdaySchedule().getId())) {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
@@ -2257,7 +2257,7 @@ public class ConsultingController {
                                 pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                             } else {
                                 for (Pharmacy pharmacy : pharmacies) {
-                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                    if (!pharmacy.getId().equals(workingHoursPharmacist.getPharmacist().getPharmacy().getId())) {
                                         pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                                     }
                                 }
@@ -2270,7 +2270,7 @@ public class ConsultingController {
         } else if (day == DayOfWeek.SUNDAY) {
             for (WorkingHoursPharmacist workingHoursPharmacist : workingHoursPharmacists) {
                 for (SundaySchedule mondaySchedule : sundaySchedules) {
-                    if (mondaySchedule.getId() == workingHoursPharmacist.getSundaySchedule().getId()) {
+                    if (mondaySchedule.getId().equals(workingHoursPharmacist.getSundaySchedule().getId())) {
 
                         start = mondaySchedule.getStartTime();
                         end = mondaySchedule.getEndTime();
@@ -2282,7 +2282,7 @@ public class ConsultingController {
                                 pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                             } else {
                                 for (Pharmacy pharmacy : pharmacies) {
-                                    if (pharmacy.getId() != workingHoursPharmacist.getPharmacist().getPharmacy().getId()) {
+                                    if (!pharmacy.getId().equals(workingHoursPharmacist.getPharmacist().getPharmacy().getId())) {
                                         pharmacies.add(workingHoursPharmacist.getPharmacist().getPharmacy());
                                     }
                                 }
@@ -2648,9 +2648,9 @@ public class ConsultingController {
                 mail.setFrom(environment.getProperty("spring.mail.username"));
                 //mail.setFrom("pharmacyisa@gmail.com");
                 mail.setText("You have successfully reserved an appointment on : "
-                        + consulting1.getDate() + " at " + consulting1.getStartTime() + "\n" +
-                        ". Your doctor is " + consulting1.getPharmacist().getName() + " " + consulting1.getPharmacist().getSurname() + ".\n" +
-                        "Pharmacy where the consultation will be held is " + consulting1.getPharmacist().getName() + "."
+                        + consulting.getDate() + " at " + consulting.getStartTime() + "\n" +
+                        ". Your doctor is " + consulting.getPharmacist().getName() + " " + consulting.getPharmacist().getSurname() + ".\n" +
+                        "Pharmacy where the consultation will be held is " + consulting.getPharmacist().getName() + "."
                 );
 
                 mailSender.send(mail);
@@ -2715,9 +2715,9 @@ public class ConsultingController {
             mail.setFrom(environment.getProperty("spring.mail.username"));
             //mail.setFrom("pharmacyisa@gmail.com");
             mail.setText("You have successfully reserved an appointment on : "
-                    + consulting1.getDate() + " at " + consulting1.getStartTime() + "\n" +
-                    ". Your doctor is " + consulting1.getPharmacist().getName() + " " + consulting1.getPharmacist().getSurname() + ".\n" +
-                    "Pharmacy where the consultation will be held is " + consulting1.getPharmacist().getName() + "."
+                    + consulting.getDate() + " at " + consulting.getStartTime() + "\n" +
+                    ". Your doctor is " + consulting.getPharmacist().getName() + " " + consulting.getPharmacist().getSurname() + ".\n" +
+                    "Pharmacy where the consultation will be held is " + consulting.getPharmacist().getName() + "."
             );
 
             mailSender.send(mail);

@@ -64,6 +64,7 @@ public class EPrescriptionController {
                 File destination = new File("src/main/resources/qr/" + file.getOriginalFilename());
                 ImageIO.write(src, "png", destination);
                 String decodedText = decodeQRCode(new File("src/main/resources/qr/" + file.getOriginalFilename()));
+                System.out.println(decodedText);
                 if (decodedText == null) {
                     throw new IllegalArgumentException("Please upload correct QR code!");
                 } else {

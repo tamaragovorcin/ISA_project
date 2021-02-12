@@ -247,7 +247,6 @@
 
 <script>
 export default {
-
   data() {
     return {
         firstname : "",
@@ -292,7 +291,6 @@ export default {
       loggedIn : false
     }
   },
-
   methods:{     
       hideModal() {
         this.$refs['my-modal'].hide()
@@ -317,7 +315,6 @@ export default {
                             alert("NOT OK");
                             console.log(response);
                     });
-
 		},
     defineSchedule : function(event, pharmacist){
             this.selectedPharmacist = pharmacist;  
@@ -343,7 +340,6 @@ export default {
                     endTimeSunday : this.endTimeSaturday
           }
            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-
             this.axios.post('/workingHours/pharmacist',data,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
@@ -375,7 +371,6 @@ export default {
      },
       showByPharmacistName : function() {
           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-
           const data = {
             firstName : this.pharmacistName,
             surName : this.phrmacistSurname
@@ -427,7 +422,6 @@ export default {
                     
                 
          
-
          }).catch(res => {
                 alert("Please, log in.");
                 window.location.href="/login";
@@ -439,7 +433,4 @@ export default {
 </script>
 
 <style>
-
 </style>
-
-

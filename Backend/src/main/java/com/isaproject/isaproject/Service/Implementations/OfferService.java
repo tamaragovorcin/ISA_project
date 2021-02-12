@@ -75,10 +75,10 @@ public class OfferService implements IOfferService {
 
     public Offer proccedOffer(OfferDTO offerDTO) {
         if(canMakeOffer(offerDTO))  {
-            Boolean quantitiesUpdated = supplierMedicationService.updateQuantities(offerDTO.getOrderId());
+            Boolean quantitiesUpdated = supplierMedicationService.updateQuantities(offerDTO);
             Offer offer = save(offerDTO);
             Boolean canMakeOffer = canMakeOffer(offerDTO);
-            if(offer == null || quantitiesUpdated==false || canMakeOffer==false) {return null;}
+            if(offer == null || !quantitiesUpdated || !canMakeOffer) {return null;}
             return offer;
         }
         return null;
@@ -114,7 +114,7 @@ public class OfferService implements IOfferService {
 
         Set<Offer> offers = order.getOffer();
         for (Offer offer:offers) {
-            if(supplier.getId()==offer.getSupplier().getId()) {
+            if(supplier.getId().equals(offer.getSupplier().getId())) {
                 throw new IllegalArgumentException("You have already created offer for this tender!");
             }
         }

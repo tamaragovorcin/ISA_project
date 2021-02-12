@@ -210,6 +210,7 @@ export default {
                 }}).then(response => {
                    console.log(response);
                    alert("Offer is successfully updated!");
+                   window.location.href = "/myOffers";
                 }).catch(res => {
                       alert(res.response.data.message);
                 });

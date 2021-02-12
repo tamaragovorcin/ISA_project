@@ -28,7 +28,7 @@ public class Examination {
     @Column(name = "showedUp", nullable = true)
     private Boolean showedUp;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "examination_id", referencedColumnName = "id", nullable = true, unique = false)
     private ExaminationSchedule examinationSchedule;
 

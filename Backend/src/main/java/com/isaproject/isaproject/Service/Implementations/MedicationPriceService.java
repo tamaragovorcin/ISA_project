@@ -55,15 +55,17 @@ public class MedicationPriceService implements IMedicationPriceService {
 
     @Override
     public MedicationPrice save(MedicationPriceDTO medicationDTO) {
+        Medication existedMedication = medicationService.findById(medicationDTO.getMedication());
+
         MedicationPrice medicationPrice1 = new MedicationPrice();
         Pharmacy pharmacy = pharmacyService.findById(medicationDTO.getPharmacy());
-        medicationPrice1.setMedication(medicationDTO.getMedication());
+        medicationPrice1.setMedication(existedMedication);
         medicationPrice1.setQuantity(0);
         medicationPrice1.setPrice(medicationDTO.getPrice());
         medicationPrice1.setDate(medicationDTO.getDate());
         medicationPrice1.setPharmacy(pharmacy);
         MedicationPriceHistoryDTO dto = new MedicationPriceHistoryDTO();
-        dto.setMedication(medicationDTO.getMedication().getId());
+        dto.setMedication(existedMedication.getId());
         dto.setPharmacy(medicationDTO.getPharmacy());
         dto.setStartDate(LocalDate.now());
         dto.setEndDate(medicationDTO.getDate());
@@ -77,18 +79,19 @@ public class MedicationPriceService implements IMedicationPriceService {
 
 
     public MedicationPrice updatePrice(MedicationPriceDTO medicationDTO) {
-
-        MedicationPrice medicationPrice = findByMedicationID(medicationDTO.getMedication().getId());
+        Medication existedMedication = medicationService.findById(medicationDTO.getMedication());
+        MedicationPrice medicationPrice = findByMedicationID(existedMedication.getId(),medicationDTO.getPharmacy());
         medicationPrice.setPrice(medicationDTO.getPrice());
+
         medicationPrice.setDate(medicationDTO.getDate());
         MedicationPriceHistoryDTO medicationPriceHistoryDTO = new MedicationPriceHistoryDTO();
-        medicationPriceHistoryDTO.setMedication(medicationDTO.getMedication().getId());
+        medicationPriceHistoryDTO.setMedication(existedMedication.getId());
         medicationPriceHistoryDTO.setPharmacy(medicationDTO.getPharmacy());
         medicationPriceHistoryDTO.setPrice(medicationDTO.getPrice());
         medicationPriceHistoryDTO.setStartDate(LocalDate.now());
         medicationPriceHistoryDTO.setEndDate(medicationDTO.getDate());
         for(MedicationPriceHistory medicationPriceHistory : medicationPriceHistoryService.findAll()){
-            if(medicationPriceHistory.getMedication_id() == medicationDTO.getMedication().getId()){
+            if(medicationPriceHistory.getMedication_id().equals(existedMedication.getId())){
                 if(medicationPriceHistory.getStartDate().isBefore(LocalDate.now().plusDays(1))) {
                     if (medicationPriceHistory.getEndDate().isBefore(medicationDTO.getDate()) || medicationPriceHistory.getEndDate().isEqual(medicationDTO.getDate())) {
                         medicationPriceHistoryService.delete(medicationPriceHistory);
@@ -97,14 +100,14 @@ public class MedicationPriceService implements IMedicationPriceService {
             }
         }
         medicationPriceHistoryService.save(medicationPriceHistoryDTO);
-        return this.medicationPriceRepository.save(medicationPrice);
+        return medicationPriceRepository.save(medicationPrice);
 
 
     }
-    public MedicationPrice findByMedicationID(Integer id){
+    public MedicationPrice findByMedicationID(Integer id, Integer pharmacy){
         System.out.println(id);
         for(MedicationPrice medicationPrice : medicationPriceRepository.findAll()){
-            if(medicationPrice.getMedication().getId().toString().equals(id.toString())){
+            if(medicationPrice.getMedication().getId().toString().equals(id.toString()) && pharmacy.equals(medicationPrice.getPharmacy().getId())){
                 return medicationPrice;
             }
         }
@@ -165,9 +168,6 @@ public class MedicationPriceService implements IMedicationPriceService {
             for(MedicationInOrder med : order.getMedicationInOrders()){
                 if(medicationPrice.getPharmacy().getId().toString().equals(med.getOrder().getPharmacyAdmin().getPharmacy().getId().toString())){
                     if(medicationPrice.getMedication().getName().equals(med.getMedicine().getName())) {
-                        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-                        System.out.println("PROSAO IF-POSTOJI");
-
                         Integer quantity = medicationPrice.getQuantity();
                         quantity +=  + med.getQuantity();
                         MedicationPrice medicationPrice1 = findByName(medicationPrice.getMedication().getName(),order.getPharmacyAdmin().getPharmacy());
@@ -193,7 +193,7 @@ public class MedicationPriceService implements IMedicationPriceService {
     }
     private MedicationPrice findByName(String name, Pharmacy pharmacy){
         for(MedicationPrice medicationPrice :  medicationPriceRepository.findAll()){
-            if (medicationPrice.getMedication().getName().equals(name) && medicationPrice.getPharmacy().getId() == pharmacy.getId()){
+            if (medicationPrice.getMedication().getName().equals(name) && medicationPrice.getPharmacy().getId().equals(pharmacy.getId())){
                 return medicationPrice;
             }
         }
@@ -203,7 +203,7 @@ public class MedicationPriceService implements IMedicationPriceService {
     Medication medication = medicationService.findById(dto.getMedication());
         for (MedicationPrice medicationPrice : medicationPriceRepository.findAll()) {
             if (medicationPrice.getMedication().getCode() == medication.getCode() && medicationPrice.getMedication().getName().equals(medication.getName())){
-                if( medicationPrice.getPharmacy().getId() == dto.getPharmacy()) {
+                if( medicationPrice.getPharmacy().getId().equals(dto.getPharmacy())) {
                         if (!isMedicationReserved(dto)) {
                             medicationPriceRepository.delete(medicationPrice);
                             return true;
@@ -218,13 +218,13 @@ public class MedicationPriceService implements IMedicationPriceService {
         Medication medication = medicationService.findById(dto.getMedication());
         for(MedicationReservation medicationReservation : medicationReservationService.findAll()) {
             if (medicationReservation.getMedicine().getCode() == medication.getCode() && medicationReservation.getMedicine().getName().equals(medication.getName())
-                    && medicationReservation.getPharmacy().getId() == dto.getPharmacy() && medicationReservation.getCollected() == null) {
+                    && medicationReservation.getPharmacy().getId().equals(dto.getPharmacy()) && medicationReservation.getCollected() == null) {
 
                 return true;
             }
             if (medicationReservation.getCollected() != null){
                 if (medicationReservation.getMedicine().getCode() == medication.getCode() && medicationReservation.getMedicine().getName().equals(medication.getName())
-                        && medicationReservation.getPharmacy().getId() == dto.getPharmacy() && !medicationReservation.getCollected()) {
+                        && medicationReservation.getPharmacy().getId().equals(dto.getPharmacy()) && !medicationReservation.getCollected()) {
 
                     return true;
                 }

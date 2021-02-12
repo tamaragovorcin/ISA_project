@@ -26,12 +26,7 @@
                     <div class=" form-group col">
                         <label >Code</label>
                     </div>
-                    <div class=" form-group col">          
-                        <label >Type</label>
-                    </div>
-                    <div class=" form-group col">
-                        <label >Form</label>
-                    </div>
+                   
                     <div class=" form-group col">          
                         <label >Reserved quantity for offers</label>
                     </div>
@@ -51,12 +46,7 @@
                             <div class=" form-group col">          
                                 <label >{{medicationInfo.code}}</label>
                             </div>
-                            <div class=" form-group col">
-                                <label >{{medicationInfo.type}}</label>
-                            </div>
-                            <div class=" form-group col">          
-                                <label >{{medicationInfo.form}}</label>
-                            </div>
+                           
                              <div class=" form-group col">          
                                 <label >{{medicationInfo.reservedQuantity}}</label>
                             </div>

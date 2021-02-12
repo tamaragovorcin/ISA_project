@@ -28,7 +28,8 @@ public class HolidaySchedulePharmacistController {
     @PostMapping("/add")
     @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<String> addHolidayPharmacist(@RequestBody HolidaySchedulePharmacistDTO holidaySchedulePharmacistDTO) {
-
+        System.out.println("---------------------");
+    System.out.println(holidaySchedulePharmacistDTO.getPharmacist());
         HolidaySchedulePharmacist program = pharmacistHolidayService.save(holidaySchedulePharmacistDTO);
         return program == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :

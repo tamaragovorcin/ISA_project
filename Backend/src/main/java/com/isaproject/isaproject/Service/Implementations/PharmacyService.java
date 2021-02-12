@@ -86,13 +86,13 @@ public class PharmacyService implements IPharmacyService {
         Boolean hasConsulting = consultingService.checkIfPatientHasConsulting(pharmacyId);
         Boolean hasExamination = examinationService.checkIfPatientHasExamination(pharmacyId);
         Boolean hasTakenReservedMedication = checkTakingReservedMedication();
-        return (!hasEreceipt && !hasConsulting && !hasExamination && !hasTakenReservedMedication) ? false :true;
+        return hasEreceipt || hasConsulting || hasExamination || hasTakenReservedMedication;
     }
 
     private Boolean checkTakingReservedMedication() {
         Random rand = new Random();
         int int_random = rand.nextInt(1000);
-        if(int_random%2==0) {return true;}
+        if(int_random%4==0) {return true;}
         return false;
     }
 }

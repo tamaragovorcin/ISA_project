@@ -515,7 +515,7 @@ mounted() {
              }}).then(response => {
                alert(response.data);
                       console.log(response);
-                         window.location.href = "/medicationResevation";
+                         window.location.href = "/medicationReservation";
          }).catch(res => {
                        alert(res.data);
                         console.log(res);
@@ -540,10 +540,10 @@ mounted() {
                     then(res => {
                         alert(res.data);
                         console.log(res);
-                           window.location.href = "/medicationResevation";
+                           window.location.href = "/medicationReservation";
                     })
                     .catch(res => {
-                           alert(res.data);
+                     alert(res.response.data.message);
                         console.log(res);
                     })
                  

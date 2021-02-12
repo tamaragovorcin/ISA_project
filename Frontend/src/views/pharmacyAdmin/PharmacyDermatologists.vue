@@ -501,17 +501,17 @@ export default {
                     startTimeMonday : this.startTimeMonday,
                     startTimeTuesday : this.startTimeTuesday,
                     startTimeWednesday : this.startTimeWednesday,
-                    startTimeThursday : this.startTimeWednesday,
-                    startTimeFriday : this.startTimeThursday,
-                    startTimeSaturday : this.startTimeFriday,
+                    startTimeThursday : this.startTimeThursday,
+                    startTimeFriday : this.startTimeFriday,
+                    startTimeSaturday : this.startTimeSaturday,
                     startTimeSunday : this.startTimeSunday,
                     endTimeMonday : this.endTimeMonday,
                     endTimeTuesday : this.endTimeTuesday,
                     endTimeWednesday : this.endTimeWednesday,
                     endTimeThursday : this.endTimeThursday,
                     endTimeFriday : this.endTimeFriday,
-                    endTimeSaturday : this.endTimeSunday,
-                    endTimeSunday : this.endTimeSaturday
+                    endTimeSaturday : this.endTimeSaturday,
+                    endTimeSunday : this.endTimeSunday
           }
            let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
             this.axios.post('/workingHours/dermatologist',data,{ 

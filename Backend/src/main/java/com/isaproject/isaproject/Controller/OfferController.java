@@ -97,7 +97,7 @@ public class OfferController {
         List<Offer> offers = new ArrayList<Offer>();
 
         for(Offer offer : offerService.findAll()){
-            if(offer.getOrder().getId() ==  id){
+            if(offer.getOrder().getId().equals(id)){
                 offers.add(offer);
             }
         }
@@ -134,9 +134,9 @@ public class OfferController {
         PersonUser user = (PersonUser)currentUser.getPrincipal();
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
         for(Offer offer : offerService.findAll()) {
-            if (offer.getOrder().getPharmacyAdmin().getId() == pharmacyAdmin.getId()) {
-                if (offer.getOrder().getId() == offerService.findById(id).getOrder().getId()) {
-                    if (offer.getId() == id && !offer.getOrder().getStatus().equals("CLOSED")) {
+            if (offer.getOrder().getPharmacyAdmin().getId().equals(pharmacyAdmin.getId())) {
+                if (offer.getOrder().getId().equals(offerService.findById(id).getOrder().getId())) {
+                    if (offer.getId().equals(id) && !offer.getOrder().getStatus().equals("CLOSED")) {
                         medicationPriceService.updateMedicineQuantityTender(offer.getOrder());
                         offer.setStatus("ACCEPTED");
                         Order order = offer.getOrder();

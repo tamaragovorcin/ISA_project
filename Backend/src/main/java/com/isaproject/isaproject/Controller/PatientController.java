@@ -367,7 +367,7 @@ public class PatientController {
 
 
 
-    @Scheduled(fixedRate = 3000000)
+    @Scheduled(fixedRate = 30000)
     public void penalties() {
 
             List<Patient> patients = patientService.findAll();
@@ -387,7 +387,7 @@ public class PatientController {
     }
 
 
-    @Scheduled(fixedRate = 3000000)
+    @Scheduled(fixedRate = 30000)
     public void medicationPendalties() {
 
         List<MedicationReservation> medicationReservations = medicationReservationService.findAll();

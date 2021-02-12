@@ -1,4 +1,5 @@
 package com.isaproject.isaproject.Service.Implementations;
+import com.isaproject.isaproject.DTO.OfferDTO;
 import com.isaproject.isaproject.DTO.SupplierMedicationUpdateDTO;
 import com.isaproject.isaproject.DTO.SupplierMedicationUpdateQuantityDTO;
 import com.isaproject.isaproject.DTO.SupplierMedicationsDTO;
@@ -68,10 +69,10 @@ public class SupplierMedicationService implements ISupplierMedicationService {
         return supplierMedicaionRepository.save(supplierMedications);
     }
 
-    public Boolean updateQuantities(Integer orderId) {
-        Set<MedicationInOrder> medicationInOrder = orderRepository.findById(orderId).get().getMedicationInOrders();
+    public Boolean updateQuantities(OfferDTO offerDTO) {
+        Set<MedicationInOrder> medicationInOrder = orderRepository.findById(offerDTO.getOrderId()).get().getMedicationInOrders();
         for(MedicationInOrder medication : medicationInOrder) {
-            if(updateQuantityForMedication(medication.getMedicine(), medication.getQuantity())) {}
+            if(updateQuantityForMedication(medication.getMedicine(), medication.getQuantity(), offerDTO.getSupplier())) {}
             else {
                 return false;
             }
@@ -79,21 +80,25 @@ public class SupplierMedicationService implements ISupplierMedicationService {
         return true;
     }
 
-    private boolean updateQuantityForMedication(Medication medication, int quantity) {
-        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        PersonUser user = (PersonUser)currentUser.getPrincipal();
-        Supplier supplier = supplierRepository.findById(user.getId()).get();
-        Set<SupplierMedications> medicationsSupplier =supplier.getSupplierMedications();
+    private boolean updateQuantityForMedication(Medication medication, int quantity, Integer supplierId) {
+
+        List<SupplierMedications> medicationsSupplier =supplierMedicaionRepository.findAll();
 
         for (SupplierMedications supplierMedication: medicationsSupplier) {
-            if(supplierMedication.getCode()==medication.getCode() && supplierMedication.getName().equals(medication.getName())) {
-                if(supplierMedication.getQuantity()>quantity) {
-                    int newQuantity = supplierMedication.getQuantity() - quantity;
-                    supplierMedication.setQuantity(newQuantity);
-                    int newReservedQuantity = supplierMedication.getReservedQuantity() + quantity;
-                    supplierMedication.setReservedQuantity(newReservedQuantity);
-                    supplierMedicaionRepository.save(supplierMedication);
-                    return true;
+            if(supplierId.equals(supplierMedication.getSupplier().getId())) {
+                if(supplierMedication.getCode()==medication.getCode() && supplierMedication.getName().equals(medication.getName())) {
+                    if(supplierMedication.getQuantity()>quantity) {
+                        int newQuantity = supplierMedication.getQuantity() - quantity;
+
+                        supplierMedication.setQuantity(newQuantity);
+
+                        int newReservedQuantity = supplierMedication.getReservedQuantity() + quantity;
+
+                        supplierMedication.setReservedQuantity(newReservedQuantity);
+
+                        supplierMedicaionRepository.save(supplierMedication);
+                        return true;
+                    }
                 }
             }
         }

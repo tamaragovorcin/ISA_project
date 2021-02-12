@@ -229,6 +229,8 @@ export default {
 
   data() {
     return {
+    isAuthorized : false,
+
       accountInformation :null,
       allowSystemAdminRegistration : false,
       notallowSystemAdminRegistration : false,
@@ -377,7 +379,6 @@ export default {
             answered : false,
             answer : "",
             message : "",
-            isAuthorized : false
           },
       
     }
@@ -455,7 +456,9 @@ export default {
                                 'Authorization': 'Bearer ' + token,
                 }}).then(response => {
                         console.log(response);
+                        this.$refs['seeCompplaint'].hide();
                         alert("Answer is sent!");
+                        window.location.href = "/complaints";
                 }).catch(res => {
                        alert("Please try later.");
                         console.log(res);
