@@ -172,7 +172,7 @@ public class TestRepository {
         //PharmacyMark
         MarkDTO markDTO1 = new MarkDTO();
         markDTO1.setMark(5);
-        markDTO1.setPatient(patient);
+        markDTO1.setPatient(patient.getId());
         markDTO1.setPharmacy(pharmacy);
 
         //Pharmacist

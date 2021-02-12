@@ -91,7 +91,17 @@ public class PharmacyAdminController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patient);
     }
-
+  /*  @GetMapping("/myPharmacy")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<Pharmacy> getMyPharmacy()
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
+        return pharmacyAdmin.getPharmacy() == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacyAdmin.getPharmacy());
+    }*/
     @GetMapping("/myPharmacy")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<PharmacyFrontDTO> getMyPharmacy()
@@ -106,6 +116,7 @@ public class PharmacyAdminController {
         pharmacyFrontDTO.setDescription(pharmacy.getDescription());
         pharmacyFrontDTO.setStreet(pharmacy.getAddress().getStreet());
         pharmacyFrontDTO.setCity(pharmacy.getAddress().getTown());
+        pharmacyFrontDTO.setNumber(pharmacy.getAddress().getNumber());
         pharmacyFrontDTO.setPostalCode(pharmacy.getAddress().getPostalCode());
         pharmacyFrontDTO.setMark(pharmacy.getMark());
         return pharmacyAdmin.getPharmacy() == null ?
@@ -238,28 +249,14 @@ public class PharmacyAdminController {
     }
     @GetMapping("/pharmacists")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    ResponseEntity<Set<PharmacistDTO>> getPharmacists()
+    ResponseEntity<Set<Pharmacist>> getPharmacists()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
         PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
-        Set<Pharmacist> pharmacists = pharmacyAdmin.getPharmacy().getPharmacists();
-        Set<PharmacistDTO> pharmacistDTOS = new HashSet<>();
-        for(Pharmacist pharmacist : pharmacists){
-            PharmacistDTO pharmacistDTO = new PharmacistDTO();
-            pharmacistDTO.setFirstname(pharmacist.getName());
-            System.out.println("PREZIMEEE");
-            System.out.println(pharmacist.getSurname());
-            pharmacistDTO.setSurname(pharmacist.getSurname());
-            pharmacistDTO.setMark(pharmacist.getMarkPharmacist());
-            pharmacistDTO.setId(pharmacist.getId());
-            pharmacistDTO.setEmail(pharmacist.getEmail());
-            pharmacistDTO.setPhonenumber(pharmacist.getPhoneNumber());
-            pharmacistDTOS.add(pharmacistDTO);
-        }
         return pharmacyAdmin.getPharmacy().getPharmacists() == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacistDTOS);
+                ResponseEntity.ok(pharmacyAdmin.getPharmacy().getPharmacists());
     }
     @GetMapping("/terms")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")

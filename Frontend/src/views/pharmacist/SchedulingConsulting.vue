@@ -139,7 +139,7 @@ export default {
 
 
   methods:{
-        showclients : function(){
+        showClients : function(){
          window.location.href = "/pharmacistClients";
       },
       showMyProfile: function(){

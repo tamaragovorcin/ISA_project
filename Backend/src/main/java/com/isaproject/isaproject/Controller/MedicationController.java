@@ -39,6 +39,8 @@ public class MedicationController {
     @Autowired
     MedicationReservationService medicationReservationService;
 
+    @Autowired
+    PatientService patientService;
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
@@ -177,7 +179,7 @@ public class MedicationController {
 
         Boolean able = false;
 
-        able = ableToRateMedications(dto.getMedication().getId(), dto.getPatient().getId());
+        able = ableToRateMedications(dto.getMedication().getId(), dto.getPatient());
         if(able) {
             List<MarkMedication> markList = markService.findAll();
             List<Medication> list = medicationService.findAll();
@@ -194,10 +196,10 @@ public class MedicationController {
             Boolean hasPatient = false;
 
             for (MarkMedication mark1 : markList) {
-                if (mark1.getMedication().getId() == dto.getMedication().getId() && mark1.getPatient().getId() == dto.getPatient().getId()) {
+                if (mark1.getMedication().getId() == dto.getMedication().getId() && mark1.getPatient().getId() == dto.getPatient()) {
                     hasMedication = false;
 
-                    if (mark1.getPatient().getId() != dto.getPatient().getId() && mark1.getMedication().getId() == dto.getMedication().getId()) {
+                    if (mark1.getPatient().getId() != dto.getPatient() && mark1.getMedication().getId() == dto.getMedication().getId()) {
                         hasPatient = true;
                     }
                 }
@@ -224,7 +226,8 @@ public class MedicationController {
                     five += 1;
                     mark2.setMarkFive(five);
                 }
-                mark2.setPatient(dto.getPatient());
+                Patient patient = patientService.findById(dto.getPatient());
+                mark2.setPatient(patient);
                 mark2.setMedication(dto.getMedication());
                 mark2.setPatientsMark(dto.getMark());
                 MarkMedication mark3 = markService.save(mark2);
@@ -233,129 +236,102 @@ public class MedicationController {
 
 
 
+            for (MarkMedication mark1 : markList) {
+                if (mark1.getPatient().getId() == dto.getPatient() && mark1.getMedication().getId() == dto.getMedication().getId()) {
 
-            if (markList.size() == 0) {
-                MarkMedication mark2 = new MarkMedication();
-                if (dto.getMark() == 1) {
-                    one = 1;
-                    mark2.setMarkOne(one);
-                } else if (dto.getMark() == 2) {
-                    two = 1;
-                    mark2.setMarkTwo(two);
-                } else if (dto.getMark() == 3) {
-                    three = 1;
-                    mark2.setMarkThree(three);
+                    one = 0;
+                    two = 0;
+                    three = 0;
+                    four = 0;
+                    five = 0;
+                    one = mark1.getMarkOne();
+                    two = mark1.getMarkTwo();
+                    three = mark1.getMarkThree();
+                    four = mark1.getMarkFour();
+                    five = mark1.getMarkFive();
 
-                } else if (dto.getMark() == 4) {
-                    four = 1;
-                    mark2.setMarkFour(four);
-                } else {
-                    five = 1;
-                    mark2.setMarkFive(five);
-                }
-                mark2.setPatient(dto.getPatient());
-                mark2.setMedication(dto.getMedication());
+                    int grade = mark1.getPatientsMark();
 
-                mark2.setPatientsMark(dto.getMark());
-                MarkMedication mark3 = markService.save(mark2);
+                    if (grade == 1) {
+                        one -= 1;
+                        mark1.setMarkOne(one);
+                    } else if (grade == 2) {
+                        two -= 1;
+                        mark1.setMarkTwo(two);
+                    } else if (grade == 3) {
+                        three -= 1;
+                        mark1.setMarkThree(three);
 
-
-            } else {
-                for (MarkMedication mark1 : markList) {
-                    if (mark1.getPatient().getId() == dto.getPatient().getId() && mark1.getMedication().getId() == dto.getMedication().getId()) {
-
-                        one = 0;
-                        two = 0;
-                        three = 0;
-                        four = 0;
-                        five = 0;
-                        one = mark1.getMarkOne();
-                        two = mark1.getMarkTwo();
-                        three = mark1.getMarkThree();
-                        four = mark1.getMarkFour();
-                        five = mark1.getMarkFive();
-
-                        int grade = mark1.getPatientsMark();
-
-                        if (grade == 1) {
-                            one -= 1;
-                            mark1.setMarkOne(one);
-                        } else if (grade == 2) {
-                            two -= 1;
-                            mark1.setMarkTwo(two);
-                        } else if (grade == 3) {
-                            three -= 1;
-                            mark1.setMarkThree(three);
-
-                        } else if (grade == 4) {
-                            four -= 1;
-                            mark1.setMarkFour(four);
-                        } else {
-                            five -= 1;
-                            mark1.setMarkFive(five);
-                        }
-
-                        if (dto.getMark() == 1) {
-                            one += 1;
-                            mark1.setMarkOne(one);
-                        } else if (dto.getMark() == 2) {
-                            two += 1;
-                            mark1.setMarkTwo(two);
-                        } else if (dto.getMark() == 3) {
-                            three += 1;
-                            mark1.setMarkThree(three);
-
-                        } else if (dto.getMark() == 4) {
-                            four += 1;
-                            mark1.setMarkFour(four);
-                        } else {
-                            five += 1;
-                            mark1.setMarkFive(five);
-                        }
-
-                        mark1.setPatientsMark(dto.getMark());
-
-                        MarkMedication mark2 = markService.save(mark1);
-
-                    } else if(mark1.getPatient().getId() != dto.getPatient().getId() && mark1.getMedication().getId() == dto.getMedication().getId() && hasPatient) {
-
-                        one = 0;
-                        two = 0;
-                        three = 0;
-                        four = 0;
-                        five = 0;
-                        one = mark1.getMarkOne();
-                        two = mark1.getMarkTwo();
-                        three = mark1.getMarkThree();
-                        four = mark1.getMarkFour();
-                        five = mark1.getMarkFive();
-                        MarkMedication mark2 = new MarkMedication();
-                        if (dto.getMark() == 1) {
-                            one += 1;
-                            mark2.setMarkOne(one);
-                        } else if (dto.getMark() == 2) {
-                            two += 1;
-                            mark2.setMarkTwo(two);
-                        } else if (dto.getMark() == 3) {
-                            three += 1;
-                            mark2.setMarkThree(three);
-
-                        } else if (dto.getMark() == 4) {
-                            four += 1;
-                            mark2.setMarkFour(four);
-                        } else {
-                            five += 1;
-                            mark2.setMarkFive(five);
-                        }
-                        mark2.setPatientsMark(dto.getMark());
-                        mark2.setPatient(dto.getPatient());
-                        mark2.setMedication(dto.getMedication());
-                        MarkMedication mark4 = markService.save(mark2);
-
-
+                    } else if (grade == 4) {
+                        four -= 1;
+                        mark1.setMarkFour(four);
+                    } else {
+                        five -= 1;
+                        mark1.setMarkFive(five);
                     }
 
+                    if (dto.getMark() == 1) {
+                        one += 1;
+                        mark1.setMarkOne(one);
+                    } else if (dto.getMark() == 2) {
+                        two += 1;
+                        mark1.setMarkTwo(two);
+                    } else if (dto.getMark() == 3) {
+                        three += 1;
+                        mark1.setMarkThree(three);
+
+                    } else if (dto.getMark() == 4) {
+                        four += 1;
+                        mark1.setMarkFour(four);
+                    } else {
+                        five += 1;
+                        mark1.setMarkFive(five);
+                    }
+
+                    mark1.setPatientsMark(dto.getMark());
+
+                    MarkMedication mark2 = markService.save(mark1);
+
+                } else if(mark1.getPatient().getId() != dto.getPatient() && mark1.getMedication().getId() == dto.getMedication().getId() && hasPatient) {
+
+                    one = 0;
+                    two = 0;
+                    three = 0;
+                    four = 0;
+                    five = 0;
+                    one = mark1.getMarkOne();
+                    two = mark1.getMarkTwo();
+                    three = mark1.getMarkThree();
+                    four = mark1.getMarkFour();
+                    five = mark1.getMarkFive();
+                    MarkMedication mark2 = new MarkMedication();
+                    if (dto.getMark() == 1) {
+                        one += 1;
+                        mark2.setMarkOne(one);
+                    } else if (dto.getMark() == 2) {
+                        two += 1;
+                        mark2.setMarkTwo(two);
+                    } else if (dto.getMark() == 3) {
+                        three += 1;
+                        mark2.setMarkThree(three);
+
+                    } else if (dto.getMark() == 4) {
+                        four += 1;
+                        mark2.setMarkFour(four);
+                    } else {
+                        five += 1;
+                        mark2.setMarkFive(five);
+                    }
+                    mark2.setPatientsMark(dto.getMark());
+                    Patient patient = patientService.findById(dto.getPatient());
+                    mark2.setPatient(patient);
+                    mark2.setMedication(dto.getMedication());
+                    MarkMedication mark4 = markService.save(mark2);
+
+
                 }
+
+
             }
 
 
@@ -376,13 +352,17 @@ public class MedicationController {
                     five += mark4.getMarkFive();
                 }
             }
-            System.out.println(one + two + three + four + five);
-            double ocena = (one * 1 + two * 2 + three * 3 + four * 4 + five * 5) / (one + two + three + four + five);
-            System.out.println(ocena);
-            medication.setMark(ocena);
-            medicationService.update(medication);
+            if(one+two+three+four+five == 0){
+                able= false;
+            }
+            else {
+                System.out.println(one + two + three + four + five);
+                double ocena = (one * 1 + two * 2 + three * 3 + four * 4 + five * 5) / (one + two + three + four + five);
+                System.out.println(ocena);
+                medication.setMark(ocena);
+                medicationService.update(medication);
 
-
+            }
 
         }
         return able == true ?
@@ -390,6 +370,7 @@ public class MedicationController {
                 new ResponseEntity<>("You are not able to leave a mark for the medication because you have not had it!", HttpStatus.CREATED);
 
     }
+
     @GetMapping("searchName/{medicationName}")
     ResponseEntity<MedicationSearchDTO> getAll(@PathVariable String medicationName)
     {

@@ -89,7 +89,7 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
                     return checkSchedule(examinationScheduleDTO,shiftStarts,shiftEnds);
 
                 }else if(examinationScheduleDTO.getDate().getDayOfWeek() == DayOfWeek.SUNDAY){
-
+                    System.out.println("USAO U NEDELJU");
                     LocalTime shiftStarts = workingHoursDermatologist.getSundaySchedule().getStartTime();
                     LocalTime shiftEnds = workingHoursDermatologist.getSundaySchedule().getEndTime();
                     return checkSchedule(examinationScheduleDTO,shiftStarts,shiftEnds);

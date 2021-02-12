@@ -445,7 +445,7 @@ export default {
              sendMark : function() {
   let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
                         const markk = {
-                  patient: this.patient,
+                  patient: this.patient.id,
                   pharmacy: this.pharmacy,
                   mark: this.filter,
                  
@@ -471,7 +471,7 @@ export default {
              sendDermatologist : function() {
   let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
                         const markk = {
-                  patient: this.patient,
+                  patient: this.patient.id,
                   dermatologist: this.dermatologist.id,
                   mark: this.filter,
                  
@@ -499,7 +499,7 @@ export default {
                 console.log(this.medication)
                 
                         const markk = {
-                  patient: this.patient,
+                  patient: this.patient.id,
                   medication: this.medication,
                   mark: this.filter,
                  
@@ -523,7 +523,7 @@ export default {
           sendPharmacist : function() {
 
                         const markk = {
-                  patient: this.patient,
+                  patient: this.patient.id,
                   pharmacist: this.pharmacist,
                   mark: this.filter,
                  

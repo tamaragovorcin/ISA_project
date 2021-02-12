@@ -243,7 +243,14 @@ public class DermatologistController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(basicInfos);
     }
-
+    @GetMapping("")
+    public ResponseEntity<List<Dermatologist>> getAll()
+    {
+        List<Dermatologist> dermatologists = dermatologistService.findAll();
+        return dermatologists == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(dermatologists);
+    }
 
     public Boolean ableToRateDermatologist(Integer dermatologistId, Integer patientId){
 
@@ -273,6 +280,8 @@ public class DermatologistController {
         return able;
     }
 
+
+
     @PostMapping("/leaveAMark")
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> leaveAMark(@RequestBody MarkDTO dto) {
@@ -280,7 +289,7 @@ public class DermatologistController {
 
         Boolean able = false;
 
-        able = ableToRateDermatologist(dto.getDermatologist(), dto.getPatient().getId());
+        able = ableToRateDermatologist(dto.getDermatologist(), dto.getPatient());
 
         if(able) {
 
@@ -301,10 +310,10 @@ public class DermatologistController {
             Boolean hasPatient = false;
 
             for (MarkDermatologist mark1 : markList) {
-                if (mark1.getDermatologist().getId() == dto.getDermatologist() && mark1.getPatient().getId() == dto.getPatient().getId()) {
+                if (mark1.getDermatologist().getId() == dto.getDermatologist() && mark1.getPatient().getId() == dto.getPatient()) {
                     hasDermatologist = false;
 
-                    if (mark1.getPatient().getId() != dto.getPatient().getId() && mark1.getDermatologist().getId() == dto.getDermatologist()) {
+                    if (mark1.getPatient().getId() != dto.getPatient() && mark1.getDermatologist().getId() == dto.getDermatologist()) {
                         hasPatient = true;
                     }
                 }
@@ -331,7 +340,8 @@ public class DermatologistController {
                     five += 1;
                     mark2.setMarkFive(five);
                 }
-                mark2.setPatient(dto.getPatient());
+                Patient patient = patientService.findById(dto.getPatient());
+                mark2.setPatient(patient);
                 Dermatologist dermatologist1 = dermatologistService.findById(dto.getDermatologist());
                 mark2.setDermatologist(dermatologist1);
                 mark2.setPatientsMark(dto.getMark());
@@ -342,130 +352,103 @@ public class DermatologistController {
 
 
 
-            if (markList.size() == 0) {
-                MarkDermatologist mark2 = new MarkDermatologist();
-                if (dto.getMark() == 1) {
-                    one = 1;
-                    mark2.setMarkOne(one);
-                } else if (dto.getMark() == 2) {
-                    two = 1;
-                    mark2.setMarkTwo(two);
-                } else if (dto.getMark() == 3) {
-                    three = 1;
-                    mark2.setMarkThree(three);
+            for (MarkDermatologist mark1 : markList) {
+                if (mark1.getPatient().getId() == dto.getPatient() && mark1.getDermatologist().getId() == dto.getDermatologist()) {
 
-                } else if (dto.getMark() == 4) {
-                    four = 1;
-                    mark2.setMarkFour(four);
-                } else {
-                    five = 1;
-                    mark2.setMarkFive(five);
-                }
-                mark2.setPatient(dto.getPatient());
-                Dermatologist dermatologist1 = dermatologistService.findById(dto.getDermatologist());
-                mark2.setDermatologist(dermatologist1);
+                    one = 0;
+                    two = 0;
+                    three = 0;
+                    four = 0;
+                    five = 0;
+                    one = mark1.getMarkOne();
+                    two = mark1.getMarkTwo();
+                    three = mark1.getMarkThree();
+                    four = mark1.getMarkFour();
+                    five = mark1.getMarkFive();
 
-                mark2.setPatientsMark(dto.getMark());
-                MarkDermatologist mark3 = markService.save(mark2);
+                    int grade = mark1.getPatientsMark();
 
+                    if (grade == 1) {
+                        one -= 1;
+                        mark1.setMarkOne(one);
+                    } else if (grade == 2) {
+                        two -= 1;
+                        mark1.setMarkTwo(two);
+                    } else if (grade == 3) {
+                        three -= 1;
+                        mark1.setMarkThree(three);
 
-            } else {
-                for (MarkDermatologist mark1 : markList) {
-                    if (mark1.getPatient().getId() == dto.getPatient().getId() && mark1.getDermatologist().getId() == dto.getDermatologist()) {
-
-                        one = 0;
-                        two = 0;
-                        three = 0;
-                        four = 0;
-                        five = 0;
-                        one = mark1.getMarkOne();
-                        two = mark1.getMarkTwo();
-                        three = mark1.getMarkThree();
-                        four = mark1.getMarkFour();
-                        five = mark1.getMarkFive();
-
-                        int grade = mark1.getPatientsMark();
-
-                        if (grade == 1) {
-                            one -= 1;
-                            mark1.setMarkOne(one);
-                        } else if (grade == 2) {
-                            two -= 1;
-                            mark1.setMarkTwo(two);
-                        } else if (grade == 3) {
-                            three -= 1;
-                            mark1.setMarkThree(three);
-
-                        } else if (grade == 4) {
-                            four -= 1;
-                            mark1.setMarkFour(four);
-                        } else {
-                            five -= 1;
-                            mark1.setMarkFive(five);
-                        }
-
-                        if (dto.getMark() == 1) {
-                            one += 1;
-                            mark1.setMarkOne(one);
-                        } else if (dto.getMark() == 2) {
-                            two += 1;
-                            mark1.setMarkTwo(two);
-                        } else if (dto.getMark() == 3) {
-                            three += 1;
-                            mark1.setMarkThree(three);
-
-                        } else if (dto.getMark() == 4) {
-                            four += 1;
-                            mark1.setMarkFour(four);
-                        } else {
-                            five += 1;
-                            mark1.setMarkFive(five);
-                        }
-
-                        mark1.setPatientsMark(dto.getMark());
-
-                        MarkDermatologist mark2 = markService.save(mark1);
-
-                    } else if(mark1.getPatient().getId() != dto.getPatient().getId() && mark1.getDermatologist().getId() == dto.getDermatologist() && hasPatient) {
-
-                        one = 0;
-                        two = 0;
-                        three = 0;
-                        four = 0;
-                        five = 0;
-                        one = mark1.getMarkOne();
-                        two = mark1.getMarkTwo();
-                        three = mark1.getMarkThree();
-                        four = mark1.getMarkFour();
-                        five = mark1.getMarkFive();
-                        MarkDermatologist mark2 = new MarkDermatologist();
-                        if (dto.getMark() == 1) {
-                            one += 1;
-                            mark2.setMarkOne(one);
-                        } else if (dto.getMark() == 2) {
-                            two += 1;
-                            mark2.setMarkTwo(two);
-                        } else if (dto.getMark() == 3) {
-                            three += 1;
-                            mark2.setMarkThree(three);
-
-                        } else if (dto.getMark() == 4) {
-                            four += 1;
-                            mark2.setMarkFour(four);
-                        } else {
-                            five += 1;
-                            mark2.setMarkFive(five);
-                        }
-                        mark2.setPatientsMark(dto.getMark());
-                        mark2.setPatient(dto.getPatient());
-                        Dermatologist dermatologist1 = dermatologistService.findById(dto.getDermatologist());
-                        mark2.setDermatologist(dermatologist1);
-                        MarkDermatologist mark4 = markService.save(mark2);
-
-
+                    } else if (grade == 4) {
+                        four -= 1;
+                        mark1.setMarkFour(four);
+                    } else {
+                        five -= 1;
+                        mark1.setMarkFive(five);
                     }
 
+                    if (dto.getMark() == 1) {
+                        one += 1;
+                        mark1.setMarkOne(one);
+                    } else if (dto.getMark() == 2) {
+                        two += 1;
+                        mark1.setMarkTwo(two);
+                    } else if (dto.getMark() == 3) {
+                        three += 1;
+                        mark1.setMarkThree(three);
+
+                    } else if (dto.getMark() == 4) {
+                        four += 1;
+                        mark1.setMarkFour(four);
+                    } else {
+                        five += 1;
+                        mark1.setMarkFive(five);
+                    }
+
+                    mark1.setPatientsMark(dto.getMark());
+
+                    MarkDermatologist mark2 = markService.save(mark1);
+
+                } else if(mark1.getPatient().getId() != dto.getPatient() && mark1.getDermatologist().getId() == dto.getDermatologist() && hasPatient) {
+
+                    one = 0;
+                    two = 0;
+                    three = 0;
+                    four = 0;
+                    five = 0;
+                    one = mark1.getMarkOne();
+                    two = mark1.getMarkTwo();
+                    three = mark1.getMarkThree();
+                    four = mark1.getMarkFour();
+                    five = mark1.getMarkFive();
+                    MarkDermatologist mark2 = new MarkDermatologist();
+                    if (dto.getMark() == 1) {
+                        one += 1;
+                        mark2.setMarkOne(one);
+                    } else if (dto.getMark() == 2) {
+                        two += 1;
+                        mark2.setMarkTwo(two);
+                    } else if (dto.getMark() == 3) {
+                        three += 1;
+                        mark2.setMarkThree(three);
+
+                    } else if (dto.getMark() == 4) {
+                        four += 1;
+                        mark2.setMarkFour(four);
+                    } else {
+                        five += 1;
+                        mark2.setMarkFive(five);
+                    }
+                    mark2.setPatientsMark(dto.getMark());
+                    Patient patient = patientService.findById(dto.getPatient());
+                    mark2.setPatient(patient);
+                    Dermatologist dermatologist1 = dermatologistService.findById(dto.getDermatologist());
+                    mark2.setDermatologist(dermatologist1);
+                    MarkDermatologist mark4 = markService.save(mark2);
+
+
                 }
+
+
             }
 
 
@@ -486,21 +469,25 @@ public class DermatologistController {
                     five += mark4.getMarkFive();
                 }
             }
+            if(one+two+three+four+five == 0){
+                able= false;
+            }
+            else {
+                double ocena = (one * 1 + two * 2 + three * 3 + four * 4 + five * 5) / (one + two + three + four + five);
 
-            double ocena = (one * 1 + two * 2 + three * 3 + four * 4 + five * 5) / (one + two + three + four + five);
+                dermatologist.setMarkDermatologist(ocena);
+                dermatologistService.updateMark(dermatologist);
 
-            dermatologist.setMarkDermatologist(ocena);
-            dermatologistService.updateMark(dermatologist);
-
-
+            }
 
 
-    }
+        }
         return able == true ?
                 new ResponseEntity<>("You have successfully rated a dermatologist!", HttpStatus.CREATED) :
                 new ResponseEntity<>("You are not able to leave a mark for the dermatologist that you had not had an appointment with!", HttpStatus.CREATED);
 
     }
+
     @GetMapping("/examinationSchedule")
     @PreAuthorize("hasRole('DERMATOLOGIST')")
     ResponseEntity<Set<ExaminationScheduleFrontDTO>> getOurExSch() {

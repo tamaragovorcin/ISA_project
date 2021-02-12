@@ -15,7 +15,7 @@ public class MarkDTO {
 
     private Integer dermatologist;
 
-    private Patient patient;
+    private Integer patient;
 
     private int mark;
 
@@ -29,11 +29,11 @@ public class MarkDTO {
         this.pharmacy = pharmacy;
     }
 
-    public Patient getPatient() {
+    public Integer getPatient() {
         return patient;
     }
 
-    public void setPatient(Patient patient) {
+    public void setPatient(Integer patient) {
         this.patient = patient;
     }
 
@@ -76,7 +76,7 @@ public class MarkDTO {
                 ", medication=" + medication +
                 ", pharmacist=" + pharmacist +
                 ", dermatologist=" + dermatologist +
-                ", patient=" + patient.getName() +
+                ", patient=" + patient +
                 ", mark=" + mark +
                 '}';
     }
