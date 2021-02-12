@@ -47,3 +47,21 @@ Pokretanje projekta
     -npm install<br />
     -npm run serve  <br />
   -Desni klik na klasu IsaProjectApplication.java -> run<br />
+  
+  Svi prvi put prijavljeni korisnici imaju šifru 1234. Za sve one koje nismo prvi put prijavili šifra je 123. <br />
+
+Zaposleni<br /> 
+
+FARMACEUTI:<br />
+mila@gmail.com -> Benu apoteka<br />
+milan@gmail.com -> Expera <br />
+nina@gmail.com -> NovaMed <br />
+janko@gmail.com -> Jankovic<br />
+marko@gmail.com -> Jankovic<br />
+
+PHARMACY ADMINI:<br />
+maja@gmail.com -> Jankovic<br />
+lidija@gmail.com -> Jankovic<br />
+nikola@gmail.com -> Benu<br />
+pavle@gmail.com -> Expera<br />
+jovana@gmail.com -> NovaMed<br />
