@@ -1,7 +1,7 @@
 ines (39 sloc)  1.61 KB
   
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div v-if="auth" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
@@ -13,7 +13,6 @@ ines (39 sloc)  1.61 KB
                     <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
                     <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
                      <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
-                    <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
                       <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
                    
 
@@ -202,7 +201,8 @@ export default {
        startTime: null,
         showTable: false,
                 showTableAvailability : false,
-      showSecondTable : false
+      showSecondTable : false,
+      auth : false
 
     }
   },
@@ -216,10 +216,12 @@ mounted() {
              .then(response => {
                 this.patient = response.data;
                 console.log(response.data);
+                this.auth = true;
                   
             
          }).catch(res => {
                        alert("Please, log in first!");
+                       this.auth = false;
                         console.log(res);
                                   window.location.href = "/login";
                  });
@@ -327,13 +329,12 @@ mounted() {
             }, 
 
     reserve: function (pharmacist) {
-             
          const datum = {
                 date : this.date,
                 time : this.startTime,
                 pharmacyId: this.pharmacy.id,
                 pharmacist: pharmacist,
-                patient: this.patient
+                patient: this.patient.id
 
            }
 

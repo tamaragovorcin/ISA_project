@@ -42,8 +42,6 @@ import SupplierProfile from '../views/supplier/SupplierProfile.vue'
 import SupplierProfileInfo from '../views/supplier/SupplierProfileInfo.vue'
 import dermatologistAppointments from '../views/patient/dermatologistAppointments.vue'
 import PharmacistConsultation from '../views/patient/PharmacistConsultation.vue'
-import showReservationPharmacies from '../views/patient/showReservationPharmacies.vue'
-import choosenPharmacy from '../views/patient/choosenPharmacy.vue'
 import AddMedicine from '../views/systemAdmin/AddMedicine.vue'
 import LoyaltyProgram from '../views/systemAdmin/LoyaltyProgram.vue'
 import SubscriptionsToPharmacies from '../views/patient/SubscriptionsToPharmacies.vue'
@@ -307,18 +305,6 @@ const routes = [
       name: 'pharmacistConsultation',
       component: PharmacistConsultation
     },
-    {
-      path: '/showReservationPharmacies',
-      name: 'showReservationPharmacies',
-      component: showReservationPharmacies
-    },
-    {
-      path: '/choosenPharmacy',
-      name: 'choosenPharmacy',
-      component: choosenPharmacy
-    
-
-    }, 
     {
       path: '/addMedicine',
       name: 'AddMedicine',

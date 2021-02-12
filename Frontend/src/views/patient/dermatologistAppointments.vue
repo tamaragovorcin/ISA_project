@@ -1,5 +1,5 @@
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div v-if="auth" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
@@ -11,7 +11,6 @@
                     <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
                     <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
                      <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
-                    <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
                          <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
                    
 
@@ -168,7 +167,8 @@ export default {
        dermatologistAppointment: null,
        dermatologistAppointments : [],
        patient: null,
-       showTable : true
+       showTable : true,
+       auth: false
 
     }
   },
@@ -192,8 +192,10 @@ mounted() {
              }
          }).then(response => {
                 this.patient = response.data;
+                this.auth = true;
          
          }).catch(res => {
+           this.auth = false;
                        alert("Please log in first!");
                                  window.location.href = "/login";
                                  console.log(res);
@@ -251,7 +253,7 @@ mounted() {
           this.dermatologistAppointment = dermatologistAppointment
          
           const examination = {
-              patient: this.patient,
+              patient: this.patient.id,
               cancelled : false,
               showedUp: false,
               examinationId: this.dermatologistAppointment.id,

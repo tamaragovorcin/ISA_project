@@ -382,7 +382,11 @@ public class PharmacyController  {
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> addExamination(@RequestBody ExaminationDTO dto) {
 
-        Patient patient = patientService.findById(dto.getPatient().getId());
+        if(dto.getPatient() == null){
+            throw new IllegalArgumentException("You have to be logged in first.");
+        }
+
+        Patient patient = patientService.findById(dto.getPatient());
         Boolean able = true;
         if(patient.getPenalties() > 3){
             able = false;
@@ -402,7 +406,7 @@ public class PharmacyController  {
 
         if(able) {
             SimpleMailMessage mail = new SimpleMailMessage();
-            mail.setTo(dto.getPatient().getEmail());
+            mail.setTo(patient.getEmail());
             mail.setSubject("Successfuly reserved dermatologist apointment!");
             mail.setFrom(environment.getProperty("spring.mail.username"));
             //mail.setFrom("pharmacyisa@gmail.com");
@@ -414,7 +418,7 @@ public class PharmacyController  {
 
         return able == true ?
                 new ResponseEntity<>("Appointment is successfully reserved! You will soon receive a confirmation email.", HttpStatus.CREATED) :
-                new ResponseEntity<>("You are not able to reserve a medication because you have 3 or more penalties!", HttpStatus.CREATED);
+                new ResponseEntity<>("You are not able to reserve an examination because you have 3 or more penalties!", HttpStatus.CREATED);
 
     }
 
@@ -748,7 +752,7 @@ public class PharmacyController  {
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> cancel(@PathVariable Integer id)
     {
-        LocalDate date = LocalDate.now().plusDays(1);
+        LocalDate date = LocalDate.now().plusDays(2);
         Boolean able = true;
         List<ExaminationSchedule> examinationSchedule1 = new ArrayList<ExaminationSchedule>();
         examinationSchedule1 = examinationScheduleService.findAll();

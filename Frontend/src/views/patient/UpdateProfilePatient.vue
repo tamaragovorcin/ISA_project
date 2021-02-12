@@ -1,5 +1,5 @@
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div v-if="auth" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
@@ -17,7 +17,6 @@
                     
                     
                      <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
-                    <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
                          <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
             
             
@@ -205,7 +204,8 @@ export default {
         arrayy: [],
         currentPassword : "",
         newPassword : "",
-        newPasswordRepeat : ""
+        newPasswordRepeat : "",
+        auth:false
     }
   },
 mounted() {
@@ -217,6 +217,7 @@ mounted() {
              }
          }).then(response => {
                 this.patient = response.data;
+                this.auth = true;
                  console.log( this.patient);
                  
                  this.axios.get('/patient/getAlergies/' + this.patient.id,{ 
@@ -236,6 +237,7 @@ mounted() {
                           })
          }).catch(res => {
                        alert("Please log in first!");
+                       this.auth = false
                                  window.location.href = "/login";
                                  console.log(res);
                 

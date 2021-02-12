@@ -27,6 +27,9 @@ public class ExaminationService implements IExaminationService {
     ExaminationRepository examinationRepository;
 
     @Autowired
+    PatientService patientService;
+
+    @Autowired
     ExaminationScheduleRepository examinationScheduleRepository;
     @Autowired
     PatientRepository patientRepository;
@@ -65,7 +68,8 @@ public class ExaminationService implements IExaminationService {
         examination.setInformation(examinationDTO.getInformation());
         examination.setCancelled(examinationDTO.getCancelled());
         examination.setShowedUp(examinationDTO.getShowedUp());
-        examination.setPatient(examinationDTO.getPatient());
+        Patient patient = patientService.findById(examinationDTO.getPatient());
+        examination.setPatient(patient);
 
         return examinationRepository.save(examination);
     }

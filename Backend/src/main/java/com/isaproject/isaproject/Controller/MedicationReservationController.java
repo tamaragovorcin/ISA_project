@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class MedicationReservationController {
     private Environment environment;
 
     @PostMapping("/add")
-    //@PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<String> register(@RequestBody MedicationReservationDTO medicationReservationDTO)
     {
 
@@ -125,16 +126,19 @@ public class MedicationReservationController {
     }
 
     @GetMapping("/cancel/{id}")
-        //@PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> cancel(@PathVariable Integer id)
     {
         MedicationReservation medicationReservation = medicationReservationService.findById(id);
-        LocalDate date = LocalDate.now().plusDays(1);
+        LocalDate date = LocalDate.now().plusDays(2);
 
-        Boolean able = false;
+        Boolean able = true;
 
-        if(medicationReservation.getDateOfReservation().isBefore(date)) {
-            able = true;
+        if(medicationReservation.getDateOfTakeOver().isBefore(date)) {
+            able = false;
+
+        }
+        else{
             medicationReservationService.delete(medicationReservation);
         }
 

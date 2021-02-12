@@ -182,13 +182,14 @@ public class ConsultingController {
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String>  cancel(@PathVariable Integer id) {
         Consulting consulting = consultingService.findById(id);
-        LocalDate date = LocalDate.now().plusDays(1);
+        LocalDate date = LocalDate.now().plusDays(2);
 
-        Boolean able = false;
+        Boolean able = true;
         LocalTime time = consulting.getStartTime();
 
-        if(consulting.getDate().isAfter(date) && LocalTime.now().isAfter(time)) {
-            able = true;
+        if(consulting.getDate().isBefore(date) && LocalTime.now().isBefore(time)) {
+            able = false;
+        }else{
             consultingService.delete(consulting);
         }
 
@@ -484,7 +485,88 @@ public class ConsultingController {
         return ResponseEntity.ok(consultingsFrontDTOS);
     }
 
+    @GetMapping("/durationshort")
+    //@PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<List<ConsultingsFrontDTO>> durationshort() {
 
+        List<Consulting> programs = consultingService.findAll();
+        List<ConsultingsFrontDTO> consultingsFrontDTOS = new ArrayList<ConsultingsFrontDTO>();
+
+        Collections.sort(programs, new Comparator<Consulting>() {
+            @Override
+            public int compare(Consulting c1, Consulting c2) {
+                return Double.compare(c1.getDuration(), c2.getDuration());
+
+            }
+        });
+
+        for(Consulting consulting: programs){
+
+            ConsultingsFrontDTO consultingsFrontDTO = new ConsultingsFrontDTO();
+            consultingsFrontDTO.setId(consulting.getId());
+            consultingsFrontDTO.setDate(consulting.getDate());
+            consultingsFrontDTO.setDuration(consulting.getDuration());
+            consultingsFrontDTO.setName(consulting.getPharmacist().getName());
+            consultingsFrontDTO.setSurname(consulting.getPharmacist().getSurname());
+            consultingsFrontDTO.setTime(consulting.getStartTime());
+
+            LocalDate d = LocalDate.now();
+            if(consulting.getDate().isBefore(d)){
+                consultingsFrontDTO.setFinished(true);
+            }
+            else{
+                consultingsFrontDTO.setFinished(false);
+            }
+
+            consultingsFrontDTOS.add(consultingsFrontDTO);
+
+
+
+        }
+        return ResponseEntity.ok(consultingsFrontDTOS);
+    }
+
+    @GetMapping("/durationlong")
+    //@PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<List<ConsultingsFrontDTO>> durationlong() {
+
+        List<Consulting> programs = consultingService.findAll();
+        List<ConsultingsFrontDTO> consultingsFrontDTOS = new ArrayList<ConsultingsFrontDTO>();
+
+        Collections.sort(programs, new Comparator<Consulting>() {
+            @Override
+            public int compare(Consulting c1, Consulting c2) {
+                return Double.compare(c1.getDuration(), c2.getDuration());
+
+            }
+        });
+
+        Collections.reverse(programs);
+        for(Consulting consulting: programs){
+
+            ConsultingsFrontDTO consultingsFrontDTO = new ConsultingsFrontDTO();
+            consultingsFrontDTO.setId(consulting.getId());
+            consultingsFrontDTO.setDate(consulting.getDate());
+            consultingsFrontDTO.setDuration(consulting.getDuration());
+            consultingsFrontDTO.setName(consulting.getPharmacist().getName());
+            consultingsFrontDTO.setSurname(consulting.getPharmacist().getSurname());
+            consultingsFrontDTO.setTime(consulting.getStartTime());
+
+            LocalDate d = LocalDate.now();
+            if(consulting.getDate().isBefore(d)){
+                consultingsFrontDTO.setFinished(true);
+            }
+            else{
+                consultingsFrontDTO.setFinished(false);
+            }
+
+            consultingsFrontDTOS.add(consultingsFrontDTO);
+
+
+
+        }
+        return ResponseEntity.ok(consultingsFrontDTOS);
+    }
     @PostMapping("/marklowest")
     //@PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<List<PharmacyFrontDTO>> marklowest(@RequestBody PharmacistConsultationTimeDTO dto) {
@@ -2262,8 +2344,8 @@ public class ConsultingController {
 
         List<Pharmacist> pharmacists = pharmacistService.findAll();
         List<WorkingHoursPharmacist> workingHoursPharmacists = workingHoursPharmacistService.findAll();
-        LocalTime start;
-        LocalTime end;
+        LocalTime start = null;
+        LocalTime end = null;
         Boolean found = false;
 
         List<MondaySchedule> mondaySchedules = mondayScheduleRepository.findAll();
@@ -2453,7 +2535,6 @@ public class ConsultingController {
                     }
                 }
             }
-
         }
 
 
@@ -2489,6 +2570,9 @@ public class ConsultingController {
                 pf.setFirstname(ph.getName());
                 pf.setSurname(ph.getSurname());
                 pf.setMark(ph.getMarkPharmacist());
+                System.out.println(start);
+                pf.setLocalTime(start);
+
 
                 pharmacistDTOS.add(pf);
 
@@ -2519,19 +2603,20 @@ public class ConsultingController {
         for(Consulting consulting: consultings){
             Double s = consulting.getDuration();
             String st = s.toString();
-            if(consulting.getPharmacist().getId() == dto.getPharmacist().getId() && consulting.getPatient().getId()== dto.getPatient().getId() && consulting.getDate() == dto.getDate() ){
-                if(dto.getTime().isAfter(consulting.getStartTime().plusMinutes(Long.parseLong(st))) || dto.getTime().isBefore(consulting.getStartTime().minusMinutes(Long.parseLong(st)))){
-                able=false;
+            if(consulting.getPharmacist().getId() == dto.getPharmacist().getId() && consulting.getDate().equals(dto.getDate()) && dto.getTime().equals(consulting.getStartTime()) ){
+
+               able=false;
                 throw new IllegalArgumentException("Sorry, this term is already reserved.");
-            }}
+
+            }
         }
 
-        Patient patient = patientService.findById(dto.getPatient().getId());
+        Patient patient = patientService.findById(dto.getPatient());
 
 
         if(patient.getPenalties() > 3){
             able = false;
-            throw new IllegalArgumentException("ou are not able to reserve a medication because you have 3 or more penalties.");
+            throw new IllegalArgumentException("You are not able to reserve a medication because you have 3 or more penalties.");
         }
         if(able) {
             ConsultingDTO consulting = new ConsultingDTO();
@@ -2543,7 +2628,8 @@ public class ConsultingController {
             consulting.setDate(dto.getDate());
             consulting.setStartTime(dto.getTime());
             consulting.setPharmacist(dto.getPharmacist());
-            consulting.setPatient(dto.getPatient());
+            Patient patient1 = patientService.findById(dto.getPatient());
+            consulting.setPatient(patient1);
             consulting.setDuration(20.0);
             consulting.setPrice(pharmacy.getConsultingPrice());
 
@@ -2551,7 +2637,7 @@ public class ConsultingController {
 
 
                 SimpleMailMessage mail = new SimpleMailMessage();
-                mail.setTo(dto.getPatient().getEmail());
+                mail.setTo(patient1.getEmail());
                 mail.setSubject("Successfuly reserved consultation with pharmacist!");
                 mail.setFrom(environment.getProperty("spring.mail.username"));
                 //mail.setFrom("pharmacyisa@gmail.com");

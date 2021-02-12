@@ -5,9 +5,11 @@ import com.google.zxing.common.HybridBinarizer;
 import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
+import com.isaproject.isaproject.Model.Medicine.MedicationEPrescription;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
+import com.isaproject.isaproject.Repository.MedicationEPrescriptionRepository;
 import com.isaproject.isaproject.Service.Implementations.EPrescriptionService;
 import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
 import com.isaproject.isaproject.Service.Implementations.PatientService;
@@ -44,6 +46,9 @@ public class EPrescriptionController {
 
     @Autowired
     EPrescriptionService ePrescriptionService;
+
+    @Autowired
+    MedicationEPrescriptionRepository medicationEPrescriptionRepository;
 
     @PostMapping("/file")
     @PreAuthorize("hasRole('PATIENT')")
@@ -138,12 +143,26 @@ public class EPrescriptionController {
                 ResponseEntity.ok("Successfully updated!");
     }
 
-    @GetMapping("/all")
-    ResponseEntity<List<EPrescription>> getall() {
+    @GetMapping("/all/{id}")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<EPrescriptionDTO>> getall(@PathVariable Integer id) {
         List<EPrescription> ePrescriptions = ePrescriptionService.findAll();
-        return ePrescriptions == null ?
+        List<MedicationEPrescription> medicationEPrescriptions = medicationEPrescriptionRepository.findAll();
+        List<EPrescriptionDTO> ePrescriptionDTOS = new ArrayList<EPrescriptionDTO>();
+        for(MedicationEPrescription medicationEPrescription: medicationEPrescriptions) {
+            if (medicationEPrescription.getePrescription().getPatient().getId() == id) {
+                EPrescriptionDTO ePrescriptionDTO = new EPrescriptionDTO();
+                ePrescriptionDTO.setDate(medicationEPrescription.getePrescription().getDate());
+                Pharmacy pharmacy = pharmacyService.findById(medicationEPrescription.getePrescription().getPharmacyId());
+                ePrescriptionDTO.setPharmacyName(pharmacy.getPharmacyName());
+                ePrescriptionDTO.setMedName(medicationEPrescription.getName());
+                ePrescriptionDTO.setQuantity(medicationEPrescription.getQuantity());
+                ePrescriptionDTOS.add(ePrescriptionDTO);
+            }
+        }
+        return ePrescriptionDTOS == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(ePrescriptions);
+                ResponseEntity.ok(ePrescriptionDTOS);
     }
 
     @GetMapping("/myEprescriptions")

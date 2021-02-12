@@ -1,7 +1,7 @@
 ines (39 sloc)  1.61 KB
   
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div v-if="auth" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
@@ -19,7 +19,6 @@ ines (39 sloc)  1.61 KB
                     
                     
                      <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
-                    <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
                          <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
                    
 
@@ -356,7 +355,8 @@ export default {
          showMedicationMark : false,
          filter: null,
          medication: null,
-         medications: []
+         medications: [],
+         auth: false
 
      
     }
@@ -560,9 +560,11 @@ export default {
          }).then(response => {
                 this.patientInfo = response.data;
                 this.patient = response.data;
+                this.auth = true
          }).catch(res => {
                        alert("Please, log in first!");
                         window.location.href = "/login";
+                        this.auth = false;
                         console.log(res);
                  });
 
@@ -574,7 +576,7 @@ export default {
                console.log(this.pharmacies);
               
           }).catch(res => {
-                       alert("List of pharmacies is not available at the moment!");
+                      
                         console.log(res);
                  });
 
@@ -585,7 +587,7 @@ export default {
                console.log(this.dermatologists);
               
               }).catch(res => {
-                       alert("List of dermatologists is not available at the moment!");
+                      
                         console.log(res);
                  });
 
@@ -596,7 +598,7 @@ export default {
                console.log(this.medications);
               
                }).catch(res => {
-                       alert("List of medications is not available at the moment!");
+                     
                         console.log(res);
                  });
 
@@ -607,7 +609,7 @@ export default {
                console.log(this.pharmacists);
               
               }).catch(res => {
-                       alert("List of pharmacists is not available at the moment!");
+                     
                         console.log(res);
                  });
     

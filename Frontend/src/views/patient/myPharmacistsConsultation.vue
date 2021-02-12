@@ -1,7 +1,7 @@
 ines (39 sloc)  1.61 KB
   
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div v-if="auth" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
@@ -13,7 +13,6 @@ ines (39 sloc)  1.61 KB
                     <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
                     <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
                      <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
-                    <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
                          <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
                    
 
@@ -187,7 +186,8 @@ export default {
        startTime: null,
         showTable: true,
                 showTableAvailability : false,
-      showSecondTable : false
+      showSecondTable : false,
+      auth : false
 
     }
   },
@@ -200,6 +200,7 @@ mounted() {
 
              }
          }).then(response => {
+           this.auth = true;
                 this.patient = response.data;
                   this.axios.get('/consulting/getAll/' + this.patient.id,{ 
              headers: {
@@ -218,6 +219,7 @@ mounted() {
          
          }).catch(res => {
                        alert("Please log in first!");
+                       this.auth = false;
                                  window.location.href = "/login";
                                  console.log(res);
                 
@@ -230,7 +232,7 @@ mounted() {
       this.axios.get('/consulting/dateClosest')
           .then(response => {
                console.log(response.data);
-              this.dermatologistAppointments = response.data;
+              this.pharmacists = response.data;
               this.showTable = false;
               this.showTable = true;
                })
@@ -248,7 +250,7 @@ mounted() {
       this.axios.get('/consulting/dateFurthest')
           .then(response => {
                console.log(response.data);
-                this.dermatologistAppointments = response.data;
+                this.pharmacists = response.data;
               this.showTable = false;
               this.showTable = true;
                })
@@ -265,7 +267,7 @@ mounted() {
       this.axios.get('/consulting/sortpricelowest')
           .then(response => {
                console.log(response.data);
-                   this.dermatologistAppointments = response.data;
+                   this.pharmacists = response.data;
               this.showTable = false;
               this.showTable = true;
                })
@@ -282,7 +284,7 @@ mounted() {
       this.axios.get('/consulting/sortpricehighest')
           .then(response => {
                console.log(response.data);
-                   this.dermatologistAppointments = response.data;
+                   this.pharmacists = response.data;
               this.showTable = false;
               this.showTable = true;
                })
@@ -295,10 +297,10 @@ mounted() {
       },
       namefromatoz: function(){
    
-      this.axios.get('/consulting/namefromatoz')
+      this.axios.get('/consulting/durationshort')
           .then(response => {
                console.log(response.data);
-                  this.dermatologistAppointments = response.data;
+                  this.pharmacists = response.data;
               this.showTable = false;
               this.showTable = true;
                })
@@ -312,10 +314,10 @@ mounted() {
 
             namefromztoa: function(){
    
-      this.axios.get('/consulting/durationLongest')
+      this.axios.get('/consulting/durationlong')
           .then(response => {
                console.log(response.data);
-                  this.dermatologistAppointments = response.data;
+                  this.pharmacists = response.data;
               this.showTable = false;
               this.showTable = true;
                })
