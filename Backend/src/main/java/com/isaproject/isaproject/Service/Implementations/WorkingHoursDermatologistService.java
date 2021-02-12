@@ -11,6 +11,7 @@ import com.isaproject.isaproject.Service.IServices.IWorkingHoursDermatologistSer
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -51,6 +52,50 @@ public class WorkingHoursDermatologistService implements IWorkingHoursDermatolog
     public WorkingHoursDermatologist save(WorkingHoursDermatologistDTO userRequest) {
         Dermatologist dermatologist = dermatologistService.findById(userRequest.getDermatologistId());
         Pharmacy pharmacy = pharmacyService.findById(userRequest.getPharmacyId());
+        if(userRequest.getStartTimeMonday()==null){
+            userRequest.setStartTimeMonday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getEndTimeMonday()==null){
+            userRequest.setEndTimeMonday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getStartTimeTuesday()==null){
+            userRequest.setStartTimeTuesday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getEndTimeTuesday()==null){
+            userRequest.setEndTimeTuesday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getStartTimeWednesday()==null){
+            userRequest.setStartTimeWednesday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getEndTimeWednesday()==null){
+            userRequest.setEndTimeWednesday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getStartTimeThursday()==null){
+            userRequest.setStartTimeThursday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getEndTimeThursday()==null){
+            userRequest.setEndTimeThursday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getStartTimeFriday()==null){
+            userRequest.setStartTimeFriday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getEndTimeFriday()==null){
+            userRequest.setEndTimeFriday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getStartTimeSaturday()==null){
+            userRequest.setStartTimeSaturday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getEndTimeSaturday()==null){
+            userRequest.setEndTimeSaturday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getStartTimeSunday()==null){
+            userRequest.setStartTimeSunday(LocalTime.MIDNIGHT);
+        }
+        if(userRequest.getEndTimeSunday()==null){
+            userRequest.setEndTimeSunday(LocalTime.MIDNIGHT);
+        }
+
+
 
         if(getByDermatologist(dermatologist,pharmacy) == null){
             System.out.println("---------------------PRAVI NOVI--------------------------------");
@@ -184,72 +229,157 @@ public class WorkingHoursDermatologistService implements IWorkingHoursDermatolog
         return null;
     }
 
-    public Boolean isAvailabilable(WorkingHoursDermatologistDTO dto){
-        for(WorkingHoursDermatologist workingHoursDermatologist : workingHoursDermatologistRepository.findAll()){
-            if(workingHoursDermatologist.getDermatologist().getId() == dto.getDermatologistId()){
-                System.out.println("MONDAAAAAAAAAAAAY");
-                System.out.println(dto.getStartTimeMonday());
-                if(dto.getStartTimeMonday().equals("")){
-                    return true;
-                }
-                if((dto.getStartTimeMonday().isAfter(workingHoursDermatologist.getMondaySchedule().getStartTime()) && dto.getEndTimeMonday().isBefore(workingHoursDermatologist.getMondaySchedule().getEndTime())
-                ||(dto.getEndTimeMonday().isAfter(workingHoursDermatologist.getMondaySchedule().getStartTime()) && dto.getEndTimeMonday().isBefore(workingHoursDermatologist.getMondaySchedule().getEndTime())))){
-                    return false;
-                }
-            }
-            if(workingHoursDermatologist.getDermatologist().getId() == dto.getDermatologistId()){
-                if(dto.getStartTimeTuesday().equals("")){
-                    return true;
-                }
-                if((dto.getStartTimeTuesday().isAfter(workingHoursDermatologist.getTuesdaySchedule().getStartTime()) && dto.getEndTimeTuesday().isBefore(workingHoursDermatologist.getTuesdaySchedule().getEndTime())
-                        ||(dto.getEndTimeTuesday().isAfter(workingHoursDermatologist.getTuesdaySchedule().getStartTime()) && dto.getEndTimeTuesday().isBefore(workingHoursDermatologist.getTuesdaySchedule().getEndTime())))){
-                    return false;
+    public Boolean isDermatologistAvailableMonday(WorkingHoursDermatologistDTO dto) {
+        System.out.println("USAO U MONDAY");
+        for (WorkingHoursDermatologist workingHoursDermatologist : workingHoursDermatologistRepository.findAll()) {
+            if (dto.getStartTimeMonday() != null && dto.getEndTimeMonday() != null) {
+                if (workingHoursDermatologist.getDermatologist().getId() == dto.getDermatologistId() && dto.getPharmacyId() != workingHoursDermatologist.getPharmacy().getId()) {
+                    if (workingHoursDermatologist.getMondaySchedule().getStartTime() == LocalTime.MIDNIGHT && workingHoursDermatologist.getMondaySchedule().getEndTime() == LocalTime.MIDNIGHT) {
+                        return true;
+                    }
+                    if ((dto.getStartTimeMonday().isAfter(workingHoursDermatologist.getMondaySchedule().getStartTime()) || dto.getEndTimeMonday().isBefore(workingHoursDermatologist.getMondaySchedule().getEndTime())
+                            || (dto.getEndTimeMonday().isAfter(workingHoursDermatologist.getMondaySchedule().getStartTime()) || dto.getEndTimeMonday().isBefore(workingHoursDermatologist.getMondaySchedule().getEndTime())))) {
+                        return false;
+                    }
                 }
             }
-            if(workingHoursDermatologist.getDermatologist().getId() == dto.getDermatologistId()){
-                if(dto.getStartTimeWednesday().equals("")){
-                    return true;
-                }
-                if((dto.getStartTimeWednesday().isAfter(workingHoursDermatologist.getWednesdaySchedule().getStartTime()) && dto.getEndTimeWednesday().isBefore(workingHoursDermatologist.getWednesdaySchedule().getEndTime())
-                        ||(dto.getEndTimeWednesday().isAfter(workingHoursDermatologist.getWednesdaySchedule().getStartTime()) && dto.getEndTimeWednesday().isBefore(workingHoursDermatologist.getWednesdaySchedule().getEndTime())))){
-                    return false;
-                }
-            }
-            if(workingHoursDermatologist.getDermatologist().getId() == dto.getDermatologistId()){
-                if(dto.getStartTimeThursday().equals("")){
-                    return true;
-                }
-                if((dto.getStartTimeThursday().isAfter(workingHoursDermatologist.getThursdaySchedule().getStartTime()) && dto.getEndTimeThursday().isBefore(workingHoursDermatologist.getThursdaySchedule().getEndTime())
-                        ||(dto.getEndTimeThursday().isAfter(workingHoursDermatologist.getThursdaySchedule().getStartTime()) && dto.getEndTimeThursday().isBefore(workingHoursDermatologist.getThursdaySchedule().getEndTime())))){
-                    return false;
-                }
-            } if(workingHoursDermatologist.getDermatologist().getId() == dto.getDermatologistId()){
-                if(dto.getStartTimeFriday().equals("")){
-                    return true;
-                }
-                if((dto.getStartTimeFriday().isAfter(workingHoursDermatologist.getFridaySchedule().getStartTime()) && dto.getEndTimeFriday().isBefore(workingHoursDermatologist.getFridaySchedule().getEndTime())
-                        ||(dto.getEndTimeFriday().isAfter(workingHoursDermatologist.getFridaySchedule().getStartTime()) && dto.getEndTimeFriday().isBefore(workingHoursDermatologist.getFridaySchedule().getEndTime())))){
-                    return false;
-                }
-            } if(workingHoursDermatologist.getDermatologist().getId() == dto.getDermatologistId()){
-                if(dto.getStartTimeSaturday().equals("")){
-                    return true;
-                }
-                if((dto.getStartTimeSaturday().isAfter(workingHoursDermatologist.getSaturdaySchedule().getStartTime()) && dto.getEndTimeSaturday().isBefore(workingHoursDermatologist.getSaturdaySchedule().getEndTime())
-                        ||(dto.getEndTimeSaturday().isAfter(workingHoursDermatologist.getSaturdaySchedule().getStartTime()) && dto.getEndTimeMonday().isBefore(workingHoursDermatologist.getSaturdaySchedule().getEndTime())))){
-                    return false;
-                }
-            } if(workingHoursDermatologist.getDermatologist().getId() == dto.getDermatologistId()){
-                if(dto.getStartTimeSunday().equals("")){
-                    return true;
-                }
-                if((dto.getStartTimeSunday().isAfter(workingHoursDermatologist.getSundaySchedule().getStartTime()) && dto.getEndTimeSunday().isBefore(workingHoursDermatologist.getSundaySchedule().getEndTime())
-                        ||(dto.getEndTimeSunday().isAfter(workingHoursDermatologist.getSundaySchedule().getStartTime()) && dto.getEndTimeSunday().isBefore(workingHoursDermatologist.getSundaySchedule().getEndTime())))){
-                    return false;
-                }
-            }
-
         }
         return true;
+    }
+    public Boolean isDermatologistAvailableTuesday(WorkingHoursDermatologistDTO dto) {
+        for (WorkingHoursDermatologist workingHoursDermatologist : workingHoursDermatologistRepository.findAll()) {
+            if (dto.getStartTimeTuesday() != null && dto.getEndTimeTuesday() != null) {
+                if (workingHoursDermatologist.getDermatologist().getId() == dto.getDermatologistId() && dto.getPharmacyId() != workingHoursDermatologist.getPharmacy().getId()) {
+                    if (workingHoursDermatologist.getTuesdaySchedule().getStartTime() == LocalTime.MIDNIGHT && workingHoursDermatologist.getTuesdaySchedule().getEndTime() == LocalTime.MIDNIGHT) {
+                        System.out.println("PONOOOCC UTORAK");
+                        return true;
+                    }
+                    System.out.println(dto.getStartTimeTuesday());
+                    System.out.println(dto.getDermatologistId());
+                    System.out.println(dermatologistService.findById(dto.getDermatologistId()).getName());
+                    System.out.println(workingHoursDermatologist.getTuesdaySchedule().getStartTime());
+                    if ((dto.getStartTimeTuesday().isAfter(workingHoursDermatologist.getTuesdaySchedule().getStartTime()) || dto.getEndTimeTuesday().isBefore(workingHoursDermatologist.getTuesdaySchedule().getEndTime())
+                            || (dto.getEndTimeTuesday().isAfter(workingHoursDermatologist.getTuesdaySchedule().getStartTime()) || dto.getEndTimeTuesday().isBefore(workingHoursDermatologist.getTuesdaySchedule().getEndTime()))||
+                            dto.getStartTimeTuesday() == workingHoursDermatologist.getTuesdaySchedule().getStartTime())) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return  true;
+    }
+    public Boolean isDermatologistAvailableWednesday(WorkingHoursDermatologistDTO dto) {
+        for (WorkingHoursDermatologist workingHoursDermatologist : workingHoursDermatologistRepository.findAll()) {
+            if (dto.getStartTimeWednesday() != null && dto.getEndTimeWednesday() != null) {
+                if (workingHoursDermatologist.getDermatologist().getId() == dto.getDermatologistId() && dto.getPharmacyId() != workingHoursDermatologist.getPharmacy().getId()) {
+                    if (workingHoursDermatologist.getWednesdaySchedule().getStartTime() == LocalTime.MIDNIGHT && workingHoursDermatologist.getWednesdaySchedule().getEndTime() == LocalTime.MIDNIGHT) {
+                        return true;
+                    }
+                    if ((dto.getStartTimeWednesday().isAfter(workingHoursDermatologist.getWednesdaySchedule().getStartTime()) || dto.getEndTimeWednesday().isBefore(workingHoursDermatologist.getWednesdaySchedule().getEndTime())
+                            || (dto.getEndTimeWednesday().isAfter(workingHoursDermatologist.getWednesdaySchedule().getStartTime()) || dto.getEndTimeWednesday().isBefore(workingHoursDermatologist.getWednesdaySchedule().getEndTime())))) {
+                        return false;
+                    }
+                }
+
+            }
+        }
+        return true;
+    }
+
+    public  Boolean isDermatologistAvailableThursday(WorkingHoursDermatologistDTO dto) {
+        for (WorkingHoursDermatologist workingHoursDermatologist : workingHoursDermatologistRepository.findAll()) {
+
+            if (dto.getStartTimeThursday() != null && dto.getEndTimeThursday() != null) {
+                if (workingHoursDermatologist.getDermatologist().getId() == dto.getDermatologistId() && dto.getPharmacyId() != workingHoursDermatologist.getPharmacy().getId()) {
+                    if (workingHoursDermatologist.getThursdaySchedule().getStartTime() == LocalTime.MIDNIGHT && workingHoursDermatologist.getThursdaySchedule().getEndTime() == LocalTime.MIDNIGHT) {
+                        return true;
+                    }
+                    if ((dto.getStartTimeThursday().isAfter(workingHoursDermatologist.getThursdaySchedule().getStartTime()) || dto.getEndTimeThursday().isBefore(workingHoursDermatologist.getThursdaySchedule().getEndTime())
+                            || (dto.getEndTimeThursday().isAfter(workingHoursDermatologist.getThursdaySchedule().getStartTime()) || dto.getEndTimeThursday().isBefore(workingHoursDermatologist.getThursdaySchedule().getEndTime())))) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+
+    }
+
+            public  Boolean isDermatologistAvailableFriday(WorkingHoursDermatologistDTO dto) {
+                for (WorkingHoursDermatologist workingHoursDermatologist : workingHoursDermatologistRepository.findAll()) {
+                    if (dto.getStartTimeFriday() != null && dto.getEndTimeFriday() != null) {
+                        if (workingHoursDermatologist.getDermatologist().getId() == dto.getDermatologistId() && dto.getPharmacyId() != workingHoursDermatologist.getPharmacy().getId()) {
+                            if (workingHoursDermatologist.getFridaySchedule().getStartTime() == LocalTime.MIDNIGHT && workingHoursDermatologist.getFridaySchedule().getEndTime() == LocalTime.MIDNIGHT) {
+                                return true;
+                            }
+                            if ((dto.getStartTimeFriday().isAfter(workingHoursDermatologist.getFridaySchedule().getStartTime()) || dto.getEndTimeFriday().isBefore(workingHoursDermatologist.getFridaySchedule().getEndTime())
+                                    || (dto.getEndTimeFriday().isAfter(workingHoursDermatologist.getFridaySchedule().getStartTime()) || dto.getEndTimeFriday().isBefore(workingHoursDermatologist.getFridaySchedule().getEndTime())))) {
+                                return false;
+                            }
+
+                        }
+                    }
+                }
+                return  true;
+            }
+
+    public  Boolean isDermatologistAvailableSaturday(WorkingHoursDermatologistDTO dto) {
+        for(WorkingHoursDermatologist workingHoursDermatologist : workingHoursDermatologistRepository.findAll()) {
+
+            if (dto.getStartTimeSaturday() != null && dto.getEndTimeSaturday() != null) {
+                if (workingHoursDermatologist.getDermatologist().getId() == dto.getDermatologistId() && dto.getPharmacyId() != workingHoursDermatologist.getPharmacy().getId()) {
+                    if (workingHoursDermatologist.getSaturdaySchedule().getStartTime() == LocalTime.MIDNIGHT && workingHoursDermatologist.getSaturdaySchedule().getEndTime() == LocalTime.MIDNIGHT) {
+                        return true;
+                    }
+                    if ((dto.getStartTimeSaturday().isAfter(workingHoursDermatologist.getSaturdaySchedule().getStartTime()) || dto.getEndTimeSaturday().isBefore(workingHoursDermatologist.getSaturdaySchedule().getEndTime())
+                            || (dto.getEndTimeSaturday().isAfter(workingHoursDermatologist.getSaturdaySchedule().getStartTime()) || dto.getEndTimeMonday().isBefore(workingHoursDermatologist.getSaturdaySchedule().getEndTime())))) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return  true;
+
+    }
+    public  Boolean isDermatologistAvailableSunday(WorkingHoursDermatologistDTO dto) {
+        for(WorkingHoursDermatologist workingHoursDermatologist : workingHoursDermatologistRepository.findAll()) {
+            if (dto.getStartTimeSunday() != null && dto.getEndTimeSunday()!=null) {
+                if (workingHoursDermatologist.getDermatologist().getId() == dto.getDermatologistId() && dto.getPharmacyId() != workingHoursDermatologist.getPharmacy().getId()) {
+                    if (workingHoursDermatologist.getSundaySchedule().getStartTime() == LocalTime.MIDNIGHT && workingHoursDermatologist.getSundaySchedule().getEndTime() == LocalTime.MIDNIGHT) {
+                        return true;
+                    }
+
+                    if ((dto.getStartTimeSunday().isAfter(workingHoursDermatologist.getSundaySchedule().getStartTime()) || dto.getEndTimeSunday().isBefore(workingHoursDermatologist.getSundaySchedule().getEndTime())
+                            || (dto.getEndTimeSunday().isAfter(workingHoursDermatologist.getSundaySchedule().getStartTime()) || dto.getEndTimeSunday().isBefore(workingHoursDermatologist.getSundaySchedule().getEndTime())))) {
+                        return false;
+                    }
+                }
+
+            }
+        }
+        return true;
+    }
+
+
+
+
+    public Boolean isDermatologistsAvailable(WorkingHoursDermatologistDTO dto){
+        System.out.println(isDermatologistAvailableMonday(dto));
+        System.out.println(isDermatologistAvailableTuesday(dto));
+        System.out.println(isDermatologistAvailableWednesday(dto));
+        System.out.println(isDermatologistAvailableThursday(dto));
+        System.out.println(isDermatologistAvailableFriday(dto));
+        System.out.println(isDermatologistAvailableSaturday(dto));
+        System.out.println(isDermatologistAvailableSunday(dto));
+
+        if(isDermatologistAvailableMonday(dto) && isDermatologistAvailableTuesday(dto) && isDermatologistAvailableWednesday(dto)&&
+        isDermatologistAvailableThursday(dto) && isDermatologistAvailableFriday(dto) && isDermatologistAvailableSaturday(dto) && isDermatologistAvailableSunday(dto)){
+            System.out.println("PROSAO AVAILABLE");
+
+            return true;
+        }
+        System.out.println("NIJE PROSAO AVAILABLE");
+
+        return false;
     }
 }

@@ -4,6 +4,7 @@ import com.isaproject.isaproject.DTO.HolidayScheduleDermatologistDTO;
 import com.isaproject.isaproject.DTO.RefuseHolidayScheduleDTO;
 import com.isaproject.isaproject.Model.Schedule.HolidayScheduleDermatologist;
 import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
+import com.isaproject.isaproject.Model.Users.Dermatologist;
 import com.isaproject.isaproject.Repository.HolidayScheduleDermatologistRepository;
 import com.isaproject.isaproject.Service.IServices.IHolidayScheduleDermatologistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class HolidayScheduleDermatologistService implements IHolidayScheduleDerm
     private Environment environment;
     @Autowired
     JavaMailSenderImpl mailSender;
+    @Autowired
+    DermatologistService dermatologistService;
 
 
     @Override
@@ -37,8 +40,9 @@ public class HolidayScheduleDermatologistService implements IHolidayScheduleDerm
 
     @Override
     public HolidayScheduleDermatologist save(HolidayScheduleDermatologistDTO scheduleDTO) {
+        Dermatologist dermatologist = dermatologistService.findById(scheduleDTO.getDermatologist());
         HolidayScheduleDermatologist offer = new HolidayScheduleDermatologist();
-        offer.setDermatologist(scheduleDTO.getDermatologist());
+        offer.setDermatologist(dermatologist);
         offer.setStartDate(scheduleDTO.getStartDate());
         offer.setEndDate(scheduleDTO.getEndDate());
         offer.setType(scheduleDTO.getType());

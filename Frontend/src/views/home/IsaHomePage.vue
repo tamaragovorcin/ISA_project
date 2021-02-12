@@ -11,7 +11,7 @@
                    <strong class="tab"></strong>                
                 <a class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href="/pharmacists">Pharmacists</a>
                    <strong class="tab"></strong>                
-                <a class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href="/pharmacists">Dermatologists</a>
+                <a class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href="/dermatologists">Dermatologists</a>
        
 
             </span>

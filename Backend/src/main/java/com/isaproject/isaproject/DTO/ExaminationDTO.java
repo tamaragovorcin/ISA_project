@@ -5,7 +5,6 @@ public class ExaminationDTO {
 
     private Patient patient;
 
-
     private Boolean cancelled;
 
     private Boolean showedUp;

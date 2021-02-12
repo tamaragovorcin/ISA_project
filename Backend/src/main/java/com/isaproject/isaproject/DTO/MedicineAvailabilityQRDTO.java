@@ -3,16 +3,16 @@ import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import java.util.List;
 
 public class MedicineAvailabilityQRDTO {
-    private Pharmacy pharmacy;
+    private Integer pharmacy;
     List<QRcodeInformationDTO> listMedications;
 
     public MedicineAvailabilityQRDTO() { }
 
-    public Pharmacy getPharmacy() {
+    public Integer getPharmacy() {
         return pharmacy;
     }
 
-    public void setPharmacy(Pharmacy pharmacy) {
+    public void setPharmacy(Integer pharmacy) {
         this.pharmacy = pharmacy;
     }
 

@@ -51,6 +51,7 @@ public class MedicationPrice {
         this.pharmacy = pharmacy;
     }
 
+
     public Integer getId() {
         return id;
     }

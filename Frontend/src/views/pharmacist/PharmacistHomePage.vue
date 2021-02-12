@@ -5,7 +5,7 @@
             
             <span style="float: left; margin: 15px;">
                     <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "showHomePage">Home</button>
-                   <strong class="tab"></strong>  
+                    <strong class="tab"></strong>  
                     <strong class="tab"></strong>
 
                     <button class = "btn btn-link btn-lg" v-on:click = "showMyProfile">My profile</button>
@@ -28,7 +28,15 @@
                     <button class = "btn btn-link btn-lg" style="margin-right:10px;" v-on:click = "showMedications">Medications</button>
                     <strong class="tab"></strong>  
                     <strong class="tab"></strong>
-                
+                    
+                        <button class = "btn btn-info btn-lg" v-on:click = "writeConsulting">Add consultings</button>
+                        <b class="tab"></b>   
+
+                        <button class = "btn btn-info btn-lg" v-on:click = "addMedicine">Sell reserved medicines</button>
+                        <b class="tab"></b>   
+
+                        <button class = "btn btn-info btn-lg" v-on:click = "scheduleConsulting">Schedule new consulting</button>
+                    
             </span>
               <span  style="float:right;margin:15px">
                     
@@ -43,13 +51,6 @@
         <div class="d-flex justify-content-center md-2 p-2">
              <b class="tab"></b>   
 
-			<button class = "btn btn-info btn-lg" v-on:click = "writeConsulting">Add consultings</button>
-             <b class="tab"></b>   
-
-            <button class = "btn btn-info btn-lg" v-on:click = "addMedicine">Sell reserved medicines</button>
-             <b class="tab"></b>   
-
-            <button class = "btn btn-info btn-lg" v-on:click = "scheduleConsulting">Schedule new consulting</button>
         </div>
     </div>
  
@@ -106,17 +107,6 @@ export default {
       showHomePage : function(){
           window.location.href = "/isaHomePage";
       },
-      logOut : function(){
-          window.location.href = "/login";
-
-      },
-      writeConsulting() {
-        window.location.href = "/noteConsultig";
-      },
-       
-       hideModal1() {
-        this.$refs['my-modal1'].hide()
-      },
       workCalendar : function(){
        window.location.href = "/workingHoursPharmacist";
 
@@ -125,13 +115,26 @@ export default {
       vacation: function(){
            window.location.href = "/createRequestVacation";
       },
-      scheduleConsulting : function(){
+     
+      logOut : function(){
+        localStorage.removeItem('token');
+          window.location.href = "/login";
+
+      },
+      writeConsulting() {
+        window.location.href = "/noteConsultig";
+      },
+        scheduleConsulting : function(){
              window.location.href = "/schedulingConsulting";
       },
       addMedicine : function(){
           this.$refs['my-modal1'].show()
 
       },
+       hideModal1() {
+        this.$refs['my-modal1'].hide()
+      },
+      
       sendComplaint : function(){
 
       },

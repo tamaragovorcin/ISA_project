@@ -81,8 +81,8 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
 
 
                 }else if(examinationScheduleDTO.getDate().getDayOfWeek() == DayOfWeek.FRIDAY){
-                    LocalTime shiftStarts = workingHoursDermatologist.getTuesdaySchedule().getStartTime();
-                    LocalTime shiftEnds = workingHoursDermatologist.getTuesdaySchedule().getEndTime();
+                    LocalTime shiftStarts = workingHoursDermatologist.getFridaySchedule().getStartTime();
+                    LocalTime shiftEnds = workingHoursDermatologist.getFridaySchedule().getEndTime();
                     return checkSchedule(examinationScheduleDTO,shiftStarts,shiftEnds);
 
                 }else if(examinationScheduleDTO.getDate().getDayOfWeek() == DayOfWeek.SATURDAY){
@@ -91,7 +91,6 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
                     return checkSchedule(examinationScheduleDTO,shiftStarts,shiftEnds);
 
                 }else if(examinationScheduleDTO.getDate().getDayOfWeek() == DayOfWeek.SUNDAY){
-                    System.out.println("USAO U SUNDAY");
 
                     LocalTime shiftStarts = workingHoursDermatologist.getSundaySchedule().getStartTime();
                     LocalTime shiftEnds = workingHoursDermatologist.getSundaySchedule().getEndTime();
@@ -130,6 +129,7 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
         if(examinationScheduleDTO.getStartTime().isAfter(shiftStarts) && examinationScheduleDTO.getStartTime().isBefore(shiftEnds)
                 &&  examinationScheduleDTO.getStartTime().plusMinutes(examinationScheduleDTO.getDuration()).isBefore(shiftEnds))
         {
+            System.out.println(examinationScheduleDTO.getDate().getDayOfWeek());
             System.out.println("USAO U CHECK SCHEDYLE");
 
             if(isDermatologistAvailable(examinationScheduleDTO) && !isDermatologistOnHoliday(examinationScheduleDTO)){
@@ -144,7 +144,12 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
     private  Boolean isDermatologistAvailable( ExaminationScheduleDTO dto){
         for(ExaminationSchedule examinationSchedule : examinationScheduleRepository.findAll()){
             if(examinationSchedule.getDermatologist().getId() == dto.getDermatologist()) {
-                if (dto.getDate().equals(examinationSchedule.getDate()) && dto.getStartTime().isAfter(examinationSchedule.getStartTime()) && dto.getStartTime().isBefore(examinationSchedule.getStartTime().plusMinutes(examinationSchedule.getDuration()))) {
+                if (dto.getDate().equals(examinationSchedule.getDate())) {
+                    if (dto.getStartTime().isAfter(examinationSchedule.getStartTime()) && dto.getStartTime().isBefore(examinationSchedule.getStartTime().plusMinutes(examinationSchedule.getDuration()))) {
+                        return false;
+                    }
+                }
+                if(dto.getDate().equals(examinationSchedule.getDate()) &&  dto.getStartTime()==examinationSchedule.getStartTime()){
                     return false;
                 }
             }

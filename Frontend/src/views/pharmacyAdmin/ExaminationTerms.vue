@@ -1,50 +1,52 @@
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div  v-if="loggedIn"  id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-           <span style="float: left; margin: 15px;">
+         <span style="float: left; margin-top: 15px;">
                               <b-dropdown id="ddCommodity" name="ddCommodity" text="My profile" 
                                               class = "btn btn-link btn-lg">
-                                    <b-dropdown-item href = "/pharmacyAdminProfile">Our pharmacists</b-dropdown-item>
+                                    <b-dropdown-item href = "/pharmacyAdminProfile">Profile</b-dropdown-item>
                                     <b-dropdown-item href = "/phAdminProfileUpdate">Update profile</b-dropdown-item>      
                                 </b-dropdown>        
 
-                        <strong class="tab"></strong>  
-
                                     <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
-                                                <button class = "btn btn-secondary" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
+                                                <button class = "btn btn-link" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
                                     </router-link>
-
-                          <strong class="tab"></strong>  
+                   
 
                                   <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
                                                 class = "btn btn-link btn-lg">
                                       <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
                                       <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
                                   </b-dropdown> 
-                          <strong class="tab"></strong>  
                                   <b-dropdown id="ddCommodity" name="ddCommodity" text="Dermatologists" 
                                                   class = "btn btn-link btn-lg">
                                         <b-dropdown-item href = "/pharmacyDermatologists">Our dermatologists(Add new)</b-dropdown-item>
                                         <b-dropdown-item href = "/examinationTerms">Examination terms</b-dropdown-item>      
                                     </b-dropdown>                 
-                            <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
-                            <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
-                            <strong class="tab"></strong>  
-                            <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
-                            <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href="/order">Orders</a>
-                            <strong class="tab"></strong>  
-                            <a   class = "btn btn-secondary" href="/holidayRequests">Holiday/absence requests</a>
+                            <a   class = "btn btn-link" href = "/pharmacyMedications">Medications</a>
+                            <a   class = "btn btn-link" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
+                            <a  class = "btn btn-link" href = "/actionsAndBenefits">Actions and benefits</a>
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Orders" 
+                                                  class = "btn btn-link btn-lg">
+                                        <b-dropdown-item href = "/order">Preview orders and offers(Add new)</b-dropdown-item>
+                                        <b-dropdown-item href = "/editOrder">Edit/remove order</b-dropdown-item>      
+                                    </b-dropdown>                             
+                            <a   class = "btn btn-link" href="/holidayRequests">Holiday/absence requests</a>
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Graphical reviews" 
+                                                  class = "btn btn-link btn-lg">
+                                        <b-dropdown-item href = "/examinationGraphics">Examinations</b-dropdown-item>
+                                        <b-dropdown-item href = "/medicationGraphics">Medication consumption</b-dropdown-item> 
+                                        <b-dropdown-item href = "/incomeGraphics">Income</b-dropdown-item>      
+                                    </b-dropdown>     
+                             <a   class = "btn btn-link" href="/medicationInquires">Inquires for medication</a>
+
             </span>
               <span  style="float:right;margin:15px">
                    
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
                 
                 </span>
-
         </div>
         
        
@@ -71,7 +73,7 @@
                                     </b-dropdown> 
                                  </div>
                                 <div class="form-group col-md-6 ">
-                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist.name}}&nbsp; {{this.selectedDermatologist.surname}} </label>
+                                    <label style="font-size:25px;font-weight:bold;">{{this.selectedDermatologist.firstname}}&nbsp; {{this.selectedDermatologist.surname}} </label>
                                 </div>
                                     
                             </div>
@@ -192,7 +194,8 @@ export default {
        price : 0,
        selectedDermatologist1 : {},
         selectedDermatologist2 : {},
-        terms: {}
+        terms: {},
+        loggedIn : false
       
     }
   },
@@ -204,6 +207,7 @@ export default {
              }
          }).then(response => {
                 this.admin = response.data;
+                this.loggedIn = true;
                 console.log(this.admin);
                 this.axios.get('/pharmacyAdmin/myPharmacy',{ 
                     headers: {
@@ -221,7 +225,8 @@ export default {
                 
          
          }).catch(res => {
-                alert("NOT OK");
+                alert("Plesase, log in.");
+                window.location.href = "/login";
                 console.log(res);
         });
         this.axios.get('/pharmacyAdmin/dermatologists',{ 
@@ -262,7 +267,9 @@ export default {
           window.location.href = "/order";
       },
        logOut : function(){
-           window.location.href = "/login";
+         localStorage.removeItem('token');
+          window.location.href = "/login";
+
       },
       showMyPharmacy : function (){
           window.location.href = "/myPharmacy"
@@ -301,11 +308,10 @@ export default {
                         }})
                 .then(response => {
                         alert(response.data)
-                        window.location.href = "/examinationTerms";
                         console.log(response.data);
                 })
                 .catch(response => {
-                       alert("Please try later.");
+                        alert(response.response.data.message);
                         console.log(response);
                  });    
       },

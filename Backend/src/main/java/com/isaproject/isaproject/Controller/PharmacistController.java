@@ -51,10 +51,11 @@ public class PharmacistController {
             throw new ResourceConflictException(userRequest.getEmail(), "Email already exists");
         }
         Pharmacist user = pharmacistService.save(userRequest);
-        return new ResponseEntity<>("Supplier is successfully registred!", HttpStatus.CREATED);
+        return new ResponseEntity<>("Pharmacist is successfully registred!", HttpStatus.CREATED);
     }
 
     @GetMapping("")
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     ResponseEntity<List<Pharmacist>> getAll() {
         List<Pharmacist> pharmacists = pharmacistService.findAll();
         return pharmacists == null ?
@@ -108,12 +109,13 @@ public class PharmacistController {
 
     @PostMapping("/update")
     @PreAuthorize("hasRole('PHARMACIST')")
-    public ResponseEntity<String> update(@RequestBody Pharmacist userRequest) {
+    ResponseEntity<Pharmacist> update(@RequestBody PharmacistDTO person)
+    {
 
-        Pharmacist user = pharmacistService.update(userRequest);
-        return user.getSurname() == null ?
+        Pharmacist patient = pharmacistService.update(person);
+        return patient == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                new ResponseEntity<>("Pharmacist is successfully updated!", HttpStatus.CREATED);
+                ResponseEntity.ok(patient);
     }
 
 
@@ -142,10 +144,10 @@ public class PharmacistController {
         return able;
     }
 
-    @PostMapping("/delete")
+    @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
-    public ResponseEntity<String> addUser(@RequestBody Pharmacist pharmacist) {
-        System.out.println(pharmacist.getName());
+    public ResponseEntity<String> deletePharmacist(@PathVariable Integer id) {
+        Pharmacist pharmacist = pharmacistService.findById(id);
         String answer = pharmacistService.delete(pharmacist);
         return new ResponseEntity<>(answer, HttpStatus.CREATED);
     }
@@ -385,7 +387,7 @@ public class PharmacistController {
             double ocena = (one * 1 + two * 2 + three * 3 + four * 4 + five * 5) / (one + two + three + four + five);
             System.out.println(ocena);
             pharmacist.setMarkPharmacist(ocena);
-            pharmacistService.update(pharmacist);
+            pharmacistService.updateMark(pharmacist);
 
 
 
@@ -418,19 +420,27 @@ public class PharmacistController {
 
     @GetMapping("/myPatients")
     @PreAuthorize("hasRole('PHARMACIST')")
-    ResponseEntity<Set<PatientForFrontDTO>> getOurPatients() {
+    ResponseEntity<List<PatientForFrontDTO>> getOurPatients() {
+        PatientForFrontDTO newP = new PatientForFrontDTO();
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser) currentUser.getPrincipal();
         Pharmacist pharmacist = pharmacistService.findById(user.getId());
-        HashSet<PatientForFrontDTO> persons = new HashSet<>();
+        List<PatientForFrontDTO> persons = new ArrayList<>();
 
         for (Consulting c : consultingService.findAll()) {
-            if (c.getPharmacist().getId() == pharmacist.getId())
-                persons.add(new PatientForFrontDTO(c.getPatient().getId(),c.getPatient().getEmail(), c.getPatient().getName(), c.getPatient().getSurname(), c.getPatient().getPhoneNumber()));
+            if (c.getPharmacist().getId() == pharmacist.getId()) {
+
+
+                persons.add(new PatientForFrontDTO(c.getPatient().getId(), c.getPatient().getEmail(), c.getPatient().getName(), c.getPatient().getSurname(), c.getPatient().getPhoneNumber()));
+            }
         }
+
+
         return persons== null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(persons);
     }
+
+
 
 }

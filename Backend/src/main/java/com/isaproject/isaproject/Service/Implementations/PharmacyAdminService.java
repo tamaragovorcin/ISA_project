@@ -36,6 +36,8 @@ public class PharmacyAdminService implements IPharmacyAdminService {
     @Autowired
     private ExaminationScheduleService examinationScheduleService;
 
+
+
     @Override
     public PharmacyAdmin findById(Integer id) {
         return pharmacyAdminRepository.findById(id).get();
@@ -98,5 +100,16 @@ public class PharmacyAdminService implements IPharmacyAdminService {
         return  true;
 
     }
-
+    public PharmacyAdmin update(PharmacyAdminDTO dto){
+        PharmacyAdmin admin = findByEmail(dto.getEmail());
+        Integer id = admin.getId();
+        PharmacyAdmin per = pharmacyAdminRepository.getOne(id);
+        per.setName(dto.getFirstname());
+        per.setPhoneNumber(dto.getPhonenumber());
+        per.setSurname(dto.getSurname());
+        AddressDTO addressDTO = dto.getAddress();
+        Address address = new Address(addressDTO.getTown(),addressDTO.getStreet(),addressDTO.getNumber(),addressDTO.getPostalCode(),addressDTO.getCountry());
+        per.setAddress(address);
+        return this.pharmacyAdminRepository.save(per);
+    }
 }

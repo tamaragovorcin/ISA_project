@@ -18,6 +18,7 @@ import CreateRequestVacation from '../views/pharmacist/CreateRequestVacation.vue
 import PharmacistUpdateProfile from '../views/pharmacist/PharmacistUpdateProfile.vue'
 import WorkingHoursPharmacist from '../views/pharmacist/WorkingHoursPharmacist.vue'
 import DermatologistHomePage from '../views/dermatologist/DermatologistHomePage.vue'
+import DermatologistClients from '../views/dermatologist/DermatologistClients.vue'
 import NoteAboutExamination from '../views/dermatologist/NoteAboutExamination.vue'
 import DermatologistProfile from '../views/dermatologist/DermatologistProfile.vue'
 import CreateRequestHoliday from '../views/dermatologist/CreateRequestHoliday.vue'
@@ -52,7 +53,6 @@ import PharmacyDermatologists from '../views/pharmacyAdmin/PharmacyDermatologist
 import PharmacyPharmacists from '../views/pharmacyAdmin/PharmacyPharmacists.vue'
 import AddPharmacist from '../views/pharmacyAdmin/AddPharmacist.vue'
 import myDermatologistAppointments from '../views/patient/myDermatologistAppointments.vue'
-import NewOrderForm from '../views/pharmacyAdmin/NewOrderForm.vue'
 import Complaints from '../views/systemAdmin/Complaints.vue'
 import PharmacyMedication from '../views/pharmacyAdmin/PharmacyMedication.vue'
 import SupplierReviewsActiveTenders from '../views/supplier/SupplierReviewsActiveTenders.vue'
@@ -72,8 +72,16 @@ import HolidayRequestsDermatologists from '../views/systemAdmin/HolidayRequestsD
 import Pharmacists from '../views/home/Pharmacists.vue'
 import pharmacyProfilePatient from '../views/patient/pharmacyProfilePatient.vue'
 
+import WorkingHoursDermatologist from '../views/dermatologist/WorkingHoursDermatologist.vue'
+
+
+import EditOrder from '../views/pharmacyAdmin/EditOrder.vue'
 
 import Dermatologists from '../views/home/Dermatologists.vue'
+import MedicationGraphics from '../views/pharmacyAdmin/MedicationGraphics.vue'
+import IncomeGraphics from '../views/pharmacyAdmin/IncomeGraphics.vue'
+import ExaminationGraphics from '../views/pharmacyAdmin/ExaminationGraphics.vue'
+import Mapa from '../views/systemAdmin/Mapa.vue'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -135,6 +143,11 @@ const routes = [
       component: PharmacistProfile
     },
     {
+      path: '/workingHoursDermatologist',
+      name: 'WorkingHoursDermatologist',
+      component: WorkingHoursDermatologist
+    },
+    {
       path: '/schedulingExamination',
       name: 'SchedulingExamination',
       component: SchedulingExamination
@@ -168,6 +181,11 @@ const routes = [
       path: '/noteConsultig',
       name: 'NoteAboutConsulting',
       component: NoteAboutConsulting
+    },
+    {
+      path: '/dermatologistClients',
+      name: 'DermatologistClients',
+      component: DermatologistClients
     },
     {
       path: '/workingHoursPharmacist',
@@ -365,11 +383,6 @@ const routes = [
       component: SupplierReviewsActiveTenders
     },
     {
-      path: '/newOrderForm',
-      name: 'NewOrderForm',
-      component: NewOrderForm
-    },
-    {
         path: '/myOffers',
       name: 'MyOffers',
       component: MyOffers
@@ -451,7 +464,32 @@ const routes = [
       name: 'ExaminationTerms',
       component: ExaminationTerms
     },
-    
+    {
+      path: '/editOrder',
+      name: 'EditOrder',
+      component: EditOrder
+    },
+    {
+      path: '/medicationGraphics',
+      name: 'MedicationGraphics',
+      component: MedicationGraphics
+    },
+    {
+      path: '/incomeGraphics',
+      name: 'IncomeGraphics',
+      component: IncomeGraphics
+    },
+    {
+      path: '/examinationGraphics',
+      name: 'ExaminationGraphics',
+      component: ExaminationGraphics
+    },
+    {
+      path: '/mapa/:id',
+      name: 'Mapa',
+      component: Mapa
+    },
+
     
   ]
 const router = new VueRouter({

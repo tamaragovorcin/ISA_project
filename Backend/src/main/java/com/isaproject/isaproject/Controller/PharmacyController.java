@@ -8,12 +8,9 @@ import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
 import com.isaproject.isaproject.Model.Pharmacy.Actions;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
-import com.isaproject.isaproject.Model.Users.Dermatologist;
-import com.isaproject.isaproject.Model.Users.Mark;
-import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Model.Users.*;
 import com.isaproject.isaproject.Service.IServices.IPersonUserService;
 import com.isaproject.isaproject.Service.Implementations.*;
-import com.isaproject.isaproject.Model.Users.Pharmacist;
 import com.isaproject.isaproject.Service.Implementations.ActionsService;
 import com.isaproject.isaproject.Service.Implementations.ExaminationScheduleService;
 import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
@@ -26,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -68,6 +66,18 @@ public class PharmacyController  {
     @PostMapping("/addActions")
     ResponseEntity<String> shareActions(@RequestBody ActionsDTO action)
     {
+        if(action.getExpiryDate() == null){
+            return new ResponseEntity<>("You have to define expiry date.", HttpStatus.CREATED);
+
+        }
+        if(!(action.getExpiryDate().toString().matches("\\d{4}-\\d{2}-\\d{2}"))) {
+            return new ResponseEntity<>("Date has to be in format YYYY-MM-DD.", HttpStatus.CREATED);
+        }
+        if(action.getDescription()==""){
+            return new ResponseEntity<>("You have to describe action or benefit.", HttpStatus.CREATED);
+        }
+
+
         if(action.getExpiryDate().isAfter(LocalDate.now())) {
             Actions actions = actionsService.save(action);
             if (actions != null) {
@@ -117,6 +127,7 @@ public class PharmacyController  {
         Pharmacy pharmacy = pharmacyService.save(pharmacyDTO);
         return new ResponseEntity<>("Pharmacy is successfully registred!", HttpStatus.CREATED);
     }
+
     @GetMapping("/all")
 
     ResponseEntity<List<PharmacyFrontDTO>> getAllPharmacies()
@@ -152,6 +163,22 @@ public class PharmacyController  {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacy);
     }
+    @GetMapping("address/{id}")
+    ResponseEntity<AddressDTO> getPharmacyAddress(@PathVariable Integer id) {
+        Pharmacy pharmacy = pharmacyService.findById(id);
+        AddressDTO addressDTO = new AddressDTO();
+        addressDTO.setCountry(pharmacy.getAddress().getCountry());
+        addressDTO.setTown(pharmacy.getAddress().getTown());
+        addressDTO.setStreet(pharmacy.getAddress().getStreet());
+        addressDTO.setNumber(pharmacy.getAddress().getNumber());
+        addressDTO.setPostalCode(pharmacy.getAddress().getPostalCode());
+        return pharmacy == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(addressDTO);
+    }
+
+
+
 
     @GetMapping("/allNames")
     //@PreAuthorize("hasRole('PATIENT')")
@@ -198,6 +225,22 @@ public class PharmacyController  {
         return dermatologists == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(dermatologists);
+
+    }
+    @GetMapping("/dermatologistsFront/{id}")
+    public ResponseEntity<List<DermatologistsFrontDTO>> getDermatologistsFront(@PathVariable Integer id) {
+        Set<Dermatologist> dermatologists = pharmacyService.findById(id).getDermatologists();
+        List<DermatologistsFrontDTO> dermatologistsFrontDTOS =  new ArrayList<>();
+        for(Dermatologist dermatologist : pharmacyService.findById(id).getDermatologists()){
+            DermatologistsFrontDTO dermatologistFrontDTO = new DermatologistsFrontDTO();
+            dermatologistFrontDTO.setFirstname(dermatologist.getName());
+            dermatologistFrontDTO.setSurname(dermatologist.getSurname());
+            dermatologistFrontDTO.setMarkDermatologist(dermatologist.getMarkDermatologist());
+            dermatologistsFrontDTOS.add(dermatologistFrontDTO);
+        }
+        return dermatologistsFrontDTOS == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(dermatologistsFrontDTOS);
 
     }
     @GetMapping("/pharmacists/{id}")
@@ -266,8 +309,31 @@ public class PharmacyController  {
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     public ResponseEntity<String> addSchedule(@RequestBody ExaminationScheduleDTO dto) {
 
+        if(dto.getDate() == null){
+            throw new IllegalArgumentException("You have to define date.");
+
+        }
+        if(dto.getDate().isBefore(LocalDate.now())){
+            throw new IllegalArgumentException("You can not schedule examination term in past.");
+
+        }
+        if(dto.getStartTime() == null){
+            throw new IllegalArgumentException("You have to define time.");
+
+        }
+        if(dto.getDermatologist() == null){
+            throw new IllegalArgumentException("You have to define dermatologist.");
+
+        }
+        if(dto.getDuration() == null || dto.getPrice() ==0){
+            throw new IllegalArgumentException("You have to define duration and price.");
+
+        }
+        if(dto.getDuration()<0 || dto.getPrice()<0){
+            throw new IllegalArgumentException("Duration and price can not be negative numbers.");
+
+        }
         ExaminationSchedule examinationSchedule = examinationScheduleService.save(dto);
-        System.out.println(examinationSchedule);
          if(examinationSchedule == null) {
             return new ResponseEntity<>("Dermatologist is not available at required time! Try in another time.", HttpStatus.CREATED);
 

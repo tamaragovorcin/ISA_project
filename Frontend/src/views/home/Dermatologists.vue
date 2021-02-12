@@ -11,7 +11,7 @@
                    <strong class="tab"></strong>                
                 <a class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href="/pharmacists">Pharmacists</a>
                    <strong class="tab"></strong>                
-                <a class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href="/pharmacists">Dermatologists</a>
+                <a class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" href="/dermatologists">Dermatologists</a>
        
 
             </span>
@@ -24,7 +24,7 @@
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "showRegistrationForm">Register</button>
                 </span>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid" v-if="loggedIn">
 
        
     <div style="height:25px"></div>
@@ -58,7 +58,7 @@
               <div class="input-group mb-3">
                   <label>Average mark around:</label>
                    <div class="input-group-append  align-self-center">
-                       <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose pharmacists mark" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
+                       <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose dermatologists mark" class = "btn btn-link btn-lg" style="float:left;margin-left:20px;">
                               <b-dropdown-item v-for="item in this.marks"  v-on:click ="markIsSelected($event, item.mark)" v-bind:key="item.mark"> {{item.mark }}</b-dropdown-item>
                         </b-dropdown> 
                   </div>
@@ -85,11 +85,9 @@
       <td>{{derm.firstname}}</td>
       <td>{{derm.surname}}</td>
       <td>{{derm.markDermatologist}}</td>
-      <td>
-      <tr v-for="pharmacy  in derm.pharmacies" :key="pharmacy.id">
-      <td>{{pharmacy}}</td>
-      </tr>
-      </td>
+      <label v-for="pharmacy  in derm.pharmacies" :key="pharmacy.id">
+      {{pharmacy}}#
+      </label>
     </tr>
   </tbody>
 </table>
@@ -136,6 +134,7 @@ export default {
       dermatologistName : "",
       dermatologistSurname : "",
       pharmacies : [],
+      loggedIn : false
     
 
 
@@ -223,10 +222,12 @@ export default {
                  'Authorization': 'Bearer ' + token,
              }
          }).then(response => {
+                this.loggedIn = true;
                 this.dermatologists = response.data;
 
          }).catch(res => {
                 alert("Please log in.");
+                window.location.href ="/login";
                 console.log(res);
         });
         this.axios.get('/pharmacy/all',{ 

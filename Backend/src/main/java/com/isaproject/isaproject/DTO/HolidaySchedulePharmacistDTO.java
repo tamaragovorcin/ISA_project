@@ -3,13 +3,13 @@ import com.isaproject.isaproject.Model.Users.Pharmacist;
 import java.time.LocalDate;
 
 public class HolidaySchedulePharmacistDTO {
-    private Pharmacist pharmacist;
+    private Integer pharmacist;
     private LocalDate startDate;
     private LocalDate endDate;
     private String type;
     private String approved;
 
-    public HolidaySchedulePharmacistDTO(Pharmacist pharmacist, LocalDate startDate, LocalDate endDate, String type, String approved) {
+    public HolidaySchedulePharmacistDTO(Integer pharmacist, LocalDate startDate, LocalDate endDate, String type, String approved) {
         this.pharmacist = pharmacist;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -26,11 +26,11 @@ public class HolidaySchedulePharmacistDTO {
         this.approved = approved;
     }
 
-    public Pharmacist getPharmacist() {
+    public Integer getPharmacist() {
         return pharmacist;
     }
 
-    public void setPharmacist(Pharmacist pharmacist) {
+    public void setPharmacist(Integer pharmacist) {
         this.pharmacist = pharmacist;
     }
 

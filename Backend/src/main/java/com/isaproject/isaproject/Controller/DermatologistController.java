@@ -91,17 +91,19 @@ public class DermatologistController {
 
     @PostMapping("/update")
     @PreAuthorize("hasRole('DERMATOLOGIST')")
-    public ResponseEntity<String> update(@RequestBody Dermatologist userRequest) {
+    ResponseEntity<Dermatologist> update(@RequestBody DermatologistDTO person)
+    {
 
-        Dermatologist user = dermatologistService.update(userRequest);
-        return user.getSurname() == null ?
+        Dermatologist patient = dermatologistService.update(person);
+        return patient == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                new ResponseEntity<>("Dermatologist is successfully updated!", HttpStatus.CREATED);
+                ResponseEntity.ok(patient);
     }
     @GetMapping("/front")
     @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
-    ResponseEntity<List<DermatologistsFrontDTO>> getAllFront()
+    ResponseEntity<List<DermatologistsFrontDTO>> getAllFrontDermatologists()
     {
+        System.out.println("POGODIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         List<DermatologistsFrontDTO> dermatologists = new ArrayList<DermatologistsFrontDTO>();
         for(Dermatologist dermatologist:   dermatologistService.findAll()){
             List<String> pharmacies = new ArrayList<>();
@@ -219,6 +221,7 @@ public class DermatologistController {
         return dermatologists;
     }
     @GetMapping("")
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<List<Dermatologist>> getAll()
     {
         List<Dermatologist> dermatologists = dermatologistService.findAll();
@@ -494,7 +497,7 @@ public class DermatologistController {
             double ocena = (one * 1 + two * 2 + three * 3 + four * 4 + five * 5) / (one + two + three + four + five);
 
             dermatologist.setMarkDermatologist(ocena);
-            dermatologistService.update(dermatologist);
+            dermatologistService.updateMark(dermatologist);
 
 
 
@@ -539,6 +542,23 @@ public class DermatologistController {
         return cons == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(cons);
+    }
+
+    @GetMapping("/myPatients")
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    ResponseEntity<Set<PatientForFrontDTO>> getOurPatients() {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser) currentUser.getPrincipal();
+       Dermatologist dermatologist = dermatologistService.findById(user.getId());
+        HashSet<PatientForFrontDTO> persons = new HashSet<>();
+
+        for (Examination e : examinationService.findAll()) {
+            if (e.getExaminationSchedule().getDermatologist().getId() == dermatologist.getId() && !persons.contains(e))
+                persons.add(new PatientForFrontDTO(e.getPatient().getId(),e.getPatient().getEmail(), e.getPatient().getName(), e.getPatient().getSurname(), e.getPatient().getPhoneNumber()));
+        }
+        return persons== null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(persons);
     }
 
 }

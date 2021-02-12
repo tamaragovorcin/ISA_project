@@ -3,14 +3,14 @@ import com.isaproject.isaproject.Model.Users.Dermatologist;
 import java.time.LocalDate;
 
 public class HolidayScheduleDermatologistDTO {
-    private Dermatologist dermatologist;
+    private Integer dermatologist;
     private LocalDate startDate;
     private LocalDate endDate;
     private String type;
     private String approved;
 
 
-    public HolidayScheduleDermatologistDTO(Dermatologist dermatologist, LocalDate startDate, LocalDate endDate, String type, String approved) {
+    public HolidayScheduleDermatologistDTO(Integer dermatologist, LocalDate startDate, LocalDate endDate, String type, String approved) {
         this.dermatologist = dermatologist;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -27,11 +27,11 @@ public class HolidayScheduleDermatologistDTO {
         this.approved = approved;
     }
 
-    public Dermatologist getDermatologist() {
+    public Integer getDermatologist() {
         return dermatologist;
     }
 
-    public void setDermatologist(Dermatologist dermatologist) {
+    public void setDermatologist(Integer dermatologist) {
         this.dermatologist = dermatologist;
     }
 

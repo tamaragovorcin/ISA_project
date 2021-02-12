@@ -1,32 +1,46 @@
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div  v-if="loggedIn"  id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
-           <span style="float: left; margin: 15px;">
-                <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
-                <strong class="tab"></strong>  
-                <a  class = "btn btn-secondary" href = "/pharmacyAdminProfile">My profile</a>
-                <strong class="tab"></strong>  
-                <a  class = "btn btn-secondary" href = "/myPharmacy">My Pharmacy</a>
-                <strong class="tab"></strong>  
-                 <a  class = "btn btn-secondary" href = "/phAdminProfileUpdate">Update profile</a>
-                 
-                <strong class="tab"></strong>  
-                 <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
-                               class = "btn btn-link btn-lg">
-                    <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
-                    <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
-                </b-dropdown> 
-                <strong class="tab"></strong>  
-                <a  class = "btn btn-secondary" href = "/pharmacyDermatologists">Our dermatologists</a>      
-                <strong class="tab"></strong>  
-                <a   class = "btn btn-secondary" href = "/pharmacyMedications">Medications</a>
-                <strong class="tab"></strong>  
-                 <a   class = "btn btn-secondary" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
-                <strong class="tab"></strong>  
-                <a  class = "btn btn-secondary" href = "/actionsAndBenefits">Actions and benefits</a>
-                <strong class="tab"></strong>  
-                <a   class = "btn btn-secondary" href="/order">Orders</a>
+         <span style="float: left; margin-top: 15px;">
+                              <b-dropdown id="ddCommodity" name="ddCommodity" text="My profile" 
+                                              class = "btn btn-link btn-lg">
+                                    <b-dropdown-item href = "/pharmacyAdminProfile">Profile</b-dropdown-item>
+                                    <b-dropdown-item href = "/phAdminProfileUpdate">Update profile</b-dropdown-item>      
+                                </b-dropdown>        
+
+                                    <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
+                                                <button class = "btn btn-link" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
+                                    </router-link>
+                   
+
+                                  <b-dropdown id="ddCommodity" name="ddCommodity" text="Pharmacists" 
+                                                class = "btn btn-link btn-lg">
+                                      <b-dropdown-item href = "/pharmacyPharmacists">Our pharmacists</b-dropdown-item>
+                                      <b-dropdown-item href = "/addPharmacist">Add new pharmacist</b-dropdown-item>      
+                                  </b-dropdown> 
+                                  <b-dropdown id="ddCommodity" name="ddCommodity" text="Dermatologists" 
+                                                  class = "btn btn-link btn-lg">
+                                        <b-dropdown-item href = "/pharmacyDermatologists">Our dermatologists(Add new)</b-dropdown-item>
+                                        <b-dropdown-item href = "/examinationTerms">Examination terms</b-dropdown-item>      
+                                    </b-dropdown>                 
+                            <a   class = "btn btn-link" href = "/pharmacyMedications">Medications</a>
+                            <a   class = "btn btn-link" href = "/pharmacyAdminMedicationSearch">Medications in system</a>
+                            <a  class = "btn btn-link" href = "/actionsAndBenefits">Actions and benefits</a>
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Orders" 
+                                                  class = "btn btn-link btn-lg">
+                                        <b-dropdown-item href = "/order">Preview orders and offers(Add new)</b-dropdown-item>
+                                        <b-dropdown-item href = "/editOrder">Edit/remove order</b-dropdown-item>      
+                                    </b-dropdown>                             
+                            <a   class = "btn btn-link" href="/holidayRequests">Holiday/absence requests</a>
+                            <b-dropdown id="ddCommodity" name="ddCommodity" text="Graphical reviews" 
+                                                  class = "btn btn-link btn-lg">
+                                        <b-dropdown-item href = "/examinationGraphics">Examinations</b-dropdown-item>
+                                        <b-dropdown-item href = "/medicationGraphics">Medication consumption</b-dropdown-item> 
+                                        <b-dropdown-item href = "/incomeGraphics">Income</b-dropdown-item>      
+                                    </b-dropdown>     
+                             <a   class = "btn btn-link" href="/medicationInquires">Inquires for medication</a>
+
             </span>
               <span  style="float:right;margin:15px">
                    
@@ -35,9 +49,14 @@
                 </span>
 
         </div>
-        <div>
-      
-    <b-button class = "btn btn-warning btn-lg" style ="margin-top:25px;" @click="showModal">+ Announce new tender</b-button>
+             
+                     <h3 style="margin:25px;color:#0D184F;font-weight:bold;">All tenders in your pharmacy:</h3>
+                     <div class="row">
+            <b-button class = "btn btn-warning btn-lg" style ="margin-top:25px;" @click="showModal">+ Announce new tender</b-button>
+            </div>
+                     <button class = "btn btn-info btn-lg" style="margin-right:20px;" v-on:click = "showActive">Show active tenders</button>
+                    <button class = "btn btn-info btn-lg" style="margin-right:20px;" v-on:click = "showFinised">Show finished tenders</button>
+               
     <b-modal ref="my-modal" hide-footer scrollable title="Fill order form" size="lg" modal-class="b-modal">
                     <div modal-class="modal-dialog" role="document">
                     <div class="modal-content" style="background-color:whitesmoke">
@@ -129,7 +148,7 @@
                     <div modal-class="modal-dialog" role="document">
                     <div class="modal-content" style="background-color:whitesmoke">
                             <div class="modal-header">
-                                <h3 class="modal-title" id="exampleModalLabel">Medicing ordering</h3>
+                                <h3 class="modal-title" id="exampleModalLabel">Medicine ordering</h3>
                 
                             </div>
                             <div class="modal-body">
@@ -215,9 +234,10 @@
 
 
 
-  </div>
-       
-       <h3 style="margin:25px;color:#0D184F;font-weight:bold;">Active tenders in your pharmacy:</h3>
+       <div>
+       <h3 style="margin:25px;color:#0D184F;font-weight:bold;" v-if="active">Active tenders(waiting for offers):</h3>
+      <h3 style="margin:25px;color:#0D184F;font-weight:bold;" v-if="finished">Finished tenders:</h3>
+
         <div class="row" style = "background-color:whitesmoke; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
                         <div class=" form-group col"  v-for="order in orders" :key="order.id">
                                    <h4 style="color: #0D184F;margin:20px">Choose tender:</h4>
@@ -266,7 +286,7 @@
                            
                         </div>
                         <hr/>
-                         <div class="row justify-content-center">
+                         <div v-if="active" class="row justify-content-center">
                            <div class="modal-footer">
                             <button class="btn btn-primary" @click="showEditForm">Edit</button>
 
@@ -282,7 +302,7 @@
             </div>
 
 
-       <div v-if="showOffers" class="row" style = "background-color:whitesmoke; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+       <div v-if="showOffers && active" class="row" style = "background-color:whitesmoke; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
                         <div class=" form-group col"  v-for="offer in offers" :key="offer.id">
                                    <h4 style="color: #0D184F;margin:20px">Choose offer:</h4>
 
@@ -290,7 +310,7 @@
                         </div>
                     </div>
 
-    <div v-if="showConcreteOffer" style = "background-color:white; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
+    <div v-if="showConcreteOffer && active" style = "background-color:white; margin: auto; width: 100%;border: 3px solid #0D184F;padding: 10px;margin-top:45px;">
                    
                     <hr/>
                                                        <h4 style="color: #0D184F;margin:20px">Offer from {{supplierName}}&nbsp; {{supplierSurName}}</h4>
@@ -344,7 +364,9 @@
                     </div>
                         
             </div>
-
+            </div>
+           
+      
             
        
 
@@ -402,7 +424,11 @@ export default {
         medicationQuantityListEdit : "",
         endDateEdit : "",
         quantityEdit : "",
+        active : false,
+        finished :false,
+        loggedIn : false
         
+
     }
     },
      mounted() {
@@ -413,6 +439,7 @@ export default {
              }
          }).then(response => {
                 this.admin = response.data;
+                this.loggedIn = true;
                 console.log(this.admin);
                 this.axios.get('/pharmacyAdmin/myPharmacy',{ 
                     headers: {
@@ -470,6 +497,7 @@ export default {
       },
       showEditForm(){
                   this.$refs['edit-modal'].show()
+
       },
       showModal() {
         this.$refs['my-modal'].show()
@@ -510,6 +538,7 @@ export default {
                         console.log(res);
                 });
                 this.showOffers = true;
+
            
       },
       addNewMedicine : function(){
@@ -520,6 +549,7 @@ export default {
                 };
                 this.medicationQuantityList.push(medicineWithQuantity)
                 this.medicationQuantityListEdit.push(medicineWithQuantity)
+
       },
        addNewMedicineEdit : function(){
                 const medicineWithQuantityEdit = {
@@ -542,7 +572,7 @@ export default {
                                 'Authorization': 'Bearer ' + token,
                         }})
                 .then(response => {
-                       alert("Order is successfully sent!");
+                       alert(response.data);
                        this.medicationQuantityList = [];
                        this.selectedMedication = {};
                        console.log(response.data);
@@ -590,7 +620,8 @@ export default {
                  });    
       },
       acceptOffer : function(){
-          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+     let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+
         this.axios.get('/offer/accept/'+this.choosenOffer.id,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
@@ -603,6 +634,45 @@ export default {
                         console.log(res);
                 });
       },
+      showActive : function(){
+            this.active = true;
+            this.finished = false;
+          this.showConcreteOffer = false;
+          this.showConcreteTender = false;
+        this.showOffers = false;
+
+           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+           this.axios.get('/pharmacyAdmin/activeOrders',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            this.orders = response.data;
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
+          
+      },
+      showFinised :function(){
+          this.finished = true;
+          this.active = false;
+          this.showConcreteOffer = false;
+          this.showConcreteTender = false;
+          this.showOffers = false;
+          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+           this.axios.get('/pharmacyAdmin/finishedOrders',{ 
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                    }).then(response => {
+                            this.orders = response.data;
+                    }).catch(res => {
+                            alert("NOT OK");
+                            console.log(res);
+                    });
+
+      }
       
    
    
@@ -611,6 +681,7 @@ export default {
 </script>
 
 <style>
+
 body {
   font-family: "Lato", sans-serif;
 }
