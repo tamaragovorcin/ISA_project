@@ -98,6 +98,7 @@ mounted(){
          
          }).catch(res => {
            this.isAuthorized = false;
+           
                        alert("Please log in first!");
                                  window.location.href = "/login";
                                  console.log(res);
