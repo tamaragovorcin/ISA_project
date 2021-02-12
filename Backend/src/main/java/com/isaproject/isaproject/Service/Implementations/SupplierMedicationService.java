@@ -68,10 +68,8 @@ public class SupplierMedicationService implements ISupplierMedicationService {
         return supplierMedicaionRepository.save(supplierMedications);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Boolean updateQuantities(Integer orderId) {
-       // Set<MedicationInOrder> medicationInOrder = orderRepository.findById(orderId).get().getMedicationInOrders();
-        Set<MedicationInOrder> medicationInOrder = orderRepository.findOneById(orderId).getMedicationInOrders();
+        Set<MedicationInOrder> medicationInOrder = orderRepository.findById(orderId).get().getMedicationInOrders();
         for(MedicationInOrder medication : medicationInOrder) {
             if(updateQuantityForMedication(medication.getMedicine(), medication.getQuantity())) {}
             else {

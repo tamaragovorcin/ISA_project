@@ -177,11 +177,8 @@ public class PharmacyController  {
                 ResponseEntity.ok(addressDTO);
     }
 
-
-
-
     @GetMapping("/allNames")
-    //@PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<List<PharmacyFrontDTO>> getAllPharmaciesNames()
     {
         List<PharmacyFrontDTO> pharmacyFrontDTOS = new ArrayList<PharmacyFrontDTO>();
@@ -205,7 +202,7 @@ public class PharmacyController  {
     }
 
     @GetMapping("/allNames2")
-    //@PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<List<PharmacyNameDTO>> getAllPharmaciesNames2()
     {
         List<Pharmacy> pharmacies = pharmacyService.findAll();

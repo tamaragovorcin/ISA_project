@@ -1,7 +1,8 @@
 ines (39 sloc)  1.61 KB
   
 <template>
-  <div v-if="auth" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div v-if="isAuthorized" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
@@ -80,7 +81,7 @@ export default {
        patientsSubscriptions : null,
        completeDictionary : [],
        p: null,
-       auth:false
+       isAuthorized : false
     }
   },
 
@@ -93,10 +94,10 @@ mounted(){
              }
          }).then(response => {
                 this.patient = response.data;
-                this.auth = true;
+                this.isAuthorized = true;
          
          }).catch(res => {
-           this.auth = false;
+           this.isAuthorized = false;
                        alert("Please log in first!");
                                  window.location.href = "/login";
                                  console.log(res);
@@ -180,7 +181,23 @@ mounted(){
       }
 },
     beforeMount() {
-        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+
+             }
+         }).then(response => {
+             this.isAuthorized = true;
+            this.patient = response.data;
+         
+         }).catch(res => {
+                       this.isAuthorized = false;
+                       alert("Please log in first!");
+                        window.location.href = "/login";
+                        console.log(res);
+                
+                 });
        
         this.axios.get('/pharmacy/allNames',{ 
              headers: {

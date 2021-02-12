@@ -73,7 +73,6 @@ public class OfferService implements IOfferService {
         return offerRepository.save(offer);
     }
 
-    @Transactional(readOnly = false)
     public Offer proccedOffer(OfferDTO offerDTO) {
         if(canMakeOffer(offerDTO))  {
             Boolean quantitiesUpdated = supplierMedicationService.updateQuantities(offerDTO.getOrderId());

@@ -1,5 +1,6 @@
 package com.isaproject.isaproject.Service.Implementations;
 import com.isaproject.isaproject.DTO.ComplaintDTO;
+import com.isaproject.isaproject.DTO.ComplaintReviewDTO;
 import com.isaproject.isaproject.Model.HelpModel.Complaint;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
@@ -72,24 +73,12 @@ public class ComplaintService implements IComplaintService {
         return complaintRepository.save(complaint);
     }
 
-  /*  @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-    public Complaint sendAnswerToPatient(ComplaintReviewDTO complaintReviewDTO) {
-        String email = complaintReviewDTO.getPatient().getEmail();
-        SimpleMailMessage mail = new SimpleMailMessage();
-        mail.setTo(email);
-        mail.setSubject("Complaint on " + complaintReviewDTO.getSubject() +"!");
-        mail.setFrom(environment.getProperty("spring.mail.username"));
-        mail.setText("Your complaint:  " + complaintReviewDTO.getMassage() + "\n\nAnswer:  " + complaintReviewDTO.getAnswer());
-        mailSender.send(mail);
-
-        Complaint complaint = complaintRepository.findById(complaintReviewDTO.getId()).get();
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public Complaint update(ComplaintReviewDTO complaintReviewDTO) {
+        Complaint complaint = findById(complaintReviewDTO.getId());
         complaint.setAnswered(true);
         complaint.setAnswer(complaintReviewDTO.getAnswer());
-        return complaintRepository.save(complaint);
-    }
-    */
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-    public Complaint update(Complaint complaint) {
+
         String email = complaint.getPatient().getEmail();
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo(email);

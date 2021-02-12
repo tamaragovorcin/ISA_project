@@ -1,7 +1,7 @@
-ines (39 sloc)  1.61 KB
-  
-<template>
-  <div v-if="auth" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+
+ <template>
+  <div v-if="isAuthorized" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
@@ -243,9 +243,10 @@ export default {
         pharmacyCountry : "",
         pharmacyTown : "",
         pharmacyListFilter : [],
-        auth: true,
         dermatologistAppointment: null,
-        dermatologistAppointments: []
+        dermatologistAppointments: [],
+        isAuthorized : false,
+        eReceiptCode : ""
     }
   },
 mounted(){
@@ -257,7 +258,7 @@ mounted(){
              }
          }).then(response => {
                 this.patient = response.data;
-                this.auth = true;
+                this.isAuthorized = true;
                   this.axios.get('/erecipes/all/' + this.patient.id,{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
@@ -274,7 +275,7 @@ mounted(){
                  });
          
          }).catch(res => {
-           this.auth = false;
+           this.isAuthorized = false;
                        alert("Please log in first!");
                                  window.location.href = "/login";
                                  console.log(res);
@@ -319,6 +320,7 @@ mounted(){
                     this.pharmacyList = response.data.pharmacies;
                     this.pharmacyListFilter=response.data.pharmacies;
                     this.medications = response.data.medicationsInQRcode;
+                    this.eReceiptCode = response.data.code;
                     if(this.pharmacyList.length===0) {
                         alert("There is no pharmacy that has all mediciations.")
                     }    
@@ -337,6 +339,7 @@ mounted(){
             const PharmacyRequest = {
               pharmacyId : pharmacy,
               medications : this.medications,
+              code : this.eReceiptCode
             }
           this.axios.post( '/erecipes/choosePharmacy', PharmacyRequest,{
                           headers: {
@@ -407,6 +410,6 @@ mounted(){
                 return (a.address.town < b.address.town) ? 1 : -1;
             });
      },
-}
+},
 }
 </script>

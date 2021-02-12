@@ -1,7 +1,8 @@
 ines (39 sloc)  1.61 KB
   
 <template>
-  <div v-if="auth" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div v-if="isAuthorized" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
           <span style="float: left; margin: 15px;">
@@ -126,7 +127,7 @@ export default {
        showPharmacistComplaint : false,
        showDermatologistComplaint : false,
        complaintText : "",
-       auth : false
+       isAuthorized : false
 
     }
   },
@@ -249,15 +250,14 @@ export default {
                  'Authorization': 'Bearer ' + token,
              }
          }).then(response => {
-             this.auth = true;
-                this.patientInfo = response.data;
+            this.isAuthorized = true;
+            this.patientInfo = response.data;
          }).catch(res => {
-                       alert("Please, log in first.");
-                       
-                       this.auth = false;
-                         window.location.href = "/login";
-                        console.log(res);
-                 });
+                this.isAuthorized = false; 
+                alert("Please, log in first!");
+                window.location.href = "/login";
+                console.log(res);
+        });
 
         this.axios.get('/pharmacy/allNames2',{ 
              headers: {

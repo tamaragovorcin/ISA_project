@@ -2078,8 +2078,9 @@ public class ConsultingController {
 
 
 
-    @PreAuthorize("hasRole('PATIENT')")
+
     @PostMapping("/getPharmacies")
+    @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<List<PharmacyFrontDTO>> getPharmacies(@RequestBody PharmacistConsultationTimeDTO dto) {
 
         if(dto.getDate() == null || dto.getTime()==null){

@@ -54,15 +54,6 @@ public class PharmacistController {
         return new ResponseEntity<>("Pharmacist is successfully registred!", HttpStatus.CREATED);
     }
 
-    @GetMapping("")
-    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
-    ResponseEntity<List<Pharmacist>> getAll() {
-        List<Pharmacist> pharmacists = pharmacistService.findAll();
-        return pharmacists == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacists);
-    }
-
     @GetMapping("/searchPharmacy/{name}")
     @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
     ResponseEntity<List<PharmacistFrontDTO>> getByPharmacy(@PathVariable String name)
