@@ -139,7 +139,7 @@ public class ConsultingController {
 
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAll/{id}")
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<List<ConsultingsFrontDTO>> getAllConsultings(@PathVariable Integer id) {
 
@@ -150,7 +150,7 @@ public class ConsultingController {
 
         List<Consulting> programs = consultingService.findAll();
         List<ConsultingsFrontDTO> consultingsFrontDTOS = new ArrayList<ConsultingsFrontDTO>();
-        if(consultingsFrontDTOS.size() == 0){
+        if(programs.size() == 0){
             throw new IllegalArgumentException("You do not have any consultations reserved yet.");
         }
         for(Consulting consulting: programs){
@@ -2153,6 +2153,10 @@ public class ConsultingController {
 
         }
 
+        if(pharmacies.size() == 0){
+            throw new IllegalArgumentException("There are no available consutations in this period.");
+        }
+
 
         for (Pharmacy ph : pharmacies) {
 
@@ -2171,7 +2175,7 @@ public class ConsultingController {
 
         }
         return pharmacyFrontDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                new ResponseEntity<>( HttpStatus.valueOf("There are no available terms on this date and time.")) :
                 ResponseEntity.ok(pharmacyFrontDTOS);
     }
 
@@ -2453,10 +2457,13 @@ public class ConsultingController {
         Boolean able = true;
 
         for(Consulting consulting: consultings){
-            if(consulting.getPharmacist().getId() == dto.getPharmacist().getId() && consulting.getPatient().getId()== dto.getPatient().getId() && consulting.getDate() == dto.getDate() && consulting.getStartTime()== dto.getTime()){
-
+            Double s = consulting.getDuration();
+            String st = s.toString();
+            if(consulting.getPharmacist().getId() == dto.getPharmacist().getId() && consulting.getPatient().getId()== dto.getPatient().getId() && consulting.getDate() == dto.getDate() ){
+                if(dto.getTime().isAfter(consulting.getStartTime().plusMinutes(Long.parseLong(st))) || dto.getTime().isBefore(consulting.getStartTime().minusMinutes(Long.parseLong(st)))){
                 able=false;
-            }
+                throw new IllegalArgumentException("Sorry, this term is already reserved.");
+            }}
         }
 
         Patient patient = patientService.findById(dto.getPatient().getId());
@@ -2464,39 +2471,42 @@ public class ConsultingController {
 
         if(patient.getPenalties() > 3){
             able = false;
+            throw new IllegalArgumentException("ou are not able to reserve a medication because you have 3 or more penalties.");
         }
-        ConsultingDTO consulting = new ConsultingDTO();
-        Pharmacy pharmacy = pharmacyService.findById(dto.getPharmacyId());
-
-
-        consulting.setCancelled(false);
-        consulting.setCancelled(false);
-        consulting.setDate(dto.getDate());
-        consulting.setStartTime(dto.getTime());
-        consulting.setPharmacist(dto.getPharmacist());
-        consulting.setPatient(dto.getPatient());
-        consulting.setDuration(20.0);
-        consulting.setPrice(pharmacy.getConsultingPrice());
-
-        Consulting consulting1 = consultingService.save(consulting);
-
         if(able) {
-            SimpleMailMessage mail = new SimpleMailMessage();
-            mail.setTo(dto.getPatient().getEmail());
-            mail.setSubject("Successfuly reserved consultation with pharmacist!");
-            mail.setFrom(environment.getProperty("spring.mail.username"));
-            //mail.setFrom("pharmacyisa@gmail.com");
-            mail.setText("You have successfully reserved an appointment on : "
-                    + consulting1.getDate() + " at " + consulting1.getStartTime() + "\n" +
-                    ". Your doctor is " + consulting1.getPharmacist().getName() + " " + consulting1.getPharmacist().getSurname() + ".\n" +
-                    "Pharmacy where the consultation will be held is " + consulting1.getPharmacist().getName() + "."
-                    );
+            ConsultingDTO consulting = new ConsultingDTO();
+            Pharmacy pharmacy = pharmacyService.findById(dto.getPharmacyId());
 
-            mailSender.send(mail);
+
+            consulting.setCancelled(false);
+            consulting.setCancelled(false);
+            consulting.setDate(dto.getDate());
+            consulting.setStartTime(dto.getTime());
+            consulting.setPharmacist(dto.getPharmacist());
+            consulting.setPatient(dto.getPatient());
+            consulting.setDuration(20.0);
+            consulting.setPrice(pharmacy.getConsultingPrice());
+
+            Consulting consulting1 = consultingService.save(consulting);
+
+
+                SimpleMailMessage mail = new SimpleMailMessage();
+                mail.setTo(dto.getPatient().getEmail());
+                mail.setSubject("Successfuly reserved consultation with pharmacist!");
+                mail.setFrom(environment.getProperty("spring.mail.username"));
+                //mail.setFrom("pharmacyisa@gmail.com");
+                mail.setText("You have successfully reserved an appointment on : "
+                        + consulting1.getDate() + " at " + consulting1.getStartTime() + "\n" +
+                        ". Your doctor is " + consulting1.getPharmacist().getName() + " " + consulting1.getPharmacist().getSurname() + ".\n" +
+                        "Pharmacy where the consultation will be held is " + consulting1.getPharmacist().getName() + "."
+                );
+
+                mailSender.send(mail);
+
         }
         return able == true ?
-                new ResponseEntity<>("Consulting is successfully reserved!", HttpStatus.CREATED) :
-                new ResponseEntity<>("You are not able to reserve a medication because you have 3 or more penalties!", HttpStatus.CREATED);
+                new ResponseEntity<>("Consulting is successfully reserved! You will soon receive a confirmation email", HttpStatus.CREATED) :
+                new ResponseEntity<>("You are unable to reserve a consultation right now, please try again later!", HttpStatus.CREATED);
 
 }
 

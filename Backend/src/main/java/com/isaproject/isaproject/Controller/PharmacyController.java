@@ -347,7 +347,7 @@ public class PharmacyController  {
         }
 
         return able == true ?
-                new ResponseEntity<>("Consulting is successfully reserved!", HttpStatus.CREATED) :
+                new ResponseEntity<>("Appointment is successfully reserved! You will soon receive a confirmation email.", HttpStatus.CREATED) :
                 new ResponseEntity<>("You are not able to reserve a medication because you have 3 or more penalties!", HttpStatus.CREATED);
 
     }
@@ -683,7 +683,7 @@ public class PharmacyController  {
     public ResponseEntity<String> cancel(@PathVariable Integer id)
     {
         LocalDate date = LocalDate.now().plusDays(1);
-        Boolean able = false;
+        Boolean able = true;
         List<ExaminationSchedule> examinationSchedule1 = new ArrayList<ExaminationSchedule>();
         examinationSchedule1 = examinationScheduleService.findAll();
         List<Examination> examinationSchedule = new ArrayList<Examination>();
@@ -694,7 +694,9 @@ public class PharmacyController  {
                 examination = ex;
                 LocalTime time = examination.getExaminationSchedule().getStartTime();
                 if(examination.getExaminationSchedule().getDate().isBefore(date) && LocalTime.now().isBefore(time)) {
-                    able = true;
+                    able = false;
+
+                }else{
                     examinationService.delete(ex);
                 }
             }
@@ -823,8 +825,12 @@ public class PharmacyController  {
 
     @PostMapping("/leaveAMark")
     @PreAuthorize("hasRole('PATIENT')")
-    public ResponseEntity<Pharmacy> leaveAMark(@RequestBody MarkDTO dto) {
+    public ResponseEntity<String> leaveAMark(@RequestBody MarkDTO dto) {
         Boolean able =true;//ableToRatePharmacist(dto.getPharmacist().getId(), dto.getPatient().getId());
+
+        checkPossibilityPharmacy(dto.getPharmacy().getId());
+
+
 
         if (able) {
 
@@ -840,29 +846,22 @@ public class PharmacyController  {
             int four = 0;
             int five = 0;
 
-            Boolean hasPharmacy = false;
+            Boolean hasPharmacy = true;
             Boolean hasPatient = false;
 
             for (Mark mark1 : markList) {
-                if (mark1.getPharmacy().getId() == dto.getPharmacy().getId()) {
-                    hasPharmacy = true;
+                if (mark1.getPharmacy().getId() == dto.getPharmacy().getId() && mark1.getPatient().getId() == dto.getPatient().getId()) {
+                    hasPharmacy = false;
 
-                    if (mark1.getPatient().getId() == dto.getPatient().getId()) {
+                    if (mark1.getPatient().getId() != dto.getPatient().getId() && mark1.getPharmacy().getId() == dto.getPharmacy().getId()) {
                         hasPatient = true;
                     }
                 }
             }
 
-            for (Pharmacy pharmacy1 : list) {
+            pharmacy = pharmacyService.findById(dto.getPharmacy().getId());
 
-                if (dto.getPharmacy().getId() == pharmacy1.getId()) {
-                    mark = pharmacy1.getMark();
-                    pharmacy = pharmacy1;
-
-
-                }
-            }
-            if (markList.size() == 0) {
+            if(hasPharmacy == true){
                 Mark mark2 = new Mark();
                 if (dto.getMark() == 1) {
                     one += 1;
@@ -883,18 +882,44 @@ public class PharmacyController  {
                 }
                 mark2.setPatient(dto.getPatient());
                 mark2.setPharmacy(dto.getPharmacy());
+                mark2.setPatientsMark(dto.getMark());
+                Mark mark3 = markService.save(mark2);
+
+            }
+
+
+
+
+            if (markList.size() == 0) {
+                Mark mark2 = new Mark();
+                if (dto.getMark() == 1) {
+                    one = 1;
+                    mark2.setMarkOne(one);
+                } else if (dto.getMark() == 2) {
+                    two = 1;
+                    mark2.setMarkTwo(two);
+                } else if (dto.getMark() == 3) {
+                    three = 1;
+                    mark2.setMarkThree(three);
+
+                } else if (dto.getMark() == 4) {
+                    four = 1;
+                    mark2.setMarkFour(four);
+                } else {
+                    five = 1;
+                    mark2.setMarkFive(five);
+                }
+                mark2.setPatient(dto.getPatient());
+                mark2.setPharmacy(dto.getPharmacy());
 
                 mark2.setPatientsMark(dto.getMark());
                 Mark mark3 = markService.save(mark2);
 
-                double ocena = (one * 1 + two * 2 + three * 3 + four * 4 + five * 5) / (one + two + three + four + five);
-                pharmacy.setMark(ocena);
-                pharmacyService.update(pharmacy);
 
             } else {
                 for (Mark mark1 : markList) {
-                    if (hasPharmacy) {
-                        if (hasPatient) {
+                    if (mark1.getPatient().getId() == dto.getPatient().getId() && mark1.getPharmacy().getId() == dto.getPharmacy().getId()) {
+
                             one = 0;
                             two = 0;
                             three = 0;
@@ -948,48 +973,18 @@ public class PharmacyController  {
 
                             Mark mark2 = markService.save(mark1);
 
-                            double ocena = (one * 1 + two * 2 + three * 3 + four * 4 + five * 5) / (one + two + three + four + five);
-                            pharmacy.setMark(ocena);
-                            pharmacyService.update(pharmacy);
-                        } else {
-                            one = 0;
-                            two = 0;
-                            three = 0;
-                            four = 0;
-                            five = 0;
-                            one = mark1.getMarkOne();
-                            two = mark1.getMarkTwo();
-                            three = mark1.getMarkThree();
-                            four = mark1.getMarkFour();
-                            five = mark1.getMarkFive();
+                        } else if(mark1.getPatient().getId() != dto.getPatient().getId() && mark1.getPharmacy().getId() == dto.getPharmacy().getId() && hasPatient) {
 
-                            if (dto.getMark() == 1) {
-                                one += 1;
-                                mark1.setMarkOne(one);
-                            } else if (dto.getMark() == 2) {
-                                two += 1;
-                                mark1.setMarkTwo(two);
-                            } else if (dto.getMark() == 3) {
-                                three += 1;
-                                mark1.setMarkThree(three);
-
-                            } else if (dto.getMark() == 4) {
-                                four += 1;
-                                mark1.setMarkFour(four);
-                            } else {
-                                five += 1;
-                                mark1.setMarkFive(five);
-                            }
-                            mark1.setPatientsMark(dto.getMark());
-                            Mark mark2 = markService.save(mark1);
-
-                            double ocena = (one * 1 + two * 2 + three * 3 + four * 4 + five * 5) / (one + two + three + four + five);
-                            pharmacy.setMark(ocena);
-                            pharmacyService.update(pharmacy);
-                        }
-
-                    } else {
-
+                        one = 0;
+                        two = 0;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        one = mark1.getMarkOne();
+                        two = mark1.getMarkTwo();
+                        three = mark1.getMarkThree();
+                        four = mark1.getMarkFour();
+                        five = mark1.getMarkFive();
                         Mark mark2 = new Mark();
                         if (dto.getMark() == 1) {
                             one += 1;
@@ -1008,27 +1003,48 @@ public class PharmacyController  {
                             five += 1;
                             mark2.setMarkFive(five);
                         }
+                        mark2.setPatientsMark(dto.getMark());
                         mark2.setPatient(dto.getPatient());
                         mark2.setPharmacy(dto.getPharmacy());
-                        mark2.setPatientsMark(dto.getMark());
-                        Mark mark3 = markService.save(mark2);
-
-                        double ocena = (one * 1 + two * 2 + three * 3 + four * 4 + five * 5) / (one + two + three + four + five);
-                        pharmacy.setMark(ocena);
-                        pharmacy.setAddress(dto.getPharmacy().getAddress());
-                        pharmacyService.update(pharmacy);
+                        Mark mark4 = markService.save(mark2);
 
 
                     }
+
                 }
             }
 
 
-            return ResponseEntity.ok(pharmacy);
+            List<Mark> marks = markService.findAll();
 
-        } else {
-            return null;
+            one = 0;
+            two = 0;
+            three = 0;
+            four = 0;
+            five = 0;
+
+            for(Mark mark4 : marks) {
+                if (mark4.getPharmacy().getId() == dto.getPharmacy().getId()) {
+                    one += mark4.getMarkOne();
+                    two += mark4.getMarkTwo();
+                    three += mark4.getMarkThree();
+                    four += mark4.getMarkFour();
+                    five += mark4.getMarkFive();
+                }
+            }
+                    System.out.println(one + two + three + four + five);
+                    double ocena = (one * 1 + two * 2 + three * 3 + four * 4 + five * 5) / (one + two + three + four + five);
+                    System.out.println(ocena);
+                    pharmacy.setMark(ocena);
+                    pharmacyService.update(pharmacy);
+
+
+
         }
+        return able == true ?
+                new ResponseEntity<>("You have successfully rated a pharmacy!", HttpStatus.CREATED) :
+                new ResponseEntity<>("You are not able to leave a mark for the pharmacy at the moment!", HttpStatus.CREATED);
+
     }
 
 

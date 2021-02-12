@@ -201,15 +201,7 @@ mounted() {
              }
          }).then(response => {
                 this.patient = response.data;
-         
-         }).catch(res => {
-                       alert("Please log in first!");
-                                 window.location.href = "/login";
-                                 console.log(res);
-                
-                 });
-
-    this.axios.get('/consulting/getAll' + this.patient.id,{ 
+                  this.axios.get('/consulting/getAll/' + this.patient.id,{ 
              headers: {
                  'Authorization': 'Bearer ' + token,
 
@@ -223,6 +215,15 @@ mounted() {
                                
                 
                  });
+         
+         }).catch(res => {
+                       alert("Please log in first!");
+                                 window.location.href = "/login";
+                                 console.log(res);
+                
+                 });
+
+  
 },
   methods:{
      from1to5: function(){
@@ -350,6 +351,7 @@ mounted() {
           window.location.href = "/isaHomePage";
       },
       logOut : function(){
+           localStorage.removeItem('token');
           window.location.href = "/login";
 
       },

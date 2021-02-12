@@ -486,6 +486,7 @@ mounted() {
       eRecipes : function(){
       },
       logOut : function(){
+             localStorage.removeItem('token');
           window.location.href = "/login";
       },
       medicationReservation : function(){
@@ -499,7 +500,6 @@ mounted() {
       },
 
       cancelReservation: function(event, reservedMedication){
-        alert(reservedMedication.id)
           this.axios.get('/medicationReservation/cancel/'+ reservedMedication.id)
         
                    
@@ -507,12 +507,12 @@ mounted() {
       reserve : function(){
     
               const med = {
-                  patient: this.patient,
+                  patient: this.patient.id,
                   pharmacyId: this.choosenPharmacy.pharmacyId,
                   medicationId: this.choosenMedication.medicationId,
                   dateOfTakeOver: this.pickUpDay 
                 };
-          alert( med.medicineCode)
+          alert( med.medicationId)
          this.axios.post('/medicationReservation/add',med)
         
                     .then(res => {

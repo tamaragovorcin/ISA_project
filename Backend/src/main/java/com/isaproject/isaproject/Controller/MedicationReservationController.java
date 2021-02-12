@@ -57,8 +57,7 @@ public class MedicationReservationController {
     ResponseEntity<String> register(@RequestBody MedicationReservationDTO medicationReservationDTO)
     {
 
-        Patient patient = patientService.findById(medicationReservationDTO.getPatient().getId());
-        Pharmacy pharmacy = pharmacyService.findById(medicationReservationDTO.getMedicationId());
+        Patient patient = patientService.findById(medicationReservationDTO.getPatient());
         List<MedicationPrice> medicationPrices = medicationPriceService.findAll();
         Boolean able = true;
         if(patient.getPenalties() > 3){
@@ -83,7 +82,7 @@ public class MedicationReservationController {
 
 
             SimpleMailMessage mail = new SimpleMailMessage();
-            mail.setTo(medicationReservationDTO.getPatient().getEmail());
+            mail.setTo(patient.getEmail());
             mail.setSubject("Successfuly reserved medication!");
             mail.setFrom(environment.getProperty("spring.mail.username"));
             //mail.setFrom("pharmacyisa@gmail.com");
@@ -95,7 +94,7 @@ public class MedicationReservationController {
 
         }
         return able == true ?
-                new ResponseEntity<>("", HttpStatus.CREATED) :
+                new ResponseEntity<>("Successfully reserved medication. You will soon receive a confirmation email", HttpStatus.CREATED) :
                 new ResponseEntity<>("You are not able to reserve a medication because you have 3 or more penalties.", HttpStatus.CREATED);
 
     }

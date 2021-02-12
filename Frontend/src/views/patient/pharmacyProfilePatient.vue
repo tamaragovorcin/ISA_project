@@ -562,6 +562,7 @@ export default {
  showMyProfile: function(){
         window.location.href = "/myProfilePatient";
       },logOut : function(){
+           localStorage.removeItem('token');
           window.location.href = "/login";
       },writeComplaint() {
         this.$refs['my-modal'].show()

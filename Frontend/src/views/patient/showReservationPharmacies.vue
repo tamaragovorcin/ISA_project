@@ -133,6 +133,7 @@ export default {
           window.location.href = "/isaHomePage";
       },
       logOut : function(){
+           localStorage.removeItem('token');
           window.location.href = "/login";
 
       },

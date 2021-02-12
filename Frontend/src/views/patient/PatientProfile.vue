@@ -126,7 +126,7 @@ ines (39 sloc)  1.61 KB
 
                 <div class="custom-control custom-radio form-group col ">
 
-                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" checked>
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')">
                  <label class="custom-control-label" for="defaultGroupExample5" >5</label>
                 
               </div> 
@@ -190,7 +190,7 @@ ines (39 sloc)  1.61 KB
 
                 <div class="custom-control custom-radio form-group col ">
 
-                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" checked>
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" >
                  <label class="custom-control-label" for="defaultGroupExample5" >5</label>
                 
               </div> 
@@ -248,7 +248,7 @@ ines (39 sloc)  1.61 KB
 
                 <div class="custom-control custom-radio form-group col ">
 
-                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" checked>
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" >
                  <label class="custom-control-label" for="defaultGroupExample5" >5</label>
                 
               </div> 
@@ -307,7 +307,7 @@ ines (39 sloc)  1.61 KB
 
                 <div class="custom-control custom-radio form-group col ">
 
-                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" checked>
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')">
                  <label class="custom-control-label" for="defaultGroupExample5" >5</label>
                 
               </div> 
@@ -458,12 +458,12 @@ export default {
         
         
                     .then(res => {
-                       
-                        alert(res.data);
+                        console.log(res.data)
+                       alert(res.data);
                     })
                     .catch(res => {
                      
-                        alert(res.data);
+                         alert(res.data);
                     })
 
             },
@@ -472,11 +472,11 @@ export default {
   let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
                         const markk = {
                   patient: this.patient,
-                  pharmacy: this.pharmacy,
+                  dermatologist: this.dermatologist.id,
                   mark: this.filter,
                  
                 };
-         this.axios.post('/pharmacy/leaveAMark',markk,{ 
+         this.axios.post('/dermatologist/leaveAMark',markk,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                         }})
@@ -484,16 +484,18 @@ export default {
         
                     .then(res => {
                        
-                        alert(res.data);
+                         alert(res.data);
+                         console.log(res.data)
                     })
                     .catch(res => {
                      
-                        alert(res.data);
+                       alert(res.data);
                     })
 
             },
 
           sendMedication : function() {
+               let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
                 console.log(this.medication)
                 
                         const markk = {
@@ -502,15 +504,18 @@ export default {
                   mark: this.filter,
                  
                 };
-         this.axios.post('/medication/leaveAMark',markk)
+         this.axios.post('/medication/leaveAMark',markk,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
         
                     .then(res => {
-                       
-                        alert(res.data);
+                        console.log(res.data)
+                          alert(res.data);
                     })
                     .catch(res => {
                      
-                        alert(res.data);
+                          alert(res.data);
                     })
 
             },
@@ -523,6 +528,7 @@ export default {
                   mark: this.filter,
                  
                 };
+              
                 let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
          this.axios.post('/pharmacist/leaveAMark',markk,{ 
                          headers: {
@@ -530,12 +536,11 @@ export default {
                         }})
         
                     .then(res => {
-                       
-                        alert(res.data);
+                        console.log(res.data)
+                         alert(res.data);
                     })
                     .catch(res => {
-                     
-                        alert(res.data);
+                      alert(res.data);
                     })
 
             },

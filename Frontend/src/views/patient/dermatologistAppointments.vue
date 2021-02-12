@@ -94,42 +94,42 @@
     <tbody>
     <tr>
     
-      <td>Ime dermatologa:</td>
+      <td>Dermatologists name:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.dermatologistFirst}} {{dermatologistAppointment.dermatologistLast}}</td>
     
     </tr>
     <tr>
      
-      <td>Apoteka:</td>
+      <td>Pharmacy name:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.pharmacy}} </td>
 
     </tr>
     <tr>
      
-      <td>Datum:</td>
+      <td>Date:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.date}} </td>
      
     </tr>
         <tr>
    
-      <td>Pocetak:</td>
+      <td>Start time:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.startTime}} </td>
      
     </tr>
         <tr>
       
-      <td>Trajanje:</td>
+      <td>Duration:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.duration}} </td>
      
     </tr>
         <tr>
    
-      <td>Cena:</td>
+      <td>Price:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.price}} </td>
      
@@ -227,6 +227,7 @@ mounted() {
           window.location.href = "/isaHomePage";
       },
       logOut : function(){
+           localStorage.removeItem('token');
           window.location.href = "/login";
       },
       writeComplaint() {
@@ -264,6 +265,7 @@ mounted() {
                                 'Authorization': 'Bearer ' + token,
                         }   }).then(response => {
                         alert(response.data)
+                          window.location.href = "/dermatologistAppointments";
                          }).catch(res => {
                        alert(res.data);
                                

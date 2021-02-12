@@ -121,42 +121,42 @@ ines (39 sloc)  1.61 KB
 
     <tr>
     
-      <td>Ime dermatologa:</td>
+      <td>Dermatologists name:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.dermatologistFirst}} {{dermatologistAppointment.dermatologistLast}}</td>
     
     </tr>
     <tr>
      
-      <td>Apoteka:</td>
+      <td>Pharmacy:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.pharmacy}} </td>
 
     </tr>
     <tr>
      
-      <td>Datum:</td>
+      <td>Date:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.date}} </td>
      
     </tr>
         <tr>
    
-      <td>Pocetak:</td>
+      <td>Start time:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.startTime}} </td>
      
     </tr>
         <tr>
       
-      <td>Trajanje:</td>
+      <td>Duration:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.duration}} </td>
      
     </tr>
         <tr>
    
-      <td>Cena:</td>
+      <td>Price:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.price}} </td>
      
@@ -316,7 +316,7 @@ mounted() {
       },
       namefromatoz: function(){
    
-      this.axios.get('/pharmacy/namefromatoz/' + this.patient.id)
+      this.axios.get('/pharmacy/durationShortest/' + this.patient.id)
           .then(response => {
                console.log(response.data);
                   this.dermatologistAppointments = response.data;
@@ -365,6 +365,7 @@ mounted() {
           window.location.href = "/isaHomePage";
       },
       logOut : function(){
+           localStorage.removeItem('token');
           window.location.href = "/login";
 
       },
@@ -417,7 +418,7 @@ mounted() {
 
              }).then(response => {
                alert(response.data);
-               
+                  window.location.href = "/myDermatologistAppointments";
                })
                 .catch(res => {
                      
