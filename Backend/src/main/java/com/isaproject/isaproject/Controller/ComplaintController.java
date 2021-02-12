@@ -11,6 +11,7 @@ import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
@@ -75,23 +76,29 @@ public class ComplaintController {
             }
         }
         else {}
-        Complaint complaint = complaintService.save(complaintDTO);
-        return complaint == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(complaint);
+
+            Complaint complaint = complaintService.save(complaintDTO);
+            return complaint == null ?
+                    new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                    ResponseEntity.ok(complaint);
+
+
+
     }
 
     @PostMapping("/answer")
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     public ResponseEntity<Complaint> answer(@RequestBody ComplaintReviewDTO complaintReviewDTO)
     {
-        Complaint complaint = complaintService.findById(complaintReviewDTO.getId());
-        complaint.setAnswered(true);
-        complaint.setAnswer(complaint.getAnswer());
-        Complaint complaintUpdated = complaintService.update(complaint);
-        return complaintUpdated == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(complaintUpdated);
+        try {
+            Complaint complaintUpdated = complaintService.update(complaintReviewDTO);
+            return complaintUpdated == null ?
+                    new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                    ResponseEntity.ok(complaintUpdated);
+        }
+        catch (ObjectOptimisticLockingFailureException objectOptimisticLockingFailureException){
+            throw new ObjectOptimisticLockingFailureException("Someone has already resolved patients complaint.",HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("all")

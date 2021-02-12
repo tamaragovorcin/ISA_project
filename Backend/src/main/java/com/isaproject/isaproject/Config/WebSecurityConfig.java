@@ -70,45 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // svim korisnicima dopusti da pristupe putanjama /auth/**, (/h2-console/** ako se koristi H2 baza) i /api/foo
                 .authorizeRequests().antMatchers("/api/**").permitAll().antMatchers("/h2-console/**")
                 .permitAll().antMatchers("/api/foo").permitAll()
-                //.antMatchers("/api/patient/register") .permitAll()
-              //  .antMatchers("/api/patient").permitAll()
-            //    .antMatchers("/api/patient/email/{id}").permitAll()
-              //  .antMatchers("/api/medication/add").permitAll()
-               // .antMatchers("/api/medication").permitAll()
-               // .antMatchers("/api/patient/confirm-account").permitAll()
-               .antMatchers("/api/systemAdmin/register") .permitAll()
 
-                //.antMatchers("/api/supplier/register") .permitAll()
-                .antMatchers("/api/pharmacist/register") .permitAll()
-               // .antMatchers("/api/dermatologist/register") .permitAll()
-
-                .antMatchers("/api/patient/register") .permitAll()
-                .antMatchers("/api/supplier/register") .permitAll()
-                .antMatchers("/api/dermatologist/register") .permitAll()
-
-                .antMatchers("/api/medicationReservation/add") .permitAll()
-
-
-                .antMatchers("/api/pharmacy/{id}") .permitAll()
-                .antMatchers("/api/pharmacy/address/{id}") .permitAll()
-                .antMatchers("/api/pharmacy/dermatologists/{id}") .permitAll()
-                .antMatchers("/api/pharmacy/dermatologistsFront/{id}") .permitAll()
-                .antMatchers("/api/pharmacy/pharmacists/{id}") .permitAll()
-               // .antMatchers("/api/consulting/add") .permitAll()
-                .antMatchers("/api/dermatologist/examination") .permitAll()
-                .antMatchers("/api/pharmacy/medication/{id}") .permitAll()
-                .antMatchers("/api/pharmacy/freeExaminationTerms/{id}") .permitAll()
-
-                .antMatchers("/api/consulting/getPharmacies") .permitAll()
-               // .antMatchers("/api/pharmacyAdmin/medication") .permitAll()
-                .antMatchers("/api/erecipes/availability/pharmacy") .permitAll()
-                .antMatchers("/api/erecipes/file/noAuthetication") .permitAll()
-
-                // .antMatchers("/api/pharmacyAdmin/medication") .permitAll()
-
-
-                //.antMatchers("/api/patient/penals") .permitAll()
-               //.antMatchers("/api/prescription/add") .permitAll()
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
                 .cors().and()
@@ -124,45 +86,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
-      //  web.ignoring().antMatchers(HttpMethod.POST, "/api/login");
-       // web.ignoring().antMatchers(HttpMethod.POST, "/api/patient/register");
-      //  web.ignoring().antMatchers(HttpMethod.POST, "/api/supplier/register");
-      //  web.ignoring().antMatchers(HttpMethod.GET, "/api/patient");
-      //  web.ignoring().antMatchers(HttpMethod.GET, "/api/patient/email/{id}");
-      //  web.ignoring().antMatchers(HttpMethod.POST, "/api/medication/add");
-     //   web.ignoring().antMatchers(HttpMethod.GET, "/api/medication");
-     //   web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/add");
-     //   web.ignoring().antMatchers(HttpMethod.POST, "/api/patient/confirm-account");
-      //  web.ignoring().antMatchers(HttpMethod.POST, "/api/systemAdmin/register");
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/medicationReservation/add");
-
-
-      //  web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacist/register");
-
-     //   web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacyAdmin/register");
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacy/addExamination");
-
-
-        web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/{id}");
-        web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/pharmacists/{id}");
-        web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/dermatologists/{id}");
-        web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/dermatologistsFront/{id}");
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/erecipes/availability/pharmacy");
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/erecipes/file/noAuthetication");
-        web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/medication/{id}");
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacy/freeExaminationTerms/{id}");
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/pharmacy/address/{id}");
-
-
-
-
-        //  web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacyAdmin/medication");
-        //web.ignoring().antMatchers(HttpMethod.GET, "/api/patient/register");
-       // web.ignoring().antMatchers(HttpMethod.GET, "/api/patient/penals");
-        //web.ignoring().antMatchers(HttpMethod.GET, "/api/dermatologist/examination");
-        //web.ignoring().antMatchers(HttpMethod.POST, "/api/prescription/add");
-
-
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html",
                 "/**/*.css", "/**/*.js");
     }

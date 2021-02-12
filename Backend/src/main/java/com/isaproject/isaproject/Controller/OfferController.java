@@ -65,11 +65,6 @@ public class OfferController {
     @PreAuthorize("hasRole('SUPPLIER')")
     ResponseEntity<Offer> addOffer(@RequestBody OfferDTO offerDTO)
     {
-
-       /* return (offer == null || quantitiesUpdated==false) ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(offer);*
-        */
         CommonValidatior commonVlidatior = new CommonValidatior();
         if(!commonVlidatior.checkValidationOffer(offerDTO)) {
             throw new IllegalArgumentException("Please fill in all the fields correctly!");
@@ -95,14 +90,6 @@ public class OfferController {
         return null;
     }
 
-    @GetMapping("")
-    ResponseEntity<List<Offer>> getAll()
-    {
-        List<Offer> offers = offerService.findAll();
-        return offers == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(offers);
-    }
     @GetMapping("{id}")
     ResponseEntity<List<Offer>> getByOrderId(@PathVariable Integer id)
     {

@@ -1,11 +1,17 @@
 package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.Model.HelpModel.LoyaltyProgram;
+import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Repository.LoyaltyProgramRepository;
+import com.isaproject.isaproject.Repository.PatientRepository;
 import com.isaproject.isaproject.Service.IServices.ILoyaltyProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 
@@ -13,6 +19,8 @@ import java.util.List;
 public class LoyaltyProgramService implements ILoyaltyProgramService {
     @Autowired
     LoyaltyProgramRepository loyaltyProgramRepository;
+    @Autowired
+    PatientRepository patientRepository;
 
     @Override
     public LoyaltyProgram findById(Integer id) {
@@ -25,21 +33,36 @@ public class LoyaltyProgramService implements ILoyaltyProgramService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public LoyaltyProgram save(LoyaltyProgram loyaltyProgram) {
-        /*if(loyaltyProgram.getId()!=null) {
-            return this.loyaltyProgramRepository.save(loyaltyProgram);
-        }
-        LoyaltyProgram loyaltyProgram = new LoyaltyProgram();
-        loyaltyProgram.setConsultingPoints(loyaltyProgramDTO.getConsultingPoints());
-        loyaltyProgram.setExaminationPoints(loyaltyProgramDTO.getExaminationPoints());
-        loyaltyProgram.setSilverLimit(loyaltyProgramDTO.getSilverLimit());
-        loyaltyProgram.setSilverDiscount(loyaltyProgramDTO.getSilverDiscount());
-
-        loyaltyProgram.setRegularLimit(loyaltyProgramDTO.getRegularLimit());
-        loyaltyProgram.setRegularDiscount(loyaltyProgramDTO.getRegularDiscount());
-        loyaltyProgram.setGoldenDiscount(loyaltyProgramDTO.getGoldenDiscount());
-        loyaltyProgram.setGoldLimit(loyaltyProgramDTO.getGoldLimit());*/
         return this.loyaltyProgramRepository.save(loyaltyProgram);
+    }
+
+    public void updatePatientsLoyaltyPoints(int points) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+
+        Patient patient = patientRepository.getOne(user.getId());
+        patient.setPoints(patient.getPoints()+points);
+        String status = patient.getLoyaltyCategory();
+        try {
+            LoyaltyProgram loyaltyProgram = findAll().get(0);
+            if(status.equals("REGULAR")) {
+                if(patient.getPoints()>=loyaltyProgram.getSilverLimit()) {
+                    patient.setDiscount(loyaltyProgram.getSilverDiscount());
+                    patient.setLoyaltyCategory("SILVER");
+                }
+            }
+            else if(status.equals("SILVER")) {
+                if(patient.getPoints()>=loyaltyProgram.getGoldLimit()) {
+                    patient.setDiscount(loyaltyProgram.getGoldenDiscount());
+                    patient.setLoyaltyCategory("GOLD");
+                }
+            }
+            patientRepository.save(patient);
+        }
+        catch(Exception e ) {}
+
     }
 
 

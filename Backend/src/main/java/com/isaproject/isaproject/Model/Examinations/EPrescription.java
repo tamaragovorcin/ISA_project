@@ -22,7 +22,7 @@ public class EPrescription {
 
 
     @Column(name = "code", nullable = false, unique = true)
-    private UUID code;
+    private String code;
 
     @JsonBackReference(value="eprescription-patient")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
@@ -42,7 +42,7 @@ public class EPrescription {
 
     public EPrescription() {}
 
-    public EPrescription(Integer id, UUID code, Patient patient, LocalDate date, Set<MedicationEPrescription> medications, Integer pharmacyId) {
+    public EPrescription(Integer id, String code, Patient patient, LocalDate date, Set<MedicationEPrescription> medications, Integer pharmacyId) {
         this.id = id;
         this.code = code;
         this.patient = patient;
@@ -59,11 +59,11 @@ public class EPrescription {
         this.pharmacyId = pharmacyId;
     }
 
-    public UUID getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(UUID code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

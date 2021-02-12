@@ -1,5 +1,5 @@
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div v-if="isAuthorized" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
@@ -376,7 +376,8 @@ export default {
             },
             answered : false,
             answer : "",
-            message : ""
+            message : "",
+            isAuthorized : false
           },
       
     }
@@ -469,6 +470,7 @@ export default {
                  'Authorization': 'Bearer ' + token,
              }
          }).then(response => {
+             this.isAuthorized = true;
                this.accountInformation=response.data;
                if(this.accountInformation.mainAdmin) {
                       this.allowSystemAdminRegistration = true;
@@ -479,9 +481,11 @@ export default {
                     this.notallowSystemAdminRegistration = true;
                }
          }).catch(res => {
-                       alert("Please log in again or try later.");
-                        console.log(res);
-                 });
+                this.isAuthorized = false;
+                alert("Please, log in first!");
+                window.location.href = "/login";
+                console.log(res);
+        });
 
 
         this.axios.get('/complaint/all',{ 

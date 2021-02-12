@@ -9,6 +9,7 @@ import com.isaproject.isaproject.Service.IServices.IPharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class PharmacyService implements IPharmacyService {
@@ -77,7 +78,14 @@ public class PharmacyService implements IPharmacyService {
         Boolean hasEreceipt = ePrescriptionService.checkEReceiptInPharmacy(pharmacyId);
         Boolean hasConsulting = consultingService.checkIfPatientHasConsulting(pharmacyId);
         Boolean hasExamination = examinationService.checkIfPatientHasExamination(pharmacyId);
-        Boolean hasTakenReservedMedication = false;
+        Boolean hasTakenReservedMedication = checkTakingReservedMedication();
         return (!hasEreceipt && !hasConsulting && !hasExamination && !hasTakenReservedMedication) ? false :true;
+    }
+
+    private Boolean checkTakingReservedMedication() {
+        Random rand = new Random();
+        int int_random = rand.nextInt(1000);
+        if(int_random%2==0) {return true;}
+        return false;
     }
 }
