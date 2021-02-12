@@ -52,9 +52,6 @@ public class ConsultingService implements IConsultingService {
 
     @Override
     public Consulting save(ConsultingDTO consultingDTO) {
-
-
-
         Pharmacist pharmacist = pharmacistRepository.findById(consultingDTO.getPharmacist().getId()).get();
 
 

@@ -687,4 +687,10 @@ public class GraphicalController {
 
     }
 
+    @GetMapping("/geographicCoordinates")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    GeographicCoordinatesDTO getNumberOfSoldMedicationYearly(@PathVariable Integer id) {
+
+        return null;
+    }
 }

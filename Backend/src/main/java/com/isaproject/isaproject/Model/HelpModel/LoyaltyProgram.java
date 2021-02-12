@@ -43,7 +43,7 @@ public class LoyaltyProgram {
 
     @Version
     @Column(name = "version", nullable = true)
-    private Integer version;
+    private Long version;
 
     public LoyaltyProgram() {
     }
@@ -130,5 +130,13 @@ public class LoyaltyProgram {
 
     public void setGoldenDiscount(double goldenDiscount) {
         this.goldenDiscount = goldenDiscount;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

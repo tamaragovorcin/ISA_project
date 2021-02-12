@@ -15,7 +15,6 @@ import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
 import com.isaproject.isaproject.Service.Implementations.PatientService;
 import com.isaproject.isaproject.Service.Implementations.PharmacyService;
 import com.isaproject.isaproject.Validation.CommonValidatior;
-import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,12 +55,10 @@ public class EPrescriptionController {
 
         if (!file.isEmpty()) {
             try {
-                System.out.println(file.getOriginalFilename());
                 BufferedImage src = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
                 File destination = new File("src/main/resources/qr/" + file.getOriginalFilename());
                 ImageIO.write(src, "png", destination);
                 String decodedText = decodeQRCode(new File("src/main/resources/qr/" + file.getOriginalFilename()));
-                System.out.println(decodedText);
                 if (decodedText == null) {
                     throw new IllegalArgumentException("Please upload correct QR code!");
                 } else {
@@ -88,11 +85,9 @@ public class EPrescriptionController {
     }
     @PostMapping("/file/noAuthentication")
     ResponseEntity<List<QRcodeInformationDTO>> uploadFile(@RequestParam("file") MultipartFile file) {
-        System.out.println("POGODIOOOO");
 
         if (!file.isEmpty()) {
             try {
-                System.out.println(file.getOriginalFilename());
                 BufferedImage src = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
                 File destination = new File("src/main/resources/qr/" + file.getOriginalFilename());
                 ImageIO.write(src, "png", destination);
@@ -119,13 +114,13 @@ public class EPrescriptionController {
 
     @PostMapping("/availability/pharmacy")
     ResponseEntity<String> getAvailabilityInPharmacy(@RequestBody MedicineAvailabilityQRDTO listMedications) {
-
+        Pharmacy pharmacy = pharmacyService.findById(listMedications.getPharmacy());
         for(PharmacyMedicationAvailabilityDTO dto : getAvailabilityInPharmacies(listMedications.getListMedications())) {
-            if(dto.getPharmacyName().equals(listMedications.getPharmacy().getPharmacyName()))
+            if(dto.getPharmacyName().equals(pharmacy.getPharmacyName()))
                 return new ResponseEntity<>("Requested medication is available in our pharmacy.", HttpStatus.CREATED);
 
         }
-        return new ResponseEntity<>("Requested medication is not available in our pharmacy.", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Requested medication is not available in our pharmacy.", HttpStatus.CREATED);
 
     }
 
@@ -133,15 +128,11 @@ public class EPrescriptionController {
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<String> choosePharmacyForEReceipt(@RequestBody ChoosenPharmacyDTO choosenPharmacy) {
 
-       /* return medicationPriceService.updateMedicineQuantityEreceipt(choosenPharmacy) == false ||
-                patientService.informPatientAboutEreceipt(choosenPharmacy.getMedications())==false ||
-                ePrescriptionService.save(choosenPharmacy)==null ?
-*/
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
         Patient patient = patientService.findById(user.getId());
-        if(patient.getPenalties()==3) {
-            throw new IllegalArgumentException("You are not able to get medicaions! You have 3 penalties");
+        if(patient.getPenalties()>3) {
+            throw new IllegalArgumentException("You are not able to get medicaions! You have too many penalties");
         }
         CommonValidatior commonVlidatior = new CommonValidatior();
         if(!commonVlidatior.checkEprescription(choosenPharmacy)) {

@@ -4,18 +4,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.LinkedHashMap;
+import java.util.Set;
+
 import com.isaproject.isaproject.Authentification.JwtAuthenticationRequest;
 import com.isaproject.isaproject.DTO.*;
+import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Users.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.NestedIOException;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.NestedServletException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -41,20 +48,16 @@ public class TestsStudent4 extends TestRepository {
 
     @Test
     @Transactional
+    @Rollback(true)
     public void testSuccesfullPatientRegistration() throws Exception {
-        PersonUserDTO userDTO = new PersonUserDTO();
-        userDTO.setSurname("Surname");
-        userDTO.setPassword("password");
-        userDTO.setFirstname("Name");
-        userDTO.setAddress(new AddressDTO("Town","Street",453,5435,"Country"));
-        userDTO.setEmail("user@gmail.com");
-        userDTO.setPhonenumber("78912");
 
-        String input = mapToJson(userDTO);
+        String input = mapToJson(personuserDTO);
         String uri = "/api/patient/register";
         mockMvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input))
                 .andExpect(status().is(200));
     }
+
+
 
     @Test
     @Transactional
@@ -121,5 +124,32 @@ public class TestsStudent4 extends TestRepository {
         mockMvc.perform(MockMvcRequestBuilders.post(uri2).header("token",  userTokenState.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input2))
                 .andExpect(status().is(200));
+    }
+
+    @Test(expected = NestedServletException.class)
+    @Transactional
+    public void testSuccesfulComplaintOnPharmacy() throws Exception {
+
+        PharmacyNameDTO pharmacyName = new PharmacyNameDTO("Name", pharmacyIdDTO.getPharmacyId());
+        ComplaintDTO complaintDTO = new ComplaintDTO("Pharmacy", null, null, pharmacyName, false, "Complaint", "");
+        String input2 = mapToJson(complaintDTO);
+        String uri2 = "/api/complaint/add";
+
+        mockMvc.perform(MockMvcRequestBuilders.post(uri2)
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(input2))
+                .andExpect(status().is(401));
+    }
+
+    @Test
+    @Transactional
+    public void testSuccesfulGetMedications() throws Exception {
+
+        String uri2 = "/api/medication/getAll";
+
+        mockMvc.perform(MockMvcRequestBuilders.get(uri2).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.*", notNullValue()));
     }
 }

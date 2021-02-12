@@ -65,11 +65,6 @@ public class OfferController {
     @PreAuthorize("hasRole('SUPPLIER')")
     ResponseEntity<Offer> addOffer(@RequestBody OfferDTO offerDTO)
     {
-
-       /* return (offer == null || quantitiesUpdated==false) ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(offer);*
-        */
         CommonValidatior commonVlidatior = new CommonValidatior();
         if(!commonVlidatior.checkValidationOffer(offerDTO)) {
             throw new IllegalArgumentException("Please fill in all the fields correctly!");
@@ -147,7 +142,8 @@ public class OfferController {
         for(Offer offer : offerService.findAll()) {
             if (offer.getOrder().getPharmacyAdmin().getId() == pharmacyAdmin.getId()) {
                 if (offer.getOrder().getId() == offerService.findById(id).getOrder().getId()) {
-                    if (offer.getId() == id && !offer.getOrder().getStatus().equals("CLOSED")) {                        medicationPriceService.updateMedicineQuantityTender(offer.getOrder());
+                    if (offer.getId() == id && !offer.getOrder().getStatus().equals("CLOSED")) {
+                        medicationPriceService.updateMedicineQuantityTender(offer.getOrder());
                         offer.setStatus("ACCEPTED");
                         Order order = offer.getOrder();
                         order.setStatus("CLOSED");

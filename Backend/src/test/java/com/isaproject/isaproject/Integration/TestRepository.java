@@ -8,7 +8,9 @@ import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.HelpModel.Complaint;
 import com.isaproject.isaproject.Model.HelpModel.LoyaltyProgram;
 import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Medicine.Specification;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
 import com.isaproject.isaproject.Model.Users.*;
 import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TestRepository {
     protected MockMvc mockMvc;
@@ -40,9 +44,16 @@ public class TestRepository {
 
     protected MarkDTO markDTO;
 
+    protected MedicationDTO medicationDTO;
+
     protected PharmacistsConsultationDTO pharmacistsConsultationDTO;
 
     protected Integer patientId;
+
+    protected Integer holidayId;
+
+    protected Integer pharmacyId;
+    protected PersonUserDTO personuserDTO;
 
 
     protected void setUp() {
@@ -156,6 +167,8 @@ public class TestRepository {
         pharmacy.setConsultingPrice(100);
 
 
+
+
         //PharmacyMark
         MarkDTO markDTO1 = new MarkDTO();
         markDTO1.setMark(5);
@@ -183,55 +196,9 @@ public class TestRepository {
         List<Authority> auth5 = new ArrayList<Authority>();
         Authority authority5 = new Authority("ROLE_PHARMACIST");
         auth5.add(authority5);
+        pharmacist.setPharmacy(pharmacy);
         pharmacist.setAuthorities(auth5);
         pharmacist.setEnabled(true);
-        pharmacist.setPharmacy(pharmacy);
-
-        //PHARMACY ADMIN
-        PharmacyAdmin pharmacyAdmin = new PharmacyAdmin();
-        pharmacyAdmin.setSurname("Surname");
-        pharmacyAdmin.setPassword(passwordEncoder.encode("pharmacyAdminPassword"));
-        pharmacyAdmin.setName("Name");
-        pharmacyAdmin.setEmail("pharmacyAdmin@gmail.com");
-        Address addressPharmacyAdmin = new Address();
-        AddressDTO addressDTOPharmacyAdmin= new AddressDTO("Town","Street",125,76328,"Country");
-        addressPharmacyAdmin.setPostalCode(addressDTOPharmacyAdmin.getPostalCode());
-        addressPharmacyAdmin.setTown(addressDTOPharmacyAdmin.getTown());
-        addressPharmacyAdmin.setStreet(addressDTOPharmacyAdmin.getStreet());
-        addressPharmacyAdmin.setNumber(addressDTOPharmacyAdmin.getNumber());
-        addressPharmacyAdmin.setCountry(addressDTOPharmacyAdmin.getCountry());
-        pharmacyAdmin.setAddress(address);
-        pharmacyAdmin.setPhoneNumber("5623");
-        pharmacyAdmin.setEnabled(true);
-        pharmacyAdmin.setPharmacy(pharmacy);
-        List<Authority> authPharmacyAdmin = new ArrayList<>();
-        Authority authorityPharmacyAdmin = new Authority("ROLE_PHARMACY_ADMIN");
-        authPharmacyAdmin.add(authorityPharmacyAdmin);
-        pharmacyAdmin.setAuthorities(authPharmacyAdmin);
-
-        //Dermatologist
-        Dermatologist dermatologist =  new Dermatologist();
-        dermatologist.setName("FirstName");
-        dermatologist.setSurname("Surname");
-
-        Address addressDermatologist= new Address();
-        AddressDTO addressDTODermatologist= new AddressDTO("Town2","Street2",123,123456,"Country2");
-        addressDermatologist.setPostalCode(addressDTODermatologist.getPostalCode());
-        addressDermatologist.setTown(addressDTODermatologist.getTown());
-        addressDermatologist.setStreet(addressDTODermatologist.getStreet());
-        addressDermatologist.setNumber(addressDTODermatologist.getNumber());
-        addressDermatologist.setCountry(addressDTODermatologist.getCountry());
-        dermatologist.setAddress(addressDermatologist);
-
-        dermatologist.setEmail("dermatologist@gmail.com");
-        dermatologist.setPassword(passwordEncoder.encode("dermatologistPassword"));
-        dermatologist.setFirstLogged(false);
-        dermatologist.setPhoneNumber("063789123");
-        List<Authority> authDermatologist = new ArrayList<Authority>();
-        Authority authorityDermatologist = new Authority("ROLE_DERMATOLOGIST");
-        authDermatologist.add(authorityDermatologist);
-        dermatologist.setAuthorities(authDermatologist);
-        dermatologist.setEnabled(true);
 
 
         //ConsultingDTO
@@ -255,27 +222,109 @@ public class TestRepository {
         consulting.setShowedUp(false);
         consulting.setPharmacist(pharmacist);*/
 
+        //PHARMACY ADMIN
+
+        PharmacyAdmin pharmacyAdmin = new PharmacyAdmin();
+        pharmacyAdmin.setSurname("Kokanovic");
+        pharmacyAdmin.setPassword(passwordEncoder.encode("mladenka"));
+        pharmacyAdmin.setName("Mladenka");
+        pharmacyAdmin.setEmail("mladenka@gmail.com");
+        Address addressMladenka = new Address();
+        AddressDTO addressDTOMladenka= new AddressDTO("Bijeljina","Gavrila Principa",15,76328,"Bosna i Hercegovina");
+        addressMladenka.setPostalCode(addressDTOMladenka.getPostalCode());
+        addressMladenka.setTown(addressDTOMladenka.getTown());
+        addressMladenka.setStreet(addressDTOMladenka.getStreet());
+        addressMladenka.setNumber(addressDTOMladenka.getNumber());
+        addressMladenka.setCountry(addressDTOMladenka.getCountry());
+        pharmacyAdmin.setAddress(addressMladenka);
+        pharmacyAdmin.setPhoneNumber("066492611");
+        pharmacyAdmin.setEnabled(true);
+        pharmacyAdmin.setPharmacy(pharmacy);
+        List<Authority> authMladenka = new ArrayList<>();
+        Authority authorityMladenka = new Authority("ROLE_PHARMACY_ADMIN");
+        authMladenka.add(authorityMladenka);
+        pharmacyAdmin.setAuthorities(authMladenka);
+
+
+        MedicationDTO medicationDTO1 = new MedicationDTO();
+        medicationDTO1.setCode(1234l);
+        medicationDTO1.setName("MedicationName");
+        medicationDTO1.setType("Type");
+        medicationDTO1.setForm("Form");
+        medicationDTO1.setMark(5);
+        medicationDTO1.setLoyaltyPoints(3);
+        medicationDTO1.setIssuanceRegime("Regime");
+        SpecificationDTO specificationDTO = new SpecificationDTO();
+        specificationDTO.setContraIndications("contraind");
+        specificationDTO.setManufacturer("Manu");
+        specificationDTO.setStructure("structure");
+        specificationDTO.setRecommendedConsumption("consumption");
+        medicationDTO1.setSpecification(specificationDTO);
+        medicationDTO1.setWayOfSelling("way");
+
+
+        Medication medication1 = new Medication();
+        medication1.setCode(123434l);
+        medication1.setName("MedicationName2");
+        medication1.setType("Type");
+        medication1.setForm("Form");
+        medication1.setMark(5);
+        medication1.setLoyaltyPoints(3);
+        medication1.setIssuanceRegime("Regime");
+        Specification specificationDTO1 = new Specification();
+        specificationDTO1.setContraIndications("contraind");
+        specificationDTO1.setManufacturer("Manu");
+        specificationDTO1.setStructure("structure");
+        specificationDTO1.setRecommendedConsumption("consumption");
+        medication1.setSpecification(specificationDTO1);
+        medication1.setWayOfSelling("way");
+
+
+        HolidaySchedulePharmacist holidaySchedulePharmacist = new HolidaySchedulePharmacist();
+        holidaySchedulePharmacist.setMassage("poruka");
+        holidaySchedulePharmacist.setPharmacist(pharmacist);
+        holidaySchedulePharmacist.setApproved("WAITING_FOR_RESPONSE");
+        holidaySchedulePharmacist.setType("VACATION");
+        holidaySchedulePharmacist.setStartDate(LocalDate.now());
+        holidaySchedulePharmacist.setEndDate(LocalDate.now().plusDays(10));
+
+
+        PersonUserDTO userDTO = new PersonUserDTO();
+        userDTO.setSurname("Surname");
+        userDTO.setPassword("password");
+        userDTO.setRewritePassword("password");
+        userDTO.setFirstname("Name");
+        userDTO.setAddress(new AddressDTO("Town","Street",453,5435,"Country"));
+        userDTO.setEmail("user22@gmail.com");
+        userDTO.setPhonenumber("78912");
+
+
         entityManager.persist(address4);
+        entityManager.persist(addressMladenka);
+        entityManager.persist(authorityMladenka);
         entityManager.persist(address5);
         entityManager.persist(patient);
         entityManager.persist(authority4);
         entityManager.persist(pharmacy);
-        entityManager.persist(pharmacist);
         entityManager.persist(loyaltyProgram);
         entityManager.persist(authority2);
         entityManager.persist(systemAdmin);
-        entityManager.persist(pharmacyAdmin);
-        entityManager.persist(dermatologist);
         entityManager.persist(supplier);
         entityManager.persist(authority);
         entityManager.persist(authority5);
         entityManager.persist(pharmacist);
+        entityManager.persist(pharmacyAdmin);
+        entityManager.persist(holidaySchedulePharmacist);
+        entityManager.persist(medication1);
         pharmacyIdDTO = new PharmacyIdDTO(pharmacy.getId());
         pharmacistsConsultationDTO1.setPharmacyId(pharmacyIdDTO.getPharmacyId());
         pharmacistsConsultationDTO = pharmacistsConsultationDTO1;
         markDTO = markDTO1;
         patientId = patient.getId();
-
+        medicationDTO = medicationDTO1;
+        holidayId = holidaySchedulePharmacist.getId();
+        pharmacyId = pharmacy.getId();
+        personuserDTO = userDTO;
 
         entityManager.flush();
     }

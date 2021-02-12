@@ -3,6 +3,8 @@ package com.isaproject.isaproject.Validation;
 import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.HelpModel.LoyaltyProgram;
 import com.isaproject.isaproject.Model.Users.Supplier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.regex.Pattern;
 
@@ -70,6 +72,22 @@ public class CommonValidatior {
             throw new IllegalArgumentException("Please select the pharmacy!");
         }
          return true;
+    }
+    public Boolean checkValidationPharmacyAdminUpdate(PharmacyAdminDTO person) {
+        if(person.getSurname().isEmpty()
+                || person.getFirstname().isEmpty() || person.getPhonenumber().isEmpty() ||
+                person.getAddress().getCountry().isEmpty() || person.getAddress().getTown().isEmpty() ||
+                person.getAddress().getStreet().isEmpty()) {
+            throw new IllegalArgumentException("Please fill all the required fields correctly!");
+        }
+        if(person.getAddress().getNumber() !=(int)person.getAddress().getNumber()
+                ||person.getAddress().getPostalCode() !=(int)person.getAddress().getPostalCode() ) {
+            throw new IllegalArgumentException("Please fill all the required fields correctly!");
+        }
+        if(person.getAddress().getNumber()<=0 || person.getAddress().getPostalCode()<=0) {
+            throw new IllegalArgumentException("Please fill all the required fields correctly!");
+        }
+        return true;
     }
 
     public boolean checkValidatioPharmacy(PharmacyDTO pharmacyDTO) {

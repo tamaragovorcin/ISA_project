@@ -1,7 +1,5 @@
 package com.isaproject.isaproject.Service.Implementations;
-import com.isaproject.isaproject.DTO.AddressDTO;
-import com.isaproject.isaproject.DTO.PharmacyDTO;
-import com.isaproject.isaproject.DTO.WorkingHoursDermatologistDTO;
+import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Address;
 import com.isaproject.isaproject.Model.Users.Dermatologist;
@@ -11,6 +9,7 @@ import com.isaproject.isaproject.Service.IServices.IPharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class PharmacyService implements IPharmacyService {
@@ -51,6 +50,8 @@ public class PharmacyService implements IPharmacyService {
         return pharmacyRepository.save(pharmacy1);
     }
 
+
+
     @Override
     public Boolean savePharmacy(WorkingHoursDermatologistDTO dto) {
         Pharmacy ph = findById((dto.getPharmacyId()));
@@ -77,7 +78,14 @@ public class PharmacyService implements IPharmacyService {
         Boolean hasEreceipt = ePrescriptionService.checkEReceiptInPharmacy(pharmacyId);
         Boolean hasConsulting = consultingService.checkIfPatientHasConsulting(pharmacyId);
         Boolean hasExamination = examinationService.checkIfPatientHasExamination(pharmacyId);
-        Boolean hasTakenReservedMedication = false;
+        Boolean hasTakenReservedMedication = checkTakingReservedMedication();
         return (!hasEreceipt && !hasConsulting && !hasExamination && !hasTakenReservedMedication) ? false :true;
+    }
+
+    private Boolean checkTakingReservedMedication() {
+        Random rand = new Random();
+        int int_random = rand.nextInt(1000);
+        if(int_random%2==0) {return true;}
+        return false;
     }
 }

@@ -80,7 +80,6 @@
 
 <script>
 export default {
-
   data() {
     return {
         pharmacyName : "",
@@ -97,7 +96,6 @@ export default {
         isAuthorized : false
     }
   },
-
   methods:{
       registerPharmacy: function() {
             window.location.href = "/registerPharmacy";
@@ -134,10 +132,8 @@ export default {
                 address : addressInfo,
                 consultingPrice : this.consultingPrice,
                 description: this.description
-
             }
             let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-
             this.axios.post('/pharmacy/register',pharmacyInfo,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
@@ -149,7 +145,6 @@ export default {
                 })
                 .catch(res => {
                     alert(res.response.data.message);
-
                  });    
       },
       logOut : function(){
@@ -172,7 +167,6 @@ export default {
          }).then(response => {
              this.isAuthorized = true;
                this.accountInformation=response.data;
-
                if(this.accountInformation.mainAdmin) {
                       this.allowSystemAdminRegistration = true;
                       this.notallowSystemAdminRegistration = false;

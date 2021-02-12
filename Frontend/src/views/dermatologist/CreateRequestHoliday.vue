@@ -81,7 +81,7 @@ export default {
       },
         sendRequest : function() {
             const holiday = {
-            dermatologist : this.dermatologist,
+            dermatologist : this.dermatologist.id,
             startDate : this.startDate,
             endDate  :this.endDate,
             type : this.type

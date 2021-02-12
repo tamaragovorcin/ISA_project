@@ -6,6 +6,7 @@ import router from './router'
 import vuetify from './plugins/vuetify';
 import 'chart.js'
 import 'hchs-vue-charts'
+import 'ol/ol.css';
 
 Vue.use(window.VueCharts)
 

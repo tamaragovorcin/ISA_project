@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.ChoosenPharmacyDTO;
+import com.isaproject.isaproject.DTO.MedicationForRemovingDTO;
 import com.isaproject.isaproject.DTO.MedicationPriceDTO;
 import com.isaproject.isaproject.DTO.QRcodeInformationDTO;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
@@ -39,6 +40,8 @@ public class MedicationPriceService implements IMedicationPriceService {
     PatientRepository patientRepository;
     @Autowired
     LoyaltyProgramService loyaltyProgramService;
+    @Autowired
+    MedicationService medicationService;
 
     @Override
     public MedicationPrice findById(Integer id) {
@@ -67,16 +70,19 @@ public class MedicationPriceService implements IMedicationPriceService {
     public MedicationPrice updatePrice(MedicationPriceDTO medicationDTO) {
 
         MedicationPrice medicationPrice = findByMedicationID(medicationDTO.getMedication().getId());
-        if(medicationDTO.getDate().isAfter(LocalDate.now())) {
-            medicationPrice.setPrice(medicationDTO.getPrice());
-            medicationPrice.setDate(medicationDTO.getDate());
-            return this.medicationPriceRepository.save(medicationPrice);
-        }
-        return null;
+        System.out.println(medicationDTO.getMedication().getId());
+        System.out.println(medicationDTO.getPrice());
+        System.out.println(medicationPrice);
+        medicationPrice.setPrice(medicationDTO.getPrice());
+        medicationPrice.setDate(medicationDTO.getDate());
+        return this.medicationPriceRepository.save(medicationPrice);
+
+
     }
     public MedicationPrice findByMedicationID(Integer id){
+        System.out.println(id);
         for(MedicationPrice medicationPrice : medicationPriceRepository.findAll()){
-            if(medicationPrice.getMedication().getId() == id){
+            if(medicationPrice.getMedication().getId().toString().equals(id.toString())){
                 return medicationPrice;
             }
         }
@@ -171,10 +177,10 @@ public class MedicationPriceService implements IMedicationPriceService {
         }
         return null;
     }
-    public Boolean remove(MedicationPriceDTO dto) {
-
+    public Boolean remove(MedicationForRemovingDTO dto) {
+    Medication medication = medicationService.findById(dto.getMedication());
         for (MedicationPrice medicationPrice : medicationPriceRepository.findAll()) {
-            if (medicationPrice.getMedication().getCode() == dto.getMedication().getCode() && medicationPrice.getMedication().getName().equals(dto.getMedication().getName())){
+            if (medicationPrice.getMedication().getCode() == medication.getCode() && medicationPrice.getMedication().getName().equals(medication.getName())){
                 if( medicationPrice.getPharmacy().getId() == dto.getPharmacy()) {
                         if (!isMedicationReserved(dto)) {
                             System.out.println("Prosao if");
@@ -188,11 +194,12 @@ public class MedicationPriceService implements IMedicationPriceService {
         return false;
     }
 
-    public Boolean isMedicationReserved(MedicationPriceDTO dto){
+    public Boolean isMedicationReserved(MedicationForRemovingDTO dto){
+        Medication medication = medicationService.findById(dto.getMedication());
         for(MedicationReservation medicationReservation : medicationReservationService.findAll()){
-            if(medicationReservation.getMedicine().getCode() == dto.getMedication().getCode() && medicationReservation.getMedicine().getName().equals(dto.getMedication().getName())
-            && medicationReservation.getPharmacy().getId() == dto.getPharmacy() && !medicationReservation.getCollected()){
-                System.out.println("Rezervisan");
+            if(medicationReservation.getMedicine().getCode() == medication.getCode() && medicationReservation.getMedicine().getName().equals(medication.getName())
+            && medicationReservation.getPharmacy().getId() == dto.getPharmacy() && medicationReservation.getCollected()==null){
+                System.out.println("RezervisaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAn");
 
                 return true;
             }

@@ -24,6 +24,13 @@ public class MedicationDTO {
 
     private String wayOfSelling;
 
+    public MedicationDTO(String name, long code, String form, String type) {
+        this.name = name;
+        this.code = code;
+        this.form = form;
+        this.type = type;
+    }
+
     public MedicationDTO(String name, long code, String form, String type, String issuanceRegime, double mark, double loyaltyPoints, SpecificationDTO specification, Set<Medication> medicationsAlternatives, String wayOfSelling) {
         this.name = name;
         this.code = code;
