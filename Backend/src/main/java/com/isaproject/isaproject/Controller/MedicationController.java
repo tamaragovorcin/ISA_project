@@ -69,7 +69,7 @@ public class MedicationController {
     {
         if(medicationPriceDTO.getDate() != null) {
             if (medicationPriceDTO.getDate().isBefore(LocalDate.now())) {
-                return new ResponseEntity<>("Price expiry date has to be in future.", HttpStatus.CREATED);
+                throw new IllegalArgumentException("Price expiry date has to be in future.");
             }
         }
         if(medicationPriceDTO.getPrice()<0){
@@ -90,16 +90,20 @@ public class MedicationController {
 
     }
     @PostMapping("/priceInPharmacy")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<String> addToPharmacy(@RequestBody MedicationPriceDTO medicationPriceDTO)
     {
         if(medicationPriceDTO.getDate() ==null){
-            return new ResponseEntity<>("Expiry date has to be defined.", HttpStatus.CREATED);
-
+            throw new IllegalArgumentException("Expiry date has to be defined.");
         }
         if(medicationPriceDTO.getDate().isBefore(LocalDate.now())){
-            return new ResponseEntity<>("Date has to be in future.", HttpStatus.CREATED);
+            throw new IllegalArgumentException("Date has to be in future.");
+        }
+        if(medicationPriceDTO.getPrice() < 0){
+            throw new IllegalArgumentException("Price can not be negative number.");
 
         }
+
         MedicationPrice medicationPrice = medicationPriceService.updatePrice(medicationPriceDTO);
         if(medicationPrice != null)
              return new ResponseEntity<>("Medication price is successfully updated.", HttpStatus.CREATED);
@@ -108,6 +112,7 @@ public class MedicationController {
     }
 
     @PostMapping("/remove")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<String> remove(@RequestBody MedicationForRemovingDTO medicationPriceDTO)
     {
         Boolean deleted = medicationPriceService.remove(medicationPriceDTO);

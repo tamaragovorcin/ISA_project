@@ -144,93 +144,7 @@
     
     </b-modal>
 
- <b-modal ref="edit-modal" hide-footer scrollable title="Edit order" size="lg" modal-class="b-modal">
-                    <div modal-class="modal-dialog" role="document">
-                    <div class="modal-content" style="background-color:whitesmoke">
-                            <div class="modal-header">
-                                <h3 class="modal-title" id="exampleModalLabel">Medicine ordering</h3>
-                
-                            </div>
-                            <div class="modal-body">
-                                <div  class="container5">
-
-                                        <div  style="margin-top:30px">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <label >Medication:</label>
-                                                </div>
-                                                <div class="col">
-                                                                         <b-dropdown id="ddCommodity" name="ddCommodity" text="Choose medication"
-                                        class = "btn btn-link btn-lg" style="float:left; width=200px;">
-                                            <b-dropdown-item v-for="medicine in this.medications"  v-on:click = "medicationIsSelected($event, medicine)" v-bind:key="medicine.id"> 
-                                            {{ medicine.name }}<div style="width:20px"></div>{{medicine.type }}
-                                            </b-dropdown-item>
-                                    </b-dropdown> 
-
-                                                </div>
-
-
-                                            </div>
-                                            <div class="row">
-
-                                                <div class="col">
-                                                    <label>Quantity:</label>
-                                                </div>
-                                                <div class="col">
-                                                    <input type="number" v-model="quantityEdit" placeholder="Enter quantity..">
-                                                </div>
-
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                </div>
-                                                <div class="col">
-                                                    <button class="btn btn-secondary" style="margin-left:3px" v-on:click="addNewMedicineEdit">&nbsp;&nbsp;+&nbsp;&nbsp;</button>
-                                                </div>
-                                            </div>
-
-
-
-
-
-                                        </div>
-                                        <div class="row">
-                                            <table class="table table-striped table-dark">
-                                                <thead>
-                                                <th>Medicine name</th>
-                                                <th>Quantity</th>
-                                                </thead>
-                                                <tr v-for="med in medicationQuantityListEdit" :key="med.id">
-                                                    <td>{{med.medicine.name}}</td>
-                                                    <td>{{med.quantity}}</td>
-                                                    <td><button class = "btn btn-primary" >Remove medication</button></td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <hr />
-                                        <div class="row">
-                                            <div class="col">
-                                                <label for="name">Closing date:</label>
-                                            </div>
-                                            <div class="col">
-                                                <input type="date" v-model="endDateEdit" />
-                                            </div>
-                                        </div>
-                    
-
-                                </div>
-
-
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" block @click="hideModalEdit">Close</button>
-                        <button class="btn btn-primary" @click="editOrder">Share order</button>
-                    </div>
-                    </div>
-                </div>
-    
-    </b-modal>
-
+ 
 
 
 
@@ -288,7 +202,6 @@
                         <hr/>
                          <div v-if="active" class="row justify-content-center">
                            <div class="modal-footer">
-                            <button class="btn btn-primary" @click="showEditForm">Edit</button>
 
                             <button class="btn btn-primary" @click="viewOffers">View offers</button>
                         </div>
@@ -421,9 +334,6 @@ export default {
         supplierName : "",
         supplierSurName : "",
         offerData : "",
-        medicationQuantityListEdit : "",
-        endDateEdit : "",
-        quantityEdit : "",
         active : false,
         finished :false,
         loggedIn : false
@@ -548,16 +458,9 @@ export default {
                     quantity: this.quantity,
                 };
                 this.medicationQuantityList.push(medicineWithQuantity)
-                this.medicationQuantityListEdit.push(medicineWithQuantity)
 
       },
-       addNewMedicineEdit : function(){
-                const medicineWithQuantityEdit = {
-                    medicine: this.selectedMedicationEdit,
-                    quantity: this.quantityEdit,
-                };
-                this.medicationQuantityListEdit.push(medicineWithQuantityEdit)
-      },
+      
       shareOrder : function(){
           const order = {
                     medicationsInOrderDTO: this.medicationQuantityList,
@@ -598,26 +501,6 @@ export default {
                         console.log(res);
                 });
                 this.showOffers = true;
-      },
-       editOrder : function(){
-        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
-         const order = {
-                    orderId : this.choosenTender.id,
-                    medicationsInOrderDTO: this.medicationQuantityListEdit,
-                    date: this.endDateEdit
-                };
-            this.axios.post('/order/update',order,{ 
-                         headers: {
-                                'Authorization': 'Bearer ' + token,
-                        }})
-                .then(response => {
-                       alert(response.data);
-                       window.location.href = "/order";
-                })
-                .catch(response => {
-                       alert("Please try later.");
-                        console.log(response);
-                 });    
       },
       acceptOffer : function(){
      let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);

@@ -312,12 +312,11 @@ export default {
                     }
                     }).then(response => {
                             console.log(response);
-                            alert(response.data);
+                            alert("Pharmacists successfully removed.")
                     }).catch(response => {
                             alert("NOT OK");
                             console.log(response);
                     });
-          window.location.href = "/pharmacyPharmacists";
 
 		},
     defineSchedule : function(event, pharmacist){

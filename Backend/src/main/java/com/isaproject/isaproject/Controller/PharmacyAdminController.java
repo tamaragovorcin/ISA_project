@@ -3,6 +3,7 @@ import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Exception.ResourceConflictException;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
+import com.isaproject.isaproject.Model.Medicine.LackMedicine;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
 import com.isaproject.isaproject.Model.Orders.Order;
@@ -40,6 +41,10 @@ public class PharmacyAdminController {
     PharmacistService pharmacistService;
     @Autowired
     DermatologistService dermatologistService;
+    @Autowired
+    LackMedicineService lackMedicineService;
+    @Autowired
+    MedicationService medicationService;
 
 
     @PostMapping("/register")
@@ -238,7 +243,6 @@ public class PharmacyAdminController {
         List<HolidaySchedulePharmacistFrontDTO> schedulePharmacistFrontDTOS = new ArrayList<HolidaySchedulePharmacistFrontDTO>();
         for(HolidaySchedulePharmacist holiday :  pharmacistHolidayService.findAll()){
             if(holiday.getPharmacist().getPharmacy().getId() == pharmacyAdmin.getPharmacy().getId() && holiday.getApproved().equals("WAIT_FOR_RESPONSE")) {
-                System.out.println("UDJE U IFFFFFFFFFFFFFFFFFFFFFFF");
                 HolidaySchedulePharmacistFrontDTO holidaySchedulePharmacistFrontDTO = new HolidaySchedulePharmacistFrontDTO();
                 holidaySchedulePharmacistFrontDTO.setPharmacist(holiday.getPharmacist().getName() + " " + holiday.getPharmacist().getSurname());
                 holidaySchedulePharmacistFrontDTO.setScheduleId(holiday.getId());
@@ -361,6 +365,7 @@ public class PharmacyAdminController {
     }
 
     @GetMapping("/activeOrders")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<List<OrderReviewDTO>> getActiveOrders()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
@@ -379,6 +384,7 @@ public class PharmacyAdminController {
                 ResponseEntity.ok(ordersDto);
     }
     @GetMapping("/orders")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<List<OrderReviewDTO>> getAllOrders()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
@@ -396,8 +402,26 @@ public class PharmacyAdminController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(ordersDto);
     }
+    @GetMapping("/inquires")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    List<InquireDTO> getInquiresForMedication()
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
+        List<InquireDTO> inquireDTOS = new ArrayList<>();
+        for(LackMedicine lackMedicine : lackMedicineService.findAll()){
+            if(lackMedicine.getNamePharmacy().equals(pharmacyAdmin.getPharmacy().getPharmacyName())){
+                Medication medication = medicationService.findByName(lackMedicine.getNameMedicine());
+                InquireDTO inquireDTO = new InquireDTO(lackMedicine.getNameMedicine(),medication.getCode());
+                inquireDTOS.add(inquireDTO);
+            }
+        }
+        return  inquireDTOS;
+    }
 
     @GetMapping("/finishedOrders")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<List<OrderReviewDTO>> getFinishedOrders()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();

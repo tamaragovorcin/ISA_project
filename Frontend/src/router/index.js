@@ -71,17 +71,15 @@ import DermatologistMedicationSearch from '../views/dermatologist/DermatologistM
 import HolidayRequestsDermatologists from '../views/systemAdmin/HolidayRequestsDermatologists.vue'
 import Pharmacists from '../views/home/Pharmacists.vue'
 import pharmacyProfilePatient from '../views/patient/pharmacyProfilePatient.vue'
-
 import WorkingHoursDermatologist from '../views/dermatologist/WorkingHoursDermatologist.vue'
-
-
 import EditOrder from '../views/pharmacyAdmin/EditOrder.vue'
-
 import Dermatologists from '../views/home/Dermatologists.vue'
 import MedicationGraphics from '../views/pharmacyAdmin/MedicationGraphics.vue'
 import IncomeGraphics from '../views/pharmacyAdmin/IncomeGraphics.vue'
 import ExaminationGraphics from '../views/pharmacyAdmin/ExaminationGraphics.vue'
 import Mapa from '../views/systemAdmin/Mapa.vue'
+import Inquires from '../views/pharmacyAdmin/Inquires.vue'
+
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -489,6 +487,12 @@ const routes = [
       name: 'Mapa',
       component: Mapa
     },
+    {
+      path: '/medicationInquires',
+      name: 'Inquires',
+      component: Inquires
+    },
+
 
     
   ]

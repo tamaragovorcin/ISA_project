@@ -44,12 +44,14 @@ public class OrderController {
         return new ResponseEntity<>("Date has to be in future.", HttpStatus.CREATED);
     }
     @PostMapping("/update")
-    ResponseEntity<Order> updateOrder(@RequestBody OrderUpdateDTO orderDTO)
+    ResponseEntity<String > updateOrder(@RequestBody OrderUpdateDTO orderDTO)
     {
-        Order order = orderService.update(orderDTO);
-        return order == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(order);
+        if(orderService.update(orderDTO)){
+            return new ResponseEntity<>("Order is successfully removed.", HttpStatus.CREATED);
+
+        }else{
+            throw  new IllegalStateException("Order can not be removed, suppliers have already send their offers.");
+        }
     }
 
     @GetMapping("")
@@ -69,7 +71,7 @@ public class OrderController {
             return new ResponseEntity<>("Order is successfully removed.", HttpStatus.CREATED);
 
         }else{
-            return new ResponseEntity<>("Order can not be removed, suppliers have already send their offers.", HttpStatus.CREATED);
+            throw  new IllegalStateException("Order can not be removed, suppliers have already send their offers.");
 
         }
     }

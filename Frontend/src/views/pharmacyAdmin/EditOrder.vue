@@ -257,7 +257,9 @@ export default {
        showOrderForm : function(){
       },
        logOut : function(){
+           localStorage.removeItem('token');
            window.location.href = "/login";
+        
       },
       showModal() {
         this.$refs['my-modal'].show()

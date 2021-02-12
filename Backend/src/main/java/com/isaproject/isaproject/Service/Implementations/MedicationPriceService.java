@@ -174,8 +174,6 @@ public class MedicationPriceService implements IMedicationPriceService {
             if (medicationPrice.getMedication().getCode() == medication.getCode() && medicationPrice.getMedication().getName().equals(medication.getName())){
                 if( medicationPrice.getPharmacy().getId() == dto.getPharmacy()) {
                         if (!isMedicationReserved(dto)) {
-                            System.out.println("Prosao if");
-
                             medicationPriceRepository.delete(medicationPrice);
                             return true;
                         }
@@ -187,15 +185,20 @@ public class MedicationPriceService implements IMedicationPriceService {
 
     public Boolean isMedicationReserved(MedicationForRemovingDTO dto){
         Medication medication = medicationService.findById(dto.getMedication());
-        for(MedicationReservation medicationReservation : medicationReservationService.findAll()){
-            if(medicationReservation.getMedicine().getCode() == medication.getCode() && medicationReservation.getMedicine().getName().equals(medication.getName())
-            && medicationReservation.getPharmacy().getId() == dto.getPharmacy() && medicationReservation.getCollected()==null){
-                System.out.println("RezervisaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAn");
+        for(MedicationReservation medicationReservation : medicationReservationService.findAll()) {
+            if (medicationReservation.getMedicine().getCode() == medication.getCode() && medicationReservation.getMedicine().getName().equals(medication.getName())
+                    && medicationReservation.getPharmacy().getId() == dto.getPharmacy() && medicationReservation.getCollected() == null) {
 
                 return true;
             }
+            if (medicationReservation.getCollected() != null){
+                if (medicationReservation.getMedicine().getCode() == medication.getCode() && medicationReservation.getMedicine().getName().equals(medication.getName())
+                        && medicationReservation.getPharmacy().getId() == dto.getPharmacy() && !medicationReservation.getCollected()) {
+
+                    return true;
+                }
         }
-        System.out.println("Slobodan");
+        }
 
         return false;
     }

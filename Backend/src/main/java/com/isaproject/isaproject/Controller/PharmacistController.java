@@ -149,7 +149,7 @@ public class PharmacistController {
     public ResponseEntity<String> deletePharmacist(@PathVariable Integer id) {
         Pharmacist pharmacist = pharmacistService.findById(id);
         String answer = pharmacistService.delete(pharmacist);
-        return new ResponseEntity<>(answer, HttpStatus.CREATED);
+        return new ResponseEntity<>(answer, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/account")

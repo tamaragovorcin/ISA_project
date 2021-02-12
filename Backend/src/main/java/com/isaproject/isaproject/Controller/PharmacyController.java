@@ -284,8 +284,7 @@ public class PharmacyController  {
         Set<ExaminationSchedule> examinationTerms = pharmacyService.findById(id).getExaminationSchedules();
         List<FreeExaminationTermsDTO> freeExaminationTerms = new ArrayList<FreeExaminationTermsDTO>();
         for(ExaminationSchedule ex :  examinationTerms){
-                System.out.println(ex.getDermatologist().getName());
-
+            if(!ex.getFinished()) {
                 FreeExaminationTermsDTO term = new FreeExaminationTermsDTO();
                 term.setId(ex.getId());
                 term.setDermatologistName(ex.getDermatologist().getName());
@@ -297,8 +296,8 @@ public class PharmacyController  {
                 term.setStartTime(ex.getStartTime());
                 term.setPrice(ex.getPrice());
                 term.setPharmacyId(ex.getPharmacy().getId());
-            freeExaminationTerms.add(term);
-
+                freeExaminationTerms.add(term);
+            }
         }
         return freeExaminationTerms == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
@@ -403,6 +402,46 @@ public class PharmacyController  {
         if(able) {
             SimpleMailMessage mail = new SimpleMailMessage();
             mail.setTo(dto.getPatient().getEmail());
+            mail.setSubject("Successfuly reserved dermatologist apointment!");
+            mail.setFrom(environment.getProperty("spring.mail.username"));
+            //mail.setFrom("pharmacyisa@gmail.com");
+            mail.setText("You have successfully reserved an appointment on : "
+                    + examinationSchedule1.getDate() + " at " + examinationSchedule1.getStartTime() + ". Your doctor is " + examinationSchedule1.getDermatologist().getName() + " " + examinationSchedule1.getDermatologist().getSurname());
+
+            mailSender.send(mail);
+        }
+
+        return able == true ?
+                new ResponseEntity<>("Consulting is successfully reserved!", HttpStatus.CREATED) :
+                new ResponseEntity<>("You are not able to reserve a medication because you have 3 or more penalties!", HttpStatus.CREATED);
+
+    }
+    @PostMapping("/addExaminationPharmacy")
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<String> addExaminationFromPharmacyProfile(@RequestBody NewExaminationDTO dto) {
+
+        Patient patient = patientService.findById(dto.getPatient());
+        Boolean able = true;
+        if(patient.getPenalties() > 3){
+            able = false;
+        }
+
+
+        if(able) {
+            Examination examination = examinationService.savePharmacy(dto);
+            List<ExaminationSchedule> examinationSchedule = new ArrayList<ExaminationSchedule>();
+            examinationSchedule = examinationScheduleService.findAll();
+            ExaminationSchedule examinationSchedule1 = new ExaminationSchedule();
+
+            for(ExaminationSchedule es: examinationSchedule){
+                if(es.getId()==dto.getExaminationId()){
+                    examinationSchedule1 = es;
+                    examinationScheduleService.update(es, true);
+
+                }
+            }
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setTo(patient.getEmail());
             mail.setSubject("Successfuly reserved dermatologist apointment!");
             mail.setFrom(environment.getProperty("spring.mail.username"));
             //mail.setFrom("pharmacyisa@gmail.com");

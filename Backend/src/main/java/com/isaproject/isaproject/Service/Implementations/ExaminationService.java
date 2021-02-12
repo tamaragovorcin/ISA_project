@@ -1,6 +1,7 @@
 package com.isaproject.isaproject.Service.Implementations;
 
 import com.isaproject.isaproject.DTO.ExaminationDTO;
+import com.isaproject.isaproject.DTO.NewExaminationDTO;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Examinations.Examination;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
@@ -66,6 +67,31 @@ public class ExaminationService implements IExaminationService {
         examination.setCancelled(examinationDTO.getCancelled());
         examination.setShowedUp(examinationDTO.getShowedUp());
         examination.setPatient(examinationDTO.getPatient());
+
+        return examinationRepository.save(examination);
+    }
+
+
+    public Examination savePharmacy(NewExaminationDTO examinationDTO) {
+        List<ExaminationSchedule> es = new ArrayList<ExaminationSchedule>();
+        ExaminationSchedule examinationSchedule =  new ExaminationSchedule();
+        es = examinationScheduleRepository.findAll();
+
+        for (ExaminationSchedule e : es){
+            if(examinationDTO.getExaminationId() == e.getId()){
+                examinationSchedule = e;
+                System.out.println(examinationSchedule);
+            }
+        }
+
+        Patient patient = patientRepository.getOne(examinationDTO.getPatient());
+        Examination examination = new Examination();
+        examinationSchedule.setFinished(true);
+        examination.setExaminationSchedule(examinationSchedule);
+        examination.setInformation(examinationDTO.getInformation());
+        examination.setCancelled(examinationDTO.getCancelled());
+        examination.setShowedUp(examinationDTO.getShowedUp());
+        examination.setPatient(patient);
 
         return examinationRepository.save(examination);
     }

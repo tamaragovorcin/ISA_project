@@ -94,7 +94,7 @@ public class PharmacistService implements IPharmacistService {
 
         for(Consulting consulting : consultingService.findAll()){
             if(consulting.getPharmacist().getId() == userRequest.getId() && !consulting.getCancelled() && consulting.getDate().isAfter(LocalDate.now())){
-            return "Pharmacist can't be removed. There are scheduled appointments in future.";
+                throw  new IllegalStateException("Pharmacist can not be removed, he/she has scheduled appointments.");
             }
         }
         for(ConfirmationToken confirmationToken1 : confirmationTokens){

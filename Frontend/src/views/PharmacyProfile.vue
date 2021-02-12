@@ -5,7 +5,7 @@
         <div style="background: #0D184F; height: 90px;">
             
             <span style="float: left; margin: 15px;">
-                <button class = "btn btn-link btn-lg" style="float:left;color:white" href = "/isaHomePage">←</button>
+                <a class = "btn btn-link btn-lg" style="float:left;color:white" href= "/isaHomePage">←</a>
             </span>
               <span  style="float:right;margin:15px">
                     <a class = "btn btn-warning btn-lg" href = "/login">&nbsp;&nbsp;Login&nbsp;&nbsp;</a>
@@ -323,9 +323,6 @@ export default {
         this.axios.get('/pharmacy/'+this.id)
         .then(response => {
                 this.pharmacy = response.data;
-                this.$nextTick(function() {
-                    this.initMap();
-                })
                  this.axios.get('pharmacy/dermatologistsFront/'+this.id)
          .then(response => {
                this.ourDermatologists=response.data;
@@ -549,13 +546,13 @@ export default {
         
 
           const examination = {
-              patient: this.patient,
+              patient: this.patient.id,
               cancelled : false,
               showedUp: false,
               examinationId: term.id,
               information: null
           }
-            this.axios.post('/pharmacy/addExamination', examination,{
+            this.axios.post('/pharmacy/addExaminationPharmacy', examination,{
                           headers: {
                               'Authorization': 'Bearer ' + token
                           }

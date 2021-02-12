@@ -103,7 +103,6 @@ public class DermatologistController {
     @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST')")
     ResponseEntity<List<DermatologistsFrontDTO>> getAllFrontDermatologists()
     {
-        System.out.println("POGODIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         List<DermatologistsFrontDTO> dermatologists = new ArrayList<DermatologistsFrontDTO>();
         for(Dermatologist dermatologist:   dermatologistService.findAll()){
             List<String> pharmacies = new ArrayList<>();
@@ -175,6 +174,7 @@ public class DermatologistController {
 
 
     @GetMapping("/allDermatologistsFront")
+    @PreAuthorize("hasAnyRole('PATIENT', 'SUPPLIER', 'SYSTEM_ADMIN', 'DERMATOLOGIST', 'PHARMACIST','PHARMACY_ADMIN')")
     List<DermatologistFrontDTO> getDermatologists()
     {
         List<DermatologistFrontDTO> dermatologists = new ArrayList<DermatologistFrontDTO>();
@@ -192,6 +192,7 @@ public class DermatologistController {
         return dermatologists;
     }
     @GetMapping("/notInPharmacy")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     List<DermatologistFrontDTO> getDermatologistsNot()
     {
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();

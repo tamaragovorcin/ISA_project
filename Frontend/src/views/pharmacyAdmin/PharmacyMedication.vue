@@ -352,11 +352,11 @@ export default {
                 .then(response => {
                        alert(response.data);
                        window.location.href= "/pharmacyMedications";
-
-                        console.log(response.data);
+                       console.log(response.data);
                 })
                 .catch(response => {
-                       alert("Please try later.");
+                       alert(response.response.data.message);
+
                         console.log(response);
                  });    
       },
@@ -380,9 +380,10 @@ export default {
                         }})
                 .then(response => {
                        alert(response.data);
+                       window.location.href="/pharmacyMedications";
                 })
                 .catch(response => {
-                       alert("Please try later.");
+                       alert(response.response.data.message);
                         console.log(response);
                  });    
       },

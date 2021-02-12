@@ -12,7 +12,6 @@ import com.isaproject.isaproject.Service.IServices.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -64,7 +63,12 @@ public class OrderService implements IOrderService {
         return true;
     }
     @Override
-    public Order update(OrderUpdateDTO order) {
+    public Boolean update(OrderUpdateDTO order) {
+        for(Offer offer : offerService.findAll()){
+            if(offer.getOrder().getId() == order.getOrderId()){
+                return  false;
+            }
+        }
         Order or = findById(order.getOrderId());
         for(MedicationInOrder medication : or.getMedicationInOrders()){
             medicationInOrderRepository.delete(medication);
@@ -79,6 +83,7 @@ public class OrderService implements IOrderService {
             or.setMedicationInOrders(medication);
         }
 
-        return orderRepository.save(or);
+         orderRepository.save(or);
+        return true;
     }
 }
