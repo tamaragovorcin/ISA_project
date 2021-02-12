@@ -13,7 +13,7 @@ import javax.persistence.QueryHint;
 public interface DermatologistRepository extends JpaRepository<Dermatologist, Integer> {
     Dermatologist findByEmail(String email);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Lock(LockModeType.PESSIMISTIC_READ)
     @Query("select p from PersonUser p where p.id = :id")
     @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="10")})
     public Dermatologist findOneById(@Param("id")Integer id);

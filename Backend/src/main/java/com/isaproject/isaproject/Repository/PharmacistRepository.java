@@ -21,7 +21,7 @@ public interface PharmacistRepository extends JpaRepository<Pharmacist, Integer>
     @Query(value = "SELECT * from PersonUser t where t.markPharmacist BETWEEN ?1 AND ?2", nativeQuery=true)
     List<Pharmacist> findAllByMarkBetweenMinAndMax(int markMin, int markMax);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Lock(LockModeType.PESSIMISTIC_READ)
     @Query("select p from PersonUser p where p.id = :id")
     @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="10")})
     public Pharmacist findOneById(@Param("id")Integer id);
