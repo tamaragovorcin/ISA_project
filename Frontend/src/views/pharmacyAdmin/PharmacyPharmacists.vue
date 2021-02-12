@@ -223,11 +223,11 @@
   <tbody>
     <tr v-for="pharmacist in pharmacists" :key="pharmacist.id">
       <td></td>
-      <td>{{pharmacist.name}}</td>
+      <td>{{pharmacist.firstname}}</td>
       <td>{{pharmacist.surname}}</td>
       <td>{{pharmacist.email}}</td>
-      <td>{{pharmacist.phoneNumber}}</td>
-      <td>{{pharmacist.markPharmacist}}</td>
+      <td>{{pharmacist.phonenumber}}</td>
+      <td>{{pharmacist.mark}}</td>
       <td><button  v-on:click ="defineSchedule($event, pharmacist)" class="btn btn-info">Define schedule</button></td>
       <td><button  v-on:click ="remove($event, pharmacist)" class="btn btn-info">Remove</button></td>
     </tr>

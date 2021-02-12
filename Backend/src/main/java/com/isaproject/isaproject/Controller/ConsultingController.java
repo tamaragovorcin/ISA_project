@@ -135,8 +135,13 @@ public class ConsultingController {
           return   new ResponseEntity<>("You can not schedule consulting in past!", HttpStatus.CREATED);
         }
         Patient patient = patientService.findById(consultingDTO.getPatient());
+        Pharmacist pharmacist = pharmacistService.findById(consultingDTO.getPharmacist());
+        Patient patient1 = patientService.findById(consultingDTO.getPatient());
         ConsultingDTO consultingDTO1 = new ConsultingDTO();
+        consultingDTO1.setPharmacist(pharmacist);
+        consultingDTO1.setPatient(patient);
         consultingDTO1.setDate(consultingDTO.getDate());
+        consultingDTO1.setStartTime(consultingDTO.getStartTime());
         consultingDTO1.setDuration(15);
         consultingDTO1.setInformation("");
         consultingDTO1.setCancelled(false);
@@ -2656,6 +2661,73 @@ public class ConsultingController {
                 new ResponseEntity<>("You are unable to reserve a consultation right now, please try again later!", HttpStatus.CREATED);
 
 }
+
+    @PostMapping("/reserveConsultationPharmacyProfile")
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<String> reserveConsultation(@RequestBody PharmacistConsFrontDTO dto) {
+
+        if(dto.getPatient() == null || dto.getTime()==null || dto.getPharmacist()==null || dto.getDate()==null){
+            throw new IllegalArgumentException("Sorry, we are missing some information, please try again.");
+        }
+
+        List<Consulting> consultings = consultingService.findAll();
+
+        Boolean able = true;
+
+        for(Consulting consulting: consultings){
+            Double s = consulting.getDuration();
+            String st = s.toString();
+            if(consulting.getPharmacist().getId() == dto.getPharmacist() && consulting.getDate().equals(dto.getDate()) && dto.getTime().equals(consulting.getStartTime()) ){
+
+                able=false;
+                throw new IllegalArgumentException("Sorry, this term is already reserved.");
+
+            }
+        }
+
+        Patient patient = patientService.findById(dto.getPatient());
+
+
+        if(patient.getPenalties() > 3){
+            able = false;
+            throw new IllegalArgumentException("You are not able to reserve a medication because you have 3 or more penalties.");
+        }
+        if(able) {
+            ConsultingDTO consulting = new ConsultingDTO();
+            Pharmacist pharmacist = pharmacistService.findById(dto.getPharmacist());
+            Pharmacy pharmacy = pharmacyService.findById(pharmacist.getPharmacy().getId());
+            consulting.setCancelled(false);
+            consulting.setCancelled(false);
+            consulting.setDate(dto.getDate());
+            consulting.setStartTime(dto.getTime());
+            consulting.setPharmacist(pharmacist);
+            Patient patient1 = patientService.findById(dto.getPatient());
+            consulting.setPatient(patient1);
+            consulting.setDuration(20.0);
+            consulting.setPrice(pharmacy.getConsultingPrice());
+
+            Consulting consulting1 = consultingService.save(consulting);
+
+
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setTo(patient1.getEmail());
+            mail.setSubject("Successfuly reserved consultation with pharmacist!");
+            mail.setFrom(environment.getProperty("spring.mail.username"));
+            //mail.setFrom("pharmacyisa@gmail.com");
+            mail.setText("You have successfully reserved an appointment on : "
+                    + consulting1.getDate() + " at " + consulting1.getStartTime() + "\n" +
+                    ". Your doctor is " + consulting1.getPharmacist().getName() + " " + consulting1.getPharmacist().getSurname() + ".\n" +
+                    "Pharmacy where the consultation will be held is " + consulting1.getPharmacist().getName() + "."
+            );
+
+            mailSender.send(mail);
+
+        }
+        return able == true ?
+                new ResponseEntity<>("Consulting is successfully reserved! You will soon receive a confirmation email", HttpStatus.CREATED) :
+                new ResponseEntity<>("You are unable to reserve a consultation right now, please try again later!", HttpStatus.CREATED);
+
+    }
 
 
 

@@ -177,6 +177,21 @@ public class PharmacyController  {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacy);
     }
+    @GetMapping("front/{id}")
+    ResponseEntity<PharmacyFrontDTO> getPharmacyByIdFront(@PathVariable Integer id) {
+        Pharmacy pharmacy = pharmacyService.findById(id);
+        PharmacyFrontDTO pharmacyFrontDTO = new PharmacyFrontDTO();
+        pharmacyFrontDTO.setId(pharmacy.getId());
+        pharmacyFrontDTO.setPharmacyName(pharmacy.getPharmacyName());
+        pharmacyFrontDTO.setDescription(pharmacy.getDescription());
+        pharmacyFrontDTO.setStreet(pharmacy.getAddress().getStreet());
+        pharmacyFrontDTO.setCity(pharmacy.getAddress().getTown());
+        pharmacyFrontDTO.setPostalCode(pharmacy.getAddress().getPostalCode());
+        pharmacyFrontDTO.setMark(pharmacy.getMark());
+        return pharmacy == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacyFrontDTO);
+    }
     @GetMapping("address/{id}")
     ResponseEntity<AddressDTO> getPharmacyAddress(@PathVariable Integer id) {
         Pharmacy pharmacy = pharmacyService.findById(id);
@@ -255,11 +270,23 @@ public class PharmacyController  {
 
     }
     @GetMapping("/pharmacists/{id}")
-    public ResponseEntity<Set<Pharmacist>> getPharmacists(@PathVariable Integer id) {
+    public ResponseEntity<Set<PharmacistDTO>> getPharmacists(@PathVariable Integer id) {
         Set<Pharmacist> pharmacists = pharmacyService.findById(id).getPharmacists();
+        Set<PharmacistDTO> pharmacistDTOS = new HashSet<>();
+        for(Pharmacist pharmacist : pharmacists){
+            PharmacistDTO pharmacistDTO = new PharmacistDTO();
+            pharmacistDTO.setFirstname(pharmacist.getName());
+            System.out.println(pharmacist.getSurname());
+            pharmacistDTO.setSurname(pharmacist.getSurname());
+            pharmacistDTO.setMark(pharmacist.getMarkPharmacist());
+            pharmacistDTO.setId(pharmacist.getId());
+            pharmacistDTO.setEmail(pharmacist.getEmail());
+            pharmacistDTO.setPhonenumber(pharmacist.getPhoneNumber());
+            pharmacistDTOS.add(pharmacistDTO);
+        }
         return pharmacists == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(pharmacists);
+                ResponseEntity.ok(pharmacistDTOS);
 
     }
     @GetMapping("/medication/{id}")

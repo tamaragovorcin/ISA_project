@@ -30,7 +30,7 @@
         </div>
               <div class="row" style = "background-color:whitesmoke;margin: auto;width: 60%;border: 3px solid gray;padding: 10px;margin-top:30px;">
 
-                    <div style="color:#0D184F;font-size:25px;font-style:italic;font-weight:bold;">Visit us at: {{pharmacy.address.street}}&nbsp; {{pharmacy.address.number}},&nbsp; {{pharmacy.address.town}}</div>
+                    <div style="color:#0D184F;font-size:25px;font-style:italic;font-weight:bold;">Visit us at: {{pharmacy.street}}&nbsp; {{pharmacy.number}},&nbsp; {{pharmacy.town}}</div>
              <router-link :to="{ path: '/mapa/'+pharmacy.id}" v-slot="{href, navigate}">
                                   <button class = "btn btn-success" style="margin-left:25px;" :href="href" @click="navigate"  elevation="1">Show on map</button>
                               </router-link>
@@ -83,9 +83,9 @@
                       <tbody>
                         <tr v-for="pharmacist in ourPharmacists" :key="pharmacist.id">
                                                                         <td></td>
-                                                                        <td>{{pharmacist.name}}</td>
+                                                                        <td>{{pharmacist.firstname}}</td>
                                                                         <td>{{pharmacist.surname}}</td>
-                                                                        <td>{{pharmacist.markPharmacist}}</td>
+                                                                        <td>{{pharmacist.mark}}</td>
                                                                         <td><button class ="btn btn-info" @click = "consulting($event,pharmacist)">Schedule</button></td>
 
                                                                     </tr>
@@ -320,7 +320,7 @@ export default {
     }
   },
   mounted() {
-        this.axios.get('/pharmacy/'+this.id)
+        this.axios.get('/pharmacy/front/'+this.id)
         .then(response => {
                 this.pharmacy = response.data;
                  this.axios.get('pharmacy/dermatologistsFront/'+this.id)
@@ -590,9 +590,9 @@ export default {
             pharmacist : this.selectedPharmacist.id,
             patient : this.patient.id,
             date : this.dateConsulting,
-            startTime : this.timeConsulting,
+            time : this.timeConsulting,
           }
-           this.axios.post('/consulting/scheduleFromPharmacyProfile',consulting,{ 
+           this.axios.post('/consulting/reserveConsultationPharmacyProfile',consulting,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                         }})
