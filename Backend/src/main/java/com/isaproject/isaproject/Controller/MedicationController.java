@@ -71,9 +71,13 @@ public class MedicationController {
             if (medicationPriceDTO.getDate().isBefore(LocalDate.now())) {
                 throw new IllegalArgumentException("Price expiry date has to be in future.");
             }
+            if(!(medicationPriceDTO.getDate().toString().matches("\\d{4}-\\d{2}-\\d{2}"))) {
+                throw new IllegalArgumentException("Date has to be in format YYYY-MM-DD.");
+            }
         }
+
         if(medicationPriceDTO.getPrice()<0){
-            return new ResponseEntity<>("Price has to be positive number.", HttpStatus.CREATED);
+            throw new IllegalArgumentException("Price has to be positive number.");
 
         }
 
@@ -98,6 +102,9 @@ public class MedicationController {
         }
         if(medicationPriceDTO.getDate().isBefore(LocalDate.now())){
             throw new IllegalArgumentException("Date has to be in future.");
+        }
+        if(!(medicationPriceDTO.getDate().toString().matches("\\d{4}-\\d{2}-\\d{2}"))) {
+            throw new IllegalArgumentException("Date has to be in format YYYY-MM-DD.");
         }
         if(medicationPriceDTO.getPrice() < 0){
             throw new IllegalArgumentException("Price can not be negative number.");

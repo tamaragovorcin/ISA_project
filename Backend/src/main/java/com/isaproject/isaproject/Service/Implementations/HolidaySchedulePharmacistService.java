@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -49,6 +50,7 @@ public class HolidaySchedulePharmacistService implements IHolidaySchedulePharmac
         return holidaySchedulePharmacistRepository.save(offer);
     }
 
+    @Transactional(readOnly = false)
     public HolidaySchedulePharmacist approve(Integer id){
         HolidaySchedulePharmacist holidaySchedulePharmacist =  holidaySchedulePharmacistRepository.getOne(id);
         holidaySchedulePharmacist.setApproved("APPROVED");

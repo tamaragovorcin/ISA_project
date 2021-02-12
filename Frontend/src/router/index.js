@@ -79,6 +79,7 @@ import IncomeGraphics from '../views/pharmacyAdmin/IncomeGraphics.vue'
 import ExaminationGraphics from '../views/pharmacyAdmin/ExaminationGraphics.vue'
 import Mapa from '../views/systemAdmin/Mapa.vue'
 import Inquires from '../views/pharmacyAdmin/Inquires.vue'
+import UpdatePharmacyProfile from '../views/pharmacyAdmin/UpdatePharmacyProfile.vue'
 
 
 Vue.use(BootstrapVue)
@@ -491,6 +492,11 @@ const routes = [
       path: '/medicationInquires',
       name: 'Inquires',
       component: Inquires
+    },
+    {
+      path: '/updatePharmacyProfile',
+      name: 'UpdatePharmacyProfile',
+      component: UpdatePharmacyProfile
     },
 
 

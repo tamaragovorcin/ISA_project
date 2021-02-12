@@ -31,26 +31,46 @@ public class OrderController {
 
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<String> register(@RequestBody OrderDTO orderDTO)
     {
-        if(orderDTO.getDate().isAfter(LocalDate.now())){
+        if(orderDTO.getDate() ==null){
+            throw new IllegalArgumentException("Expiry date has to be defined.");
+        }
+        if(orderDTO.getDate().isBefore(LocalDate.now())){
+            throw new IllegalArgumentException("Date has to be in future.");
+        }
+        if(!(orderDTO.getDate().toString().matches("\\d{4}-\\d{2}-\\d{2}"))) {
+            throw new IllegalArgumentException("Date has to be in format YYYY-MM-DD.");
+        }
+
             Order order = orderService.save(orderDTO);
             if(order != null) {
                 return new ResponseEntity<>("Order is successfully published!", HttpStatus.CREATED);
             }else {
                 return new ResponseEntity<>("Please try later.", HttpStatus.CREATED);
             }
-        }
-        return new ResponseEntity<>("Date has to be in future.", HttpStatus.CREATED);
+
     }
     @PostMapping("/update")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<String > updateOrder(@RequestBody OrderUpdateDTO orderDTO)
     {
+        if(orderDTO.getDate() ==null){
+            throw new IllegalArgumentException("Expiry date has to be defined.");
+        }
+        if(orderDTO.getDate().isBefore(LocalDate.now())){
+            throw new IllegalArgumentException("Date has to be in future.");
+        }
+        if(!(orderDTO.getDate().toString().matches("\\d{4}-\\d{2}-\\d{2}"))) {
+            throw new IllegalArgumentException("Date has to be in format YYYY-MM-DD.");
+        }
+
         if(orderService.update(orderDTO)){
-            return new ResponseEntity<>("Order is successfully removed.", HttpStatus.CREATED);
+            return new ResponseEntity<>("Order is successfully updated.", HttpStatus.CREATED);
 
         }else{
-            throw  new IllegalStateException("Order can not be removed, suppliers have already send their offers.");
+            throw  new IllegalStateException("Order can not be updated, suppliers have already send their offers.");
         }
     }
 
@@ -64,6 +84,7 @@ public class OrderController {
                 ResponseEntity.ok(orders);
     }
     @GetMapping("/remove/{id}")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<String> remove(@PathVariable Integer id)
     {
         Order order  = orderService.findById(id);

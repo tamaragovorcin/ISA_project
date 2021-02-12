@@ -4,14 +4,12 @@ import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.Examinations.ExaminationSchedule;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
+import com.isaproject.isaproject.Model.HelpModel.MedicationPriceHistory;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
 import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Model.Users.Pharmacist;
 import com.isaproject.isaproject.Model.Users.PharmacyAdmin;
-import com.isaproject.isaproject.Service.Implementations.ExaminationScheduleService;
-import com.isaproject.isaproject.Service.Implementations.ExaminationService;
-import com.isaproject.isaproject.Service.Implementations.MedicationReservationService;
-import com.isaproject.isaproject.Service.Implementations.PharmacyAdminService;
+import com.isaproject.isaproject.Service.Implementations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -33,6 +31,8 @@ public class GraphicalController {
     MedicationReservationService medicationReservationService;
     @Autowired
     PharmacyAdminService pharmacyAdminService;
+    @Autowired
+    MedicationPriceHistoryService  medicationPriceHistoryService;
 
     @GetMapping("/examinationYearly")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
@@ -653,28 +653,43 @@ public class GraphicalController {
         }
 
         for (MedicationReservation medicationReservation : pharmacyAdmin.getPharmacy().getMedicationReservations()) {
-            for (MedicationPrice medicationPrice : pharmacyAdmin.getPharmacy().getMedicationPrices())
-                if (medicationPrice.getMedication().getCode() == medicationReservation.getMedicine().getCode()) {
-                    if (medicationReservation.getDateOfTakeOver().getMonth() == Month.JANUARY && medicationReservation.getCollected()) {
-                        january += medicationPrice.getPrice();
-                    }
-                    if (medicationReservation.getDateOfTakeOver().getMonth() == Month.FEBRUARY) {
-                        february += medicationPrice.getPrice();
-                    }
-                    if (medicationReservation.getDateOfTakeOver().getMonth() == Month.MARCH) {
-                        march += medicationPrice.getPrice();
-                    }
-                    if (medicationReservation.getDateOfTakeOver().getMonth() == Month.APRIL && medicationReservation.getCollected()) {
-                        april += medicationPrice.getPrice();
-                    }
-                    if (medicationReservation.getDateOfTakeOver().getMonth() == Month.MAY && medicationReservation.getCollected()) {
-                        may += medicationPrice.getPrice();
-                    }
-                    if (medicationReservation.getDateOfTakeOver().getMonth() == Month.JUNE && medicationReservation.getCollected()) {
-                        june += medicationPrice.getPrice();
+                for(MedicationPriceHistory medicationPriceHistory : medicationPriceHistoryService.findAll()) {
+                    if (medicationPriceHistory.getMedication_id() == medicationReservation.getMedicine().getId()) {
+                        if (medicationReservation.getDateOfReservation().getMonth() == Month.JANUARY) {
+                            if (medicationPriceHistory.getEndDate().isAfter(medicationReservation.getDateOfReservation()) && medicationPriceHistory.getStartDate().minusDays(1).isBefore(medicationReservation.getDateOfReservation())) {
+                                january += medicationPriceHistory.getPrice();
+                            }
+                        }
+                        if (medicationReservation.getDateOfReservation().getMonth() == Month.FEBRUARY) {
+                            if (medicationPriceHistory.getEndDate().isAfter(medicationReservation.getDateOfReservation()) && medicationPriceHistory.getStartDate().minusDays(1).isBefore(medicationReservation.getDateOfReservation())) {
+                                february += medicationPriceHistory.getPrice();
+                                System.out.println("DODAO ZA FEBRUAR");
+                                System.out.println(medicationPriceHistory.getPrice());
+                            }
+                        }
+                        if (medicationReservation.getDateOfReservation().getMonth() == Month.MARCH) {
+                            if (medicationPriceHistory.getEndDate().isAfter(medicationReservation.getDateOfReservation()) && medicationPriceHistory.getStartDate().minusDays(1).isBefore(medicationReservation.getDateOfReservation())) {
+                                march += medicationPriceHistory.getPrice();
+                            }
+                        }
+                        if (medicationReservation.getDateOfReservation().getMonth() == Month.APRIL) {
+                            if (medicationPriceHistory.getEndDate().isAfter(medicationReservation.getDateOfReservation()) && medicationPriceHistory.getStartDate().minusDays(1).isBefore(medicationReservation.getDateOfReservation())) {
+                                april += medicationPriceHistory.getPrice();
+                            }
+                        }
+                        if (medicationReservation.getDateOfReservation().getMonth() == Month.MAY) {
+                            if (medicationPriceHistory.getEndDate().isAfter(medicationReservation.getDateOfReservation()) && medicationPriceHistory.getStartDate().minusDays(1).isBefore(medicationReservation.getDateOfReservation())) {
+                                may += medicationPriceHistory.getPrice();
+                            }
+                        }
+                        if (medicationReservation.getDateOfReservation().getMonth() == Month.JUNE) {
+                            if (medicationPriceHistory.getEndDate().isAfter(medicationReservation.getDateOfReservation()) && medicationPriceHistory.getStartDate().minusDays(1).isBefore(medicationReservation.getDateOfReservation())) {
+                                june += medicationPriceHistory.getPrice();
+                            }
+                        }
+
                     }
                 }
-
         }
         graphicExaminationYearlyDTO.setJanuary(january);
         graphicExaminationYearlyDTO.setFebruary(february);

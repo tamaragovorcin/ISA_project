@@ -48,8 +48,15 @@ public class PharmacyService implements IPharmacyService {
 
         return pharmacyRepository.save(pharmacy1);
     }
-
-
+    public Pharmacy updateInfo(PharmacyFrontDTO dto) {
+        Pharmacy ph = findById((dto.getId()));
+        ph.setPharmacyName(dto.getPharmacyName());
+        ph.setDescription(dto.getDescription());
+        Address address = new Address(dto.getCity(),dto.getStreet(),dto.getNumber(),dto.getPostalCode(),dto.getCountry());
+        ph.setAddress(address);
+        ph.setConsultingPrice(dto.getPrice());
+        return this.pharmacyRepository.save(ph);
+    }
 
     @Override
     public Boolean savePharmacy(WorkingHoursDermatologistDTO dto) {

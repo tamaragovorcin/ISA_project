@@ -8,9 +8,9 @@
                                     <b-dropdown-item href = "/pharmacyAdminProfile">Profile</b-dropdown-item>
                                     <b-dropdown-item href = "/phAdminProfileUpdate">Update profile</b-dropdown-item>      
                                 </b-dropdown>        
-
+<a   class = "btn btn-link" href="/updatePharmacyProfile">Update pharmacy</a>
                                     <router-link :to="{ path: '/pharmacyProfile/'+pharmacy.id}" v-slot="{href, navigate}">
-                                                <button class = "btn btn-link" :href="href" @click="navigate"  elevation="1">My pharmacy profile</button>
+                                                <button class = "btn btn-link" :href="href" @click="navigate"  elevation="1">My pharmacy</button>
                                     </router-link>
                    
 
@@ -54,6 +54,8 @@
                      <div class="row">
             <b-button class = "btn btn-warning btn-lg" style ="margin-top:25px;" @click="showModal">+ Announce new tender</b-button>
             </div>
+                                 <h5 style="margin:25px;color:#0D184F;font-weight:bold;">If You want to review/accept offers, click on active tenders.:</h5>
+
                      <button class = "btn btn-info btn-lg" style="margin-right:20px;" v-on:click = "showActive">Show active tenders</button>
                     <button class = "btn btn-info btn-lg" style="margin-right:20px;" v-on:click = "showFinised">Show finished tenders</button>
                
@@ -79,7 +81,7 @@
                                             {{ medicine.name }}<div style="width:20px"></div>{{medicine.type }}
                                             </b-dropdown-item>
                                     </b-dropdown> 
-
+                                        <label>{{selectedMedication.name}}</label>
                                                 </div>
 
 
@@ -483,7 +485,7 @@ export default {
                        window.location.href = "/order";
                 })
                 .catch(response => {
-                       alert("Please try later.");
+                    alert(response.response.data.message);
                         console.log(response);
                  });    
       },

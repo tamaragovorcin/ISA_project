@@ -64,6 +64,7 @@ public class PharmacyController  {
     PatientService patientService;
 
     @PostMapping("/addActions")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<String> shareActions(@RequestBody ActionsDTO action)
     {
         if(action.getExpiryDate() == null){
@@ -105,8 +106,21 @@ public class PharmacyController  {
 
         }
     }
+    @PostMapping("/updatePharmacy")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<String> update(@RequestBody PharmacyFrontDTO pharmacyFrontDTO)
+    {
+        CommonValidatior commonVlidatior = new CommonValidatior();
+        if(!commonVlidatior.checkValidatioPharmacyUpdate(pharmacyFrontDTO)) {
+            throw new IllegalArgumentException("Please fill in all the fields correctly!");
+        }
+        Pharmacy pharmacy = pharmacyService.updateInfo(pharmacyFrontDTO);
+        return new ResponseEntity<>("Pharmacy data is successfully updated!", HttpStatus.CREATED);
+
+    }
 
     @GetMapping("/actions/{id}")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<List<Actions>> getActions(@PathVariable Integer id)
     {
         List<Actions> actions = actionsService.findAll();

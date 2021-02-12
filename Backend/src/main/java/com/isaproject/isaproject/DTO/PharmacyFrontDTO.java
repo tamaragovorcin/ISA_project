@@ -16,10 +16,19 @@ public class PharmacyFrontDTO {
 
     private int postalCode;
 
+    private String description;
+
     private Double mark;
 
     private Double price;
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Integer getId() {
         return id;

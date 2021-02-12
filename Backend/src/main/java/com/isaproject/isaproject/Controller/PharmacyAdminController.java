@@ -93,6 +93,7 @@ public class PharmacyAdminController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(patient);
     }
+
     @GetMapping("/myPharmacy")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")
     ResponseEntity<Pharmacy> getMyPharmacy()
@@ -103,6 +104,28 @@ public class PharmacyAdminController {
         return pharmacyAdmin.getPharmacy() == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok(pharmacyAdmin.getPharmacy());
+    }
+    @GetMapping("/myPharmacyFront")
+    @PreAuthorize("hasRole('PHARMACY_ADMIN')")
+    ResponseEntity<PharmacyFrontDTO> getMyPharmacyFront()
+    {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+        PharmacyAdmin pharmacyAdmin = pharmacyAdminService.findById(user.getId());
+        Pharmacy pharmacy = pharmacyAdmin.getPharmacy();
+        PharmacyFrontDTO pharmacyFrontDTO = new PharmacyFrontDTO();
+        pharmacyFrontDTO.setId(pharmacy.getId());
+        pharmacyFrontDTO.setPharmacyName(pharmacy.getPharmacyName());
+        pharmacyFrontDTO.setDescription(pharmacy.getDescription());
+        pharmacyFrontDTO.setCountry(pharmacy.getAddress().getCountry());
+        pharmacyFrontDTO.setCity(pharmacy.getAddress().getTown());
+        pharmacyFrontDTO.setNumber(pharmacy.getAddress().getNumber());
+        pharmacyFrontDTO.setStreet(pharmacy.getAddress().getStreet());
+        pharmacyFrontDTO.setPostalCode(pharmacy.getAddress().getPostalCode());
+        pharmacyFrontDTO.setPrice(pharmacy.getConsultingPrice());
+        return pharmacyAdmin.getPharmacy() == null ?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                ResponseEntity.ok(pharmacyFrontDTO);
     }
     @GetMapping("/dermatologists")
     @PreAuthorize("hasRole('PHARMACY_ADMIN')")

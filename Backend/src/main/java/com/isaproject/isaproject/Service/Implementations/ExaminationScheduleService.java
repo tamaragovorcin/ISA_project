@@ -55,8 +55,6 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
     public ExaminationSchedule save(ExaminationScheduleDTO examinationScheduleDTO) {
         Dermatologist dermatologist = dermatologistRepository.findById(examinationScheduleDTO.getDermatologist()).get();
         Pharmacy pharmacy = pharmacyRepository.findById(examinationScheduleDTO.getPharmacy()).get();
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println(examinationScheduleDTO.getDate().getDayOfWeek());
         for(WorkingHoursDermatologist workingHoursDermatologist : workingHoursDermatologistService.findAll()){
             if(workingHoursDermatologist.getDermatologist().getId() == examinationScheduleDTO.getDermatologist() && workingHoursDermatologist.getPharmacy().getId() == examinationScheduleDTO.getPharmacy()){
                 if(examinationScheduleDTO.getDate().getDayOfWeek() == DayOfWeek.MONDAY){
@@ -103,8 +101,6 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
     }
 
     private ExaminationSchedule createNewExaminationTerm(ExaminationScheduleDTO examinationScheduleDTO){
-        System.out.println("USAO U CREATE");
-
         ExaminationSchedule examinationSchedule = new ExaminationSchedule();
         examinationSchedule.setPharmacy(pharmacyRepository.getOne(examinationScheduleDTO.getPharmacy()));
         examinationSchedule.setDermatologist(dermatologistRepository.getOne(examinationScheduleDTO.getDermatologist()));
@@ -146,7 +142,6 @@ public class ExaminationScheduleService implements IExaminationScheduleService {
                     }
                 }
                 if(dto.getDate().equals(examinationSchedule.getDate()) &&  dto.getStartTime().equals(examinationSchedule.getStartTime())){
-                    System.out.println("isto vrijeme");
                     return false;
                 }
             }
