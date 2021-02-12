@@ -143,14 +143,6 @@ public class EPrescriptionController {
                 ResponseEntity.ok("Successfully updated!");
     }
 
-    @GetMapping("/all")
-    ResponseEntity<List<EPrescription>> getall() {
-        List<EPrescription> ePrescriptions = ePrescriptionService.findAll();
-        return ePrescriptions == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(ePrescriptions);
-    }
-
     @GetMapping("/myEprescriptions")
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<Set<EPrescription>> getMyEPrescriptions() {

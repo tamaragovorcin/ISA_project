@@ -90,14 +90,6 @@ public class OfferController {
         return null;
     }
 
-    @GetMapping("")
-    ResponseEntity<List<Offer>> getAll()
-    {
-        List<Offer> offers = offerService.findAll();
-        return offers == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(offers);
-    }
     @GetMapping("{id}")
     ResponseEntity<List<Offer>> getByOrderId(@PathVariable Integer id)
     {
