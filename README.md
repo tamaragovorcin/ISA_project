@@ -38,7 +38,8 @@ Za uspesno pokretanje potrebno je instalirati:<br />
   -axios<br />
   -vue-bootstrap<br />
 
-Pokretanje projekta
+Pokretanje projekta<br />
+  -Implemnetiran kod se nalazi na develop grani<br />
   -Prvo je potrebno napraviti kopiju ovog repozitorijuma sa git clone<br />
   -Pre pokretanja projekta potrebno je imati instaliranu PostgreSQL bazu verzije 13<br />
   -Importovati projekat kao Maven project<br />
