@@ -59,7 +59,7 @@ public class EPrescriptionService implements IEPrescriptionService {
             EPrescription ePrescription = new EPrescription();
             ePrescription.setPatient(patient);
             ePrescription.setDate(LocalDate.now());
-            ePrescription.setCode(UUID.randomUUID());
+            ePrescription.setCode(choosenPharmacy.getCode());
             ePrescription.setPharmacyId(choosenPharmacy.getPharmacyId());
             EPrescription ePrescription1= ePrescriptionRepository.save(ePrescription);
             List<QRcodeInformationDTO> qRcodeInformationDTOS = choosenPharmacy.getMedications();
@@ -67,7 +67,7 @@ public class EPrescriptionService implements IEPrescriptionService {
                 MedicationEPrescription medicationEPrescription = new MedicationEPrescription();
                 medicationEPrescription.setCode(medication.getMedicationCode());
                 medicationEPrescription.setName(medication.getMedicationName());
-                medicationEPrescription.setQuantity(medicationEPrescription.getQuantity());
+                medicationEPrescription.setQuantity(medication.getQuantity());
                 medicationEPrescription.setePrescription(ePrescription1);
                 medicationEPrescriptionRepository.save(medicationEPrescription);
             }
@@ -97,5 +97,9 @@ public class EPrescriptionService implements IEPrescriptionService {
                 patientService.informPatientAboutEreceipt(choosenPharmacy.getMedications())==false ||
                 save(choosenPharmacy)==null ?
                  true : false;
+    }
+
+    public EPrescription findByCode(String code) {
+        return ePrescriptionRepository.findByCode(code);
     }
 }

@@ -5,6 +5,7 @@ import com.isaproject.isaproject.Validation.CommonValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -24,10 +25,15 @@ public class LoyaltyProgramController {
         if(!commonVlidatior.checkValidationLoyaltyProgram2(loyaltyProgram)) {
             throw new IllegalArgumentException("Please fill in all the fields correctly!");
         }
-        LoyaltyProgram program = loyaltyProgramService.save(loyaltyProgram);
-        return program == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                new ResponseEntity<>("Supplier is successfully registred!", HttpStatus.CREATED);
+        try {
+            LoyaltyProgram program = loyaltyProgramService.save(loyaltyProgram);
+            return program == null ?
+                    new ResponseEntity<>(HttpStatus.NOT_FOUND) :
+                    new ResponseEntity<>("Supplier is successfully registred!", HttpStatus.CREATED);
+        }
+        catch (ObjectOptimisticLockingFailureException objectOptimisticLockingFailureException){
+            throw new ObjectOptimisticLockingFailureException("Someone else has just changed loyalt program. Please try again.",HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("")

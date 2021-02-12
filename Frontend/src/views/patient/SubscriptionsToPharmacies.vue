@@ -1,23 +1,25 @@
 ines (39 sloc)  1.61 KB
   
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div v-if="isAuthorized" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
              <span style="float: left; margin: 15px;">
-                    <a  class = "btn btn-secondary" href= "/isaHomePage">Home</a>
-                    <strong class="tab"></strong>          
-                    <a  class = "btn btn-secondary" href= "/showPharmaciesPatient">Pharmacies</a>
-                    <strong class="tab"></strong>          
-                    <a  class = "btn btn-secondary" href= "/myProfilePatient">My profile</a>
-                    <strong class="tab"></strong>          
-                    <a  class = "btn btn-secondary" href= "/patientComplaint">Write complaint</a>
-                    <strong class="tab"></strong>          
-                    <a  class = "btn btn-secondary" href= "/subscriptionsToPharmacies">My subscriptions</a>
-                    <strong class="tab"></strong>          
-                    <a  class = "btn btn-secondary" href= "/eRecipes">ERecipes</a>
-                    <strong class="tab"></strong>          
+                               
+                    <a  class = "btn btn-link btn-lg" href= "/patientProfile">Home page</a>
+                    <a  class = "btn btn-link btn-lg" href= "/showPharmaciesPatient">Pharmacies</a>
+                    <a  class = "btn btn-link btn-lg" href= "/eRecipes">ERecipes</a>
+                    <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
+                    <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
+                     <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
+                         <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
+                   
+
+             
+                  
+
             </span>
             <span  style="float:right;margin:15px">
                 <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
@@ -79,9 +81,31 @@ export default {
        patientsSubscriptions : null,
        completeDictionary : [],
        p: null,
+       isAuthorized : false
     }
   },
 
+mounted(){
+ let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+
+             }
+         }).then(response => {
+                this.patient = response.data;
+                this.isAuthorized = true;
+         
+         }).catch(res => {
+           this.isAuthorized = false;
+           
+                       alert("Please log in first!");
+                                 window.location.href = "/login";
+                                 console.log(res);
+                
+                 });
+
+},
   methods:{
      
      
@@ -158,7 +182,23 @@ export default {
       }
 },
     beforeMount() {
-        let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+          let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+
+             }
+         }).then(response => {
+             this.isAuthorized = true;
+            this.patient = response.data;
+         
+         }).catch(res => {
+                       this.isAuthorized = false;
+                       alert("Please log in first!");
+                        window.location.href = "/login";
+                        console.log(res);
+                
+                 });
        
         this.axios.get('/pharmacy/allNames',{ 
              headers: {

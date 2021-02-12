@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class MedicationReservationDTO {
 
-    private Patient patient;
+    private Integer patient;
 
     private int pharmacyId;
 
@@ -15,17 +15,18 @@ public class MedicationReservationDTO {
     public MedicationReservationDTO() { }
 
     public MedicationReservationDTO(Patient patient, int pharmacyId, int medicationId, LocalDate dateOfTakeOver) {
-        this.patient = patient;
+
         this.pharmacyId = pharmacyId;
         this.medicationId = medicationId;
         this.dateOfTakeOver = dateOfTakeOver;
     }
 
-    public Patient getPatient() {
+
+    public Integer getPatient() {
         return patient;
     }
 
-    public void setPatient(Patient patient) {
+    public void setPatient(Integer patient) {
         this.patient = patient;
     }
 

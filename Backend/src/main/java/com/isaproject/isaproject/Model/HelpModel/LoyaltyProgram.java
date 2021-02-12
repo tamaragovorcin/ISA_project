@@ -1,9 +1,6 @@
 package com.isaproject.isaproject.Model.HelpModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class LoyaltyProgram {
@@ -43,6 +40,10 @@ public class LoyaltyProgram {
 
     @Column(name = "goldenDiscount", nullable = true)
     private double goldenDiscount;
+
+    @Version
+    @Column(name = "version", nullable = true)
+    private Long version;
 
     public LoyaltyProgram() {
     }
@@ -129,5 +130,13 @@ public class LoyaltyProgram {
 
     public void setGoldenDiscount(double goldenDiscount) {
         this.goldenDiscount = goldenDiscount;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

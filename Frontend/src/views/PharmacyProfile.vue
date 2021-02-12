@@ -543,7 +543,7 @@ export default {
              }
          }).then(response => {
                 this.patient = response.data;
-        
+       
 
           const examination = {
               patient: this.patient.id,
@@ -565,7 +565,12 @@ export default {
                           console.log(response);
                         });     
 
-      });
+    
+        }).catch(response => {
+                          alert("You have to be logged in as patient.");
+                          console.log(response);
+                        }); 
+      
       },
 
       consulting(event,pharmacist){

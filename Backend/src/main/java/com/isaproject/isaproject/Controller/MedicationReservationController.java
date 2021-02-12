@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -53,12 +54,11 @@ public class MedicationReservationController {
     private Environment environment;
 
     @PostMapping("/add")
-    //@PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<String> register(@RequestBody MedicationReservationDTO medicationReservationDTO)
     {
 
-        Patient patient = patientService.findById(medicationReservationDTO.getPatient().getId());
-        Pharmacy pharmacy = pharmacyService.findById(medicationReservationDTO.getPharmacyId());
+        Patient patient = patientService.findById(medicationReservationDTO.getPatient());
         List<MedicationPrice> medicationPrices = medicationPriceService.findAll();
         Boolean able = true;
         if(patient.getPenalties() > 3){
@@ -83,7 +83,7 @@ public class MedicationReservationController {
 
 
             SimpleMailMessage mail = new SimpleMailMessage();
-            mail.setTo(medicationReservationDTO.getPatient().getEmail());
+            mail.setTo(patient.getEmail());
             mail.setSubject("Successfuly reserved medication!");
             mail.setFrom(environment.getProperty("spring.mail.username"));
             //mail.setFrom("pharmacyisa@gmail.com");
@@ -95,7 +95,7 @@ public class MedicationReservationController {
 
         }
         return able == true ?
-                new ResponseEntity<>("", HttpStatus.CREATED) :
+                new ResponseEntity<>("Successfully reserved medication. You will soon receive a confirmation email", HttpStatus.CREATED) :
                 new ResponseEntity<>("You are not able to reserve a medication because you have 3 or more penalties.", HttpStatus.CREATED);
 
     }
@@ -126,16 +126,19 @@ public class MedicationReservationController {
     }
 
     @GetMapping("/cancel/{id}")
-        //@PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> cancel(@PathVariable Integer id)
     {
         MedicationReservation medicationReservation = medicationReservationService.findById(id);
-        LocalDate date = LocalDate.now().plusDays(1);
+        LocalDate date = LocalDate.now().plusDays(2);
 
-        Boolean able = false;
+        Boolean able = true;
 
-        if(medicationReservation.getDateOfReservation().isBefore(date)) {
-            able = true;
+        if(medicationReservation.getDateOfTakeOver().isBefore(date)) {
+            able = false;
+
+        }
+        else{
             medicationReservationService.delete(medicationReservation);
         }
 

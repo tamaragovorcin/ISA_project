@@ -1,7 +1,7 @@
 ines (39 sloc)  1.61 KB
   
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div v-if="auth" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
@@ -19,7 +19,6 @@ ines (39 sloc)  1.61 KB
                     
                     
                      <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
-                    <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
                          <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
                    
 
@@ -126,7 +125,7 @@ ines (39 sloc)  1.61 KB
 
                 <div class="custom-control custom-radio form-group col ">
 
-                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" checked>
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')">
                  <label class="custom-control-label" for="defaultGroupExample5" >5</label>
                 
               </div> 
@@ -190,7 +189,7 @@ ines (39 sloc)  1.61 KB
 
                 <div class="custom-control custom-radio form-group col ">
 
-                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" checked>
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" >
                  <label class="custom-control-label" for="defaultGroupExample5" >5</label>
                 
               </div> 
@@ -248,7 +247,7 @@ ines (39 sloc)  1.61 KB
 
                 <div class="custom-control custom-radio form-group col ">
 
-                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" checked>
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" >
                  <label class="custom-control-label" for="defaultGroupExample5" >5</label>
                 
               </div> 
@@ -307,7 +306,7 @@ ines (39 sloc)  1.61 KB
 
                 <div class="custom-control custom-radio form-group col ">
 
-                  <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')" checked>
+                  <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios" v-on:click="updateFiler($event,'5')">
                  <label class="custom-control-label" for="defaultGroupExample5" >5</label>
                 
               </div> 
@@ -356,7 +355,8 @@ export default {
          showMedicationMark : false,
          filter: null,
          medication: null,
-         medications: []
+         medications: [],
+         auth: false
 
      
     }
@@ -458,12 +458,12 @@ export default {
         
         
                     .then(res => {
-                       
-                        alert(res.data);
+                        console.log(res.data)
+                       alert(res.data);
                     })
                     .catch(res => {
                      
-                        alert(res.data);
+                         alert(res.data);
                     })
 
             },
@@ -472,11 +472,11 @@ export default {
   let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
                         const markk = {
                   patient: this.patient,
-                  pharmacy: this.pharmacy,
+                  dermatologist: this.dermatologist.id,
                   mark: this.filter,
                  
                 };
-         this.axios.post('/pharmacy/leaveAMark',markk,{ 
+         this.axios.post('/dermatologist/leaveAMark',markk,{ 
                          headers: {
                                 'Authorization': 'Bearer ' + token,
                         }})
@@ -484,16 +484,18 @@ export default {
         
                     .then(res => {
                        
-                        alert(res.data);
+                         alert(res.data);
+                         console.log(res.data)
                     })
                     .catch(res => {
                      
-                        alert(res.data);
+                       alert(res.data);
                     })
 
             },
 
           sendMedication : function() {
+               let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
                 console.log(this.medication)
                 
                         const markk = {
@@ -502,15 +504,18 @@ export default {
                   mark: this.filter,
                  
                 };
-         this.axios.post('/medication/leaveAMark',markk)
+         this.axios.post('/medication/leaveAMark',markk,{ 
+                         headers: {
+                                'Authorization': 'Bearer ' + token,
+                        }})
         
                     .then(res => {
-                       
-                        alert(res.data);
+                        console.log(res.data)
+                          alert(res.data);
                     })
                     .catch(res => {
                      
-                        alert(res.data);
+                          alert(res.data);
                     })
 
             },
@@ -523,6 +528,7 @@ export default {
                   mark: this.filter,
                  
                 };
+              
                 let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
          this.axios.post('/pharmacist/leaveAMark',markk,{ 
                          headers: {
@@ -530,12 +536,11 @@ export default {
                         }})
         
                     .then(res => {
-                       
-                        alert(res.data);
+                        console.log(res.data)
+                         alert(res.data);
                     })
                     .catch(res => {
-                     
-                        alert(res.data);
+                      alert(res.data);
                     })
 
             },
@@ -555,9 +560,11 @@ export default {
          }).then(response => {
                 this.patientInfo = response.data;
                 this.patient = response.data;
+                this.auth = true
          }).catch(res => {
                        alert("Please, log in first!");
                         window.location.href = "/login";
+                        this.auth = false;
                         console.log(res);
                  });
 
@@ -569,7 +576,7 @@ export default {
                console.log(this.pharmacies);
               
           }).catch(res => {
-                       alert("List of pharmacies is not available at the moment!");
+                      
                         console.log(res);
                  });
 
@@ -580,7 +587,7 @@ export default {
                console.log(this.dermatologists);
               
               }).catch(res => {
-                       alert("List of dermatologists is not available at the moment!");
+                      
                         console.log(res);
                  });
 
@@ -591,7 +598,7 @@ export default {
                console.log(this.medications);
               
                }).catch(res => {
-                       alert("List of medications is not available at the moment!");
+                     
                         console.log(res);
                  });
 
@@ -602,7 +609,7 @@ export default {
                console.log(this.pharmacists);
               
               }).catch(res => {
-                       alert("List of pharmacists is not available at the moment!");
+                     
                         console.log(res);
                  });
     

@@ -8,6 +8,7 @@ import com.isaproject.isaproject.Model.Examinations.Consulting;
 import com.isaproject.isaproject.Model.HelpModel.Complaint;
 import com.isaproject.isaproject.Model.HelpModel.LoyaltyProgram;
 import com.isaproject.isaproject.Model.Medicine.Medication;
+import com.isaproject.isaproject.Model.Medicine.Specification;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Schedule.HolidaySchedulePharmacist;
 import com.isaproject.isaproject.Model.Users.*;
@@ -52,6 +53,7 @@ public class TestRepository {
     protected Integer holidayId;
 
     protected Integer pharmacyId;
+    protected PersonUserDTO personuserDTO;
 
 
     protected void setUp() {
@@ -204,7 +206,7 @@ public class TestRepository {
         pharmacistsConsultationDTO1.setDate(LocalDate.now().plusDays(2));
         pharmacistsConsultationDTO1.setPharmacist(pharmacist);
         pharmacistsConsultationDTO1.setTime(LocalTime.NOON);
-        pharmacistsConsultationDTO1.setPatient(patient);
+        pharmacistsConsultationDTO1.setPatient(patient.getId());
 
 
 
@@ -260,6 +262,24 @@ public class TestRepository {
         medicationDTO1.setSpecification(specificationDTO);
         medicationDTO1.setWayOfSelling("way");
 
+
+        Medication medication1 = new Medication();
+        medication1.setCode(123434l);
+        medication1.setName("MedicationName2");
+        medication1.setType("Type");
+        medication1.setForm("Form");
+        medication1.setMark(5);
+        medication1.setLoyaltyPoints(3);
+        medication1.setIssuanceRegime("Regime");
+        Specification specificationDTO1 = new Specification();
+        specificationDTO1.setContraIndications("contraind");
+        specificationDTO1.setManufacturer("Manu");
+        specificationDTO1.setStructure("structure");
+        specificationDTO1.setRecommendedConsumption("consumption");
+        medication1.setSpecification(specificationDTO1);
+        medication1.setWayOfSelling("way");
+
+
         HolidaySchedulePharmacist holidaySchedulePharmacist = new HolidaySchedulePharmacist();
         holidaySchedulePharmacist.setMassage("poruka");
         holidaySchedulePharmacist.setPharmacist(pharmacist);
@@ -267,6 +287,17 @@ public class TestRepository {
         holidaySchedulePharmacist.setType("VACATION");
         holidaySchedulePharmacist.setStartDate(LocalDate.now());
         holidaySchedulePharmacist.setEndDate(LocalDate.now().plusDays(10));
+
+
+        PersonUserDTO userDTO = new PersonUserDTO();
+        userDTO.setSurname("Surname");
+        userDTO.setPassword("password");
+        userDTO.setRewritePassword("password");
+        userDTO.setFirstname("Name");
+        userDTO.setAddress(new AddressDTO("Town","Street",453,5435,"Country"));
+        userDTO.setEmail("user22@gmail.com");
+        userDTO.setPhonenumber("78912");
+
 
         entityManager.persist(address4);
         entityManager.persist(addressMladenka);
@@ -284,6 +315,7 @@ public class TestRepository {
         entityManager.persist(pharmacist);
         entityManager.persist(pharmacyAdmin);
         entityManager.persist(holidaySchedulePharmacist);
+        entityManager.persist(medication1);
         pharmacyIdDTO = new PharmacyIdDTO(pharmacy.getId());
         pharmacistsConsultationDTO1.setPharmacyId(pharmacyIdDTO.getPharmacyId());
         pharmacistsConsultationDTO = pharmacistsConsultationDTO1;
@@ -292,6 +324,7 @@ public class TestRepository {
         medicationDTO = medicationDTO1;
         holidayId = holidaySchedulePharmacist.getId();
         pharmacyId = pharmacy.getId();
+        personuserDTO = userDTO;
 
         entityManager.flush();
     }

@@ -4,10 +4,14 @@ import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import com.isaproject.isaproject.DTO.*;
 import com.isaproject.isaproject.Model.Examinations.EPrescription;
+import com.isaproject.isaproject.Model.HelpModel.LoyaltyProgram;
 import com.isaproject.isaproject.Model.HelpModel.MedicationPrice;
+import com.isaproject.isaproject.Model.Medicine.MedicationEPrescription;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
 import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Model.Users.PersonUser;
+import com.isaproject.isaproject.Repository.MedicationEPrescriptionRepository;
+import com.isaproject.isaproject.Repository.LoyaltyProgramRepository;
 import com.isaproject.isaproject.Service.Implementations.EPrescriptionService;
 import com.isaproject.isaproject.Service.Implementations.MedicationPriceService;
 import com.isaproject.isaproject.Service.Implementations.PatientService;
@@ -44,6 +48,11 @@ public class EPrescriptionController {
 
     @Autowired
     EPrescriptionService ePrescriptionService;
+    @Autowired
+    LoyaltyProgramRepository loyaltyProgramRepository;
+
+    @Autowired
+    MedicationEPrescriptionRepository medicationEPrescriptionRepository;
 
     @PostMapping("/file")
     @PreAuthorize("hasRole('PATIENT')")
@@ -51,21 +60,24 @@ public class EPrescriptionController {
 
         if (!file.isEmpty()) {
             try {
-                System.out.println(file.getOriginalFilename());
                 BufferedImage src = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
                 File destination = new File("src/main/resources/qr/" + file.getOriginalFilename());
                 ImageIO.write(src, "png", destination);
                 String decodedText = decodeQRCode(new File("src/main/resources/qr/" + file.getOriginalFilename()));
-                System.out.println(decodedText);
                 if (decodedText == null) {
                     throw new IllegalArgumentException("Please upload correct QR code!");
                 } else {
+                    String code = getEReceiptCode(decodedText);
+                    EPrescription ePrescription = ePrescriptionService.findByCode(code);
+                    if(ePrescription!=null) {
+                        throw new IllegalArgumentException("This eReceipt is already used!");
+                    }
                     List<QRcodeInformationDTO> medicationsInQRcode = getMedicationsInQRcode(decodedText);
                     if(medicationsInQRcode==null) {
                         throw new IllegalArgumentException("Please try later!");
                     }
                     List<PharmacyMedicationAvailabilityDTO> pharmacyAvailability = getAvailabilityInPharmacies(medicationsInQRcode);
-                    EPrescriptionFullInfoDTO ePrescriptionFullInfoDTO = new EPrescriptionFullInfoDTO(pharmacyAvailability,medicationsInQRcode);
+                    EPrescriptionFullInfoDTO ePrescriptionFullInfoDTO = new EPrescriptionFullInfoDTO(pharmacyAvailability,medicationsInQRcode,code);
                     return pharmacyAvailability == null ?
                             new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                             ResponseEntity.ok(ePrescriptionFullInfoDTO);
@@ -78,11 +90,9 @@ public class EPrescriptionController {
     }
     @PostMapping("/file/noAuthentication")
     ResponseEntity<List<QRcodeInformationDTO>> uploadFile(@RequestParam("file") MultipartFile file) {
-        System.out.println("POGODIOOOO");
 
         if (!file.isEmpty()) {
             try {
-                System.out.println(file.getOriginalFilename());
                 BufferedImage src = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
                 File destination = new File("src/main/resources/qr/" + file.getOriginalFilename());
                 ImageIO.write(src, "png", destination);
@@ -100,6 +110,10 @@ public class EPrescriptionController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);            }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    private String getEReceiptCode(String decodedText) {
+        String []code = decodedText.split("!");
+        return code[0];
     }
 
 
@@ -119,15 +133,11 @@ public class EPrescriptionController {
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<String> choosePharmacyForEReceipt(@RequestBody ChoosenPharmacyDTO choosenPharmacy) {
 
-       /* return medicationPriceService.updateMedicineQuantityEreceipt(choosenPharmacy) == false ||
-                patientService.informPatientAboutEreceipt(choosenPharmacy.getMedications())==false ||
-                ePrescriptionService.save(choosenPharmacy)==null ?
-*/
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         PersonUser user = (PersonUser)currentUser.getPrincipal();
         Patient patient = patientService.findById(user.getId());
-        if(patient.getPenalties()==3) {
-            throw new IllegalArgumentException("You are not able to get medicaions! You have 3 penalties");
+        if(patient.getPenalties()>3) {
+            throw new IllegalArgumentException("You are not able to get medicaions! You have too many penalties");
         }
         CommonValidatior commonVlidatior = new CommonValidatior();
         if(!commonVlidatior.checkEprescription(choosenPharmacy)) {
@@ -138,12 +148,26 @@ public class EPrescriptionController {
                 ResponseEntity.ok("Successfully updated!");
     }
 
-    @GetMapping("/all")
-    ResponseEntity<List<EPrescription>> getall() {
+    @GetMapping("/all/{id}")
+    @PreAuthorize("hasRole('PATIENT')")
+    ResponseEntity<List<EPrescriptionDTO>> getall(@PathVariable Integer id) {
         List<EPrescription> ePrescriptions = ePrescriptionService.findAll();
-        return ePrescriptions == null ?
+        List<MedicationEPrescription> medicationEPrescriptions = medicationEPrescriptionRepository.findAll();
+        List<EPrescriptionDTO> ePrescriptionDTOS = new ArrayList<EPrescriptionDTO>();
+        for(MedicationEPrescription medicationEPrescription: medicationEPrescriptions) {
+            if (medicationEPrescription.getePrescription().getPatient().getId() == id) {
+                EPrescriptionDTO ePrescriptionDTO = new EPrescriptionDTO();
+                ePrescriptionDTO.setDate(medicationEPrescription.getePrescription().getDate());
+                Pharmacy pharmacy = pharmacyService.findById(medicationEPrescription.getePrescription().getPharmacyId());
+                ePrescriptionDTO.setPharmacyName(pharmacy.getPharmacyName());
+                ePrescriptionDTO.setMedName(medicationEPrescription.getName());
+                ePrescriptionDTO.setQuantity(medicationEPrescription.getQuantity());
+                ePrescriptionDTOS.add(ePrescriptionDTO);
+            }
+        }
+        return ePrescriptionDTOS == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(ePrescriptions);
+                ResponseEntity.ok(ePrescriptionDTOS);
     }
 
     @GetMapping("/myEprescriptions")
@@ -165,8 +189,9 @@ public class EPrescriptionController {
         List<Pharmacy> pharmacies = pharmacyService.findAll();
         for(Pharmacy pharmacy : pharmacies) {
             double hasMedicationsPrice = pharmacyHasAllMedications(pharmacy.getMedicationPrices(),medicationsInQRcode);
+            double priceWithLoyaltyProgram = setPriceWithLoyaltyProgram(hasMedicationsPrice);
             if(hasMedicationsPrice>0) {
-                pharmacyList.add(new PharmacyMedicationAvailabilityDTO(pharmacy.getId(), hasMedicationsPrice, pharmacy.getMark(),
+                pharmacyList.add(new PharmacyMedicationAvailabilityDTO(pharmacy.getId(), priceWithLoyaltyProgram, pharmacy.getMark(),
                         new AddressDTO(pharmacy.getAddress().getTown(), pharmacy.getAddress().getStreet(), pharmacy.getAddress().getNumber(),
                                 pharmacy.getAddress().getPostalCode(), pharmacy.getAddress().getCountry()), pharmacy.getPharmacyName()));
             }
@@ -174,6 +199,32 @@ public class EPrescriptionController {
         return pharmacyList;
     }
 
+    private double setPriceWithLoyaltyProgram(double hasMedicationsPrice) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        PersonUser user = (PersonUser)currentUser.getPrincipal();
+
+        Patient patient = patientService.findById(user.getId());
+        String status = patient.getLoyaltyCategory();
+        double newPrice = 0;
+
+        try {
+            LoyaltyProgram loyaltyProgram = loyaltyProgramRepository.findAll().get(0);
+            if(status.equals("REGULAR")) {
+                newPrice = hasMedicationsPrice - hasMedicationsPrice * (loyaltyProgram.getRegularDiscount()/100);
+            }
+            else if(status.equals("SILVER")) {
+                newPrice = hasMedicationsPrice - hasMedicationsPrice * (loyaltyProgram.getSilverDiscount()/100);
+            }
+            else if(status.equals("GOLD")) {
+                newPrice = hasMedicationsPrice -hasMedicationsPrice * (loyaltyProgram.getGoldenDiscount()/100);
+            }
+        }
+        catch(Exception e) {
+            return hasMedicationsPrice;
+        }
+
+        return newPrice;
+    }
 
 
     private double pharmacyHasAllMedications(Set<MedicationPrice> medicationPrices, List<QRcodeInformationDTO> medicationsInQRcode) {
@@ -202,14 +253,16 @@ public class EPrescriptionController {
     private List<QRcodeInformationDTO> getMedicationsInQRcode(String decodedText) {
         List<QRcodeInformationDTO> qrList = new ArrayList<>();
         if(decodedText.contains(";")) {
-            String []medications = decodedText.split(";");
+            String []code = decodedText.split("!");
+            String []medications = code[1].split(";");
             for (String medication: medications) {
                 String []medicationParts = medication.split("_");
                 qrList.add(new QRcodeInformationDTO(medicationParts[0],Long.parseLong(medicationParts[1]),Integer.parseInt(medicationParts[2])));
             }
         }
         else {
-            String []medicationParts = decodedText.split("_");
+            String []code = decodedText.split("!");
+            String []medicationParts = code[1].split("_");
             qrList.add(new QRcodeInformationDTO(medicationParts[0],Long.parseLong(medicationParts[1]),Integer.parseInt(medicationParts[2])));
         }
         return qrList;

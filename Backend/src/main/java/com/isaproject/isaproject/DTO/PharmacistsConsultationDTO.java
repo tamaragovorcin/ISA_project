@@ -10,11 +10,13 @@ public class PharmacistsConsultationDTO {
 
     private LocalTime time;
 
+    private LocalTime start;
+
     private LocalDate date;
 
     private Pharmacist pharmacist;
 
-    private Patient patient;
+    private Integer patient;
 
     public Integer getPharmacyId() {
         return pharmacyId;
@@ -36,11 +38,19 @@ public class PharmacistsConsultationDTO {
         this.pharmacist = pharmacist;
     }
 
-    public Patient getPatient() {
+    public Integer getPatient() {
         return patient;
     }
 
-    public void setPatient(Patient patient) {
+    public LocalTime getStart() {
+        return start;
+    }
+
+    public void setStart(LocalTime start) {
+        this.start = start;
+    }
+
+    public void setPatient(Integer patient) {
         this.patient = patient;
     }
 
@@ -63,7 +73,7 @@ public class PharmacistsConsultationDTO {
                 ", time=" + time +
                 ", date=" + date +
                 ", pharmacist=" + pharmacist.getName() +
-                ", patient=" + patient.getEmail() +
+                ", patient=" + patient +
                 '}';
     }
 }

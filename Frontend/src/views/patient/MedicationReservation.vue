@@ -1,5 +1,5 @@
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div v-if = "authorised" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
@@ -12,7 +12,6 @@
                     <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
                
                      <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
-                     <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
             
                    
 
@@ -319,12 +318,12 @@
                   <thead>
                     <tr>
                       
-                      <th scope="col">Name</th>
-                      <th scope="col">Code</th>
-                      <th scope="col">Type</th>
-                      <th scope="col">Date of takeover</th>
-                       <th scope="col">Pharmacy</th>
-                       <th scope="col"></th>
+                      <th scope="col" style="color:white">Name</th>
+                      <th scope="col" style="color:white">Code</th>
+                      <th scope="col" style="color:white">Type</th>
+                      <th scope="col" style="color:white">Date of takeover</th>
+                       <th scope="col" style="color:white">Pharmacy</th>
+                       <th scope="col" style="color:white"></th>
                     </tr>
                   </thead>
                   <tbody v-for="reservedMedication in this.reservedMedications"  v-bind:key="reservedMedication.id">
@@ -402,6 +401,7 @@ export default {
             },
             medicationId : 0,
             code : 0
+            
       },
       showMedicationInfoDiv : false, 
       forms: [
@@ -443,7 +443,8 @@ export default {
         showMedicationPharmacyAvailabilityListDiv : false,
         choosenMedicationForAvailability : 0,
         choosenPharmacy : {},
-        choosenMedication : {}
+        choosenMedication : {},
+        authorised: false
       
     }
   },
@@ -462,21 +463,28 @@ mounted() {
                  'Authorization': 'Bearer ' + token,
              }
          }).then(response => {
+             this.authorised = true;
                 this.patient = response.data;
                this.axios.get('/medicationReservation/' + this.patient.id)
           .then(response => {
-            alert(this.reservedMedications.length)
+
                 this.reservedMedications= response.data;
                console.log(this.reservedMedications);
+          }).catch(res => {
+               
+                        console.log(res);
+                 });
+
+
          }).catch(res => {
-                       alert("NOT OK");
+                 this.authorised = true;
+                       alert("Please log in first!");
+                        window.location.href = "/login";
                         console.log(res);
                  });
 
    
             
-              
-          })
           
 },
   methods:{
@@ -486,6 +494,7 @@ mounted() {
       eRecipes : function(){
       },
       logOut : function(){
+             localStorage.removeItem('token');
           window.location.href = "/login";
       },
       medicationReservation : function(){
@@ -499,28 +508,42 @@ mounted() {
       },
 
       cancelReservation: function(event, reservedMedication){
-        alert(reservedMedication.id)
-          this.axios.get('/medicationReservation/cancel/'+ reservedMedication.id)
+           let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+          this.axios.get('/medicationReservation/cancel/'+ reservedMedication.id, { 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }}).then(response => {
+               alert(response.data);
+                      console.log(response);
+                         window.location.href = "/medicationResevation";
+         }).catch(res => {
+                       alert(res.data);
+                        console.log(res);
+                 });
         
                    
       },
       reserve : function(){
-    
+    let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
               const med = {
-                  patient: this.patient,
+                  patient: this.patient.id,
                   pharmacyId: this.choosenPharmacy.pharmacyId,
                   medicationId: this.choosenMedication.medicationId,
                   dateOfTakeOver: this.pickUpDay 
                 };
-          alert( med.medicineCode)
-         this.axios.post('/medicationReservation/add',med)
+         this.axios.post('/medicationReservation/add',med, { 
+              
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+             }}).
         
-                    .then(res => {
-                       
+                    then(res => {
+                        alert(res.data);
                         console.log(res);
+                           window.location.href = "/medicationResevation";
                     })
                     .catch(res => {
-                     
+                           alert(res.data);
                         console.log(res);
                     })
                  

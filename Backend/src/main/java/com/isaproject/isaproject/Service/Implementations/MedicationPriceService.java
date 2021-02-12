@@ -8,9 +8,14 @@ import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Orders.MedicationInOrder;
 import com.isaproject.isaproject.Model.Orders.Order;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.Patient;
+import com.isaproject.isaproject.Model.Users.PersonUser;
 import com.isaproject.isaproject.Repository.MedicationPriceRepository;
+import com.isaproject.isaproject.Repository.PatientRepository;
 import com.isaproject.isaproject.Service.IServices.IMedicationPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +34,10 @@ public class MedicationPriceService implements IMedicationPriceService {
     MedicationReservationService medicationReservationService;
     @Autowired
     PharmacyService pharmacyService;
+    @Autowired
+    PatientRepository patientRepository;
+    @Autowired
+    LoyaltyProgramService loyaltyProgramService;
     @Autowired
     MedicationService medicationService;
     @Autowired
@@ -227,6 +236,7 @@ public class MedicationPriceService implements IMedicationPriceService {
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public boolean updateMedicineQuantityEreceipt(ChoosenPharmacyDTO choosenPharmacy) {
+        int points = 0;
         try {
             List<MedicationPrice> pharmacyMedications = findByPharmacy(choosenPharmacy.getPharmacyId());
             for (QRcodeInformationDTO medication : choosenPharmacy.getMedications()) {
@@ -234,12 +244,16 @@ public class MedicationPriceService implements IMedicationPriceService {
                     if(medicationPrice.getMedication().getCode()==medication.getMedicationCode() &&
                             medicationPrice.getMedication().getName().equals(medication.getMedicationName())) {
                         medicationPrice.setQuantity(medicationPrice.getQuantity()-medication.getQuantity());
+                        points += medicationPrice.getMedication().getLoyaltyPoints();
                         this.medicationPriceRepository.save(medicationPrice);
                     }
                 }
             }
+
+            loyaltyProgramService.updatePatientsLoyaltyPoints(points);
             return true;
         }
         catch(Exception e) {return false;}
     }
+
 }

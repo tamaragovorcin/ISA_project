@@ -1,22 +1,24 @@
-ines (39 sloc)  1.61 KB
-  
-<template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+
+ <template>
+  <div v-if="isAuthorized" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
-            <span style="float: left; margin: 15px;">
-                <button class = "btn btn-link btn-lg" style="float:left;margin-left:20px;" v-on:click = "appointmentsAndConsultings">My appointments and consultings</button>
-                    <strong class="tab"></strong>          
-                   <button class = "btn btn-link btn-lg" v-on:click = "eRecipes">eRecipes</button>
-                    <strong class="tab"></strong>          
-                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "medicationReservation">Medication reservation</button>
-                    <strong class="tab"></strong>          
-                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "penals">Penals</button>
-                    <strong class="tab"></strong>          
+             <span style="float: left; margin: 15px;">
+                               
+                    <a  class = "btn btn-link btn-lg" href= "/patientProfile">Home page</a>
+                    <a  class = "btn btn-link btn-lg" href= "/showPharmaciesPatient">Pharmacies</a>
+                    <a  class = "btn btn-link btn-lg" href= "/eRecipes">ERecipes</a>
+                    <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
+                    <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
+                     <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
+                         <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
+                   
 
-                    <button class = "btn btn-link btn-lg" style="margin-right:20px;" v-on:click = "changeMyProfile">Change my profile</button>
-                    <strong class="tab"></strong>          
+             
+                  
+
             </span>
             <span  style="float:right;margin:10px">
                     <button class = "btn btn-warning btn-lg" style="margin-right:20px;" v-on:click = "logOut">Log Out</button>
@@ -175,7 +177,55 @@ ines (39 sloc)  1.61 KB
      </div>
    
     </div>
+            <div style="color:#0D184F;font-size:25px;font-style:italic;font-weight:bold; margine-left:130px" >My ERecipes</div>
+         <div style="background: whitesmoke; border: 3px solid #0D184F; height: 200px; width:1000px; margin-left:300px; margin-top: 20px"  v-for="dermatologistAppointment in this.dermatologistAppointments"  v-bind:key="dermatologistAppointment.id">
+
+       
+
+<table style = "" class="table table-dark">
+ 
+ 
+    <tbody>
+     
+    <tr>
+    
+      <td>Pharmacy:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.pharmacyName}}</td>
+    
+    </tr>
+    <tr>
+     
+      <td>Medication name:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.medName}} </td>
+
+    </tr>
+    <tr>
+     
+      <td>Quantity:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.quantity}} </td>
+     
+    </tr>
+        <tr>
+   
+      <td>Date:</td>
+       <th scope="row"></th>
+      <td>{{dermatologistAppointment.date}} </td>
+     
+    </tr>
+      
+  </tbody>
+</table>
+       
+      
+
+      </div>   
 </div>
+
+
+
 
 </template>
 <script>
@@ -192,10 +242,47 @@ export default {
        pharmacyName : "",
         pharmacyCountry : "",
         pharmacyTown : "",
-        pharmacyListFilter : []
+        pharmacyListFilter : [],
+        dermatologistAppointment: null,
+        dermatologistAppointments: [],
+        isAuthorized : false,
+        eReceiptCode : ""
     }
   },
+mounted(){
+ let token = localStorage.getItem('token').substring(1, localStorage.getItem('token').length-1);
+        this.axios.get('/patient/account',{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
 
+             }
+         }).then(response => {
+                this.patient = response.data;
+                this.isAuthorized = true;
+                  this.axios.get('/erecipes/all/' + this.patient.id,{ 
+             headers: {
+                 'Authorization': 'Bearer ' + token,
+
+             }})
+          .then(response => {
+                this.dermatologistAppointments= response.data;
+               console.log(this.pharmacists);
+              
+          }).catch(res => {
+                       alert(res.response.data.message);
+                               
+                
+                 });
+         
+         }).catch(res => {
+           this.isAuthorized = false;
+                       alert("Please log in first!");
+                                 window.location.href = "/login";
+                                 console.log(res);
+                
+                 });
+
+},
   methods:{
      
       appointmentsAndConsultings: function(){
@@ -203,6 +290,7 @@ export default {
       eRecipes : function(){
       },
       logOut : function(){
+             localStorage.removeItem('token');
           window.location.href = "/login";
 
       },
@@ -232,6 +320,7 @@ export default {
                     this.pharmacyList = response.data.pharmacies;
                     this.pharmacyListFilter=response.data.pharmacies;
                     this.medications = response.data.medicationsInQRcode;
+                    this.eReceiptCode = response.data.code;
                     if(this.pharmacyList.length===0) {
                         alert("There is no pharmacy that has all mediciations.")
                     }    
@@ -250,6 +339,7 @@ export default {
             const PharmacyRequest = {
               pharmacyId : pharmacy,
               medications : this.medications,
+              code : this.eReceiptCode
             }
           this.axios.post( '/erecipes/choosePharmacy', PharmacyRequest,{
                           headers: {
@@ -320,6 +410,6 @@ export default {
                 return (a.address.town < b.address.town) ? 1 : -1;
             });
      },
-}
+},
 }
 </script>

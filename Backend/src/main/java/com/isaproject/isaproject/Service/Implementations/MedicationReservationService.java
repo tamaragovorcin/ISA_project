@@ -3,6 +3,7 @@ import com.isaproject.isaproject.DTO.MedicationReservationDTO;
 import com.isaproject.isaproject.Model.HelpModel.MedicationReservation;
 import com.isaproject.isaproject.Model.Medicine.Medication;
 import com.isaproject.isaproject.Model.Pharmacy.Pharmacy;
+import com.isaproject.isaproject.Model.Users.Patient;
 import com.isaproject.isaproject.Repository.MedicationReservationRepository;
 import com.isaproject.isaproject.Service.IServices.IMedicationReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class MedicationReservationService implements IMedicationReservationServi
 
     @Autowired
     MedicationService medicationService;
+
+    @Autowired
+    PatientService patientService;
 
     @Autowired
     PharmacyService pharmacyService;
@@ -45,7 +49,8 @@ public class MedicationReservationService implements IMedicationReservationServi
         medicationReservation.setDateOfTakeOver(medicationDTO.getDateOfTakeOver());
         medicationReservation.setPharmacy(pharmacy);
         medicationReservation.setMedicine(medication);
-        medicationReservation.setPatient(medicationDTO.getPatient());
+        Patient patient = patientService.findById(medicationDTO.getPatient());
+        medicationReservation.setPatient(patient);
         medicationReservation.setDateOfReservation(LocalDate.now());
         medicationReservation.setReservationCode(uuid);
         return medicationRepository.save(medicationReservation);

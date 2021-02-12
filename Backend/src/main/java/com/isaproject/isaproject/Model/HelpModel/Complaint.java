@@ -48,7 +48,7 @@ public class Complaint {
 
     @Version
     @Column(name = "version", nullable = true)
-    private Integer version;
+    private Long version;
 
 
     public Complaint() {
@@ -66,7 +66,11 @@ public class Complaint {
         this.answer = answer;
     }
 
-    public Integer getVersion() {
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public Long getVersion() {
         return version;
     }
 

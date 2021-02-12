@@ -3,7 +3,7 @@ import com.isaproject.isaproject.Model.Users.Patient;
 
 public class ExaminationDTO {
 
-    private Patient patient;
+    private Integer patient;
 
     private Boolean cancelled;
 
@@ -16,18 +16,18 @@ public class ExaminationDTO {
     public ExaminationDTO() {  }
 
     public ExaminationDTO(Patient patient, Boolean cancelled, Boolean showedUp, Integer examinationId, String information) {
-        this.patient = patient;
+
         this.cancelled = cancelled;
         this.showedUp = showedUp;
         this.examinationId = examinationId;
         this.information = information;
     }
 
-    public Patient getPatient() {
+    public Integer getPatient() {
         return patient;
     }
 
-    public void setPatient(Patient patient) {
+    public void setPatient(Integer patient) {
         this.patient = patient;
     }
 

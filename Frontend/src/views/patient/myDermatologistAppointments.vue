@@ -1,7 +1,7 @@
 ines (39 sloc)  1.61 KB
   
 <template>
-  <div id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
+  <div vif="auth" id="registration" style="background-image: url(https://img.freepik.com/free-photo/abstract-blur-defocused-pharmacy-drug-store_1203-9459.jpg?size=626&ext=jpg);background-repeat: no-repeat;
      background-size: 175% 100%;  height: 1500px">
         <div style="background: #0D184F; height: 90px;">
             
@@ -13,7 +13,6 @@ ines (39 sloc)  1.61 KB
                     <a  class = "btn btn-link btn-lg" href= "/subscriptionsToPharmacies">My subscriptions</a>
                     <a  class = "btn btn-link btn-lg" href= "/patientComplaint">Write complaint</a>
                      <a  class = "btn btn-link btn-lg" href= "/updateProfilePatient">Change my profile</a>
-                    <a  class = "btn btn-link btn-lg" href= "/logOut">Collect a medication</a>
                          <a  class = "btn btn-link btn-lg" href= "/medicationReservation">Reserve a medication</a>
                    
 
@@ -50,15 +49,7 @@ ines (39 sloc)  1.61 KB
 
         <div style="background: white; height: 60px; margin-top: 20px">
             
-           <span  style="float:right;margin:15px">
-                    
-                    <input type="textarea" style="height:20;width:150;background-color:white;" placeholder="Search pharmacy by name">
-                     
-                   <button class = "btn btn-link btn" style="color:black; " v-on:click = "searchName">Search</button>
-
-            
-                </span>
-             
+        
             
         </div>
 
@@ -121,42 +112,42 @@ ines (39 sloc)  1.61 KB
 
     <tr>
     
-      <td>Ime dermatologa:</td>
+      <td>Dermatologists name:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.dermatologistFirst}} {{dermatologistAppointment.dermatologistLast}}</td>
     
     </tr>
     <tr>
      
-      <td>Apoteka:</td>
+      <td>Pharmacy:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.pharmacy}} </td>
 
     </tr>
     <tr>
      
-      <td>Datum:</td>
+      <td>Date:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.date}} </td>
      
     </tr>
         <tr>
    
-      <td>Pocetak:</td>
+      <td>Start time:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.startTime}} </td>
      
     </tr>
         <tr>
       
-      <td>Trajanje:</td>
+      <td>Duration:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.duration}} </td>
      
     </tr>
         <tr>
    
-      <td>Cena:</td>
+      <td>Price:</td>
        <th scope="row"></th>
       <td>{{dermatologistAppointment.price}} </td>
      
@@ -201,7 +192,8 @@ export default {
        showDermatologistComplaint : false,
        dermatologistAppointment: null,
        dermatologistAppointments : [],
-       patient: null
+       patient: null,
+       auth:false
 
     }
   },
@@ -218,6 +210,7 @@ mounted() {
          }).then(response => {
                 this.patient = response.data;
                  console.log( this.patient);
+                 this.auth = true;
                  this.axios.get('/pharmacy/cancelExamination/'+this.patient.id,{ 
              headers: {
                  'Authorization': 'Bearer ' + token,}
@@ -236,6 +229,7 @@ mounted() {
                           })
          }).catch(res => {
                        alert("Please log in first!");
+                       this.auth = false;
                                  window.location.href = "/login";
                                  console.log(res);
                 
@@ -316,7 +310,7 @@ mounted() {
       },
       namefromatoz: function(){
    
-      this.axios.get('/pharmacy/namefromatoz/' + this.patient.id)
+      this.axios.get('/pharmacy/durationShortest/' + this.patient.id)
           .then(response => {
                console.log(response.data);
                   this.dermatologistAppointments = response.data;
@@ -365,6 +359,7 @@ mounted() {
           window.location.href = "/isaHomePage";
       },
       logOut : function(){
+           localStorage.removeItem('token');
           window.location.href = "/login";
 
       },
@@ -417,7 +412,7 @@ mounted() {
 
              }).then(response => {
                alert(response.data);
-               
+                  window.location.href = "/myDermatologistAppointments";
                })
                 .catch(res => {
                      
