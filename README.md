@@ -12,7 +12,7 @@ Projekat iz predmeta Internet softverske arhitekture
 Travis: https://travis-ci.com/github/tamaragovorcin/ISA_project
 
 Autori:
-  Luna Zivkovic- Student 1\n
+  Luna Zivkovic- Student 1< /br>
   Mladenka Kokanovic- Student 2\n
   Lidija Vukovic-Student 3\n
   Tamara Govorcin-Student 4\n
