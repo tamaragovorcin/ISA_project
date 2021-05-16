@@ -69,15 +69,6 @@ pavle@gmail.com -> Expera<br />
 jovana@gmail.com -> NovaMed<br />
 
 
-Mejlovi i šifre neophodni za proveru pristiglih obaveštenja:<br />
-1.   email: ivic506@gmail.com<br />
-     šifra: ivanivic506<br />
-2.   email: anaanic774@gmail.com<br />
-     šifra: anic774.<br />
-3.   email: savicpetar774@gmail.com<br />
-     šifra: savic774<br />
-4.   email: ourhospital9@gmail.com<br />
-     šifra: hospital.9<br />
    
   Konfliktne situacije:
   Fajl sa opisom konfliktnih situacija od studenta broj 2, Mladenke Kokanovic, se nalazi na develop grani zajedno sa ostalim fajlovima dok se od studenta broj 4, Tamare Govorcin, nalazi na develop grani u folderu Konfliktne situacije.
